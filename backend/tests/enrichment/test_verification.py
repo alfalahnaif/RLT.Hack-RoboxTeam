@@ -50,6 +50,7 @@ def test_seed_yields_four_verified_two_under_review_and_preserves_identity():
     assert by_inn["7622012124"].company_name == "ООО «Переславский молочный комбинат»"
     assert all(not r.exact_okpd2_asserted_by_source for r in results)
     assert all(r.evidence_count == len(r.evidence_summary) for r in results)
+    assert by_inn["7622012124"].evidence_summary[0]["target_product_support"] == "DIRECT"
     assert by_inn["5007126820"].active_evidence_count == 2
     assert by_inn["3128004452"].active_evidence_count == 1
     assert by_inn["5007126820"].review_reasons
@@ -67,6 +68,7 @@ def test_seed_yields_four_verified_two_under_review_and_preserves_identity():
     (lambda p: p["candidates"][0]["evidence_records"][0].update(valid_until="2026-02-30"), "valid_until"),
     (lambda p: p["candidates"][0]["evidence_records"][0].update(retrieved_at="2026-10-02T20:45:00+03:00"), "retrieved_at"),
     (lambda p: p["candidates"][0]["evidence_records"][0].update(source_authority="UNKNOWN_SOURCE"), "source_authority"),
+    (lambda p: p["candidates"][0]["evidence_records"][0].update(target_product_support="MAYBE"), "target_product_support"),
     (lambda p: p["candidates"][0].update(exact_okpd2_asserted_by_source=True), "exact_okpd2"),
     (lambda p: p["candidates"][0].update(verification_status="MAYBE"), "verification_status"),
 ])
@@ -102,6 +104,70 @@ def test_active_evidence_valid_until_on_check_date_is_accepted():
     payload["candidates"][0]["evidence_records"][0]["valid_until"] = "2026-10-01"
     seed = parse_evidence_seed(payload)
     assert evaluate_seed(seed, historical_results(seed))[0].verification_status == VerificationStatus.VERIFIED
+
+
+@pytest.mark.parametrize("change,expected", [
+    ({"evidence_date": "2026-10-02"}, "evidence_date is after checked_at"),
+    ({"valid_until": "2026-06-29"}, "valid_until is before evidence_date"),
+    ({"retrieved_at": "2026-10-01T20:45:01+03:00"}, "retrieved_at is after checked_at"),
+])
+def test_temporal_inconsistency_is_rejected(change, expected):
+    payload = seed_dict()
+    payload["candidates"][0]["evidence_records"][0].update(change)
+    with pytest.raises(ValueError, match=expected):
+        parse_evidence_seed(payload)
+
+
+def test_direct_support_is_structured_and_independent_of_product_wording():
+    payload = seed_dict()
+    record = payload["candidates"][2]["evidence_records"][0]
+    record["product_scope"] = ["A different category's target product"]
+    seed = parse_evidence_seed(payload)
+    assert evaluate_seed(seed, historical_results(seed))[2].verification_status == VerificationStatus.VERIFIED
+    record["target_product_support"] = "RELATED"
+    seed = parse_evidence_seed(payload)
+    with pytest.raises(ValueError, match="supporting evidence"):
+        evaluate_seed(seed, historical_results(seed))
+
+
+def test_candidate_direct_product_match_is_required_for_verification():
+    payload = seed_dict()
+    payload["candidates"][2]["target_product_match"] = "HISTORICAL_DIRECT_PRODUCT_TEXT"
+    seed = parse_evidence_seed(payload)
+    with pytest.raises(ValueError, match="supporting evidence"):
+        evaluate_seed(seed, historical_results(seed))
+
+
+@pytest.mark.parametrize("url", [None, "ftp://example.org/declaration"])
+def test_declaration_without_auditable_url_cannot_verify(url):
+    payload = seed_dict()
+    payload["candidates"][2]["evidence_records"][0]["source_url"] = url
+    seed = parse_evidence_seed(payload)
+    with pytest.raises(ValueError, match="supporting evidence"):
+        evaluate_seed(seed, historical_results(seed))
+
+
+@pytest.mark.parametrize("record_index", [0, 1])
+def test_corroborated_path_requires_urls_for_both_sources(record_index):
+    payload = seed_dict()
+    payload["candidates"][3]["evidence_records"][record_index]["source_url"] = None
+    seed = parse_evidence_seed(payload)
+    with pytest.raises(ValueError, match="supporting evidence"):
+        evaluate_seed(seed, historical_results(seed))
+
+
+def test_https_url_supports_verification_without_fetching():
+    payload = seed_dict()
+    payload["candidates"][2]["evidence_records"][0]["source_url"] = "https://example.org/declaration"
+    seed = parse_evidence_seed(payload)
+    assert evaluate_seed(seed, historical_results(seed))[2].verification_status == VerificationStatus.VERIFIED
+
+
+def test_incomplete_url_is_retained_for_review_without_verifying():
+    payload = seed_dict()
+    payload["candidates"][4]["evidence_records"][0]["source_url"] = None
+    seed = parse_evidence_seed(payload)
+    assert evaluate_seed(seed, historical_results(seed))[4].verification_status == VerificationStatus.UNDER_REVIEW
 
 
 def test_weak_product_listing_does_not_support_verified_status():

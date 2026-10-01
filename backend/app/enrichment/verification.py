@@ -12,16 +12,17 @@ from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
 from typing import Sequence, TypeVar
+from urllib.parse import urlsplit
 
 from app.enrichment.models import (CuratedCandidate, EvidenceSeed, EvidenceStatus, EvidenceType,
                                    ExternalCandidate, MarketRole, ReconciliationStatus, RoleAssertion,
                                    SourceAuthority, SupplierEvidence, TargetProductMatch,
+                                   TargetProductSupport,
                                    VerificationStatus, VerificationStrength, VerifiedExternalCandidate)
 from app.shared.normalize import normalize_inn, normalize_okpd2
 
 
 EnumType = TypeVar("EnumType", bound=Enum)
-DIRECT_PRODUCT_WORDING = "молоко питьевое стерилизованное"
 NON_BLOCKING_REVIEW_REASONS = frozenset({
     "LEGAL_NAME_CHANGED_RECENTLY_ALIAS_PRESERVED",
     "NO_CURRENT_REGISTRY_DECLARATION_LOCATED_IN_THIS_RESEARCH_PASS",
@@ -92,8 +93,13 @@ def _parse_evidence(raw: object, checked_at: datetime, field: str) -> SupplierEv
     evidence_type = _enum(EvidenceType, item.get("evidence_type"), f"{field}.evidence_type")
     status = _enum(EvidenceStatus, item.get("evidence_status"), f"{field}.evidence_status")
     strength = _enum(VerificationStrength, item.get("verification_strength"), f"{field}.verification_strength")
+    evidence_date = _date(item.get("evidence_date"), f"{field}.evidence_date", optional=True)
     valid_until = _date(item.get("valid_until"), f"{field}.valid_until", optional=True)
     retrieved_at = _timestamp(item.get("retrieved_at"), f"{field}.retrieved_at")
+    if evidence_date and evidence_date > checked_at.date():
+        raise ValueError(f"{field}.evidence_date is after checked_at")
+    if valid_until and evidence_date and valid_until < evidence_date:
+        raise ValueError(f"{field}.valid_until is before evidence_date")
     if retrieved_at > checked_at:
         raise ValueError(f"{field}.retrieved_at is after checked_at")
     if status == EvidenceStatus.ACTIVE and valid_until and valid_until < checked_at.date():
@@ -109,7 +115,7 @@ def _parse_evidence(raw: object, checked_at: datetime, field: str) -> SupplierEv
         source_url=_string(item.get("source_url"), f"{field}.source_url", optional=True),
         source_name=_string(item.get("source_name"), f"{field}.source_name"),
         product_scope=_strings(item.get("product_scope", []), f"{field}.product_scope"),
-        evidence_date=_date(item.get("evidence_date"), f"{field}.evidence_date", optional=True),
+        evidence_date=evidence_date,
         checked_at=checked_at, evidence_status=status, verification_strength=strength,
         notes=_string(item.get("notes"), f"{field}.notes", optional=True),
         source_record_id=record_id,
@@ -117,6 +123,8 @@ def _parse_evidence(raw: object, checked_at: datetime, field: str) -> SupplierEv
         valid_until=valid_until, retrieved_at=retrieved_at,
         role_assertion=_enum(RoleAssertion, item.get("role_assertion"), f"{field}.role_assertion"),
         asserted_okpd2_codes=asserted_codes,
+        target_product_support=_enum(TargetProductSupport, item.get("target_product_support"),
+                                     f"{field}.target_product_support"),
     )
 
 
@@ -188,8 +196,14 @@ def load_evidence_seed(path: Path) -> EvidenceSeed:
     return parse_evidence_seed(payload)
 
 
-def _direct_product(evidence: SupplierEvidence) -> bool:
-    return any(DIRECT_PRODUCT_WORDING in phrase.casefold() for phrase in evidence.product_scope)
+def _auditable_source(evidence: SupplierEvidence) -> bool:
+    if not evidence.source_url:
+        return False
+    try:
+        parsed = urlsplit(evidence.source_url)
+        return parsed.scheme in ("http", "https") and bool(parsed.hostname)
+    except ValueError:
+        return False
 
 
 def _active(evidence: SupplierEvidence) -> bool:
@@ -202,20 +216,22 @@ def _declaration_support(candidate: CuratedCandidate) -> bool:
     return any(_active(e) and e.evidence_type == EvidenceType.CONFORMITY_DECLARATION
                and e.verification_strength == VerificationStrength.STRONG
                and e.role_assertion == RoleAssertion.MANUFACTURER_AND_APPLICANT
-               and _direct_product(e) for e in candidate.evidence_records)
+               and e.target_product_support == TargetProductSupport.DIRECT
+               and _auditable_source(e) for e in candidate.evidence_records)
 
 
 def _corroborated_support(candidate: CuratedCandidate) -> bool:
     if candidate.target_product_match != TargetProductMatch.DIRECT_PRODUCT_TEXT:
         return False
     legal = any(_active(e) and e.evidence_type == EvidenceType.LEGAL_IDENTITY
-                and e.role_assertion == RoleAssertion.ACTIVE_DAIRY_MANUFACTURER
                 and e.verification_strength == VerificationStrength.STRONG
+                and _auditable_source(e)
                 for e in candidate.evidence_records)
     product = any(_active(e) and e.evidence_type == EvidenceType.CURRENT_PRODUCT_LISTING
                   and e.role_assertion == RoleAssertion.MANUFACTURER_NAMED_ON_PRODUCT_LISTING
                   and e.verification_strength in (VerificationStrength.MODERATE, VerificationStrength.STRONG)
-                  and _direct_product(e) for e in candidate.evidence_records)
+                  and e.target_product_support == TargetProductSupport.DIRECT
+                  and _auditable_source(e) for e in candidate.evidence_records)
     return legal and product
 
 
@@ -227,6 +243,7 @@ def _evidence_summary(evidence: SupplierEvidence) -> dict:
         "source_record_id": evidence.source_record_id,
         "source_authority": evidence.source_authority,
         "product_scope": evidence.product_scope,
+        "target_product_support": evidence.target_product_support,
         "evidence_date": evidence.evidence_date,
         "valid_until": evidence.valid_until,
         "retrieved_at": evidence.retrieved_at,
@@ -244,9 +261,9 @@ def _why(candidate: CuratedCandidate, declaration: bool, corroborated: bool) -> 
     if candidate.verification_status == VerificationStatus.UNVERIFIED:
         return "Curated evidence does not authorize a verified conclusion."
     if declaration:
-        basis = "Curated active strong declaration directly covers sterilized drinking milk and names the INN-linked entity as manufacturer/applicant."
+        basis = "Curated active strong declaration directly supports the target product and names the INN-linked entity as manufacturer/applicant."
     elif corroborated:
-        basis = "Curated active legal-manufacturer record and current product listing jointly support sterilized drinking milk."
+        basis = "Curated active legal-identity record and current product listing jointly support the target product."
     else:
         raise ValueError("VERIFIED candidate lacks supporting evidence")
     if not candidate.exact_okpd2_asserted_by_source:

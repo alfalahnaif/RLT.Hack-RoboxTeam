@@ -45,6 +45,12 @@ class TargetProductMatch(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
+class TargetProductSupport(str, Enum):
+    DIRECT = "DIRECT"
+    RELATED = "RELATED"
+    NONE = "NONE"
+
+
 class EvidenceType(str, Enum):
     CONFORMITY_DECLARATION = "CONFORMITY_DECLARATION"
     LEGAL_IDENTITY = "LEGAL_IDENTITY"
@@ -94,6 +100,7 @@ class SupplierEvidence:
     retrieved_at: datetime | None = None
     role_assertion: RoleAssertion | None = None
     asserted_okpd2_codes: tuple[str, ...] = ()
+    target_product_support: TargetProductSupport = TargetProductSupport.NONE
 
 
 @dataclass(frozen=True)

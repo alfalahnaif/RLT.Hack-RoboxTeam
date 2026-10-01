@@ -50,7 +50,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
-          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "target_product_support": "DIRECT"
         },
         {
           "evidence_type": "LEGAL_IDENTITY",
@@ -62,7 +63,8 @@
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
           "role_assertion": "ACTIVE_LEGAL_ENTITY",
-          "notes": "Current legal name differs from older Эдельвейс records; identity continuity is by INN/OGRN."
+          "notes": "Current legal name differs from older Эдельвейс records; identity continuity is by INN/OGRN.",
+          "target_product_support": "NONE"
         }
       ]
     },
@@ -99,7 +101,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
-          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "target_product_support": "DIRECT"
         },
         {
           "evidence_type": "FIRST_PARTY_WEBSITE",
@@ -113,7 +116,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "MODERATE",
-          "role_assertion": "DAIRY_PRODUCER"
+          "role_assertion": "DAIRY_PRODUCER",
+          "target_product_support": "RELATED"
         }
       ]
     },
@@ -150,7 +154,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
-          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "target_product_support": "DIRECT"
         }
       ]
     },
@@ -188,7 +193,8 @@
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
           "role_assertion": "ACTIVE_DAIRY_MANUFACTURER",
-          "notes": "Legal name is 'Завод стерилизованного молока Можайский'; OKVED includes drinking milk production."
+          "notes": "Legal name is 'Завод стерилизованного молока Можайский'; OKVED includes drinking milk production.",
+          "target_product_support": "RELATED"
         },
         {
           "evidence_type": "CURRENT_PRODUCT_LISTING",
@@ -201,7 +207,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "MODERATE",
-          "role_assertion": "MANUFACTURER_NAMED_ON_PRODUCT_LISTING"
+          "role_assertion": "MANUFACTURER_NAMED_ON_PRODUCT_LISTING",
+          "target_product_support": "DIRECT"
         }
       ]
     },
@@ -241,7 +248,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
-          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "target_product_support": "DIRECT"
         },
         {
           "evidence_type": "BUSINESS_PROFILE",
@@ -253,7 +261,8 @@
           "evidence_status": "ACTIVE",
           "verification_strength": "MODERATE",
           "role_assertion": "MAIN_OKVED_56_10",
-          "notes": "Creates an inconsistency that warrants manual review; not proof that declaration is invalid."
+          "notes": "Creates an inconsistency that warrants manual review; not proof that declaration is invalid.",
+          "target_product_support": "NONE"
         }
       ]
     },
@@ -288,7 +297,8 @@
           "evidence_status": "ACTIVE",
           "verification_strength": "STRONG",
           "role_assertion": "DAIRY_MANUFACTURER",
-          "notes": "Site states processing capacity of 300 tons of milk/day and more than 60 products."
+          "notes": "Site states processing capacity of 300 tons of milk/day and more than 60 products.",
+          "target_product_support": "RELATED"
         },
         {
           "evidence_type": "CONFORMITY_DECLARATION",
@@ -304,7 +314,8 @@
           "retrieved_at": "2026-10-01T20:45:00+03:00",
           "evidence_status": "TERMINATED",
           "verification_strength": "STRONG",
-          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "target_product_support": "DIRECT"
         }
       ]
     }

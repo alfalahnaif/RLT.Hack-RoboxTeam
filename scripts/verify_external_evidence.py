@@ -58,13 +58,15 @@ def build_report() -> dict:
         "seed_path": SEED_PATH.relative_to(ROOT).as_posix(),
         "seed_sha256": hashlib.sha256(SEED_PATH.read_bytes()).hexdigest(),
         "reconciliation_definition": "Observed canonical procurement history with publish_date before historical_as_of; independent of evidence verification.",
-        "verification_definition": "Curated status validated against current supporting evidence and explicit review reasons at checked_at; EXTERNAL_NEW alone gives no verification.",
+        "verification_definition": "Curated status validated against active evidence with structured direct-product support, auditable http(s) source URLs, and explicit review reasons at checked_at; EXTERNAL_NEW alone gives no verification.",
         "exact_okpd2_definition": "True only when a structured source assertion names the exact target OKPD2 value; direct product wording and broader codes are separate.",
         "verification_status_counts": {status: counts[status] for status in ("UNVERIFIED", "UNDER_REVIEW", "VERIFIED")},
         "candidates": [candidate.to_dict() for candidate in results],
         "limitations": [
             "Evidence facts and source URLs are reproduced from the supplied curated seed; this run does not fetch or independently check the URLs.",
             "Evidence records are associated with the canonical supplier INN by the curated seed.",
+            "The curated seed classifies each evidence record as DIRECT, RELATED, or NONE for the target product; the evaluator does not interpret product wording.",
+            "Only evidence with an http(s) source URL can support VERIFIED; URLs are validated syntactically and are never fetched.",
             "A terminated or suspended declaration remains historical evidence and does not alone support current verification.",
             "All exact target OKPD2 assertions in this seed are false; product wording does not assert the leaf code.",
         ],
@@ -110,7 +112,8 @@ def render_markdown(report: dict) -> str:
             lines += [
                 f"- **{evidence['evidence_type']}** — {source}; status `{evidence['evidence_status']}`; "
                 f"strength `{evidence['verification_strength']}`; authority `{evidence['source_authority']}`; "
-                f"role `{evidence['role_assertion']}`; record ID `{_cell(evidence['source_record_id'])}`; "
+                f"role `{evidence['role_assertion']}`; target product support `{evidence['target_product_support']}`; "
+                f"record ID `{_cell(evidence['source_record_id'])}`; "
                 f"evidence date `{_cell(evidence['evidence_date'])}`; valid until `{_cell(evidence['valid_until'])}`; "
                 f"retrieved `{_cell(evidence['retrieved_at'])}`."
             ]
