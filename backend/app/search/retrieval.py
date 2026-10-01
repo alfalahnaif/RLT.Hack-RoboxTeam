@@ -62,6 +62,9 @@ class Retrieval:
     branch_ms: dict[str, float] = field(default_factory=dict)          # branch -> SQL time
     lot_subject_lexemes: dict[str, frozenset] = field(default_factory=dict)
     lot_customer: dict[str, str | None] = field(default_factory=dict)
+    lexical_ids: set = field(default_factory=set)                      # items found by text / technical / OKPD2 branches
+    semantic: dict = field(default_factory=dict)                       # (query item index, item_id) -> (cosine, text rank)
+    warnings: list = field(default_factory=list)                       # degraded branches (BR-11)
 
 
 def okpd2_dict(code, cls, subclass, group, subgroup, kind) -> dict | None:
@@ -128,6 +131,8 @@ def _run(conn, ret: Retrieval, branch: str, sql: str, params: dict) -> None:
 def _add(ret: Retrieval, rows, branch: str) -> None:
     ret.branch_hits[branch] = ret.branch_hits.get(branch, 0) + len(rows)
     for item_id, lot_id, name, code, cls, sc, grp, sg, kind, lex, pdate in rows:
+        if not branch.startswith("semantic"):
+            ret.lexical_ids.add(item_id)
         if item_id not in ret.items:
             ret.items[item_id] = HistItem(item_id, lot_id, name, okpd2_dict(code, cls, sc, grp, sg, kind), frozenset(lex), pdate)
 
@@ -154,6 +159,12 @@ def retrieve(conn, q: QueryLot, cfg: SearchConfig, idf: Idf) -> Retrieval:
             sql = OKPD_SQL.format(lex=LEX.format(col="i.product_name_normalized"),
                                   cond=f"i.okpd2_{level} = %(v)s AND i.okpd2_code <> %(code)s", vis=visible("i"))
             _run(conn, ret, f"okpd2_{level}", sql, {**p, "v": o[level], "code": o["code"], "lim": cfg.okpd2_broad_lots_limit})
+    if cfg.semantic_top_k > 0:
+        missing = semantic_unavailable(conn)
+        if missing:
+            ret.warnings.append(f"SEMANTIC_UNAVAILABLE: {missing}; lexical/OKPD2 retrieval only")
+        else:
+            semantic_retrieve(conn, q, cfg, ret)
     lots = sorted({it.lot_id for it in ret.items.values()})
     for lot_id, lex, cust in conn.execute(
             f"SELECT l.lot_id, {LEX.format(col='l.subject')}, l.customer_inn FROM procurement_lot l "
@@ -161,3 +172,71 @@ def retrieve(conn, q: QueryLot, cfg: SearchConfig, idf: Idf) -> Retrieval:
         ret.lot_subject_lexemes[lot_id] = frozenset(lex)
         ret.lot_customer[lot_id] = cust
     return ret
+
+
+# ---------------------------------------------------------------------------- P2-001 semantic branch
+SEMANTIC_SQL = f"""WITH nn AS (
+  SELECT s.text_hash, s.normalized_text, s.embedding <=> %(qv)s AS dist
+  FROM semantic_text s
+  WHERE s.first_seen_publish_date < %(as_of)s AND s.embedding IS NOT NULL
+  ORDER BY s.embedding <=> %(qv)s LIMIT %(k)s)
+SELECT 1 - nn.dist, it.* FROM nn CROSS JOIN LATERAL (
+  SELECT i.item_id::text, i.lot_id, i.product_name_normalized, i.okpd2_code, i.okpd2_class, i.okpd2_subclass, i.okpd2_group,
+         i.okpd2_subgroup, i.okpd2_kind, {LEX.format(col='i.product_name_normalized')}, i.publish_date
+  FROM procurement_item i
+  WHERE md5(i.product_name_normalized) = nn.text_hash::text AND i.product_name_normalized IS NOT NULL AND {visible('i')}
+    AND (i.product_name_normalized || '') = nn.normalized_text   -- collision guard (non-indexable on purpose: keeps the planner on ix_item_name_md5_date, not the trigram GIN)
+  ORDER BY i.publish_date DESC, i.item_id LIMIT %(per_text)s) it
+ORDER BY nn.dist, nn.text_hash, it.publish_date DESC, it.item_id"""
+
+
+def semantic_unavailable(conn) -> str | None:
+    """Reason the semantic branch cannot run (model not pinned, index not built), or None. Search then degrades to lexical/OKPD2."""
+    from app.search import semantic
+    if not semantic.LOCK.exists():
+        return "model not pinned (semantic download-model)"
+    if conn.execute("SELECT to_regclass('semantic_text')").fetchone()[0] is None or             conn.execute("SELECT 1 FROM semantic_text WHERE embedding IS NOT NULL LIMIT 1").fetchone() is None:
+        return "semantic index not built (semantic build)"
+    return None
+
+
+def semantic_retrieve(conn, q: QueryLot, cfg: SearchConfig, ret: Retrieval) -> None:
+    """Nearest distinct historical texts per query item (first_seen < as_of), mapped to their newest visible items
+    (item publish_date < as_of, enforced in SQL). Results are evidence rows like every other branch."""
+    from pgvector.psycopg import register_vector
+    from app.search import semantic
+    register_vector(conn)
+    idx_texts = [(i, qi.product_name) for i, qi in enumerate(q.items) if qi.product_name]
+    if not idx_texts:
+        return
+    t = time.perf_counter()
+    vecs = semantic.encode([x for _, x in idx_texts], "query")
+    ret.branch_ms["semantic_embed"] = round(ret.branch_ms.get("semantic_embed", 0.0) + (time.perf_counter() - t) * 1000, 1)
+    conn.execute(f"SET LOCAL hnsw.ef_search = {int(cfg.semantic_ef_search)}")
+    conn.execute("SET LOCAL hnsw.iterative_scan = relaxed_order")
+    for (i, _text), v in zip(idx_texts, vecs):
+        t = time.perf_counter()
+        rows = conn.execute(SEMANTIC_SQL, {"qv": v, "as_of": q.as_of, "k": cfg.semantic_top_k,
+                                           "per_text": cfg.semantic_items_per_text}).fetchall()
+        ret.branch_ms["semantic"] = round(ret.branch_ms.get("semantic", 0.0) + (time.perf_counter() - t) * 1000, 1)
+        rank, last = 0, None
+        for row in rows:
+            cos, item = float(row[0]), row[1:]
+            if item[2] != last:
+                rank, last = rank + 1, item[2]
+            key = (i, item[0])
+            if key not in ret.semantic or cos > ret.semantic[key][0]:
+                ret.semantic[key] = (cos, rank)
+        _add(ret, [r[1:] for r in rows], "semantic")
+
+
+def restrict_semantic(ret: Retrieval, k: int) -> Retrieval:
+    """View of a retrieval run at a smaller semantic cap (texts ranked <= k); k = 0 -> lexical/OKPD2 branches only."""
+    sem = {key: v for key, v in ret.semantic.items() if v[1] <= k}
+    keep = ret.lexical_ids | {item_id for (_i, item_id) in sem}
+    items = {i: it for i, it in ret.items.items() if i in keep}
+    lots = {it.lot_id for it in items.values()}
+    return Retrieval(items=items, branch_hits=ret.branch_hits, branch_ms=ret.branch_ms,
+                     lot_subject_lexemes={l: v for l, v in ret.lot_subject_lexemes.items() if l in lots},
+                     lot_customer={l: v for l, v in ret.lot_customer.items() if l in lots},
+                     lexical_ids=ret.lexical_ids, semantic=sem, warnings=ret.warnings)

@@ -167,6 +167,33 @@ def _cmd_evaluate(args) -> int:
         print(json.dumps({"chosen": r["chosen"]["name"], "accepted": r["accepted_challengers"],
                           "latency": r["latency_dev_end_to_end_chosen"]}, indent=1, ensure_ascii=False))
         return 0
+    if args.what == "semantic":
+        from app.search import semantic_experiments as SX
+        with psycopg.connect(database_url()) as conn:
+            r = SX.run(conn, log=lambda m: print(f"[semx] {m}", file=sys.stderr, flush=True))
+        (out / "p2_001_semantic.json").write_text(json.dumps(r, ensure_ascii=False, indent=1, sort_keys=True, default=str) + chr(10),
+                                                 encoding="utf-8")
+        print(json.dumps({"chosen": r["chosen"]["name"], "accepted_abc": r["accepted_abc"], "latency": r["latency"]}, indent=1,
+                         ensure_ascii=False))
+        return 0
+    if args.what == "semantic-latency":
+        from app.search import semantic_experiments as SX
+        path = out / "p2_001_semantic.json"
+        r = json.loads(path.read_text(encoding="utf-8"))
+        cfg = SX.CONFIGS[r["chosen"]["name"]] if r["chosen"]["name"] != SX.S0 else SX.CONFIGS["S3 semantic top-100"]
+        with psycopg.connect(database_url()) as conn:
+            r["latency"]["breakdown"] = SX.latency_breakdown(conn, cfg)
+        r["latency"]["model_load_seconds_once_per_process"] = r["latency"]["breakdown"]["cold_model_load_seconds"]
+        path.write_text(json.dumps(r, ensure_ascii=False, indent=1, sort_keys=True, default=str) + chr(10), encoding="utf-8")
+        print(json.dumps(r["latency"], indent=1))
+        return 0
+    if args.what == "semantic-report":
+        from app.search.report_p2_001 import render
+        r = json.loads((out / "p2_001_semantic.json").read_text(encoding="utf-8"))
+        feas = json.loads((out / "p2_001_feasibility.json").read_text(encoding="utf-8"))
+        build = json.loads((out / "p2_001_semantic_build.json").read_text(encoding="utf-8"))
+        (out / "p2_001_semantic.md").write_text(render(r, feas, build), encoding="utf-8")
+        return 0
     if args.what == "ranking-report":
         from app.search.report_p2_003 import render_diagnostics, render_ranking
         d = json.loads((out / "p2_003_ranking_diagnostics.json").read_text(encoding="utf-8"))
@@ -185,6 +212,30 @@ def _cmd_evaluate(args) -> int:
     (out / "p1_002_baseline.md").write_text(render_md(result), encoding="utf-8")
     print(json.dumps({"chosen": result["chosen_configuration"]["name"], "dev": result["dev"]["unweighted"],
                       "latency": result["latency_dev_end_to_end"]}, indent=1))
+    return 0
+
+
+def _cmd_semantic(args) -> int:
+    from app.search import semantic
+    out = repo_root() / "reports"
+    if args.action == "download-model":
+        print(json.dumps(semantic.download_model(), indent=1))
+        return 0
+    if args.action == "feasibility":
+        from app.search import semantic_feasibility as SF
+        with psycopg.connect(database_url()) as conn:
+            r = SF.run(conn, log=lambda m: print(f"[sem] {m}", file=sys.stderr, flush=True))
+        (out / "p2_001_feasibility.json").write_text(json.dumps(r, ensure_ascii=False, indent=1, sort_keys=True, default=str) + chr(10),
+                                                    encoding="utf-8")
+        print(json.dumps({"gate": r["gate"], "by_difficulty": r["failures_by_difficulty"], "corpus": r["corpus"],
+                          "technical": {k: v for k, v in r["technical_tokens"].items() if k != "examples"}}, indent=1, ensure_ascii=False))
+        return 0
+    from app.search import semantic_index as SI
+    with psycopg.connect(database_url()) as conn:
+        if args.action == "build":
+            print(json.dumps(SI.build(conn, log=lambda m: print(f"[sem] {m}", file=sys.stderr, flush=True)), indent=1, default=str))
+        else:
+            print(json.dumps(SI.status(conn), indent=1, default=str))
     return 0
 
 
@@ -216,8 +267,11 @@ def main(argv=None) -> int:
     rc.add_argument("--explain", action="store_true")
     rc.set_defaults(func=_cmd_recommend)
     ev = sub.add_parser("evaluate", help="evaluate the P1-002 baseline on WARM-UP + DEV (holdout sealed)")
-    ev.add_argument("what", choices=["baseline", "baseline-report", "ranking-diagnostics", "ranking", "ranking-report"])
+    ev.add_argument("what", choices=["baseline", "baseline-report", "ranking-diagnostics", "ranking", "ranking-report", "semantic", "semantic-latency", "semantic-report"])
     ev.set_defaults(func=_cmd_evaluate)
+    sm = sub.add_parser("semantic", help="P2-001 semantic retrieval (model, feasibility gate, index)")
+    sm.add_argument("action", choices=["download-model", "feasibility", "build", "status"])
+    sm.set_defaults(func=_cmd_semantic)
     args = ap.parse_args(argv)
     return args.func(args)
 

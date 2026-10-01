@@ -1,0 +1,20 @@
+{
+ "database_bytes": 11357887511,
+ "database_bytes_before": 7044463639,
+ "embedded": 993289,
+ "embedding_seconds": 11777.2,
+ "hnsw_build_seconds": 478.4,
+ "hnsw_index_bytes": 2034057216,
+ "item_md5_index_bytes": 131538944,
+ "max_seq_length": 128,
+ "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+ "note": "first attempt (6 single-thread workers, 57/s) was stopped and its 24,000 embeddings reset so every vector comes from one encoder configuration",
+ "pgvector_version": "0.8.6",
+ "semantic_text_table_bytes": 2035589120,
+ "semantic_text_total_bytes": 4181131264,
+ "texts": 993289,
+ "throughput_texts_per_second": 84.3,
+ "torch_threads": 8,
+ "total_seconds": 12292.7,
+ "workers": 1
+}

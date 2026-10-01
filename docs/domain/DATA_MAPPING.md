@@ -264,3 +264,13 @@ test); a different delivery or normalization version ⇒ refused unless `--reset
 lot's `publish_date`, written by ingestion; not a contract field) with composite indexes `(okpd2_code|okpd2_kind|okpd2_group|okpd2_class,
 publish_date DESC)`; reason: EXPLAIN ANALYZE showed OKPD2 retrieval walking all lots by date (389 ms) instead of an index range scan (22 ms after).
 `docker-compose.yml` sets `shm_size: 1gb` for postgres (parallel VACUUM/index builds failed with the 64 MB default).
+
+**Schema additions in P2-001 (semantic retrieval):** postgres image `pgvector/pgvector:pg16` (pgvector 0.8.x; `shm_size` raised to 4gb for the
+HNSW build). Migration `0004_semantic` — `CREATE EXTENSION vector`; `semantic_text(text_hash char(32) PK = md5(product_name_normalized),
+normalized_text, first_seen_publish_date, embedding vector(384), model_revision)` — one row per **distinct** normalized product text (993,289),
+derived, rebuildable, never a source of facts; expression index `ix_item_name_md5_date (md5(product_name_normalized), publish_date DESC)` on
+`procurement_item` maps a text back to its items. HNSW cosine index (m=16, ef_construction=64) is created by `semantic build`, not by the
+migration. Model pinned in `backend/semantic_model.lock.json` (intfloat/multilingual-e5-small, exact revision, MIT), cached in the `models`
+volume; commands `python -m app.cli semantic download-model | feasibility | build | status` (build is resumable; ~3.4 h on CPU).
+Temporal rule: a text is eligible only if `first_seen_publish_date < as_of`, and every evidence item must have `publish_date < as_of` (SQL).
+Ingestion `--reset-organizer-data` also truncates `semantic_text`. Storage: +4.0 GiB (table 3.9 GiB incl. 1.9 GiB HNSW; md5 index 125 MiB).

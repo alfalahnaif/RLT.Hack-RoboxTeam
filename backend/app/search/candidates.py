@@ -47,6 +47,11 @@ def okpd2_similarity(q: dict | None, h: dict | None) -> float:
     return 0.0
 
 
+def semantic_norm(cosine: float, cfg: SearchConfig) -> float:
+    """Fixed calibration of e5 cosine to [0, 1] (floor/ceiling from the feasibility study; not tuned on DEV)."""
+    return min(1.0, max(0.0, (cosine - cfg.semantic_floor) / (cfg.semantic_ceiling - cfg.semantic_floor)))
+
+
 def text_similarity(qi: QueryItem, h: HistItem, idf: Idf) -> float:
     """IDF-weighted share of the query item's features present in the historical item; technical tokens count as exact
     substrings with maximum weight. Bounded in [0, 1]."""
@@ -72,13 +77,15 @@ class LotEvidence:
     best_item_okpd2: str | None
     customer_inn: str | None = None
     item_match: tuple = ()   # per query item (q.items order): best combined text/OKPD2 match in this lot, in [0, 1]
+    semantic_cosine: float | None = None   # P2-001: raw cosine of the best item when its text evidence came from the semantic branch
 
 
 def score_lots(q: QueryLot, ret: Retrieval, idf: Idf, cfg: SearchConfig) -> list[LotEvidence]:
     by_lot: dict[str, list[HistItem]] = defaultdict(list)
     for it in ret.items.values():
         by_lot[it.lot_id].append(it)
-    qtext = [qi for qi in q.items if qi.lexemes or qi.tech_tokens]
+    q_index = {id(qi): i for i, qi in enumerate(q.items)}
+    qtext = [qi for qi in q.items if qi.lexemes or qi.tech_tokens or any(k[0] == q_index[id(qi)] for k in ret.semantic)]
     qokpd = [qi for qi in q.items if qi.okpd2]
     subj_w = {lx: idf.weight(lx) for lx in set(q.subject_lexemes)}
     subj_total = sum(subj_w.values())
@@ -88,13 +95,19 @@ def score_lots(q: QueryLot, ret: Retrieval, idf: Idf, cfg: SearchConfig) -> list
     out = []
     for lot_id in sorted(by_lot):
         items = sorted(by_lot[lot_id], key=lambda it: it.item_id)
-        best_t, best_o, best_item, best_item_score = [], [], None, -1.0
+        best_t, best_o, best_item, best_item_score, best_sem = [], [], None, -1.0, None
         for qi in qtext:
-            sims = [(text_similarity(qi, it, idf), it) for it in items]
-            s, it = max(sims, key=lambda x: (x[0], x[1].item_id))
+            qidx = q_index[id(qi)]
+            sims = []
+            for it in items:
+                lex = text_similarity(qi, it, idf)
+                sem = ret.semantic.get((qidx, it.item_id))
+                sem_eff = cfg.semantic_weight * semantic_norm(sem[0], cfg) if sem else 0.0
+                sims.append((max(lex, sem_eff), it, sem[0] if sem and sem_eff > lex else None))
+            s, it, cos = max(sims, key=lambda x: (x[0], x[1].item_id))
             best_t.append(s)
             if s > best_item_score:
-                best_item_score, best_item = s, it
+                best_item_score, best_item, best_sem = s, it, cos
         for qi in qokpd:
             best_o.append(max(okpd2_similarity(qi.okpd2, it.okpd2) for it in items))
         t_by, o_by = dict(zip(map(id, qtext), best_t)), dict(zip(map(id, qokpd), best_o))
@@ -113,7 +126,7 @@ def score_lots(q: QueryLot, ret: Retrieval, idf: Idf, cfg: SearchConfig) -> list
             best_item = max(items, key=lambda it: (okpd2_similarity(qokpd[0].okpd2, it.okpd2) if qokpd else 0, it.item_id))
         out.append(LotEvidence(lot_id, items[0].publish_date, rel, text, okpd, subj, best_item.name,
                                best_item.okpd2["code"] if best_item.okpd2 else None, ret.lot_customer.get(lot_id),
-                               tuple(item_match)))
+                               tuple(item_match), best_sem))
     out.sort(key=lambda e: (-e.relevance, -e.publish_date.toordinal(), e.lot_id))
     return out
 

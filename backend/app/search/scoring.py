@@ -59,6 +59,7 @@ class Recommendation:
     evidence_lot_ids: list
     reasons: list = field(default_factory=list)
     diagnostics: dict = field(default_factory=dict)   # raw evidence shape (not scored unless a weight uses it)
+    semantic_evidence: list = field(default_factory=list)  # P2-001: lots whose best text evidence is a semantic match
 
 
 def _sat(x: float, s: float) -> float:
@@ -116,7 +117,10 @@ def rank_suppliers(q: QueryLot, pool: Pool, cfg: SearchConfig) -> tuple[list[Rec
             relevant_lots=len(lots), relevant_awards=len(won), relevant_em_participations=len(em), relevant_ais_awards=len(ais_won),
             best_products=[n for n in dict.fromkeys(e.best_item_name for e in ordered[:5]) if n][:3],
             best_okpd2=best.best_item_okpd2, most_recent_relevant=latest.isoformat(),
-            same_customer_history=sid in pool.same_customer, evidence_lot_ids=[e.lot_id for e in ordered[:5]], diagnostics=diag))
+            same_customer_history=sid in pool.same_customer, evidence_lot_ids=[e.lot_id for e in ordered[:5]], diagnostics=diag,
+            semantic_evidence=[{"lot_id": e.lot_id, "publish_date": e.publish_date.isoformat(), "product": e.best_item_name,
+                                "okpd2": e.best_item_okpd2, "cosine": round(e.semantic_cosine, 4)}
+                               for e in ordered if e.semantic_cosine is not None][:2]))
     recs.sort(key=lambda r: (-r.score, -r.components["relevant_awards"], r.supplier_id))
     for i, r in enumerate(recs, 1):
         r.rank = i
@@ -139,4 +143,7 @@ def explain(r: Recommendation) -> list[str]:
     out.append(f"most recent relevant activity: {r.most_recent_relevant}")
     if r.same_customer_history:
         out.append("has earlier procurement history with the same customer")
+    for ev in r.semantic_evidence:
+        out.append(f"semantically similar historical product: «{(ev['product'] or '')[:120]}» (cosine {ev['cosine']:.2f}, lot {ev['lot_id']}, "
+                   f"{ev['publish_date']}" + (f", OKPD2 {ev['okpd2']})" if ev["okpd2"] else ")"))
     return out

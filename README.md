@@ -18,8 +18,12 @@ docker compose run --rm backend pytest                                     # uni
 docker compose run --rm backend python -m app.cli ingest organizer /data/raw   # full load (~15–20 min), writes reports/ingestion_report.*
 docker compose run --rm backend python -m app.cli ingest-status            # read-only reconciliation
 docker compose run --rm backend python -m app.cli search build-stats       # IDF snapshot (lots before 2024-07-01), ~1 min
-docker compose run --rm backend python -m app.cli recommend lot 5718896 --top-k 10 --explain   # baseline recommendation (P1-002)
+docker compose run --rm backend python -m app.cli semantic download-model  # pin + cache the embedding model (once, needs network)
+docker compose run --rm backend python -m app.cli semantic build           # embed distinct product texts + HNSW (resumable, ~3.4 h CPU)
+docker compose run --rm backend python -m app.cli semantic status          # embedded / pending texts, index present
+docker compose run --rm backend python -m app.cli recommend lot 5718896 --top-k 10 --explain   # recommendation (DEFAULT_CONFIG = P2-001)
 docker compose run --rm backend python -m app.cli evaluate baseline          # DEV + warm-up replay evaluation (holdout sealed)
+docker compose run --rm backend python -m app.cli evaluate semantic          # P2-001 DEV experiments (S0–S4), then semantic-latency, semantic-report
 ```
 
 - `data/raw` is mounted **read-only** at `/data/raw`; the CSVs are never copied into the image. Ingestion stops with

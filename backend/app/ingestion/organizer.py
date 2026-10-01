@@ -33,7 +33,17 @@ from app.shared import ids
 from app.shared import normalize as N
 from app.shared.config import repo_root
 
-SCHEMA_REVISION = "0003_item_publish_date"  # current head required for ingestion
+def _alembic_head() -> str:
+    """Current Alembic head from the migrations directory (ingestion requires the database to be at head)."""
+    from alembic.config import Config
+    from alembic.script import ScriptDirectory
+    backend = Path(__file__).resolve().parents[2]
+    cfg = Config(str(backend / "alembic.ini"))
+    cfg.set_main_option("script_location", str(backend / "migrations"))
+    return ScriptDirectory.from_config(cfg).get_current_head()
+
+
+SCHEMA_REVISION = _alembic_head()
 DATASETS = {"notices_24_25": "Извещения_24-25.csv", "suppliers_24_25": "Поставщики_24-25.csv", "items_24_25": "ТРУ_24-25.csv"}
 PROFILE_KEY = {"notices_24_25": "notices", "suppliers_24_25": "suppliers", "items_24_25": "items"}
 RAW_TABLES = {"notices_24_25": "raw_notice", "suppliers_24_25": "raw_supplier_relation", "items_24_25": "raw_procurement_item"}
@@ -398,6 +408,8 @@ def reset_organizer_data(conn) -> None:
     """Delete organizer-derived data only (raw, canonical organizer rows, manifests). Enrichment rows are kept;
     suppliers referenced by enrichment are kept."""
     conn.execute(f"TRUNCATE {', '.join(ORGANIZER_TABLES)}")
+    if conn.execute("SELECT to_regclass('semantic_text') IS NOT NULL").fetchone()[0]:
+        conn.execute("TRUNCATE semantic_text")          # derived from organizer item texts (P2-001)
     conn.execute("DELETE FROM ingestion_delivery")
     conn.execute("""DELETE FROM supplier s WHERE origin = 'ORGANIZER_DATA'
                     AND NOT EXISTS (SELECT 1 FROM supplier_profile p WHERE p.supplier_id = s.supplier_id)

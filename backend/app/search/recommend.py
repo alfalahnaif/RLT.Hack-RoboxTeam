@@ -43,6 +43,7 @@ def recommend(conn, lot_id: str, cfg: SearchConfig = SearchConfig(), as_of: date
                              "technical_tokens": qi.tech_tokens} for qi in q.items],
                   "customer_known": q.customer_inn is not None},
         "retrieval": {"branch_rows": ret.branch_hits, "branch_ms": ret.branch_ms, "historical_items": len(ret.items), "historical_lots": len(pool.lots)},
+        "warnings": ret.warnings,
         "candidates": len(recs), "results": [asdict(r) for r in recs[:cfg.top_k]],
         "timings_ms": {k: round(v, 1) for k, v in t.items()}, "config": cfg.to_dict(),
     }

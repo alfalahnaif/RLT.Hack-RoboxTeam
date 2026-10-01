@@ -7,9 +7,9 @@ name: supplier-radar
 
 services:
   postgres:
-    image: postgres:16
+    image: pgvector/pgvector:pg16   # PostgreSQL 16 + pgvector (P2-001); same data directory format as postgres:16
     restart: unless-stopped
-    shm_size: 1gb   # parallel maintenance (VACUUM / index builds) needs more than Docker's 64 MB default /dev/shm
+    shm_size: 4gb   # parallel maintenance (VACUUM, GIN and HNSW index builds) needs more than Docker's 64 MB default /dev/shm
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-supplier_radar}
       POSTGRES_USER: ${POSTGRES_USER:-supplier_radar}

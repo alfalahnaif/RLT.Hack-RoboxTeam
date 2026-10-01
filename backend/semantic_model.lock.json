@@ -1,0 +1,12 @@
+{
+ "dimension": 384,
+ "license": "MIT (intfloat/multilingual-e5-small)",
+ "model": "intfloat/multilingual-e5-small",
+ "normalized": true,
+ "prefixes": {
+  "document": "passage: ",
+  "query": "query: "
+ },
+ "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+ "source": "huggingface.co"
+}

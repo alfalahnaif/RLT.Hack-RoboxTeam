@@ -45,6 +45,13 @@ class SearchConfig:
     w_item_coverage: float = 0.0        # multi-item queries: mean over requested items of the supplier's best match for that item
     redundant_text_factor: float = 1.0  # product_text weight multiplier when every query item's text ~ the subject
     redundancy_jaccard: float = 0.8     # comparison-key token Jaccard at/above which item text counts as redundant with the subject
+    # ---- P2-001 semantic candidate expansion (0 = disabled -> identical to P2-003 behaviour)
+    semantic_top_k: int = 0             # nearest distinct historical texts per query item
+    semantic_items_per_text: int = 5    # newest visible items mapped from each text (bounded: one text cannot flood the pool)
+    semantic_weight: float = 0.8        # λ: per query item text match = max(lexical, λ * normalized semantic similarity)
+    semantic_floor: float = 0.82        # cosine calibration from the feasibility study (not tuned on DEV): floor -> 0
+    semantic_ceiling: float = 0.95      # ceiling -> 1
+    semantic_ef_search: int = 200
 
     def with_(self, **kw) -> "SearchConfig":
         return replace(self, **kw)
@@ -78,5 +85,9 @@ P1_002_BASELINE = SearchConfig(evidence_saturation=10.0, awards_saturation=6.0, 
 # P2-003 accepted challenger "C2 relevance-dominant" (reports/p2_003_ranking.json): weight moved from evidence volume to query relevance.
 P2_003_RANKING = P1_002_BASELINE.with_(w_product_text=0.35, w_okpd2=0.30, w_historical_relevance=0.10, w_relevant_awards=0.10)
 
+# P2-001 accepted configuration "S3 semantic top-100" (reports/p2_001_semantic.json): additive SEMANTIC retrieval branch,
+# ranking weights unchanged from P2-003. Degrades to P2-003 behaviour with a warning when the model/index is unavailable.
+P2_001_SEMANTIC = P2_003_RANKING.with_(semantic_top_k=100)
+
 # Configuration used by `recommend lot` (the CLI).
-DEFAULT_CONFIG = P2_003_RANKING
+DEFAULT_CONFIG = P2_001_SEMANTIC
