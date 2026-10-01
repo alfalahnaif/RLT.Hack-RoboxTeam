@@ -98,7 +98,9 @@
     "SEARCH_UNAVAILABLE": "Search is temporarily unavailable. Try again in a few seconds.",
     "SUPPLIER_NOT_FOUND": "Supplier not found.",
     "REQUEST_NOT_FOUND": "These search results are no longer available.",
-    "NETWORK_ERROR": "No connection to the server. Check your connection and try again."
+    "NETWORK_ERROR": "No connection to the server. Check your connection and try again.",
+    "LOT_NOT_FOUND": "Procurement lot not found.",
+    "HISTORICAL_DATA_UNAVAILABLE": "Historical procurement data is temporarily unavailable. Try again in a few seconds."
   },
   "confidenceComponent": {
     "product_evidence": "Product evidence",

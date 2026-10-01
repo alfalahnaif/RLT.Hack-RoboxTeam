@@ -1,0 +1,249 @@
+{
+  "title": "Procurement analysis",
+  "description": "Ranked historical suppliers, supplier pool health and external market expansion for one procurement.",
+  "disclaimer": "Sourcing intelligence from historical procurement data and curated evidence. It supports market research and is not a procurement approval.",
+  "form": {
+    "label": "Procurement lot ID",
+    "placeholder": "e.g. 5956101",
+    "analyze": "Analyze",
+    "required": "Enter a lot ID",
+    "demos": "Demo cases",
+    "primaryDemo": "Primary demo · food supply, lot {lot}",
+    "fallbackDemo": "Recommendation example · laptops, lot {lot}"
+  },
+  "initial": {
+    "title": "Which procurement should we analyze?",
+    "description": "Enter a lot ID or open the primary demo case to see recommended suppliers, pool concentration and new market candidates."
+  },
+  "loading": {
+    "title": "Analyzing procurement {lot}",
+    "hint": "Larger procurements with many items take a few seconds.",
+    "steps": {
+      "items": "Reading procurement items",
+      "suppliers": "Ranking historical suppliers",
+      "pool": "Assessing supplier pool health",
+      "external": "Checking external market evidence"
+    }
+  },
+  "notFound": {
+    "title": "Procurement not found",
+    "description": "Lot {lot} is not in the historical procurement data. Check the ID or open a demo case."
+  },
+  "partial": {
+    "title": "Partial analysis",
+    "description": "Some sections could not be loaded. The available sections are shown below."
+  },
+  "semanticUnavailable": "Semantic search is unavailable right now. Recommendations use product text and OKPD2 matching only.",
+  "timeline": {
+    "historical": "Historical procurement evidence as of {date}",
+    "historicalHint": "Only procurements published before this date are used for recommendations and pool health.",
+    "external": "External evidence checked {date}",
+    "externalHint": "Curated market evidence used to discover alternatives; collected after the procurement date.",
+    "externalNone": "No curated external evidence for the categories of this procurement"
+  },
+  "summary": {
+    "title": "Procurement",
+    "lot": "Lot ID",
+    "subject": "Subject",
+    "noSubject": "No subject in the source data",
+    "publishDate": "Published",
+    "customer": "Customer (INN)",
+    "customerUnknown": "Not specified",
+    "platform": "Platform",
+    "platforms": {
+      "AIS_GZ": "AIS GZ",
+      "EM": "Electronic store (EM)"
+    },
+    "startPrice": "Start price",
+    "items": "Items",
+    "categories": "OKPD2 categories",
+    "showItems": "Show items",
+    "hideItems": "Hide items",
+    "noOkpd2": "no OKPD2",
+    "itemsWithoutOkpd2": "{count, plural, one {# item has} other {# items have}} no usable OKPD2 code and no market analysis."
+  },
+  "suppliers": {
+    "title": "Recommended suppliers",
+    "subtitle": "{count, plural, one {# candidate} other {# candidates}} found in historical procurement data · top {shown} shown",
+    "top": "Top recommendation",
+    "score": "Recommendation score",
+    "inn": "INN",
+    "nameUnavailable": "Supplier (name not in procurement data)",
+    "why": "Why this supplier",
+    "hideWhy": "Hide details",
+    "breakdown": "Score breakdown",
+    "evidenceLots": "Evidence procurements",
+    "unavailable": "Supplier recommendations are unavailable for this procurement.",
+    "none": "No historical suppliers matched this procurement.",
+    "showAll": "Show all {count}",
+    "showLess": "Show top {count}",
+    "reasons": {
+      "lots": "Matched {count, plural, one {# similar historical procurement} other {# similar historical procurements}}",
+      "okpd2Exact": "Exact OKPD2 match ({code})",
+      "okpd2Related": "Related OKPD2 category ({code})",
+      "product": "Closest product supplied: «{name}»",
+      "awards": "{count, plural, =0 {No relevant historical awards} one {# relevant historical award} other {# relevant historical awards}}",
+      "awardsAis": "{count, plural, one {# relevant historical award} other {# relevant historical awards}}, {ais} on AIS GZ",
+      "em": "{count, plural, one {# relevant participation} other {# relevant participations}} in the electronic store (winner or not)",
+      "recent": "Most recent relevant activity: {date}",
+      "sameCustomer": "Has supplied this customer before"
+    },
+    "components": {
+      "product_text": "Product match",
+      "okpd2": "OKPD2 match",
+      "historical_relevance": "Historical relevance",
+      "relevant_awards": "Relevant awards",
+      "em_participation": "Electronic store participation",
+      "recency": "Recency",
+      "same_customer": "Same customer",
+      "evidence_quality": "Evidence quality",
+      "item_coverage": "Item coverage"
+    },
+    "notApplicable": "not used",
+    "semantic": {
+      "title": "Additional semantic evidence",
+      "hint": "How semantic search found this evidence: historical product descriptions with a similar meaning, even when the wording differs.",
+      "similarity": "similarity {value}",
+      "lot": "lot {lot}",
+      "onlySemantic": "found only by semantic search",
+      "okpd2": "OKPD2 {code}"
+    }
+  },
+  "market": {
+    "title": "Supplier pool health",
+    "subtitle": "One section per OKPD2 category of this procurement, from historical procurement data.",
+    "items": "{count, plural, one {Item} other {Items}} {lines}",
+    "unavailable": "Market analysis for this category is unavailable.",
+    "status": {
+      "VERY_HIGH": "Very high concentration",
+      "HIGH": "High concentration",
+      "MODERATE": "Moderate concentration",
+      "LOW": "Low concentration",
+      "INSUFFICIENT_DATA": "Insufficient data"
+    },
+    "headline": {
+      "VERY_HIGH": "Supplier pool is highly concentrated",
+      "HIGH": "Supplier pool is concentrated",
+      "MODERATE": "Supplier pool is moderately concentrated",
+      "LOW": "Supplier pool is diverse",
+      "INSUFFICIENT_DATA": "Not enough history to assess the supplier pool"
+    },
+    "signal": {
+      "EXPANSION_RECOMMENDED": "Market expansion recommended",
+      "REVIEW_POOL": "Review the supplier pool",
+      "NO_EXPANSION_SIGNAL": "No expansion signal",
+      "INSUFFICIENT_DATA": "Insufficient data"
+    },
+    "top1Explain": "The leading supplier won {share}% of observed awards in this category.",
+    "metrics": {
+      "lots": "Lots",
+      "awards": "Awards",
+      "observed": "Observed suppliers",
+      "winners": "Winning suppliers",
+      "top1": "Top supplier share",
+      "top3": "Top-3 share",
+      "hhi": "Concentration index (HHI)"
+    },
+    "hhiHint": "HHI ranges from 0 to 1; higher means fewer suppliers win most awards. It is an analytical indicator, not a regulatory threshold.",
+    "caveat": "Based on observed historical procurement awards, not on the entire market.",
+    "collapsedCount": "{count, plural, one {# more category} other {# more categories}}",
+    "showAll": "Show all categories",
+    "showLess": "Show priority categories only"
+  },
+  "alternatives": {
+    "title": "Historical alternatives",
+    "subtitle": "Other suppliers already observed in this category in historical procurement data.",
+    "awards": "{count, plural, =0 {no awards} one {# award} other {# awards}}",
+    "relations": "{count, plural, one {# observed procurement} other {# observed procurements}}",
+    "winner": "Has won in this category",
+    "participant": "Participated, no wins observed",
+    "none": "No other historical suppliers observed in this category.",
+    "total": "{shown} of {total} shown"
+  },
+  "external": {
+    "title": "External market expansion",
+    "subtitle": "New suppliers found outside the historical procurement data, from curated public evidence.",
+    "disclaimer": "Candidates are leads for market research, not suppliers approved for award.",
+    "counts": "{verified} verified · {review} under review",
+    "notAvailable": "No curated external evidence for this category yet. This does not mean that no other suppliers exist.",
+    "status": {
+      "VERIFIED": "Verified",
+      "UNDER_REVIEW": "Under review",
+      "UNVERIFIED": "Unverified"
+    },
+    "reconciliation": {
+      "EXTERNAL_NEW": "New to procurement data",
+      "CATEGORY_HISTORICAL": "Already in this category",
+      "HISTORICAL_OTHER_CATEGORY": "Known in other categories",
+      "INVALID_INN": "Invalid INN"
+    },
+    "role": {
+      "MANUFACTURER": "Manufacturer",
+      "MANUFACTURER_ASSERTED_BY_DECLARATION": "Manufacturer (per declaration)",
+      "UNKNOWN": "Role not established"
+    },
+    "strength": {
+      "STRONG": "Strong evidence",
+      "MODERATE": "Moderate evidence",
+      "WEAK": "Weak evidence",
+      "NONE": "No evidence"
+    },
+    "exactOkpd2No": "Sources support the product type; they do not assert this exact OKPD2 code.",
+    "exactOkpd2Yes": "A source asserts this exact OKPD2 code.",
+    "reasons": "Evidence basis",
+    "review": "Open review points",
+    "evidence": "Evidence ({count})",
+    "retrieved": "checked {date}",
+    "validUntil": "valid until {date}",
+    "evidenceStatus": {
+      "ACTIVE": "active",
+      "SUSPENDED": "suspended",
+      "TERMINATED": "terminated",
+      "UNKNOWN": "status unknown"
+    },
+    "evidenceType": {
+      "CONFORMITY_DECLARATION": "Conformity declaration",
+      "LEGAL_IDENTITY": "Legal entity record",
+      "FIRST_PARTY_WEBSITE": "Company website",
+      "CURRENT_PRODUCT_LISTING": "Product listing",
+      "BUSINESS_PROFILE": "Business profile"
+    },
+    "code": {
+      "ACTIVE_DECLARATION": "Active conformity declaration",
+      "DIRECT_PRODUCT_SCOPE": "Declaration covers the requested product",
+      "MANUFACTURER_ASSERTED": "Named as manufacturer",
+      "FIRST_PARTY_DAIRY_SITE": "Own website shows dairy production",
+      "IDENTITY_MATCH_INN": "Identity confirmed by INN",
+      "ACTIVE_LEGAL_ENTITY": "Active legal entity",
+      "DAIRY_MANUFACTURER_ROLE": "Registered as a dairy manufacturer",
+      "CURRENT_PRODUCT_LISTING": "Product currently sold under its name",
+      "FIRST_PARTY_DAIRY_MANUFACTURER": "Own website shows dairy manufacturing",
+      "HISTORICAL_DIRECT_PRODUCT_DECLARATION": "Past declaration for the requested product",
+      "LEGAL_NAME_CHANGED_RECENTLY_ALIAS_PRESERVED": "Legal name changed recently (former name kept)",
+      "NO_CURRENT_REGISTRY_DECLARATION_LOCATED_IN_THIS_RESEARCH_PASS": "No current registry declaration located yet",
+      "DIRECT_STERILIZED_MILK_DECLARATION_FOUND_IS_TERMINATED": "The declaration for this product is terminated",
+      "MAIN_OKVED_IS_RESTAURANT_OR_FOOD_DELIVERY": "Main activity code is catering / food delivery",
+      "RECENT_COMPANY": "Recently registered company",
+      "MANY_UNRELATED_DECLARATIONS_REQUIRE_OPERATIONAL_CORROBORATION": "Many unrelated declarations; production needs confirmation"
+    },
+    "inn": "INN {inn}"
+  },
+  "system": {
+    "semanticOn": "Semantic search on",
+    "semanticOff": "Semantic search off"
+  },
+  "overview": {
+    "suppliers": "Recommended suppliers",
+    "suppliersValue": "{count}",
+    "suppliersHint": "Top: INN {inn}",
+    "suppliersNone": "No recommendations",
+    "concentrated": "Concentrated categories",
+    "concentratedHint": "of {total} OKPD2 categories",
+    "concentratedNone": "None of {total} categories",
+    "external": "External candidates",
+    "externalValue": "{verified} verified",
+    "externalHint": "{review} under review · {codes}",
+    "externalNone": "No curated evidence",
+    "jump": "Go to section"
+  }
+}

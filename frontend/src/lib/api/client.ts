@@ -7,10 +7,12 @@
 import * as mock from "@/mocks/server";
 import type {
   ApiErrorEnvelope,
+  BackendHealth,
   ErrorCode,
   FeedbackRequest,
   FilterMeta,
   HealthStatus,
+  ProcurementAnalysis,
   SearchRequest,
   SearchResponse,
   SearchRunSummary,
@@ -39,8 +41,10 @@ async function http<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(0, "NETWORK_ERROR", "network error");
   }
   if (!res.ok) {
-    const body = (await res.json().catch(() => null)) as ApiErrorEnvelope | null;
-    throw new ApiError(res.status, body?.error.code ?? (res.status === 503 ? "SEARCH_UNAVAILABLE" : "VALIDATION_ERROR"), body?.error.message ?? res.statusText);
+    // ED-07 envelope `{error: {code, message}}`, or the FastAPI form `{detail: {code, message}}` used by the P3/P4 routes.
+    const body = (await res.json().catch(() => null)) as (ApiErrorEnvelope & { detail?: { code?: ErrorCode; message?: string } }) | null;
+    const err = body?.error ?? (body?.detail && typeof body.detail === "object" ? body.detail : undefined);
+    throw new ApiError(res.status, err?.code ?? (res.status === 503 ? "SEARCH_UNAVAILABLE" : "VALIDATION_ERROR"), err?.message ?? res.statusText);
   }
   return (await res.json()) as T;
 }
@@ -56,6 +60,33 @@ async function viaMock<T>(fn: () => Promise<T>): Promise<T> {
 
 const live = API_MODE === "live";
 
+/** P4-001 `/health` → the shell's `HealthStatus` shape (status pill + component tooltip). */
+const adaptHealth = (h: BackendHealth): HealthStatus => ({
+  status: h.status === "unavailable" ? "down" : h.status,
+  components: {
+    postgres: h.postgres === "reachable" ? "ok" : "down",
+    semantic: h.semantic.status === "ready" ? "ok" : "degraded",
+    evidence: h.curated_evidence_catalog.status === "ready" ? "ok" : "degraded",
+  },
+  versions: {},
+});
+
+/**
+ * One in-flight request per lot: React dev StrictMode (and quick re-renders) start the same effect twice, and two concurrent
+ * multi-second analyses would double the backend time. Nothing is cached once the request settles.
+ */
+const inflight = new Map<string, Promise<ProcurementAnalysis>>();
+const analysisOnce = (lotId: string) => {
+  const pending = inflight.get(lotId);
+  if (pending) return pending;
+  const p = http<ProcurementAnalysis>(`/procurements/${encodeURIComponent(lotId)}/analysis`).finally(() => inflight.delete(lotId));
+  inflight.set(lotId, p);
+  return p;
+};
+
+/** The integrated analysis exists only in the live backend; mock mode reports it as unavailable. */
+const analysisUnavailable = () => Promise.reject(new ApiError(503, "SEARCH_UNAVAILABLE", "analysis requires NEXT_PUBLIC_API_MODE=live"));
+
 export const api = {
   search: (req: SearchRequest) => (live ? http<SearchResponse>("/search", { method: "POST", body: JSON.stringify(req) }) : viaMock(() => mock.search(req))),
   getSearch: (requestId: string) => (live ? http<SearchResponse>(`/searches/${encodeURIComponent(requestId)}`) : viaMock(() => mock.getSearch(requestId))),
@@ -65,7 +96,9 @@ export const api = {
       ? http<SupplierProfile>(`/suppliers/${encodeURIComponent(id)}${requestId ? `?request_id=${encodeURIComponent(requestId)}` : ""}`)
       : viaMock(() => mock.getSupplier(id, requestId)),
   sendFeedback: (req: FeedbackRequest) => (live ? http<{ feedback_id: string }>("/feedback", { method: "POST", body: JSON.stringify(req) }) : viaMock(() => mock.sendFeedback(req))),
-  health: () => (live ? http<HealthStatus>("/health") : viaMock(() => mock.health())),
+  health: () => (live ? http<BackendHealth>("/health").then(adaptHealth) : viaMock(() => mock.health())),
+  /** P4-002 main page request: procurement + recommendations + market intelligence in one response. */
+  analysis: (lotId: string) => (live ? analysisOnce(lotId) : analysisUnavailable()),
   filterMeta: () => (live ? http<FilterMeta>("/meta/filters") : viaMock(() => mock.filterMeta())),
 };
 

@@ -57,7 +57,9 @@ export type ErrorCode =
   | "SEARCH_UNAVAILABLE"
   | "SUPPLIER_NOT_FOUND"
   | "REQUEST_NOT_FOUND"
-  | "NETWORK_ERROR";
+  | "NETWORK_ERROR"
+  | "LOT_NOT_FOUND"
+  | "HISTORICAL_DATA_UNAVAILABLE";
 
 /** Match Score features (SEARCH_AND_RANKING §3). */
 export type RankingFeature = "semantic" | "lexical" | "category" | "attributes" | "experience" | "geography" | "supplier_type" | "delivery";
@@ -256,3 +258,169 @@ export type SearchRunSummary = {
 };
 
 export type ApiErrorEnvelope = { error: { code: ErrorCode; message: string; details?: Record<string, unknown>; request_id?: string } };
+
+/* ------------------------------------------------------------------------------------------------
+ * P4-002 — integrated procurement analysis (`GET /procurements/{lot_id}/analysis`, P4-001 backend).
+ * Mirrors backend/app/api/recommendation_models.py + market_models.py. Rendered as returned; never recomputed.
+ * ---------------------------------------------------------------------------------------------- */
+
+export type SectionStatus = "OK" | "UNAVAILABLE";
+export type SectionError = { code: string; message: string };
+
+export type ProcurementItem = { line_no: number; product_name: string; okpd2_code: string | null; okpd2_code_raw: string };
+
+export type Procurement = {
+  lot_id: string;
+  subject: string | null;
+  publish_date: string;
+  platform: "AIS_GZ" | "EM";
+  start_price: number | null;
+  customer_inn: string | null;
+  items_total: number;
+  items: ProcurementItem[];
+};
+
+export type SemanticEvidence = {
+  lot_id: string;
+  publish_date: string;
+  product: string | null;
+  okpd2: string | null;
+  cosine: number;
+  discovered_only_by_semantic: boolean;
+  semantic_score_won: boolean;
+};
+
+export type RankedSupplier = {
+  rank: number;
+  supplier_id: string;
+  supplier_inn: string;
+  score: number;
+  components: Record<string, number>;
+  contributions: Record<string, number>;
+  relevant_lots: number;
+  relevant_awards: number;
+  relevant_em_participations: number;
+  relevant_ais_awards: number;
+  best_products: string[];
+  best_okpd2: string | null;
+  most_recent_relevant: string;
+  same_customer_history: boolean;
+  evidence_lot_ids: string[];
+  reasons: string[];
+  semantic_evidence: SemanticEvidence[];
+};
+
+export type Recommendations = {
+  lot_id: string;
+  as_of: string;
+  recommendation_version: string;
+  config_name: string;
+  semantic_enabled: boolean;
+  warnings: string[];
+  candidate_count: number;
+  results: RankedSupplier[];
+  timings_ms: Record<string, number>;
+};
+
+export type PoolStatus = "INSUFFICIENT_DATA" | "LOW" | "MODERATE" | "HIGH" | "VERY_HIGH";
+export type ExpansionSignal = "EXPANSION_RECOMMENDED" | "REVIEW_POOL" | "NO_EXPANSION_SIGNAL" | "INSUFFICIENT_DATA";
+export type VerificationStatus = "UNVERIFIED" | "UNDER_REVIEW" | "VERIFIED";
+export type Strength = "NONE" | "WEAK" | "MODERATE" | "STRONG";
+
+export type PoolHealth = {
+  status: PoolStatus;
+  lot_count: number;
+  procurement_count: number;
+  known_customer_count: number;
+  observed_supplier_count: number;
+  winning_supplier_count: number;
+  recent_winning_supplier_count: number;
+  award_count: number;
+  top1_share: number | null;
+  top3_share: number | null;
+  hhi: number | null;
+  alternative_supplier_count: number;
+};
+
+export type HistoricalAlternative = {
+  supplier_id: string;
+  supplier_inn: string | null;
+  historical_award_count: number;
+  observed_relation_count: number;
+  is_winner_in_category: boolean;
+};
+
+export type ExternalEvidence = {
+  evidence_type: string;
+  source_name: string;
+  source_url: string | null;
+  source_record_id: string | null;
+  source_authority: string;
+  evidence_status: "ACTIVE" | "SUSPENDED" | "TERMINATED" | "UNKNOWN";
+  verification_strength: Strength;
+  target_product_support: "DIRECT" | "RELATED" | "NONE";
+  product_scope: string[];
+  evidence_date: string | null;
+  valid_until: string | null;
+  retrieved_at: string;
+  role_assertion: string;
+};
+
+export type ExternalCandidate = {
+  supplier_inn: string;
+  company_name: string;
+  aliases: string[];
+  reconciliation_status: "CATEGORY_HISTORICAL" | "HISTORICAL_OTHER_CATEGORY" | "EXTERNAL_NEW" | "INVALID_INN";
+  market_role: string;
+  verification_status: VerificationStatus;
+  verification_strength: Strength;
+  target_product_match: string;
+  exact_okpd2_asserted_by_source: boolean;
+  why_candidate: string;
+  verification_reason_codes: string[];
+  review_reasons: string[];
+  evidence_count: number;
+  active_evidence_count: number;
+  evidence_summary: ExternalEvidence[];
+};
+
+export type MarketIntelligence = {
+  category: { okpd2: string; as_of: string };
+  pool_health: PoolHealth;
+  concentration: { signal: ExpansionSignal; reason_codes: string[] };
+  historical_alternatives: HistoricalAlternative[];
+  external_expansion: {
+    available: boolean;
+    evidence_checked_at: string | null;
+    verified_count: number;
+    under_review_count: number;
+    candidates: ExternalCandidate[];
+  };
+};
+
+export type MarketIntelligenceEntry = {
+  okpd2: string;
+  item_lines: number[];
+  status: SectionStatus;
+  data: MarketIntelligence | null;
+  error: SectionError | null;
+};
+
+export type ProcurementAnalysis = {
+  procurement: Procurement;
+  recommendations: { status: SectionStatus; data: Recommendations | null; error: SectionError | null };
+  market_intelligence: MarketIntelligenceEntry[];
+  market_intelligence_as_of: string;
+  items_without_okpd2: number[];
+  availability: "COMPLETE" | "PARTIAL";
+  timings_ms: Record<string, number>;
+};
+
+/** P4-001 `/health` as returned by the backend (adapted to `HealthStatus` for the shell status pill). */
+export type BackendHealth = {
+  status: "ok" | "degraded" | "unavailable";
+  api: "ready";
+  postgres: "reachable" | "unreachable";
+  semantic: { status: "ready" | "unavailable"; reason: string | null; pinned_revision: string | null; hnsw_ready: boolean; model_loaded: boolean };
+  curated_evidence_catalog: { status: "ready" | "unavailable"; seed_files: number; reason: string | null };
+};

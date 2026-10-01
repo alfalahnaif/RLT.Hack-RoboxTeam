@@ -22,5 +22,12 @@ export const UI_CONFIG = {
   minConfidenceOptions: [0, 0.5, 0.7] as const,
 } as const;
 
+/**
+ * P4-002 demo shortcuts (real canonical lots, not in the replay benchmark — no holdout). The shortcuts only fill the lot ID;
+ * the analysis always comes from the live API. Primary: food lot with OKPD2 10.51.11.141 (concentrated pool + verified
+ * external candidates). Fallback: golden recommendation case (laptops).
+ */
+export const DEMO_LOTS = { primary: "5956101", fallback: "5718896" } as const;
+
 /** Presentation tone of a 0–1 confidence value (meter colour only — the number is always shown). */
 export const confidenceTone = (v: number | null) => (v === null ? "warning" : v >= 0.7 ? "success" : v >= UI_CONFIG.lowConfidence ? "warning" : "danger");

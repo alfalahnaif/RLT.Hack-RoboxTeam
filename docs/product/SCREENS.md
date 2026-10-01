@@ -130,6 +130,17 @@ Language of UI labels: **Russian (default) + English, LTR** — ED-25 (OQ-22 ans
 List of previous searches in this browser/session (request_id, query, time, result count); re-open results.
 Depends on ED-02 persistence. Not in MVP build plan unless time allows.
 
+## S-06 Procurement analysis (P4-002, live backend — main demo screen)
+
+Lot ID input + Analyze + demo shortcuts (primary 5956101, fallback 5718896; they only fill the ID — data always comes from the API).
+One request `GET /procurements/{lot_id}/analysis` renders: procurement summary · overview tiles (suppliers / concentrated
+categories / external candidates) · two separately labelled dates (historical procurement cutoff vs. external evidence checked) ·
+ranked suppliers (reasons built from structured fields; semantic provenance only in a collapsed "Additional semantic evidence") ·
+per-OKPD2 accordion: pool health (headline, top-1 share bar, lots/awards/suppliers/top-3/HHI), historical alternatives,
+external market expansion (Verified / Under review badges, evidence basis, review points, source links,
+`exact_okpd2_asserted_by_source` wording). States: initial, staged loading, not found, PARTIAL, semantic unavailable,
+section unavailable, items without OKPD2.
+
 ---
 
 ## S-00 Global shell
@@ -166,7 +177,7 @@ search run (`request_id` in the URL). No TanStack Query / Zustand (owner decisio
 | Mode | Switch | Behaviour |
 |---|---|---|
 | Mock (default) | `NEXT_PUBLIC_API_MODE` unset | In-browser stand-in for the backend (`src/mocks/server.ts`) over a synthetic corpus (`src/mocks/fixtures.ts`). Demo-data notice always visible (BR-20). "Demo scenario" panel on S-01 forces 503 / LLM fallback / semantic-down / slow. |
-| Live | `NEXT_PUBLIC_API_MODE=live`, `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000/api/v1`) | Same `api.*` functions call FastAPI; error envelope (ED-07) mapped to `ApiError`. Scenario panel hidden. |
+| Live | `NEXT_PUBLIC_API_MODE=live`, `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000/api/v1`); committed in `frontend/.env.development` / `.env.production` since P4-002 | Same `api.*` functions call FastAPI; error envelope (ED-07, or FastAPI `detail`) mapped to `ApiError`. Scenario panel hidden. Navigation shows only S-06 (the mock-only screens have no live endpoints); `/` opens S-06. |
 
 Demo queries that reach every state: panels (normal, region, attributes) · laptops (quantity, RAM) · "только от производителя" (mandatory constraint) · desks (low-confidence set + `STALE_EXTERNAL_DATA`) · "Ледокол…" (zero results).
 
@@ -179,7 +190,8 @@ Demo queries that reach every state: panels (normal, region, attributes) · lapt
 | S-03 | `/[locale]/suppliers/<supplier_id>?request_id=<id>` | `features/supplier/*` |
 | S-04 | `/[locale]/compare` | `features/compare/*` |
 | S-05 | `/[locale]/history` | `features/history/*` |
-Copy: `messages/{ru,en}/{shell,vocab,feedback,search,results,supplier,compare,history}.json` (Russian first, keys in sync).
+| S-06 | `/[locale]/analysis?lot=<lot_id>` | `features/analysis/*` |
+Copy: `messages/{ru,en}/{shell,vocab,feedback,search,results,supplier,compare,history,analysis}.json` (Russian first, keys in sync).
 
 ### S-00 Global shell
 | Region / state | DS pattern |

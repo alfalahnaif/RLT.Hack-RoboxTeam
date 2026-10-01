@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { HistoryIcon, InfoCircleSmIcon, ListTreeIcon, ScalesIcon, SearchIcon } from "@/components/icons";
+import { ClipboardListIcon, HistoryIcon, InfoCircleSmIcon, ListTreeIcon, ScalesIcon, SearchIcon } from "@/components/icons";
 import { LocaleSwitch } from "@/components/layout/locale-switch";
 import { TopBar } from "@/components/layout/top-bar";
 import type { NavItem } from "@/components/layout/types";
@@ -27,7 +27,9 @@ function Frame({ children }: { children: ReactNode }) {
   const t = useTranslations("shell");
   const { tray, lastRequestId } = useSession();
 
-  const nav: NavItem[] = [
+  const analysis: NavItem = { key: "analysis", label: t("nav.analysis"), icon: ClipboardListIcon, href: "/analysis" };
+  // Live mode: only screens backed by the real API (P4-001). The mock search/compare/history screens stay available in mock mode.
+  const mockNav: NavItem[] = [
     { key: "search", label: t("nav.search"), icon: SearchIcon, href: "/search" },
     { key: "results", label: t("nav.results"), icon: ListTreeIcon, href: lastRequestId ? `/results/${lastRequestId}` : "/results" },
     {
@@ -39,6 +41,7 @@ function Frame({ children }: { children: ReactNode }) {
     },
     { key: "history", label: t("nav.history"), icon: HistoryIcon, href: "/history" },
   ];
+  const nav = API_MODE === "live" ? [analysis] : [analysis, ...mockNav];
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -47,7 +50,7 @@ function Frame({ children }: { children: ReactNode }) {
       </a>
       <TopBar
         items={nav}
-        homeHref="/search"
+        homeHref={API_MODE === "live" ? "/analysis" : "/search"}
         menuLabel={t("menu")}
         actions={
           <>
