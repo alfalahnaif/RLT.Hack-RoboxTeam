@@ -1,0 +1,322 @@
+{
+  "task": "P3-002B evidence seed",
+  "target_okpd2": "10.51.11.141",
+  "target_label": "Молоко питьевое коровье стерилизованное",
+  "checked_at": "2026-10-01T20:45:00+03:00",
+  "policy_notes": [
+    "All six candidates were reconciled by P3-002A as EXTERNAL_NEW relative to observed canonical procurement history before 2026-01-01.",
+    "EXTERNAL_NEW is a reconciliation status, not a verification status.",
+    "Do not claim an exact OKPD2 10.51.11.141 match from external sources unless the source explicitly provides that exact code.",
+    "Product wording such as 'молоко питьевое стерилизованное' is stored as direct product-scope evidence, not as proof of the exact OKPD2 leaf code.",
+    "Verification status below is a curated seed decision for hackathon use and should remain independently reviewable from reconciliation status."
+  ],
+  "candidates": [
+    {
+      "supplier_inn": "7622012124",
+      "canonical_name": "ООО «Переславский молочный комбинат»",
+      "aliases": [
+        "ООО «Эдельвейс»"
+      ],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "overall_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED",
+        "IDENTITY_MATCH_INN"
+      ],
+      "review_reasons": [
+        "LEGAL_NAME_CHANGED_RECENTLY_ALIAS_PRESERVED"
+      ],
+      "notes": "Current FNS-derived records show the legal name as Переславский молочный комбинат; older sources show Эдельвейс. Active conformity declaration explicitly covers sterilized whole/normalized drinking milk and names this entity as manufacturer/applicant.",
+      "evidence_records": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura05v5253926/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА05.В.52539/26",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное цельное 3.5–4.5%",
+            "Молоко питьевое стерилизованное нормализованное 2.5%",
+            "Стерилизованное топленое молоко"
+          ],
+          "evidence_date": "2026-06-30",
+          "valid_until": "2029-06-01",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+        },
+        {
+          "evidence_type": "LEGAL_IDENTITY",
+          "source_name": "Firmoteka (FNS/EGRUL-derived)",
+          "source_url": "https://firmoteka.ru/7622012124",
+          "source_authority": "FNS_EGRUL_DERIVED",
+          "evidence_date": "2026-08-28",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "ACTIVE_LEGAL_ENTITY",
+          "notes": "Current legal name differs from older Эдельвейс records; identity continuity is by INN/OGRN."
+        }
+      ]
+    },
+    {
+      "supplier_inn": "0257011170",
+      "canonical_name": "ООО «Бирский комбинат молочных продуктов»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "overall_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED",
+        "FIRST_PARTY_DAIRY_SITE"
+      ],
+      "review_reasons": [],
+      "notes": "Active conformity declaration explicitly covers sterilized drinking milk and names the company as manufacturer/applicant. The company's own site confirms active dairy production.",
+      "evidence_records": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://www.xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura03v6018325/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА03.В.60183/25",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное 1.5%, 2.5%, 3.2%, 3.5%, 4.0%"
+          ],
+          "evidence_date": "2025-04-21",
+          "valid_until": "2028-04-20",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+        },
+        {
+          "evidence_type": "FIRST_PARTY_WEBSITE",
+          "source_name": "Бирский комбинат молочных продуктов",
+          "source_url": "https://molloko.ru/",
+          "source_authority": "FIRST_PARTY",
+          "product_scope": [
+            "Питьевое молоко",
+            "Ультрапастеризованное молоко"
+          ],
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "DAIRY_PRODUCER"
+        }
+      ]
+    },
+    {
+      "supplier_inn": "5320000979",
+      "canonical_name": "АО «Боровичский молочный завод»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "overall_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED"
+      ],
+      "review_reasons": [],
+      "notes": "Active conformity declaration explicitly includes sterilized drinking milk and names the plant as manufacturer/applicant.",
+      "evidence_records": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://www.xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura10v5076124/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА10.В.50761/24",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное",
+            "Пастеризованное, топленое и ультрапастеризованное питьевое молоко"
+          ],
+          "evidence_date": "2024-11-14",
+          "valid_until": "2027-11-13",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+        }
+      ]
+    },
+    {
+      "supplier_inn": "5028002303",
+      "canonical_name": "ЗАО ЗСМ «Можайский»",
+      "aliases": [
+        "ЗАО «Завод стерилизованного молока «Можайский»"
+      ],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "overall_strength": "MODERATE",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_LEGAL_ENTITY",
+        "DAIRY_MANUFACTURER_ROLE",
+        "CURRENT_PRODUCT_LISTING"
+      ],
+      "review_reasons": [
+        "NO_CURRENT_REGISTRY_DECLARATION_LOCATED_IN_THIS_RESEARCH_PASS"
+      ],
+      "notes": "Current legal/company sources identify an active factory of sterilized milk. Current retail product pages identify the company as manufacturer of sterilized drinking milk. A current exact registry declaration was not independently located in this pass.",
+      "evidence_records": [
+        {
+          "evidence_type": "LEGAL_IDENTITY",
+          "source_name": "FNS/EGRUL-derived company record",
+          "source_url": "https://check.tochka.com/company/1025003475793/",
+          "source_authority": "FNS_EGRUL_DERIVED",
+          "product_scope": [
+            "Молочная продукция"
+          ],
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "ACTIVE_DAIRY_MANUFACTURER",
+          "notes": "Legal name is 'Завод стерилизованного молока Можайский'; OKVED includes drinking milk production."
+        },
+        {
+          "evidence_type": "CURRENT_PRODUCT_LISTING",
+          "source_name": "Азбука вкуса",
+          "source_url": "https://av.ru/i/030612",
+          "source_authority": "RETAIL_SECONDARY",
+          "product_scope": [
+            "Молоко питьевое стерилизованное «Можайское» 3.2%"
+          ],
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "MANUFACTURER_NAMED_ON_PRODUCT_LISTING"
+        }
+      ]
+    },
+    {
+      "supplier_inn": "5007126820",
+      "canonical_name": "ООО «ААП»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER_ASSERTED_BY_DECLARATION",
+      "verification_status": "UNDER_REVIEW",
+      "overall_strength": "MODERATE",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED"
+      ],
+      "review_reasons": [
+        "MAIN_OKVED_IS_RESTAURANT_OR_FOOD_DELIVERY",
+        "RECENT_COMPANY",
+        "MANY_UNRELATED_DECLARATIONS_REQUIRE_OPERATIONAL_CORROBORATION"
+      ],
+      "notes": "The active declaration explicitly covers sterilized drinking milk and names ООО ААП as manufacturer/applicant. However the company is recent and public business records show main OKVED 56.1, so corroboration is required.",
+      "evidence_records": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura08v5431726/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА08.В.54317/26",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное"
+          ],
+          "evidence_date": "2026-09-25",
+          "valid_until": "2029-09-24",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+        },
+        {
+          "evidence_type": "BUSINESS_PROFILE",
+          "source_name": "RBC Companies",
+          "source_url": "https://companies.rbc.ru/alphabetical-catalog/companies/a-a-p/",
+          "source_authority": "SECONDARY_BUSINESS_PROFILE",
+          "evidence_date": "2026-09-01",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "MAIN_OKVED_56_10",
+          "notes": "Creates an inconsistency that warrants manual review; not proof that declaration is invalid."
+        }
+      ]
+    },
+    {
+      "supplier_inn": "3128004452",
+      "canonical_name": "ЗАО МК «Авида»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "UNDER_REVIEW",
+      "overall_strength": "MODERATE",
+      "target_product_match": "HISTORICAL_DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "FIRST_PARTY_DAIRY_MANUFACTURER",
+        "HISTORICAL_DIRECT_PRODUCT_DECLARATION"
+      ],
+      "review_reasons": [
+        "DIRECT_STERILIZED_MILK_DECLARATION_FOUND_IS_TERMINATED"
+      ],
+      "notes": "The company's own site confirms a real dairy-processing operation. A 2025 conformity declaration explicitly covered sterilized drinking milk but is now terminated.",
+      "evidence_records": [
+        {
+          "evidence_type": "FIRST_PARTY_WEBSITE",
+          "source_name": "Авида",
+          "source_url": "https://xn----8sbahkxkp.xn--p1ai/",
+          "source_authority": "FIRST_PARTY",
+          "product_scope": [
+            "Производство и переработка молочной продукции"
+          ],
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "DAIRY_MANUFACTURER",
+          "notes": "Site states processing capacity of 300 tons of milk/day and more than 60 products."
+        },
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura03v6020925/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА03.В.60209/25",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное"
+          ],
+          "evidence_date": "2025-04-15",
+          "valid_until": "2030-04-14",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "TERMINATED",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT"
+        }
+      ]
+    }
+  ],
+  "recommended_demo_subset": [
+    "7622012124",
+    "0257011170",
+    "5320000979",
+    "5028002303"
+  ],
+  "recommended_review_queue": [
+    "5007126820",
+    "3128004452"
+  ]
+}
