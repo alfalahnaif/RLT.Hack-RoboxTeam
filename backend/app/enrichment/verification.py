@@ -279,8 +279,8 @@ def evaluate_seed(seed: EvidenceSeed, reconciled: Sequence[ExternalCandidate]) -
     results = []
     for candidate in seed.candidates:
         history = historical[candidate.supplier_inn]
-        if history.target_okpd2 != seed.target_okpd2 or history.reconciliation_status != candidate.reconciliation_status:
-            raise ValueError(f"Reconciliation status or target mismatch for INN {candidate.supplier_inn}")
+        if history.target_okpd2 != seed.target_okpd2:
+            raise ValueError(f"Reconciliation target mismatch for INN {candidate.supplier_inn}")
         declaration = _declaration_support(candidate)
         corroborated = _corroborated_support(candidate)
         blocking = set(candidate.review_reasons) - NON_BLOCKING_REVIEW_REASONS

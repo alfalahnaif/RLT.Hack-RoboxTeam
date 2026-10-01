@@ -1,0 +1,139 @@
+{
+  "task": "P3-002C",
+  "api_route": "GET /api/v1/market-intelligence/{okpd2}",
+  "query_parameters": {
+    "as_of_default": "2026-01-01",
+    "recent_days_default": 365
+  },
+  "response_sections": [
+    "category",
+    "pool_health",
+    "concentration",
+    "historical_alternatives",
+    "external_expansion",
+    "provenance"
+  ],
+  "primary": {
+    "okpd2": "10.51.11.141",
+    "as_of": "2026-01-01",
+    "pool_health": {
+      "status": "VERY_HIGH",
+      "lot_count": 182,
+      "procurement_count": 182,
+      "known_customer_count": 39,
+      "observed_supplier_count": 6,
+      "winning_supplier_count": 5,
+      "recent_winning_supplier_count": 3,
+      "award_count": 173,
+      "top1_share": 0.9421965317919075,
+      "top3_share": 0.9884393063583815,
+      "hhi": 0.8894717498078787,
+      "alternative_supplier_count": 5
+    },
+    "concentration": {
+      "signal": "EXPANSION_RECOMMENDED",
+      "reason_codes": [
+        "VERY_HIGH_CONCENTRATION",
+        "DOMINANT_TOP_SUPPLIER"
+      ]
+    },
+    "historical_alternative_count": 5,
+    "external_expansion_available": true,
+    "verified_count": 4,
+    "under_review_count": 2,
+    "candidate_statuses": [
+      {
+        "supplier_inn": "5320000979",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "VERIFIED",
+        "exact_okpd2_asserted_by_source": false
+      },
+      {
+        "supplier_inn": "0257011170",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "VERIFIED",
+        "exact_okpd2_asserted_by_source": false
+      },
+      {
+        "supplier_inn": "7622012124",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "VERIFIED",
+        "exact_okpd2_asserted_by_source": false
+      },
+      {
+        "supplier_inn": "5028002303",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "VERIFIED",
+        "exact_okpd2_asserted_by_source": false
+      },
+      {
+        "supplier_inn": "3128004452",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "UNDER_REVIEW",
+        "exact_okpd2_asserted_by_source": false
+      },
+      {
+        "supplier_inn": "5007126820",
+        "reconciliation_status": "EXTERNAL_NEW",
+        "verification_status": "UNDER_REVIEW",
+        "exact_okpd2_asserted_by_source": false
+      }
+    ]
+  },
+  "contrast": {
+    "okpd2": "10.20.25.111",
+    "as_of": "2026-01-01",
+    "pool_health": {
+      "status": "LOW",
+      "lot_count": 179,
+      "procurement_count": 179,
+      "known_customer_count": 74,
+      "observed_supplier_count": 45,
+      "winning_supplier_count": 42,
+      "recent_winning_supplier_count": 30,
+      "award_count": 169,
+      "top1_share": 0.1301775147928994,
+      "top3_share": 0.28994082840236685,
+      "hhi": 0.04933300654738978,
+      "alternative_supplier_count": 44
+    },
+    "concentration": {
+      "signal": "NO_EXPANSION_SIGNAL",
+      "reason_codes": [
+        "LOW_HISTORICAL_CONCENTRATION"
+      ]
+    },
+    "historical_alternative_count": 10,
+    "external_expansion_available": false,
+    "verified_count": 0,
+    "under_review_count": 0,
+    "candidate_statuses": []
+  },
+  "performance": {
+    "category": "10.51.11.141",
+    "repeated_calls": 5,
+    "samples_ms": [
+      117.521,
+      111.886,
+      115.771,
+      108.177,
+      102.282
+    ],
+    "median_ms": 111.886,
+    "p95_ms": 117.171,
+    "max_ms": 117.521,
+    "response_payload_bytes": 13308,
+    "method": "Local FastAPI TestClient against canonical PostgreSQL; includes HTTP adapter and database work."
+  },
+  "tests": "286 safe unit/API tests passed; integration tests that use shared test state were not run.",
+  "central_app_change": "No existing FastAPI app/router existed; created backend/app/api/main.py and registered one router there.",
+  "forbidden_files": "Search, semantic, ranking, benchmark, Docker, requirements, migrations, CLI and frontend files untouched.",
+  "limitations": [
+    "Historical concentration describes observed procurement awards, not the entire current supplier market.",
+    "No curated external evidence in the catalog does not mean no external suppliers exist.",
+    "Source URLs are validated syntactically and are not fetched during API requests.",
+    "FastAPI, Pydantic, HTTPX and Uvicorn were installed in the local worktree virtual environment only; deployment dependency files remain unchanged under this task's constraints.",
+    "Historical alternatives expose observed_relation_count because the accepted pool service does not expose a distinct per-supplier lot count."
+  ],
+  "recommended_next_step": "After semantic retrieval work is accepted, integrate this endpoint with the frontend and historical recommendation flow; add runtime dependencies when the requirements-file constraint is lifted."
+}
