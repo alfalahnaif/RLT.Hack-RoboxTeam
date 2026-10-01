@@ -1,0 +1,8 @@
+{
+  "label": "Rate",
+  "relevant": "Relevant",
+  "unsure": "Not sure",
+  "not_relevant": "Not relevant",
+  "saved": "Rating saved",
+  "failed": "The rating could not be saved"
+}

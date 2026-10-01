@@ -1,0 +1,10 @@
+{
+  "common": {
+    "switchLanguage": "Сменить язык",
+    "errorTitle": "Не удалось выполнить запрос",
+    "retry": "Повторить"
+  },
+  "brand": {
+    "name": "Supplier Radar"
+  }
+}

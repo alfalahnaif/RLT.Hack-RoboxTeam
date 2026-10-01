@@ -1,0 +1,106 @@
+{
+  "title": "Supplier profile",
+  "loading": "Loading profile…",
+  "backToResults": "Back to results",
+  "toSearch": "Go to search",
+  "inn": "INN",
+  "innUnknown": "INN unknown",
+  "unknown": "no data",
+  "match": "Match",
+  "confidenceLabel": "Confidence",
+  "addToCompare": "Add to comparison",
+  "inCompare": "In comparison",
+  "compareAdded": "Supplier added to comparison",
+  "compareLimit": "You can compare at most {max} suppliers",
+  "conflictTitle": "Start a new comparison?",
+  "conflictText": "The comparison already contains suppliers from another search. Only results of one search can be compared.",
+  "keep": "Cancel",
+  "startNew": "Start new",
+  "redirected": "Record {id} was merged into this supplier. The current profile is shown.",
+  "notFound": {
+    "title": "Supplier not found",
+    "text": "The record does not exist or was removed from the sources."
+  },
+  "contextExpired": {
+    "title": "Search context unavailable",
+    "text": "The original search results are no longer stored, so request-specific scores are not shown. Profile data is current."
+  },
+  "context": {
+    "title": "Match to the request",
+    "rank": "rank {rank} in the results",
+    "contributions": "What the match is made of"
+  },
+  "tabs": {
+    "offerings": "Products",
+    "history": "Procurement history",
+    "evidence": "Evidence"
+  },
+  "identity": {
+    "title": "Company details",
+    "legalName": "Legal name",
+    "inn": "INN",
+    "ogrn": "OGRN",
+    "kpp": "KPP",
+    "region": "Region",
+    "city": "City",
+    "firstSeen": "First AIS supply",
+    "neverSupplied": "Never supplied",
+    "website": "Website",
+    "okved": "OKVED",
+    "unknownHint": "“--” means the information is missing from the sources."
+  },
+  "role": {
+    "title": "Supplier role",
+    "basis": "Determined by:",
+    "noBasis": "The role is not confirmed by any source."
+  },
+  "confidence": {
+    "title": "Confidence",
+    "subtitle": "How reliable the information about the supplier is.",
+    "total": "Overall confidence",
+    "noData": "no data",
+    "weight": "Weight in score: {value}%"
+  },
+  "risks": {
+    "title": "Risks and data quality",
+    "subtitle": "They do not affect the match and are shown separately.",
+    "none": "No risks detected"
+  },
+  "sources": {
+    "title": "Data sources",
+    "observed": "observed {date}",
+    "synthetic": "Demo",
+    "quality": "Data remarks",
+    "flags": {
+      "MISSING_WEBSITE": "No website",
+      "MISSING_KPP": "No KPP",
+      "MISSING_INN": "No INN",
+      "POSSIBLE_MATCH_OPEN": "Possible duplicate not reviewed"
+    }
+  },
+  "offerings": {
+    "empty": "No products from this supplier were found in the sources.",
+    "matched": "Matches the request",
+    "source": "source: {source}",
+    "attr": {
+      "screen_size_inches": "Screen size, inches",
+      "ram_gb": "RAM, GB",
+      "adjustable": "Adjustable",
+      "touch_points": "Touch points"
+    }
+  },
+  "history": {
+    "empty": "No procurements involving this supplier were found.",
+    "emptyHint": "This does not mean the supplier has no experience — only that the available data has no records.",
+    "titleCol": "Procurement",
+    "date": "Date",
+    "role": "Role",
+    "amount": "Amount",
+    "customer": "Customer",
+    "relevant": "Similar to the request",
+    "winner": "Winner",
+    "participant": "Participant",
+    "amountUnknown": "not stated",
+    "pageOf": "Page {page} of {pages}"
+  }
+}

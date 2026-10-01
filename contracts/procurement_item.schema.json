@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "procurement_item.schema.json",
+  "title": "ProcurementItem",
+  "version": "0.2.0",
+  "description": "One ТРУ line (row of ТРУ_24-25.csv) — primary search unit for known suppliers (HD-03). The source has only product_name and okpd2_code; there is no description field. Identity: (lot_id, line_no) — DATA_MAPPING.md §3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "lot_id", "line_no", "content_hash", "product_name_raw", "product_name_normalized", "okpd2_code_raw",
+               "okpd2_code", "okpd2_depth", "okpd2_section", "okpd2_class", "okpd2_subclass", "okpd2_group",
+               "okpd2_subgroup", "okpd2_kind", "data_quality_flags", "source_ref"],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/uuid", "description": "UUIDv5('item:' + lot_id + ':' + line_no)" },
+    "lot_id": { "$ref": "common.schema.json#/$defs/source_key" },
+    "line_no": { "type": "integer", "minimum": 1, "description": "1-based ordinal of this row among the lot's rows in source-file order." },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "sha256 of lot_id + '\\u001f' + product_name_raw + '\\u001f' + okpd2_code_raw. Detects reordering on re-delivery; not unique (identical lines can repeat within a lot)."
+    },
+    "product_name_raw": { "type": "string", "description": "Exactly as delivered (may be empty: 114 rows)." },
+    "product_name_normalized": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "description": "Search text produced by the P1-001C normalization library; null until normalized or when the name is empty."
+    },
+    "is_generic_type_name": {
+      "type": ["boolean", "null"],
+      "description": "Optional (P1-001C): catalog-style generic name such as 'Пюре томатное тип 1' (low text information)."
+    },
+    "okpd2_code_raw": { "type": "string", "description": "Exactly as delivered (may be empty: 238 rows)." },
+    "okpd2_code": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/okpd2_code" }, { "type": "null" }],
+      "description": "Trimmed, format-validated code; null when missing/invalid (raw kept)."
+    },
+    "okpd2_depth": { "type": ["integer", "null"], "minimum": 1, "maximum": 4, "description": "Number of dot-separated segments of okpd2_code." },
+    "okpd2_section": { "type": ["string", "null"], "pattern": "^[A-U]$", "description": "ОКПД2 section letter derived from the class (A 01–03 … U 99)." },
+    "okpd2_class": { "type": ["string", "null"], "pattern": "^[0-9]{2}$", "description": "Класс XX" },
+    "okpd2_subclass": { "type": ["string", "null"], "pattern": "^[0-9]{2}\\.[0-9]$", "description": "Подкласс XX.X (null when the code is only XX)" },
+    "okpd2_group": { "type": ["string", "null"], "pattern": "^[0-9]{2}\\.[0-9]{2}$", "description": "Группа XX.XX" },
+    "okpd2_subgroup": { "type": ["string", "null"], "pattern": "^[0-9]{2}\\.[0-9]{2}\\.[0-9]$", "description": "Подгруппа XX.XX.X" },
+    "okpd2_kind": { "type": ["string", "null"], "pattern": "^[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}$", "description": "Вид XX.XX.XX. Deeper 4-segment detail is only in okpd2_code." },
+    "data_quality_flags": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/quality_flags" },
+        { "items": { "enum": ["MISSING_PRODUCT_NAME", "MISSING_OKPD2", "INVALID_OKPD2"] } }
+      ]
+    },
+    "source_ref": { "$ref": "common.schema.json#/$defs/source_ref" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "product_name_raw": { "pattern": "^\\s*$" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_PRODUCT_NAME" } }, "product_name_normalized": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "okpd2_code_raw": { "pattern": "^\\s*$" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_OKPD2" } } } }
+    },
+    {
+      "if": { "properties": { "okpd2_code_raw": { "pattern": "\\S" }, "okpd2_code": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "INVALID_OKPD2" } } } }
+    },
+    {
+      "if": { "properties": { "okpd2_code": { "type": "null" } } },
+      "then": { "properties": { "okpd2_depth": { "type": "null" }, "okpd2_class": { "type": "null" }, "okpd2_section": { "type": "null" },
+                                "okpd2_subclass": { "type": "null" }, "okpd2_group": { "type": "null" }, "okpd2_subgroup": { "type": "null" }, "okpd2_kind": { "type": "null" } } },
+      "else": { "properties": { "okpd2_depth": { "type": "integer" }, "okpd2_class": { "type": "string" }, "okpd2_section": { "type": "string" } } }
+    }
+  ]
+}

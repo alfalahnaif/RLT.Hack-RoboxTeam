@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "procurement_lot.schema.json",
+  "title": "ProcurementLot",
+  "version": "0.2.0",
+  "description": "Core procurement aggregate (HD-02), one per row of Извещения_24-25.csv. Owns ProcurementItem[] and SupplierHistory[] via lot_id. Source: docs/domain/DATA_MAPPING.md §2.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "lot_id", "procedure_id", "publish_date", "platform", "subject", "procedure_name_variant",
+               "start_price", "reqnum", "is_smp", "customer_inn", "customer_kpp", "data_quality_flags", "source_ref"],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/uuid", "description": "UUIDv5('lot:' + lot_id)" },
+    "lot_id": { "$ref": "common.schema.json#/$defs/source_key", "description": "Canonical procurement key; join key for items and supplier history." },
+    "procedure_id": { "$ref": "common.schema.json#/$defs/source_key", "description": "Attribute only (1:1 with lot_id in this extract); never a join key." },
+    "publish_date": { "$ref": "common.schema.json#/$defs/date", "description": "Valid-time anchor for as_of (ED-04, HD-06)." },
+    "platform": { "$ref": "common.schema.json#/$defs/platform" },
+    "subject": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "description": "Canonical lot title text (low-weight context signal). Null when empty -> MISSING_SUBJECT."
+    },
+    "procedure_name_variant": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "description": "procedure_name only when it differs from subject after comparison normalization (~0.9% of lots); otherwise null. Not indexed by default — avoids double-counting the duplicated text (BR-44)."
+    },
+    "start_price": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/decimal_string" }, { "type": "null" }],
+      "description": "Lot start price, RUB, Decimal string. Zero preserved and flagged; consumers treat zero/null as unknown."
+    },
+    "reqnum": { "type": ["string", "null"], "minLength": 1, "description": "Opaque organizer attribute; meaning unknown (OQ-36). Not used by search/ranking." },
+    "is_smp": { "type": "boolean", "description": "As delivered. Platform-dependent: only ever true on AIS_GZ; on EM 'false' must not be read as 'not SME-restricted' (OQ-35)." },
+    "customer_inn": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/inn" }, { "type": "null" }],
+      "description": "Customer (buyer) INN as string; null when empty -> MISSING_INN."
+    },
+    "customer_kpp": { "$ref": "common.schema.json#/$defs/kpp" },
+    "has_supplier_history": {
+      "type": "boolean",
+      "description": "Dataset-coverage attribute (optional): lot has >= 1 SupplierHistory row. False for 54,279 AIS_GZ lots — such lots are recommendation targets, never ground truth (BR-43). Not a ranking feature."
+    },
+    "data_quality_flags": { "$ref": "common.schema.json#/$defs/quality_flags" },
+    "source_ref": { "$ref": "common.schema.json#/$defs/source_ref" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "customer_inn": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_INN" } } } }
+    },
+    {
+      "if": { "properties": { "data_quality_flags": { "not": { "contains": { "const": "INVALID_INN_FORMAT" } } } } },
+      "then": { "properties": { "customer_inn": { "anyOf": [{ "type": "null" }, { "$ref": "common.schema.json#/$defs/inn_wellformed" }] } } }
+    },
+    {
+      "if": { "properties": { "customer_kpp": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_KPP" } } } }
+    },
+    {
+      "if": { "properties": { "data_quality_flags": { "not": { "contains": { "const": "INVALID_KPP_FORMAT" } } } } },
+      "then": { "properties": { "customer_kpp": { "anyOf": [{ "type": "null" }, { "$ref": "common.schema.json#/$defs/kpp_wellformed" }] } } }
+    },
+    {
+      "if": { "properties": { "start_price": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_START_PRICE" } } } }
+    },
+    {
+      "if": { "properties": { "start_price": { "type": "string", "pattern": "^0+(\\.0+)?$" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "ZERO_START_PRICE" } } } }
+    },
+    {
+      "if": { "properties": { "subject": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_SUBJECT" } } } }
+    },
+    {
+      "properties": {
+        "data_quality_flags": {
+          "items": {
+            "enum": ["MISSING_INN", "INVALID_INN_FORMAT", "INVALID_INN_CHECKSUM", "MISSING_KPP", "INVALID_KPP_FORMAT",
+                     "MISSING_START_PRICE", "ZERO_START_PRICE", "MISSING_SUBJECT"]
+          }
+        }
+      }
+    }
+  ]
+}

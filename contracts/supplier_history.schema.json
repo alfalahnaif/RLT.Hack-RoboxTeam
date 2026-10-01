@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "supplier_history.schema.json",
+  "title": "SupplierHistory",
+  "version": "0.2.0",
+  "description": "Canonical supplier <-> lot relation from Поставщики_24-25.csv, deduplicated on (lot_id, supplier_inn); every contributing raw row is kept in source_refs (raw rows preserved in the raw store, BR-31). No win rate is computed here (HD-05, BR-45).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "lot_id", "supplier_id", "supplier_inn", "supplier_kpp", "is_winner", "platform", "publish_date",
+               "coverage_semantics", "data_quality_flags", "source_refs"],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/uuid", "description": "UUIDv5('history:' + lot_id + ':' + supplier_inn)" },
+    "lot_id": { "$ref": "common.schema.json#/$defs/source_key" },
+    "supplier_id": { "$ref": "common.schema.json#/$defs/uuid", "description": "= Supplier.supplier_id = UUIDv5('supplier:inn:' + supplier_inn)" },
+    "supplier_inn": { "$ref": "common.schema.json#/$defs/inn" },
+    "supplier_kpp": { "$ref": "common.schema.json#/$defs/kpp", "description": "Branch/registration code as delivered; not identity. First non-empty value among duplicates." },
+    "is_winner": { "type": "boolean", "description": "As delivered; logical OR over duplicate rows." },
+    "platform": { "$ref": "common.schema.json#/$defs/platform", "description": "Denormalized from the lot." },
+    "publish_date": { "$ref": "common.schema.json#/$defs/date", "description": "Denormalized from the lot — valid time for as_of filtering (strictly earlier = visible)." },
+    "coverage_semantics": {
+      "type": "string",
+      "enum": ["WINNER_ROWS_ONLY_OBSERVED", "MIXED_WINNER_NONWINNER_ROWS_OBSERVED"],
+      "description": "Observed coverage of the relation list for the lot's platform — an observation, not an organizer-confirmed semantic. AIS_GZ -> WINNER_ROWS_ONLY_OBSERVED (all delivered rows have is_winner=true; 'award-only' is a working interpretation pending OQ-33). EM -> MIXED_WINNER_NONWINNER_ROWS_OBSERVED (both winner and non-winner rows delivered; completeness of the participant list is NOT claimed until officially confirmed). Replaces AWARD_ONLY_ASSUMED / PARTICIPANT_LIST (ADR-H1 A3, A4). Platform-level observation, not a per-lot property."
+    },
+    "data_quality_flags": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/quality_flags" },
+        { "items": { "enum": ["INVALID_INN_FORMAT", "INVALID_INN_CHECKSUM", "MISSING_KPP", "INVALID_KPP_FORMAT", "DUPLICATE_SUPPLIER_RELATION"] } }
+      ]
+    },
+    "source_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/source_ref" },
+      "description": "All raw rows (dataset suppliers_24_25) that produced this relation, in file order."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "platform": { "const": "AIS_GZ" } } },
+      "then": { "properties": { "coverage_semantics": { "const": "WINNER_ROWS_ONLY_OBSERVED" } } },
+      "else": { "properties": { "coverage_semantics": { "const": "MIXED_WINNER_NONWINNER_ROWS_OBSERVED" } } }
+    },
+    {
+      "if": { "properties": { "source_refs": { "minItems": 2 } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "DUPLICATE_SUPPLIER_RELATION" } } } },
+      "else": { "properties": { "data_quality_flags": { "not": { "contains": { "const": "DUPLICATE_SUPPLIER_RELATION" } } } } }
+    },
+    {
+      "if": { "properties": { "data_quality_flags": { "not": { "contains": { "const": "INVALID_INN_FORMAT" } } } } },
+      "then": { "properties": { "supplier_inn": { "$ref": "common.schema.json#/$defs/inn_wellformed" } } }
+    },
+    {
+      "if": { "properties": { "supplier_kpp": { "type": "null" } } },
+      "then": { "properties": { "data_quality_flags": { "contains": { "const": "MISSING_KPP" } } } }
+    },
+    {
+      "if": { "properties": { "data_quality_flags": { "not": { "contains": { "const": "INVALID_KPP_FORMAT" } } } } },
+      "then": { "properties": { "supplier_kpp": { "anyOf": [{ "type": "null" }, { "$ref": "common.schema.json#/$defs/kpp_wellformed" }] } } }
+    }
+  ]
+}

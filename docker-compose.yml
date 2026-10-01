@@ -1,0 +1,52 @@
+# Supplier Radar — development stack (P1-001D). Frontend is not containerized yet.
+#   docker compose up -d postgres                       # start DB (named volume postgres_data)
+#   docker compose run --rm backend alembic upgrade head
+#   docker compose run --rm backend python -m app.cli ingest organizer /data/raw
+# `docker compose down` keeps the data; only `docker compose down -v` deletes the volume.
+name: supplier-radar
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    shm_size: 1gb   # parallel maintenance (VACUUM / index builds) needs more than Docker's 64 MB default /dev/shm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-supplier_radar}
+      POSTGRES_USER: ${POSTGRES_USER:-supplier_radar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supplier_radar_dev}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+    command: ["postgres", "-c", "maintenance_work_mem=1GB", "-c", "max_wal_size=4GB", "-c", "shared_buffers=512MB"]
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-supplier_radar}:${POSTGRES_PASSWORD:-supplier_radar_dev}@postgres:5432/${POSTGRES_DB:-supplier_radar}
+      REPO_ROOT: /srv
+      PYTHONIOENCODING: utf-8
+    working_dir: /srv/backend
+    volumes:
+      - ./backend:/srv/backend
+      - ./contracts:/srv/contracts:ro
+      - ./scripts:/srv/scripts:ro
+      - ./reports:/srv/reports
+      - ./benchmark:/srv/benchmark
+      - ./data/raw:/data/raw:ro
+      - models:/models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["tools"]
+
+volumes:
+  postgres_data:
+  models:          # embedding model weights (P2-001), downloaded once; never inside the git tree or image

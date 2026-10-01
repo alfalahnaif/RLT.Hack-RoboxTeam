@@ -1,0 +1,10 @@
+{
+  "common": {
+    "switchLanguage": "Switch language",
+    "errorTitle": "The request could not be completed",
+    "retry": "Retry"
+  },
+  "brand": {
+    "name": "Supplier Radar"
+  }
+}

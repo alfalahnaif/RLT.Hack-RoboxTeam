@@ -1,0 +1,26 @@
+{
+  "title": "Search history",
+  "subtitle": "Searches in this browser session. Opening one does not run the search again.",
+  "newSearch": "New search",
+  "tableTitle": "Past searches",
+  "count": "{count, plural, one {# search} other {# searches}}",
+  "filter": "Filter by request text",
+  "cols": {
+    "query": "Request",
+    "date": "Date and time",
+    "results": "Suppliers",
+    "scope": "Supplier scope",
+    "actions": "Actions"
+  },
+  "noResults": "none found",
+  "open": "Open results",
+  "pageOf": "Page {page} of {pages}",
+  "empty": {
+    "title": "You have not searched yet",
+    "text": "Your searches will appear here so you can return to them."
+  },
+  "noMatch": {
+    "title": "No matches",
+    "text": "Change the text to filter the history."
+  }
+}

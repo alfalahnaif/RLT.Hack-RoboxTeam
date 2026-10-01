@@ -1,0 +1,269 @@
+{
+ "version": "1.0.0",
+ "purpose": "Golden cases are for qualitative demonstration and debugging only (live demo, screenshots, explanation examples, final presentation). The quantitative evaluation source is benchmark/replay.",
+ "primary": [
+  {
+   "lot_id": "5718896",
+   "publish_date": "2025-06-16",
+   "platform": "EM",
+   "subject": "Поставка компьютерного оборудования",
+   "start_price": "71985.00",
+   "customer_identifier_available": true,
+   "number_of_items": 1,
+   "number_of_distinct_okpd2": 1,
+   "okpd2_codes": [
+    "26.20.11.110"
+   ],
+   "representative_product_names": [
+    "Ноутбук Acer Aspire 5 A515-57-50R7 15.6\""
+   ],
+   "observed_supplier_relations": 13,
+   "winner_count": 1,
+   "temporal_history": {
+    "rule": "facts with publish_date < target publish_date only",
+    "winner_seen_before_anywhere": true,
+    "winner_seen_same_okpd2": true,
+    "winner_seen_same_okpd2_group": true,
+    "winner_seen_same_customer": true
+   },
+   "descriptive_difficulty": {
+    "note": "Historical award-count statistic (P1-001A §9 definition). NOT a Supplier Radar recommendation result.",
+    "prior_same_okpd2_winning_suppliers": 294,
+    "winner_prior_same_okpd2_awards": [
+     72
+    ],
+    "winner_award_count_rank": [
+     2
+    ],
+    "winner_award_count_rank_ties": [
+     0
+    ]
+   },
+   "role": "primary",
+   "capabilities": [
+    "generic title, specific item",
+    "technical model identifier",
+    "multiple observed suppliers"
+   ],
+   "why_selected": "Generic lot title hides a precise laptop model in the ТРУ line; 13 observed suppliers; very common category (large candidate pool).",
+   "demo_story": {
+    "input": "Lot 5718896 — «Поставка компьютерного оборудования» (generic title)",
+    "evidence": "ТРУ line «Ноутбук Acer Aspire 5 A515-57-50R7 15.6\"» (OKPD2 26.20.11.110) — model number + screen size",
+    "expected_capability": "Retrieval and explanation driven by item-level evidence (model tokens, OKPD2) rather than the generic subject."
+   }
+  },
+  {
+   "lot_id": "5545252",
+   "publish_date": "2025-02-04",
+   "platform": "EM",
+   "subject": "Поставка кресел в ГБОУ СОШ № 358 Московского района Санкт-Петербурга",
+   "start_price": "79840.00",
+   "customer_identifier_available": true,
+   "number_of_items": 1,
+   "number_of_distinct_okpd2": 1,
+   "okpd2_codes": [
+    "31.01.11.150"
+   ],
+   "representative_product_names": [
+    "Кресло офисное Бюрократ CH-695NLT, Материал обивки сетка , ткань, Цвет обивки черный, Минимальная высота сиденья 445 мм, Максимальная высота сиденья 540 мм , Внутренняя ширина сиденья 480 мм, Глубина "
+   ],
+   "observed_supplier_relations": 14,
+   "winner_count": 1,
+   "temporal_history": {
+    "rule": "facts with publish_date < target publish_date only",
+    "winner_seen_before_anywhere": true,
+    "winner_seen_same_okpd2": true,
+    "winner_seen_same_okpd2_group": true,
+    "winner_seen_same_customer": true
+   },
+   "descriptive_difficulty": {
+    "note": "Historical award-count statistic (P1-001A §9 definition). NOT a Supplier Radar recommendation result.",
+    "prior_same_okpd2_winning_suppliers": 463,
+    "winner_prior_same_okpd2_awards": [
+     6
+    ],
+    "winner_award_count_rank": [
+     70
+    ],
+    "winner_award_count_rank_ties": [
+     13
+    ]
+   },
+   "role": "primary",
+   "capabilities": [
+    "spec-rich product text",
+    "brand/model identifier",
+    "ranking difficulty among many suppliers"
+   ],
+   "why_selected": "Long, concrete specification (brand, model, dimensions, load, warranty) for an everyday object; 14 observed suppliers; the winner sits mid-pack by simple historical award counts — ranking is not trivial.",
+   "demo_story": {
+    "input": "Lot 5545252 — office chairs for a St Petersburg school",
+    "evidence": "ТРУ line «Кресло офисное Бюрократ CH-695NLT …» with seat height, width, load and warranty attributes (OKPD2 31.01.11.150)",
+    "expected_capability": "Explain why suppliers are relevant using item text + OKPD2 + history, and show that simple award counts alone are not enough."
+   }
+  },
+  {
+   "lot_id": "5542696",
+   "publish_date": "2025-02-03",
+   "platform": "EM",
+   "subject": "Поставка перчаток смотровых (процедурных) нитриловых",
+   "start_price": "420000.00",
+   "customer_identifier_available": true,
+   "number_of_items": 1,
+   "number_of_distinct_okpd2": 1,
+   "okpd2_codes": [
+    "22.19.60.119"
+   ],
+   "representative_product_names": [
+    "Перчатки смотровые/процедурные нитриловые, неопудренные, нестерильные"
+   ],
+   "observed_supplier_relations": 15,
+   "winner_count": 1,
+   "temporal_history": {
+    "rule": "facts with publish_date < target publish_date only",
+    "winner_seen_before_anywhere": true,
+    "winner_seen_same_okpd2": true,
+    "winner_seen_same_okpd2_group": true,
+    "winner_seen_same_customer": true
+   },
+   "descriptive_difficulty": {
+    "note": "Historical award-count statistic (P1-001A §9 definition). NOT a Supplier Radar recommendation result.",
+    "prior_same_okpd2_winning_suppliers": 290,
+    "winner_prior_same_okpd2_awards": [
+     1
+    ],
+    "winner_award_count_rank": [
+     155
+    ],
+    "winner_award_count_rank_ties": [
+     135
+    ]
+   },
+   "role": "primary",
+   "capabilities": [
+    "honest hard case",
+    "explainable OKPD2/text evidence",
+    "many observed suppliers"
+   ],
+   "why_selected": "Clear medical consumable; 15 observed suppliers; the eventual winner had only one prior same-code award — demonstrates the limits of history-only ranking and the need for transparent evidence.",
+   "demo_story": {
+    "input": "Lot 5542696 — «Поставка перчаток смотровых (процедурных) нитриловых»",
+    "evidence": "ТРУ line «Перчатки смотровые/процедурные нитриловые, неопудренные, нестерильные» (OKPD2 22.19.60.119)",
+    "expected_capability": "Show the evidence behind each candidate honestly, including when the eventual winner has thin history."
+   }
+  }
+ ],
+ "backup": [
+  {
+   "lot_id": "6022687",
+   "publish_date": "2025-12-17",
+   "platform": "EM",
+   "subject": "Поставка компьютерной техники в 2025 году",
+   "start_price": "124280.00",
+   "customer_identifier_available": true,
+   "number_of_items": 2,
+   "number_of_distinct_okpd2": 2,
+   "okpd2_codes": [
+    "26.20.11.110",
+    "26.20.18.120"
+   ],
+   "representative_product_names": [
+    "МФУ лазерное HP LaserJet Pro 4103dw черно-белая печать, A4, белый",
+    "Ноутбук ASUS VivoBook 17X 16ГБ/512ГБ SSD, AMD Ryzen 5 7430U (6 x 2.3 ГГц), 17,3\", 1920x1080"
+   ],
+   "observed_supplier_relations": 13,
+   "winner_count": 1,
+   "temporal_history": {
+    "rule": "facts with publish_date < target publish_date only",
+    "winner_seen_before_anywhere": true,
+    "winner_seen_same_okpd2": true,
+    "winner_seen_same_okpd2_group": true,
+    "winner_seen_same_customer": true
+   },
+   "descriptive_difficulty": {
+    "note": "Historical award-count statistic (P1-001A §9 definition). NOT a Supplier Radar recommendation result.",
+    "prior_same_okpd2_winning_suppliers": 519,
+    "winner_prior_same_okpd2_awards": [
+     20
+    ],
+    "winner_award_count_rank": [
+     27
+    ],
+    "winner_award_count_rank_ties": [
+     2
+    ]
+   },
+   "role": "backup",
+   "capabilities": [
+    "generic title, specific items",
+    "multi-item, multi-OKPD2",
+    "technical model identifiers"
+   ],
+   "why_selected": "Generic title with two concrete items (HP LaserJet Pro 4103dw MFP, ASUS VivoBook 17X laptop) in two OKPD2 codes; latest date in the data (maximum visible history)."
+  },
+  {
+   "lot_id": "5612123",
+   "publish_date": "2025-03-25",
+   "platform": "EM",
+   "subject": "Поставка интерактивной панели",
+   "start_price": "377430.00",
+   "customer_identifier_available": true,
+   "number_of_items": 1,
+   "number_of_distinct_okpd2": 1,
+   "okpd2_codes": [
+    "26.20.13.000"
+   ],
+   "representative_product_names": [
+    "Поставка интерактивной панели"
+   ],
+   "observed_supplier_relations": 10,
+   "winner_count": 1,
+   "temporal_history": {
+    "rule": "facts with publish_date < target publish_date only",
+    "winner_seen_before_anywhere": true,
+    "winner_seen_same_okpd2": true,
+    "winner_seen_same_okpd2_group": true,
+    "winner_seen_same_customer": false
+   },
+   "descriptive_difficulty": {
+    "note": "Historical award-count statistic (P1-001A §9 definition). NOT a Supplier Radar recommendation result.",
+    "prior_same_okpd2_winning_suppliers": 178,
+    "winner_prior_same_okpd2_awards": [
+     12
+    ],
+    "winner_award_count_rank": [
+     9
+    ],
+    "winner_award_count_rank_ties": [
+     1
+    ]
+   },
+   "role": "backup",
+   "capabilities": [
+    "category/OKPD2 evidence when item text adds nothing",
+    "multiple observed suppliers"
+   ],
+   "why_selected": "The project's original UC-01 example (interactive panel); the item text repeats the title, so the case shows OKPD2/category evidence rather than text detail."
+  }
+ ],
+ "selection_rules": [
+  "Selected only on data characteristics, procurement clarity, demo value and historical-difficulty metadata.",
+  "No Supplier Radar output was available or used (P1-002 not implemented); no ranking result is claimed.",
+  "Together the cases cover: generic title vs specific item, technical identifiers, many observed suppliers, non-trivial ranking difficulty, OKPD2/text evidence, 5-minute clarity.",
+  "History facts use only publish_date < target date.",
+  "No golden lot may appear in benchmark/replay/queries.csv."
+ ],
+ "considered_not_selected": {
+  "5659204": "laptop case duplicating the 5718896 story (title already detailed)",
+  "5875992": "multi-category mix (mouse + 75\" TV) — harder to narrate in 5 minutes",
+  "5548828": "low-value single mouse lot — weaker demo story",
+  "5510873": "already a replay-benchmark query (benchmark/replay/queries.csv) — must not be reused"
+ },
+ "prohibited_uses": [
+  "benchmark tuning",
+  "holdout replacement",
+  "reporting quantitative quality",
+  "claiming a #1 supplier before P1-002 evaluates it"
+ ],
+ "privacy": "No supplier INNs or names are stored; customer identity is reported only as availability."
+}

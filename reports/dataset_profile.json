@@ -1,0 +1,4309 @@
+{
+ "benchmark_pool": {
+  "АИС ГЗ|2024|winner_and_items": 146983,
+  "АИС ГЗ|2024|winner_items_2plus_participants": 267,
+  "АИС ГЗ|2025|winner_and_items": 131381,
+  "АИС ГЗ|2025|winner_items_2plus_participants": 12,
+  "ЭМ|2024|winner_and_items": 130739,
+  "ЭМ|2024|winner_items_2plus_participants": 74489,
+  "ЭМ|2025|winner_and_items": 134095,
+  "ЭМ|2025|winner_items_2plus_participants": 79047
+ },
+ "config": {
+  "example_lots": [
+   "4900162"
+  ],
+  "extra_golden_lots": [
+   "5875992",
+   "6022687",
+   "5510873",
+   "5548828"
+  ],
+  "fewest_winners_size": 25,
+  "generic_list_size": 40,
+  "generic_max_items": 3,
+  "generic_min_participants": 6,
+  "generic_subject_max_len": 70,
+  "generic_subject_regex": "^(поставка|закупка|приобретение)\\s+(товар|компьютерн|оргтехник|оборудован|мебел|расходн|хозяйств|канцеляр|медицинск)",
+  "golden_lots": [
+   "5612123",
+   "5545252",
+   "5542696",
+   "5659204",
+   "5718896"
+  ],
+  "pool_health_class_prefixes": [
+   "10.39.17"
+  ],
+  "pool_health_codes": [
+   "10.39.17.111",
+   "10.51.11.141",
+   "10.42.10.111",
+   "01.25.19.150",
+   "10.61.22.130",
+   "10.62.11.112",
+   "01.13.16.000",
+   "10.12.10.170",
+   "10.51.52.111"
+  ],
+  "pool_min_lots": 30,
+  "quantiles": [
+   0.01,
+   0.25,
+   0.5,
+   0.75,
+   0.95,
+   0.99
+  ],
+  "recent_from": "2025-07-01",
+  "replay_from": "2025-01-01",
+  "replay_platform": "ЭМ",
+  "shortlist_max_section": 32,
+  "shortlist_min_customers": 8,
+  "shortlist_min_lots": 40,
+  "shortlist_size": 40
+ },
+ "coverage": {
+  "by_platform": {
+   "АИС ГЗ|neither": 14,
+   "АИС ГЗ|no_items": 16,
+   "АИС ГЗ|no_supplier": 54279,
+   "АИС ГЗ|total": 332646,
+   "ЭМ|total": 271806
+  },
+  "lots_without_supplier_by_month": {
+   "2024-01": 533,
+   "2024-02": 1323,
+   "2024-03": 1702,
+   "2024-04": 1365,
+   "2024-05": 1415,
+   "2024-06": 1348,
+   "2024-07": 1426,
+   "2024-08": 1242,
+   "2024-09": 1840,
+   "2024-10": 2487,
+   "2024-11": 3373,
+   "2024-12": 4457,
+   "2025-01": 1261,
+   "2025-02": 2630,
+   "2025-03": 3292,
+   "2025-04": 3596,
+   "2025-05": 2688,
+   "2025-06": 2441,
+   "2025-07": 2278,
+   "2025-08": 1863,
+   "2025-09": 2048,
+   "2025-10": 2783,
+   "2025-11": 2794,
+   "2025-12": 4094
+  },
+  "lots_without_supplier_by_year": {
+   "2024": 22511,
+   "2025": 31768
+  }
+ },
+ "example_lots": {
+  "4900162": {
+   "items_sample": [
+    [
+     "Сверло по металлу Практика (033-543) 8х117 мм кобальтовое",
+     "32.99.59.000"
+    ],
+    [
+     "Точило электрическое Ресанта Т-150/250 (75/7/2) 250 Вт круг 150 мм",
+     "32.99.59.000"
+    ],
+    [
+     "Дрель ударная Bosch GSB 13 RE (601217102) 600 Вт ключевой патрон",
+     "32.99.59.000"
+    ],
+    [
+     "Бензопила Huter BS-52 (70/6/3) 3,4 л.с. 20\" шаг 0,325\" паз 1,5 мм 76 звеньев",
+     "32.99.59.000"
+    ],
+    [
+     "Тиски слесарные Sparta (186255) поворотные с наковальней 125 мм",
+     "32.99.59.000"
+    ],
+    [
+     "Пила дисковая электрическая ЗУБР ПД-65 1600 Вт 190 мм",
+     "32.99.59.000"
+    ],
+    [
+     "Зарядное устройство DeWalt DCB1104 12В Li-Ion 12/14,4/18В",
+     "32.99.59.000"
+    ],
+    [
+     "Шуруповерт аккумуляторный DeWalt DCF887N-XJ 18В Li-Ion без АКБ и ЗУ",
+     "32.99.59.000"
+    ],
+    [
+     "Шлифмашина угловая аккумуляторная КМ АТОМ (СAG-181/125BL) 18В Li-Ion d125 мм без АКБ и ЗУ",
+     "32.99.59.000"
+    ],
+    [
+     "Клеммник Proconnect КВ-4 12х4 кв. мм полиэтиленовый белый",
+     "32.99.59.000"
+    ]
+   ],
+   "n_items": 101,
+   "okpd2_codes": [
+    "32.99.59.000"
+   ],
+   "subject": "Поставка строительных товаров и материалов"
+  }
+ },
+ "files": {
+  "items": {
+   "columns": [
+    "lot_id",
+    "product_name",
+    "okpd2_code"
+   ],
+   "columns_match_expected": true,
+   "name": "ТРУ_24-25.csv",
+   "sha256": "faca00b80a48c9cb5f81dccb32016f8dc4c236567b36dcc29823d82bf53aafda",
+   "size_bytes": 379378064,
+   "utf8_bom": false
+  },
+  "notices": {
+   "columns": [
+    "publish_date",
+    "procedure_id",
+    "lot_id",
+    "start_price",
+    "reqnum",
+    "procedure_name",
+    "subject",
+    "is_smp",
+    "customer_inn",
+    "customer_kpp",
+    "is_eshop_or_aisgz"
+   ],
+   "columns_match_expected": true,
+   "name": "Извещения_24-25.csv",
+   "sha256": "093516677eb01120c1a034f37428589dbfd85a22cb91af6dd03866042128aba4",
+   "size_bytes": 293652379,
+   "utf8_bom": false
+  },
+  "suppliers": {
+   "columns": [
+    "lot_id",
+    "supplier_inn",
+    "supplier_kpp",
+    "is_winner"
+   ],
+   "columns_match_expected": true,
+   "name": "Поставщики_24-25.csv",
+   "sha256": "e24ff84e63444a83bb36506382773f11dac076e08c72e9163c0bfa9e687bd51b",
+   "size_bytes": 38364025,
+   "utf8_bom": false
+  }
+ },
+ "generic_title_candidates": {
+  "count": 366,
+  "top": [
+   [
+    "5510873",
+    "2025-01-14",
+    "Поставка хозяйственных товаров",
+    [
+     [
+      "Швабра флаундер с мопом 60x9 см хлопок",
+      "22.29.23.120"
+     ],
+     [
+      "Насадка МОП для швабры-флаундера (плоской)",
+      "13.92.29.110"
+     ]
+    ],
+    18
+   ],
+   [
+    "5875992",
+    "2025-10-08",
+    "Поставка оргтехники",
+    [
+     [
+      "Мышь компьютерная Acer OMW136 черный оптическая",
+      "26.20.16.170"
+     ],
+     [
+      "Телевизор Xiaomi TV Pro 75",
+      "26.40.20.122"
+     ]
+    ],
+    17
+   ],
+   [
+    "5525306",
+    "2025-01-22",
+    "Поставка товаров личной гигиены",
+    [
+     [
+      "Полотенца бумажные",
+      "17.22.11.130"
+     ],
+     [
+      "Полотенца бумажные листовые Z-сложения",
+      "17.22.11.130"
+     ]
+    ],
+    16
+   ],
+   [
+    "5594661",
+    "2025-03-10",
+    "Поставка хозяйственных перчаток",
+    [
+     [
+      "Перчатки латексные",
+      "22.19.60.119"
+     ]
+    ],
+    14
+   ],
+   [
+    "5765235",
+    "2025-07-07",
+    "Поставка оборудования для пищеблока",
+    [
+     [
+      "Картофелечистка МОК-300М (300 кч, 380В)",
+      "27.51.21.129"
+     ],
+     [
+      "Машина протирочно-резательная нов. МПР-350М (350 кг/ч, 380В)",
+      "27.51.21.129"
+     ]
+    ],
+    14
+   ],
+   [
+    "5949360",
+    "2025-11-19",
+    "Поставка товаров для творчества",
+    [
+     [
+      "Бумага художественная тип 2",
+      "17.12.14.123"
+     ]
+    ],
+    14
+   ],
+   [
+    "5535440",
+    "2025-01-29",
+    "Поставка оборудования для нужд театральной студии",
+    [
+     [
+      "Головная радиосистема",
+      "26.40.31.190"
+     ],
+     [
+      "Рэковый кейс",
+      "26.40.51.000"
+     ]
+    ],
+    13
+   ],
+   [
+    "5548539",
+    "2025-02-14",
+    "Поставка мебели",
+    [
+     [
+      "Стул на металлическом каркасе",
+      "31.01.11.150"
+     ],
+     [
+      "Шкаф для одежды металлический",
+      "31.01.11.121"
+     ]
+    ],
+    13
+   ],
+   [
+    "5548828",
+    "2025-02-06",
+    "Поставка компьютерной техники (мышь)",
+    [
+     [
+      "Мышь А4TECH OP-760, USB, черная",
+      "26.20.16.170"
+     ]
+    ],
+    13
+   ],
+   [
+    "5713162",
+    "2025-05-26",
+    "Поставка оборудования для государственных нужд Санкт-Петербурга",
+    [
+     [
+      "Принтер",
+      "26.20.16.120"
+     ]
+    ],
+    13
+   ],
+   [
+    "5718896",
+    "2025-06-16",
+    "Поставка компьютерного оборудования",
+    [
+     [
+      "Ноутбук Acer Aspire 5 A515-57-50R7 15.6\"",
+      "26.20.11.110"
+     ]
+    ],
+    13
+   ],
+   [
+    "5929835",
+    "2025-11-11",
+    "Поставка хозяйственных товаров из полимеров (мешки полимерные)",
+    [
+     [
+      "Мешок полимерный тип 1",
+      "22.22.1"
+     ],
+     [
+      "Мешок полимерный тип 3",
+      "22.22.1"
+     ]
+    ],
+    13
+   ],
+   [
+    "6022687",
+    "2025-12-17",
+    "Поставка компьютерной техники в 2025 году",
+    [
+     [
+      "МФУ лазерное HP LaserJet Pro 4103dw черно-белая печать, A4, белый",
+      "26.20.18.120"
+     ],
+     [
+      "Ноутбук ASUS VivoBook 17X 16ГБ/512ГБ SSD, AMD Ryzen 5 7430U (6 x 2.3 ГГц), 17,3\", 1920x108",
+      "26.20.11.110"
+     ]
+    ],
+    13
+   ],
+   [
+    "5548288",
+    "2025-02-06",
+    "Поставка оборудования для государственных нужд Санкт-Петербурга",
+    [
+     [
+      "Источник бесперебойного питания EXEGATE SpecialPro EP285495RUS (либо эквивалент)",
+      "26.20.40.110"
+     ]
+    ],
+    12
+   ],
+   [
+    "5639807",
+    "2025-04-04",
+    "Поставка оборудования (МФУ) для проведения ОГЭ",
+    [
+     [
+      "Многофункциональное устройство",
+      "26.20.18.120"
+     ]
+    ],
+    12
+   ],
+   [
+    "5696020",
+    "2025-05-20",
+    "Поставка оргтехники",
+    [
+     [
+      "МФУ (принтер, сканер, копир, факс) LJ PRO 4103DW 2Z627A HP",
+      "26.20.18.110"
+     ],
+     [
+      "HP LaserJet Pro 4003dn",
+      "26.20.16.120"
+     ]
+    ],
+    12
+   ],
+   [
+    "5713328",
+    "2025-05-26",
+    "Поставка оборудования для государственных нужд Санкт-Петербурга",
+    [
+     [
+      "Принтер",
+      "26.20.16.120"
+     ]
+    ],
+    12
+   ],
+   [
+    "5791405",
+    "2025-08-06",
+    "Поставка оргтехники",
+    [
+     [
+      "Ноутбук MSI Modern 15 F13MG-202XRU",
+      "26.20.11.110"
+     ],
+     [
+      "Ламинатор Office Kit L3225, A3",
+      "28.23.23.000"
+     ]
+    ],
+    12
+   ],
+   [
+    "5847799",
+    "2025-09-25",
+    "Поставка оборудования для пищеблока",
+    [
+     [
+      "Холодильник двухкамерный Атлант XM-4023-000",
+      "27.51.11.110"
+     ]
+    ],
+    12
+   ],
+   [
+    "5903085",
+    "2025-10-24",
+    "Поставка  хозяйственных шкафов",
+    [
+     [
+      "Шкаф хозяйственный",
+      "31.01.11.120"
+     ]
+    ],
+    12
+   ],
+   [
+    "5996621",
+    "2025-12-05",
+    "Поставка оборудования для государственных нужд Санкт-Петербурга",
+    [
+     [
+      "Сканер",
+      "26.20.16.154"
+     ]
+    ],
+    12
+   ],
+   [
+    "5532298",
+    "2025-01-27",
+    "Поставка товаров личной гигиены (часть 2)",
+    [
+     [
+      "Бумага туалетная",
+      "17.22.11.110"
+     ],
+     [
+      "Одноразовые покрытия для унитаза",
+      "17.22.12.130"
+     ]
+    ],
+    11
+   ],
+   [
+    "5545986",
+    "2025-02-10",
+    "Поставка компьютерной техники",
+    [
+     [
+      "Автоматизированное рабочее место",
+      "26.20.15.150"
+     ]
+    ],
+    11
+   ],
+   [
+    "5547300",
+    "2025-02-05",
+    "Поставка оборудования для пищеблока",
+    [
+     [
+      "Тележка для посуды",
+      "31.09.1"
+     ],
+     [
+      "Подставка под пароконвектомат",
+      "25.99.12.112"
+     ]
+    ],
+    11
+   ],
+   [
+    "5597448",
+    "2025-03-11",
+    "Поставка оборудования для пищеблока",
+    [
+     [
+      "Морозильный ларь Бирюса Б-285 КХ белый",
+      "28.25.13.119"
+     ]
+    ],
+    11
+   ],
+   [
+    "5613163",
+    "2025-03-21",
+    "Поставка товара (жесткий диск внутренний)",
+    [
+     [
+      "Поставка товара: жесткий диск внутренний WD Red Pro WD8005FFBX, 8ТБ, HDD, SATA III, 3.5\"",
+      "26.20.21.120"
+     ]
+    ],
+    11
+   ],
+   [
+    "5636281",
+    "2025-04-03",
+    "Поставка хозяйственных товаров",
+    [
+     [
+      "Мешок полимерный тип 3",
+      "22.22.1"
+     ],
+     [
+      "Мешок полимерный тип 1",
+      "22.22.1"
+     ],
+     [
+      "Мешок полимерный",
+      "22.22.1"
+     ]
+    ],
+    11
+   ],
+   [
+    "5681530",
+    "2025-04-29",
+    "Поставка оборудования для пищеблока (плита электрическая)",
+    [
+     [
+      "Плита электрическая Abat ЭП-4ЖШ, лицо нерж., стандарт духовка (или эквивалент)",
+      "28.93.15.122"
+     ]
+    ],
+    11
+   ],
+   [
+    "5716429",
+    "2025-06-05",
+    "Закупка компьютерной техники (моноблок)",
+    [
+     [
+      "Компьютер персональный настольный (моноблок)",
+      "26.20.15.140"
+     ]
+    ],
+    11
+   ],
+   [
+    "5756943",
+    "2025-07-02",
+    "Поставка канцелярских товаров.",
+    [
+     [
+      "Краска для рисования тип 3",
+      "20.30.23.110"
+     ],
+     [
+      "Краска для рисования тип 2",
+      "20.30.23.110"
+     ],
+     [
+      "Пластилин для детского творчества тип 1",
+      "20.59.52.110"
+     ]
+    ],
+    11
+   ],
+   [
+    "5767704",
+    "2025-07-10",
+    "Поставка товаров для пищеблоков",
+    [
+     [
+      "Мясорубка ТоргМаш МИМ-300",
+      "27.51.21"
+     ],
+     [
+      "Пароконвектомат ПищТех ПР-04М",
+      "28.93.15.126"
+     ]
+    ],
+    11
+   ],
+   [
+    "5774289",
+    "2025-07-18",
+    "Поставка оборудования для пищеблока",
+    [
+     [
+      "Стол производственный",
+      "31.02.10"
+     ]
+    ],
+    11
+   ],
+   [
+    "5776103",
+    "2025-07-16",
+    "Закупка компьютерной техники (моноблок)",
+    [
+     [
+      "Компьютер персональный настольный (моноблок) тип 13",
+      "26.20.15.140"
+     ]
+    ],
+    11
+   ],
+   [
+    "5840857",
+    "2025-09-15",
+    "Поставка компьютерных мышей",
+    [
+     [
+      "Мышь компьютерная",
+      "26.20.16.170"
+     ]
+    ],
+    11
+   ],
+   [
+    "5855508",
+    "2025-09-25",
+    "Поставка хозяйственных товаров: освежитель воздуха.",
+    [
+     [
+      "Средства для дезодорирования и ароматизации воздуха в помещениях тип 1",
+      "20.41.41.000"
+     ]
+    ],
+    11
+   ],
+   [
+    "5935375",
+    "2025-11-13",
+    "Поставка компьютерной техники для ГБОУ СОШ №422 Санкт-Петербурга",
+    [
+     [
+      "Компьютер персональный настольный (моноблок) тип 13",
+      "26.20.15.140"
+     ]
+    ],
+    11
+   ],
+   [
+    "5939530",
+    "2025-11-14",
+    "поставка канцелярских товаров",
+    [
+     [
+      "Папка-регистратор",
+      "17.23.13.130"
+     ],
+     [
+      "Лоток для бумаги пластиковый",
+      "22.29.25.000"
+     ]
+    ],
+    11
+   ],
+   [
+    "6026255",
+    "2025-12-18",
+    "Поставка товара (МФУ)",
+    [
+     [
+      "Многофункциональное устройство (МФУ)",
+      "26.20.18.000"
+     ]
+    ],
+    11
+   ],
+   [
+    "6049065",
+    "2025-12-30",
+    "Поставка хозяйственных товаров",
+    [
+     [
+      "Бумага туалетная тип 7",
+      "17.22.11.110"
+     ],
+     [
+      "Бумага туалетная тип 11",
+      "17.22.11.110"
+     ],
+     [
+      "Полотенце бумажное тип 1",
+      "17.22.11.130"
+     ]
+    ],
+    11
+   ],
+   [
+    "5553977",
+    "2025-02-11",
+    "поставка хозяйственных товаров",
+    [
+     [
+      "Мыло туалетное жидкое",
+      "20.41.31.130"
+     ],
+     [
+      "Тряпка для мытья пола",
+      "13.92.29.110"
+     ]
+    ],
+    10
+   ]
+  ]
+ },
+ "golden_lots": {
+  "5510873": {
+   "exists": true,
+   "items": [
+    [
+     "Швабра флаундер с мопом 60x9 см хлопок",
+     "22.29.23.120"
+    ],
+    [
+     "Насадка МОП для швабры-флаундера (плоской)",
+     "13.92.29.110"
+    ]
+   ],
+   "n_items": 2,
+   "okpd2_codes": [
+    "13.92.29.110",
+    "22.29.23.120"
+   ],
+   "participants": 18,
+   "participants_in_naive_top20": 3,
+   "platform": "ЭМ",
+   "publish_date": "2025-01-14",
+   "same_code_candidates_before": 309,
+   "start_price": 42075.0,
+   "subject": "Поставка хозяйственных товаров",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    6
+   ],
+   "winner_naive_rank_ties": [
+    0
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5542696",
+    "5545252"
+   ],
+   "winner_prior_same_class_awards": [
+    406
+   ],
+   "winner_prior_same_code_awards": [
+    140
+   ],
+   "winners": 1
+  },
+  "5542696": {
+   "exists": true,
+   "items": [
+    [
+     "Перчатки смотровые/процедурные нитриловые, неопудренные, нестерильные",
+     "22.19.60.119"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "22.19.60.119"
+   ],
+   "participants": 15,
+   "participants_in_naive_top20": 1,
+   "platform": "ЭМ",
+   "publish_date": "2025-02-03",
+   "same_code_candidates_before": 290,
+   "start_price": 420000.0,
+   "subject": "Поставка перчаток смотровых (процедурных) нитриловых",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    155
+   ],
+   "winner_naive_rank_ties": [
+    135
+   ],
+   "winner_participates_in_other_golden_lots": [],
+   "winner_prior_same_class_awards": [
+    1
+   ],
+   "winner_prior_same_code_awards": [
+    1
+   ],
+   "winners": 1
+  },
+  "5545252": {
+   "exists": true,
+   "items": [
+    [
+     "Кресло офисное Бюрократ CH-695NLT, Материал обивки сетка , ткань, Цвет обивки черный, Минимальная высота сиденья 445 мм, Максимальная высота сиденья 540 мм , Внутренняя ширина сиденья 480 мм, Глубина ",
+     "31.01.11.150"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "31.01.11.150"
+   ],
+   "participants": 14,
+   "participants_in_naive_top20": 3,
+   "platform": "ЭМ",
+   "publish_date": "2025-02-04",
+   "same_code_candidates_before": 463,
+   "start_price": 79840.0,
+   "subject": "Поставка кресел в ГБОУ СОШ № 358 Московского района Санкт-Петербурга",
+   "winner_entity_types": [
+    "individual_entrepreneur"
+   ],
+   "winner_naive_rank": [
+    70
+   ],
+   "winner_naive_rank_ties": [
+    13
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5548828"
+   ],
+   "winner_prior_same_class_awards": [
+    7
+   ],
+   "winner_prior_same_code_awards": [
+    6
+   ],
+   "winners": 1
+  },
+  "5548828": {
+   "exists": true,
+   "items": [
+    [
+     "Мышь А4TECH OP-760, USB, черная",
+     "26.20.16.170"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "26.20.16.170"
+   ],
+   "participants": 13,
+   "participants_in_naive_top20": 4,
+   "platform": "ЭМ",
+   "publish_date": "2025-02-06",
+   "same_code_candidates_before": 175,
+   "start_price": 12846.6,
+   "subject": "Поставка компьютерной техники (мышь)",
+   "winner_entity_types": [
+    "individual_entrepreneur"
+   ],
+   "winner_naive_rank": [
+    63
+   ],
+   "winner_naive_rank_ties": [
+    112
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5510873",
+    "5875992"
+   ],
+   "winner_prior_same_class_awards": [
+    10
+   ],
+   "winner_prior_same_code_awards": [
+    1
+   ],
+   "winners": 1
+  },
+  "5612123": {
+   "exists": true,
+   "items": [
+    [
+     "Поставка интерактивной панели",
+     "26.20.13.000"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "26.20.13.000"
+   ],
+   "participants": 10,
+   "participants_in_naive_top20": 4,
+   "platform": "ЭМ",
+   "publish_date": "2025-03-25",
+   "same_code_candidates_before": 178,
+   "start_price": 377430.0,
+   "subject": "Поставка интерактивной панели",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    9
+   ],
+   "winner_naive_rank_ties": [
+    1
+   ],
+   "winner_participates_in_other_golden_lots": [],
+   "winner_prior_same_class_awards": [
+    47
+   ],
+   "winner_prior_same_code_awards": [
+    12
+   ],
+   "winners": 1
+  },
+  "5659204": {
+   "exists": true,
+   "items": [
+    [
+     "Поставка Ноутбуков ASUS Vivobook 15 X1504ZA-BQ1144 15.6\"\", IPS, Intel Core i3 1215U 1.2ГГц, 6-ядерный, 16ГБ DDR4, 512ГБ SSD, Intel UHD Graphics для ГБДОУ детский сад № 34 Приморского района Санкт-Пете",
+     "26.20.11.110"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "26.20.11.110"
+   ],
+   "participants": 17,
+   "participants_in_naive_top20": 4,
+   "platform": "ЭМ",
+   "publish_date": "2025-04-24",
+   "same_code_candidates_before": 262,
+   "start_price": 129312.0,
+   "subject": "Поставка Ноутбуков ASUS Vivobook 15 X1504ZA-BQ1144 15.6\"\", IPS, Intel Core i3 1215U 1.2ГГц, 6-ядерный, 16ГБ DDR4, 512ГБ SSD, Intel UHD Graphics для ГБДОУ детский сад № 34 Приморского района Санкт-Петербурга в 2025 году",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    12
+   ],
+   "winner_naive_rank_ties": [
+    1
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5718896"
+   ],
+   "winner_prior_same_class_awards": [
+    56
+   ],
+   "winner_prior_same_code_awards": [
+    15
+   ],
+   "winners": 1
+  },
+  "5718896": {
+   "exists": true,
+   "items": [
+    [
+     "Ноутбук Acer Aspire 5 A515-57-50R7 15.6\"",
+     "26.20.11.110"
+    ]
+   ],
+   "n_items": 1,
+   "okpd2_codes": [
+    "26.20.11.110"
+   ],
+   "participants": 13,
+   "participants_in_naive_top20": 2,
+   "platform": "ЭМ",
+   "publish_date": "2025-06-16",
+   "same_code_candidates_before": 294,
+   "start_price": 71985.0,
+   "subject": "Поставка компьютерного оборудования",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    2
+   ],
+   "winner_naive_rank_ties": [
+    0
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5612123",
+    "5659204",
+    "5875992",
+    "6022687"
+   ],
+   "winner_prior_same_class_awards": [
+    514
+   ],
+   "winner_prior_same_code_awards": [
+    72
+   ],
+   "winners": 1
+  },
+  "5875992": {
+   "exists": true,
+   "items": [
+    [
+     "Мышь компьютерная Acer OMW136 черный оптическая",
+     "26.20.16.170"
+    ],
+    [
+     "Телевизор Xiaomi TV Pro 75",
+     "26.40.20.122"
+    ]
+   ],
+   "n_items": 2,
+   "okpd2_codes": [
+    "26.20.16.170",
+    "26.40.20.122"
+   ],
+   "participants": 17,
+   "participants_in_naive_top20": 7,
+   "platform": "ЭМ",
+   "publish_date": "2025-10-08",
+   "same_code_candidates_before": 415,
+   "start_price": 337000.0,
+   "subject": "Поставка оргтехники",
+   "winner_entity_types": [
+    "legal_entity"
+   ],
+   "winner_naive_rank": [
+    9
+   ],
+   "winner_naive_rank_ties": [
+    1
+   ],
+   "winner_participates_in_other_golden_lots": [],
+   "winner_prior_same_class_awards": [
+    381
+   ],
+   "winner_prior_same_code_awards": [
+    21
+   ],
+   "winners": 1
+  },
+  "6022687": {
+   "exists": true,
+   "items": [
+    [
+     "МФУ лазерное HP LaserJet Pro 4103dw черно-белая печать, A4, белый",
+     "26.20.18.120"
+    ],
+    [
+     "Ноутбук ASUS VivoBook 17X 16ГБ/512ГБ SSD, AMD Ryzen 5 7430U (6 x 2.3 ГГц), 17,3\", 1920x1080",
+     "26.20.11.110"
+    ]
+   ],
+   "n_items": 2,
+   "okpd2_codes": [
+    "26.20.11.110",
+    "26.20.18.120"
+   ],
+   "participants": 13,
+   "participants_in_naive_top20": 3,
+   "platform": "ЭМ",
+   "publish_date": "2025-12-17",
+   "same_code_candidates_before": 519,
+   "start_price": 124280.0,
+   "subject": "Поставка компьютерной техники в 2025 году",
+   "winner_entity_types": [
+    "individual_entrepreneur"
+   ],
+   "winner_naive_rank": [
+    27
+   ],
+   "winner_naive_rank_ties": [
+    2
+   ],
+   "winner_participates_in_other_golden_lots": [
+    "5718896"
+   ],
+   "winner_prior_same_class_awards": [
+    87
+   ],
+   "winner_prior_same_code_awards": [
+    20
+   ],
+   "winners": 1
+  }
+ },
+ "items": {
+  "distinct_okpd2_per_lot_hist_4plus": {
+   "1": 501236,
+   "2": 44733,
+   "3": 18096,
+   "4": 40367
+  },
+  "items_per_lot_hist_11plus": {
+   "1": 323791,
+   "10": 6587,
+   "11": 55447,
+   "2": 85532,
+   "3": 41196,
+   "4": 30130,
+   "5": 18408,
+   "6": 15683,
+   "7": 10602,
+   "8": 9451,
+   "9": 7609
+  },
+  "items_per_lot_max": 7011,
+  "items_per_lot_mean": 4.92,
+  "items_per_lot_pct": {
+   "1": 53.6,
+   "11plus": 9.2,
+   "2_10": 37.3
+  },
+  "lots_with_multiple_okpd2": 103196,
+  "lots_with_multiple_okpd2_pct": 17.1,
+  "malformed_rows": 0,
+  "okpd2": {
+   "bad_format_rows": 1,
+   "depth_rows": {
+    "1": 39,
+    "2": 75124,
+    "3": 79848,
+    "4": 2816402
+   },
+   "depth_rows_pct": {
+    "1": 0.0,
+    "2": 2.5,
+    "3": 2.7,
+    "4": 94.8
+   },
+   "depth_unique_codes": {
+    "1": 9,
+    "2": 261,
+    "3": 1475,
+    "4": 6708
+   },
+   "distinct_prefixes_by_segment_level": {
+    "1": 83,
+    "2": 578,
+    "3": 2809,
+    "4": 6708
+   },
+   "empty_rows": 238,
+   "top_codes_rows": [
+    [
+     "29.32.30.390",
+     120865
+    ],
+    [
+     "21.20",
+     70046
+    ],
+    [
+     "21.20.23.110",
+     60695
+    ],
+    [
+     "32.50.50.190",
+     56199
+    ],
+    [
+     "86.90.19.110",
+     51015
+    ],
+    [
+     "58.11.19.000",
+     47221
+    ],
+    [
+     "86.90.15.000",
+     42385
+    ],
+    [
+     "32.50.13.190",
+     40436
+    ],
+    [
+     "33.13.12.000",
+     40377
+    ],
+    [
+     "42.11.20.300",
+     40127
+    ],
+    [
+     "32.50.13.110",
+     37858
+    ],
+    [
+     "85.42.19.900",
+     30154
+    ],
+    [
+     "22.29.25.000",
+     29806
+    ],
+    [
+     "86.90.19.190",
+     29295
+    ],
+    [
+     "33.12.29.900",
+     29006
+    ],
+    [
+     "33.12.19.000",
+     24659
+    ],
+    [
+     "81.10.10.000",
+     23082
+    ],
+    [
+     "80.20.10.000",
+     22809
+    ],
+    [
+     "81.29.11.000",
+     19541
+    ],
+    [
+     "26.20.40.120",
+     19044
+    ]
+   ],
+   "top_sections_rows": [
+    [
+     "32",
+     396206
+    ],
+    [
+     "21",
+     249417
+    ],
+    [
+     "86",
+     169627
+    ],
+    [
+     "33",
+     147043
+    ],
+    [
+     "20",
+     138368
+    ],
+    [
+     "29",
+     137544
+    ],
+    [
+     "22",
+     120607
+    ],
+    [
+     "10",
+     109147
+    ],
+    [
+     "58",
+     102565
+    ],
+    [
+     "26",
+     96097
+    ],
+    [
+     "17",
+     91630
+    ],
+    [
+     "25",
+     89701
+    ],
+    [
+     "71",
+     82026
+    ],
+    [
+     "31",
+     77877
+    ],
+    [
+     "81",
+     67598
+    ]
+   ],
+   "unique_codes": 8453
+  },
+  "orphan_rows_lot_not_in_notices": 0,
+  "product_name_adds_text_pct": 94.1,
+  "product_name_empty_rows": 114,
+  "product_name_eq_subject_normalized_rows": 111500,
+  "product_name_eq_subject_pct": 3.8,
+  "product_name_length_quantiles": {
+   "p01": 6,
+   "p25": 22,
+   "p50": 41,
+   "p75": 71,
+   "p95": 160,
+   "p99": 268
+  },
+  "product_name_substring_of_subject_pct": 2.2,
+  "product_name_substring_of_subject_rows": 64813,
+  "rows": 2971651,
+  "unique_lots": 604436
+ },
+ "notices": {
+  "by_platform": {
+   "АИС ГЗ": 332646,
+   "ЭМ": 271806
+  },
+  "by_platform_year": {
+   "АИС ГЗ|2024": 169494,
+   "АИС ГЗ|2025": 163152,
+   "ЭМ|2024": 134044,
+   "ЭМ|2025": 137762
+  },
+  "by_year": {
+   "2024": 303538,
+   "2025": 300914
+  },
+  "customer_inn_invalid_rows": 8449,
+  "customer_kpp_bad_format_rows": 0,
+  "customer_kpp_empty_rows": 8449,
+  "date_max": "2025-12-31",
+  "date_min": "2024-01-08",
+  "duplicate_lot_rows": 0,
+  "is_smp_by_platform": {
+   "АИС ГЗ|false": 182683,
+   "АИС ГЗ|true": 149963,
+   "ЭМ|false": 271806
+  },
+  "malformed_rows": 0,
+  "max_lots_per_procedure": 1,
+  "platform_share_pct": {
+   "АИС ГЗ": 55.0,
+   "ЭМ": 45.0
+  },
+  "procedure_name_empty": 0,
+  "procedure_name_eq_subject_exact": 591813,
+  "procedure_name_eq_subject_exact_pct": 97.9,
+  "procedure_name_eq_subject_normalized": 598919,
+  "procedure_name_eq_subject_normalized_pct": 99.1,
+  "procedures_with_multiple_lots": 0,
+  "reqnum_filled": 231513,
+  "reqnum_filled_pct": 38.3,
+  "rows": 604452,
+  "start_price_empty_or_unparsable": 3,
+  "start_price_quantiles": {
+   "p01": 1000.0,
+   "p25": 24500.0,
+   "p50": 92373.6,
+   "p75": 388333.33,
+   "p95": 2958459.6,
+   "p99": 19941130.78
+  },
+  "start_price_zero": 21,
+  "subject_empty": 1,
+  "unique_customers": 2786,
+  "unique_lots": 604452,
+  "unique_procedures": 604452
+ },
+ "pool_health": {
+  "codes_evaluated": 2523,
+  "definition": "per full OKPD2 code; lot counted if any item has the code; awards = winner rows (both platforms); recent = won a lot published >= recent_from",
+  "selected": {
+   "01.13.16.000": {
+    "awards": 125,
+    "customers": 83,
+    "em_lots": 109,
+    "hhi": 0.607,
+    "lots": 144,
+    "observed_suppliers": 19,
+    "recent_winning_suppliers": 5,
+    "top1_share": 0.776,
+    "top3_award_counts": [
+     97,
+     5,
+     4
+    ],
+    "top3_share": 0.848,
+    "winning_suppliers": 16
+   },
+   "01.25.19.150": {
+    "awards": 219,
+    "customers": 73,
+    "em_lots": 199,
+    "hhi": 0.778,
+    "lots": 227,
+    "observed_suppliers": 16,
+    "recent_winning_suppliers": 11,
+    "top1_share": 0.881,
+    "top3_award_counts": [
+     193,
+     7,
+     3
+    ],
+    "top3_share": 0.927,
+    "winning_suppliers": 15
+   },
+   "10.12.10.170": {
+    "awards": 240,
+    "customers": 82,
+    "em_lots": 222,
+    "hhi": 0.515,
+    "lots": 258,
+    "observed_suppliers": 18,
+    "recent_winning_suppliers": 9,
+    "top1_share": 0.696,
+    "top3_award_counts": [
+     167,
+     41,
+     7
+    ],
+    "top3_share": 0.896,
+    "winning_suppliers": 14
+   },
+   "10.39.17.111": {
+    "awards": 313,
+    "customers": 194,
+    "em_lots": 305,
+    "hhi": 0.247,
+    "lots": 337,
+    "observed_suppliers": 16,
+    "recent_winning_suppliers": 8,
+    "top1_share": 0.387,
+    "top3_award_counts": [
+     121,
+     61,
+     55
+    ],
+    "top3_share": 0.757,
+    "winning_suppliers": 12
+   },
+   "10.42.10.111": {
+    "awards": 40,
+    "customers": 32,
+    "em_lots": 37,
+    "hhi": 0.814,
+    "lots": 44,
+    "observed_suppliers": 7,
+    "recent_winning_suppliers": 3,
+    "top1_share": 0.9,
+    "top3_award_counts": [
+     36,
+     2,
+     1
+    ],
+    "top3_share": 0.975,
+    "winning_suppliers": 4
+   },
+   "10.51.11.141": {
+    "awards": 173,
+    "customers": 40,
+    "em_lots": 161,
+    "hhi": 0.889,
+    "lots": 182,
+    "observed_suppliers": 6,
+    "recent_winning_suppliers": 3,
+    "top1_share": 0.942,
+    "top3_award_counts": [
+     163,
+     7,
+     1
+    ],
+    "top3_share": 0.988,
+    "winning_suppliers": 5
+   },
+   "10.51.52.111": {
+    "awards": 711,
+    "customers": 89,
+    "em_lots": 674,
+    "hhi": 0.4,
+    "lots": 724,
+    "observed_suppliers": 21,
+    "recent_winning_suppliers": 8,
+    "top1_share": 0.589,
+    "top3_award_counts": [
+     419,
+     147,
+     65
+    ],
+    "top3_share": 0.887,
+    "winning_suppliers": 16
+   },
+   "10.61.22.130": {
+    "awards": 110,
+    "customers": 79,
+    "em_lots": 97,
+    "hhi": 0.748,
+    "lots": 136,
+    "observed_suppliers": 11,
+    "recent_winning_suppliers": 7,
+    "top1_share": 0.864,
+    "top3_award_counts": [
+     95,
+     3,
+     2
+    ],
+    "top3_share": 0.909,
+    "winning_suppliers": 9
+   },
+   "10.62.11.112": {
+    "awards": 75,
+    "customers": 55,
+    "em_lots": 69,
+    "hhi": 0.644,
+    "lots": 83,
+    "observed_suppliers": 14,
+    "recent_winning_suppliers": 5,
+    "top1_share": 0.8,
+    "top3_award_counts": [
+     60,
+     3,
+     2
+    ],
+    "top3_share": 0.867,
+    "winning_suppliers": 12
+   }
+  },
+  "selected_prefixes": {
+   "10.39.17": {
+    "awards": 2010,
+    "customers": 446,
+    "em_lots": 1671,
+    "hhi": 0.126,
+    "lots": 2091,
+    "observed_suppliers": 71,
+    "recent_winning_suppliers": 43,
+    "top1_share": 0.28,
+    "top3_award_counts": [
+     563,
+     226,
+     206
+    ],
+    "top3_share": 0.495,
+    "winning_suppliers": 65
+   }
+  },
+  "shortlist_by_top1_share": [
+   [
+    "10.51.11.141",
+    {
+     "awards": 173,
+     "customers": 40,
+     "em_lots": 161,
+     "hhi": 0.889,
+     "lots": 182,
+     "observed_suppliers": 6,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.942,
+     "top3_award_counts": [
+      163,
+      7,
+      1
+     ],
+     "top3_share": 0.988,
+     "winning_suppliers": 5
+    }
+   ],
+   [
+    "10.42.10.111",
+    {
+     "awards": 40,
+     "customers": 32,
+     "em_lots": 37,
+     "hhi": 0.814,
+     "lots": 44,
+     "observed_suppliers": 7,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.9,
+     "top3_award_counts": [
+      36,
+      2,
+      1
+     ],
+     "top3_share": 0.975,
+     "winning_suppliers": 4
+    }
+   ],
+   [
+    "01.25.19.150",
+    {
+     "awards": 219,
+     "customers": 73,
+     "em_lots": 199,
+     "hhi": 0.778,
+     "lots": 227,
+     "observed_suppliers": 16,
+     "recent_winning_suppliers": 11,
+     "top1_share": 0.881,
+     "top3_award_counts": [
+      193,
+      7,
+      3
+     ],
+     "top3_share": 0.927,
+     "winning_suppliers": 15
+    }
+   ],
+   [
+    "10.61.22.130",
+    {
+     "awards": 110,
+     "customers": 79,
+     "em_lots": 97,
+     "hhi": 0.748,
+     "lots": 136,
+     "observed_suppliers": 11,
+     "recent_winning_suppliers": 7,
+     "top1_share": 0.864,
+     "top3_award_counts": [
+      95,
+      3,
+      2
+     ],
+     "top3_share": 0.909,
+     "winning_suppliers": 9
+    }
+   ],
+   [
+    "10.86.10.990",
+    {
+     "awards": 148,
+     "customers": 104,
+     "em_lots": 25,
+     "hhi": 0.662,
+     "lots": 152,
+     "observed_suppliers": 18,
+     "recent_winning_suppliers": 2,
+     "top1_share": 0.811,
+     "top3_award_counts": [
+      120,
+      8,
+      4
+     ],
+     "top3_share": 0.892,
+     "winning_suppliers": 16
+    }
+   ],
+   [
+    "10.62.11.112",
+    {
+     "awards": 75,
+     "customers": 55,
+     "em_lots": 69,
+     "hhi": 0.644,
+     "lots": 83,
+     "observed_suppliers": 14,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.8,
+     "top3_award_counts": [
+      60,
+      3,
+      2
+     ],
+     "top3_share": 0.867,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "17.12.71.000",
+    {
+     "awards": 92,
+     "customers": 87,
+     "em_lots": 84,
+     "hhi": 0.616,
+     "lots": 103,
+     "observed_suppliers": 39,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.783,
+     "top3_award_counts": [
+      72,
+      3,
+      2
+     ],
+     "top3_share": 0.837,
+     "winning_suppliers": 18
+    }
+   ],
+   [
+    "01.13.16.000",
+    {
+     "awards": 125,
+     "customers": 83,
+     "em_lots": 109,
+     "hhi": 0.607,
+     "lots": 144,
+     "observed_suppliers": 19,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.776,
+     "top3_award_counts": [
+      97,
+      5,
+      4
+     ],
+     "top3_share": 0.848,
+     "winning_suppliers": 16
+    }
+   ],
+   [
+    "32.99.56.132",
+    {
+     "awards": 55,
+     "customers": 9,
+     "em_lots": 22,
+     "hhi": 0.589,
+     "lots": 60,
+     "observed_suppliers": 21,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.764,
+     "top3_award_counts": [
+      42,
+      3,
+      1
+     ],
+     "top3_share": 0.836,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "32.99.56.131",
+    {
+     "awards": 37,
+     "customers": 21,
+     "em_lots": 33,
+     "hhi": 0.581,
+     "lots": 41,
+     "observed_suppliers": 17,
+     "recent_winning_suppliers": 2,
+     "top1_share": 0.757,
+     "top3_award_counts": [
+      28,
+      2,
+      1
+     ],
+     "top3_share": 0.838,
+     "winning_suppliers": 9
+    }
+   ],
+   [
+    "10.12.10.170",
+    {
+     "awards": 240,
+     "customers": 82,
+     "em_lots": 222,
+     "hhi": 0.515,
+     "lots": 258,
+     "observed_suppliers": 18,
+     "recent_winning_suppliers": 9,
+     "top1_share": 0.696,
+     "top3_award_counts": [
+      167,
+      41,
+      7
+     ],
+     "top3_share": 0.896,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "10.86.10.126",
+    {
+     "awards": 233,
+     "customers": 66,
+     "em_lots": 171,
+     "hhi": 0.482,
+     "lots": 244,
+     "observed_suppliers": 27,
+     "recent_winning_suppliers": 13,
+     "top1_share": 0.682,
+     "top3_award_counts": [
+      159,
+      23,
+      16
+     ],
+     "top3_share": 0.85,
+     "winning_suppliers": 21
+    }
+   ],
+   [
+    "17.12.14.142",
+    {
+     "awards": 248,
+     "customers": 125,
+     "em_lots": 71,
+     "hhi": 0.458,
+     "lots": 260,
+     "observed_suppliers": 76,
+     "recent_winning_suppliers": 12,
+     "top1_share": 0.673,
+     "top3_award_counts": [
+      167,
+      10,
+      8
+     ],
+     "top3_share": 0.746,
+     "winning_suppliers": 43
+    }
+   ],
+   [
+    "10.32.19.111",
+    {
+     "awards": 256,
+     "customers": 94,
+     "em_lots": 203,
+     "hhi": 0.42,
+     "lots": 273,
+     "observed_suppliers": 23,
+     "recent_winning_suppliers": 14,
+     "top1_share": 0.633,
+     "top3_award_counts": [
+      162,
+      27,
+      19
+     ],
+     "top3_share": 0.812,
+     "winning_suppliers": 22
+    }
+   ],
+   [
+    "10.12.20.120",
+    {
+     "awards": 260,
+     "customers": 79,
+     "em_lots": 197,
+     "hhi": 0.392,
+     "lots": 277,
+     "observed_suppliers": 27,
+     "recent_winning_suppliers": 15,
+     "top1_share": 0.615,
+     "top3_award_counts": [
+      160,
+      21,
+      11
+     ],
+     "top3_share": 0.738,
+     "winning_suppliers": 23
+    }
+   ],
+   [
+    "17.23.13.141",
+    {
+     "awards": 1344,
+     "customers": 712,
+     "em_lots": 1017,
+     "hhi": 0.377,
+     "lots": 1445,
+     "observed_suppliers": 201,
+     "recent_winning_suppliers": 47,
+     "top1_share": 0.609,
+     "top3_award_counts": [
+      819,
+      56,
+      52
+     ],
+     "top3_share": 0.69,
+     "winning_suppliers": 124
+    }
+   ],
+   [
+    "10.51.52.111",
+    {
+     "awards": 711,
+     "customers": 89,
+     "em_lots": 674,
+     "hhi": 0.4,
+     "lots": 724,
+     "observed_suppliers": 21,
+     "recent_winning_suppliers": 8,
+     "top1_share": 0.589,
+     "top3_award_counts": [
+      419,
+      147,
+      65
+     ],
+     "top3_share": 0.887,
+     "winning_suppliers": 16
+    }
+   ],
+   [
+    "10.32.19.112",
+    {
+     "awards": 826,
+     "customers": 105,
+     "em_lots": 752,
+     "hhi": 0.376,
+     "lots": 835,
+     "observed_suppliers": 36,
+     "recent_winning_suppliers": 16,
+     "top1_share": 0.575,
+     "top3_award_counts": [
+      475,
+      147,
+      87
+     ],
+     "top3_share": 0.858,
+     "winning_suppliers": 28
+    }
+   ],
+   [
+    "10.61.32.115",
+    {
+     "awards": 325,
+     "customers": 150,
+     "em_lots": 259,
+     "hhi": 0.364,
+     "lots": 334,
+     "observed_suppliers": 26,
+     "recent_winning_suppliers": 16,
+     "top1_share": 0.572,
+     "top3_award_counts": [
+      186,
+      57,
+      15
+     ],
+     "top3_share": 0.794,
+     "winning_suppliers": 23
+    }
+   ],
+   [
+    "18.11.10.000",
+    {
+     "awards": 72,
+     "customers": 18,
+     "em_lots": 26,
+     "hhi": 0.446,
+     "lots": 74,
+     "observed_suppliers": 9,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.569,
+     "top3_award_counts": [
+      41,
+      25,
+      2
+     ],
+     "top3_share": 0.944,
+     "winning_suppliers": 7
+    }
+   ],
+   [
+    "10.12.20.170",
+    {
+     "awards": 360,
+     "customers": 176,
+     "em_lots": 320,
+     "hhi": 0.341,
+     "lots": 375,
+     "observed_suppliers": 28,
+     "recent_winning_suppliers": 16,
+     "top1_share": 0.531,
+     "top3_award_counts": [
+      191,
+      81,
+      28
+     ],
+     "top3_share": 0.833,
+     "winning_suppliers": 25
+    }
+   ],
+   [
+    "22.23.13.190",
+    {
+     "awards": 36,
+     "customers": 36,
+     "em_lots": 32,
+     "hhi": 0.269,
+     "lots": 43,
+     "observed_suppliers": 37,
+     "recent_winning_suppliers": 7,
+     "top1_share": 0.5,
+     "top3_award_counts": [
+      18,
+      2,
+      2
+     ],
+     "top3_share": 0.611,
+     "winning_suppliers": 16
+    }
+   ],
+   [
+    "26.20.40.142",
+    {
+     "awards": 133,
+     "customers": 113,
+     "em_lots": 103,
+     "hhi": 0.263,
+     "lots": 141,
+     "observed_suppliers": 44,
+     "recent_winning_suppliers": 16,
+     "top1_share": 0.496,
+     "top3_award_counts": [
+      66,
+      10,
+      9
+     ],
+     "top3_share": 0.639,
+     "winning_suppliers": 33
+    }
+   ],
+   [
+    "10.84.30.130",
+    {
+     "awards": 391,
+     "customers": 199,
+     "em_lots": 324,
+     "hhi": 0.307,
+     "lots": 410,
+     "observed_suppliers": 31,
+     "recent_winning_suppliers": 28,
+     "top1_share": 0.491,
+     "top3_award_counts": [
+      192,
+      96,
+      19
+     ],
+     "top3_share": 0.785,
+     "winning_suppliers": 28
+    }
+   ],
+   [
+    "20.30.1",
+    {
+     "awards": 112,
+     "customers": 93,
+     "em_lots": 43,
+     "hhi": 0.249,
+     "lots": 121,
+     "observed_suppliers": 72,
+     "recent_winning_suppliers": 14,
+     "top1_share": 0.491,
+     "top3_award_counts": [
+      55,
+      4,
+      3
+     ],
+     "top3_share": 0.554,
+     "winning_suppliers": 43
+    }
+   ],
+   [
+    "10.20.14.110",
+    {
+     "awards": 996,
+     "customers": 160,
+     "em_lots": 877,
+     "hhi": 0.288,
+     "lots": 1019,
+     "observed_suppliers": 36,
+     "recent_winning_suppliers": 21,
+     "top1_share": 0.488,
+     "top3_award_counts": [
+      486,
+      150,
+      129
+     ],
+     "top3_share": 0.768,
+     "winning_suppliers": 31
+    }
+   ],
+   [
+    "20.42.14.120",
+    {
+     "awards": 39,
+     "customers": 21,
+     "em_lots": 28,
+     "hhi": 0.258,
+     "lots": 42,
+     "observed_suppliers": 26,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.487,
+     "top3_award_counts": [
+      19,
+      3,
+      2
+     ],
+     "top3_share": 0.615,
+     "winning_suppliers": 16
+    }
+   ],
+   [
+    "10.12.20.110",
+    {
+     "awards": 1015,
+     "customers": 212,
+     "em_lots": 885,
+     "hhi": 0.275,
+     "lots": 1045,
+     "observed_suppliers": 47,
+     "recent_winning_suppliers": 25,
+     "top1_share": 0.484,
+     "top3_award_counts": [
+      491,
+      153,
+      97
+     ],
+     "top3_share": 0.73,
+     "winning_suppliers": 39
+    }
+   ],
+   [
+    "08.12.12.150",
+    {
+     "awards": 58,
+     "customers": 51,
+     "em_lots": 30,
+     "hhi": 0.257,
+     "lots": 70,
+     "observed_suppliers": 32,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.483,
+     "top3_award_counts": [
+      28,
+      6,
+      5
+     ],
+     "top3_share": 0.672,
+     "winning_suppliers": 22
+    }
+   ],
+   [
+    "20.30.23.120",
+    {
+     "awards": 80,
+     "customers": 65,
+     "em_lots": 53,
+     "hhi": 0.236,
+     "lots": 88,
+     "observed_suppliers": 59,
+     "recent_winning_suppliers": 12,
+     "top1_share": 0.475,
+     "top3_award_counts": [
+      38,
+      3,
+      3
+     ],
+     "top3_share": 0.55,
+     "winning_suppliers": 33
+    }
+   ],
+   [
+    "11.07.19.159",
+    {
+     "awards": 1124,
+     "customers": 269,
+     "em_lots": 1101,
+     "hhi": 0.272,
+     "lots": 1157,
+     "observed_suppliers": 24,
+     "recent_winning_suppliers": 9,
+     "top1_share": 0.474,
+     "top3_award_counts": [
+      533,
+      151,
+      130
+     ],
+     "top3_share": 0.724,
+     "winning_suppliers": 19
+    }
+   ],
+   [
+    "10.51.52.190",
+    {
+     "awards": 910,
+     "customers": 142,
+     "em_lots": 804,
+     "hhi": 0.275,
+     "lots": 926,
+     "observed_suppliers": 31,
+     "recent_winning_suppliers": 15,
+     "top1_share": 0.455,
+     "top3_award_counts": [
+      414,
+      170,
+      148
+     ],
+     "top3_share": 0.804,
+     "winning_suppliers": 27
+    }
+   ],
+   [
+    "10.89.19.290",
+    {
+     "awards": 199,
+     "customers": 55,
+     "em_lots": 52,
+     "hhi": 0.219,
+     "lots": 219,
+     "observed_suppliers": 46,
+     "recent_winning_suppliers": 20,
+     "top1_share": 0.447,
+     "top3_award_counts": [
+      89,
+      18,
+      13
+     ],
+     "top3_share": 0.603,
+     "winning_suppliers": 38
+    }
+   ],
+   [
+    "14.19.22.130",
+    {
+     "awards": 56,
+     "customers": 18,
+     "em_lots": 26,
+     "hhi": 0.218,
+     "lots": 60,
+     "observed_suppliers": 25,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.446,
+     "top3_award_counts": [
+      25,
+      4,
+      3
+     ],
+     "top3_share": 0.571,
+     "winning_suppliers": 22
+    }
+   ],
+   [
+    "21.20.23.191",
+    {
+     "awards": 144,
+     "customers": 42,
+     "em_lots": 45,
+     "hhi": 0.275,
+     "lots": 173,
+     "observed_suppliers": 17,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.444,
+     "top3_award_counts": [
+      64,
+      37,
+      10
+     ],
+     "top3_share": 0.771,
+     "winning_suppliers": 17
+    }
+   ],
+   [
+    "01.25.39.000",
+    {
+     "awards": 81,
+     "customers": 21,
+     "em_lots": 18,
+     "hhi": 0.235,
+     "lots": 82,
+     "observed_suppliers": 21,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.444,
+     "top3_award_counts": [
+      36,
+      10,
+      7
+     ],
+     "top3_share": 0.654,
+     "winning_suppliers": 18
+    }
+   ],
+   [
+    "08.12.11",
+    {
+     "awards": 50,
+     "customers": 44,
+     "em_lots": 47,
+     "hhi": 0.27,
+     "lots": 52,
+     "observed_suppliers": 28,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.44,
+     "top3_award_counts": [
+      22,
+      13,
+      2
+     ],
+     "top3_share": 0.74,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "08.92.10.119",
+    {
+     "awards": 46,
+     "customers": 41,
+     "em_lots": 29,
+     "hhi": 0.21,
+     "lots": 50,
+     "observed_suppliers": 27,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.435,
+     "top3_award_counts": [
+      20,
+      4,
+      2
+     ],
+     "top3_share": 0.565,
+     "winning_suppliers": 21
+    }
+   ],
+   [
+    "01.11.71.110",
+    {
+     "awards": 460,
+     "customers": 152,
+     "em_lots": 268,
+     "hhi": 0.218,
+     "lots": 480,
+     "observed_suppliers": 44,
+     "recent_winning_suppliers": 26,
+     "top1_share": 0.43,
+     "top3_award_counts": [
+      198,
+      48,
+      48
+     ],
+     "top3_share": 0.639,
+     "winning_suppliers": 37
+    }
+   ],
+   [
+    "10.84.30.140",
+    {
+     "awards": 1020,
+     "customers": 198,
+     "em_lots": 941,
+     "hhi": 0.238,
+     "lots": 1056,
+     "observed_suppliers": 59,
+     "recent_winning_suppliers": 18,
+     "top1_share": 0.427,
+     "top3_award_counts": [
+      436,
+      155,
+      151
+     ],
+     "top3_share": 0.727,
+     "winning_suppliers": 46
+    }
+   ]
+  ],
+  "shortlist_candidates": 1638,
+  "shortlist_fewest_winners": [
+   [
+    "10.42.10.111",
+    {
+     "awards": 40,
+     "customers": 32,
+     "em_lots": 37,
+     "hhi": 0.814,
+     "lots": 44,
+     "observed_suppliers": 7,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.9,
+     "top3_award_counts": [
+      36,
+      2,
+      1
+     ],
+     "top3_share": 0.975,
+     "winning_suppliers": 4
+    }
+   ],
+   [
+    "10.51.11.141",
+    {
+     "awards": 173,
+     "customers": 40,
+     "em_lots": 161,
+     "hhi": 0.889,
+     "lots": 182,
+     "observed_suppliers": 6,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.942,
+     "top3_award_counts": [
+      163,
+      7,
+      1
+     ],
+     "top3_share": 0.988,
+     "winning_suppliers": 5
+    }
+   ],
+   [
+    "18.11.10.000",
+    {
+     "awards": 72,
+     "customers": 18,
+     "em_lots": 26,
+     "hhi": 0.446,
+     "lots": 74,
+     "observed_suppliers": 9,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.569,
+     "top3_award_counts": [
+      41,
+      25,
+      2
+     ],
+     "top3_share": 0.944,
+     "winning_suppliers": 7
+    }
+   ],
+   [
+    "10.61.22.130",
+    {
+     "awards": 110,
+     "customers": 79,
+     "em_lots": 97,
+     "hhi": 0.748,
+     "lots": 136,
+     "observed_suppliers": 11,
+     "recent_winning_suppliers": 7,
+     "top1_share": 0.864,
+     "top3_award_counts": [
+      95,
+      3,
+      2
+     ],
+     "top3_share": 0.909,
+     "winning_suppliers": 9
+    }
+   ],
+   [
+    "32.99.56.131",
+    {
+     "awards": 37,
+     "customers": 21,
+     "em_lots": 33,
+     "hhi": 0.581,
+     "lots": 41,
+     "observed_suppliers": 17,
+     "recent_winning_suppliers": 2,
+     "top1_share": 0.757,
+     "top3_award_counts": [
+      28,
+      2,
+      1
+     ],
+     "top3_share": 0.838,
+     "winning_suppliers": 9
+    }
+   ],
+   [
+    "21.20.23.113",
+    {
+     "awards": 47,
+     "customers": 12,
+     "em_lots": 9,
+     "hhi": 0.19,
+     "lots": 71,
+     "observed_suppliers": 11,
+     "recent_winning_suppliers": 8,
+     "top1_share": 0.277,
+     "top3_award_counts": [
+      13,
+      12,
+      9
+     ],
+     "top3_share": 0.723,
+     "winning_suppliers": 11
+    }
+   ],
+   [
+    "21.20.10.226",
+    {
+     "awards": 31,
+     "customers": 11,
+     "em_lots": 20,
+     "hhi": 0.13,
+     "lots": 44,
+     "observed_suppliers": 12,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.194,
+     "top3_award_counts": [
+      6,
+      6,
+      4
+     ],
+     "top3_share": 0.516,
+     "winning_suppliers": 11
+    }
+   ],
+   [
+    "21.20.10.122",
+    {
+     "awards": 35,
+     "customers": 23,
+     "em_lots": 35,
+     "hhi": 0.218,
+     "lots": 41,
+     "observed_suppliers": 12,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.4,
+     "top3_award_counts": [
+      14,
+      6,
+      4
+     ],
+     "top3_share": 0.686,
+     "winning_suppliers": 11
+    }
+   ],
+   [
+    "01.13.41.130",
+    {
+     "awards": 1108,
+     "customers": 156,
+     "em_lots": 1084,
+     "hhi": 0.247,
+     "lots": 1129,
+     "observed_suppliers": 18,
+     "recent_winning_suppliers": 10,
+     "top1_share": 0.408,
+     "top3_award_counts": [
+      452,
+      209,
+      161
+     ],
+     "top3_share": 0.742,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "10.39.17.111",
+    {
+     "awards": 313,
+     "customers": 194,
+     "em_lots": 305,
+     "hhi": 0.247,
+     "lots": 337,
+     "observed_suppliers": 16,
+     "recent_winning_suppliers": 8,
+     "top1_share": 0.387,
+     "top3_award_counts": [
+      121,
+      61,
+      55
+     ],
+     "top3_share": 0.757,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "10.62.11.112",
+    {
+     "awards": 75,
+     "customers": 55,
+     "em_lots": 69,
+     "hhi": 0.644,
+     "lots": 83,
+     "observed_suppliers": 14,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.8,
+     "top3_award_counts": [
+      60,
+      3,
+      2
+     ],
+     "top3_share": 0.867,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "32.99.56.132",
+    {
+     "awards": 55,
+     "customers": 9,
+     "em_lots": 22,
+     "hhi": 0.589,
+     "lots": 60,
+     "observed_suppliers": 21,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.764,
+     "top3_award_counts": [
+      42,
+      3,
+      1
+     ],
+     "top3_share": 0.836,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "26.12.30.110",
+    {
+     "awards": 44,
+     "customers": 15,
+     "em_lots": 4,
+     "hhi": 0.136,
+     "lots": 48,
+     "observed_suppliers": 13,
+     "recent_winning_suppliers": 8,
+     "top1_share": 0.227,
+     "top3_award_counts": [
+      10,
+      7,
+      7
+     ],
+     "top3_share": 0.545,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "10.82.23.153",
+    {
+     "awards": 47,
+     "customers": 14,
+     "em_lots": 14,
+     "hhi": 0.193,
+     "lots": 47,
+     "observed_suppliers": 15,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.383,
+     "top3_award_counts": [
+      18,
+      5,
+      5
+     ],
+     "top3_share": 0.596,
+     "winning_suppliers": 12
+    }
+   ],
+   [
+    "21.20.21",
+    {
+     "awards": 96,
+     "customers": 16,
+     "em_lots": 0,
+     "hhi": 0.33,
+     "lots": 162,
+     "observed_suppliers": 13,
+     "recent_winning_suppliers": 5,
+     "top1_share": 0.427,
+     "top3_award_counts": [
+      41,
+      36,
+      6
+     ],
+     "top3_share": 0.865,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "20.59.52.130",
+    {
+     "awards": 83,
+     "customers": 66,
+     "em_lots": 68,
+     "hhi": 0.203,
+     "lots": 93,
+     "observed_suppliers": 19,
+     "recent_winning_suppliers": 4,
+     "top1_share": 0.361,
+     "top3_award_counts": [
+      30,
+      15,
+      13
+     ],
+     "top3_share": 0.699,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "21.20.10.263",
+    {
+     "awards": 39,
+     "customers": 30,
+     "em_lots": 27,
+     "hhi": 0.149,
+     "lots": 59,
+     "observed_suppliers": 13,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.282,
+     "top3_award_counts": [
+      11,
+      7,
+      5
+     ],
+     "top3_share": 0.59,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "08.12.11",
+    {
+     "awards": 50,
+     "customers": 44,
+     "em_lots": 47,
+     "hhi": 0.27,
+     "lots": 52,
+     "observed_suppliers": 28,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.44,
+     "top3_award_counts": [
+      22,
+      13,
+      2
+     ],
+     "top3_share": 0.74,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "21.10.51",
+    {
+     "awards": 29,
+     "customers": 21,
+     "em_lots": 1,
+     "hhi": 0.161,
+     "lots": 46,
+     "observed_suppliers": 13,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.345,
+     "top3_award_counts": [
+      10,
+      3,
+      2
+     ],
+     "top3_share": 0.517,
+     "winning_suppliers": 13
+    }
+   ],
+   [
+    "10.12.10.170",
+    {
+     "awards": 240,
+     "customers": 82,
+     "em_lots": 222,
+     "hhi": 0.515,
+     "lots": 258,
+     "observed_suppliers": 18,
+     "recent_winning_suppliers": 9,
+     "top1_share": 0.696,
+     "top3_award_counts": [
+      167,
+      41,
+      7
+     ],
+     "top3_share": 0.896,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "21.20.10.172",
+    {
+     "awards": 74,
+     "customers": 29,
+     "em_lots": 58,
+     "hhi": 0.145,
+     "lots": 95,
+     "observed_suppliers": 20,
+     "recent_winning_suppliers": 7,
+     "top1_share": 0.27,
+     "top3_award_counts": [
+      20,
+      11,
+      10
+     ],
+     "top3_share": 0.554,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "10.13.14.411",
+    {
+     "awards": 62,
+     "customers": 31,
+     "em_lots": 6,
+     "hhi": 0.149,
+     "lots": 64,
+     "observed_suppliers": 14,
+     "recent_winning_suppliers": 8,
+     "top1_share": 0.29,
+     "top3_award_counts": [
+      18,
+      8,
+      7
+     ],
+     "top3_share": 0.532,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "20.11.11.121",
+    {
+     "awards": 59,
+     "customers": 31,
+     "em_lots": 25,
+     "hhi": 0.19,
+     "lots": 62,
+     "observed_suppliers": 18,
+     "recent_winning_suppliers": 7,
+     "top1_share": 0.322,
+     "top3_award_counts": [
+      19,
+      15,
+      5
+     ],
+     "top3_share": 0.661,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "21.20.10.151",
+    {
+     "awards": 46,
+     "customers": 33,
+     "em_lots": 28,
+     "hhi": 0.169,
+     "lots": 60,
+     "observed_suppliers": 15,
+     "recent_winning_suppliers": 3,
+     "top1_share": 0.348,
+     "top3_award_counts": [
+      16,
+      6,
+      4
+     ],
+     "top3_share": 0.565,
+     "winning_suppliers": 14
+    }
+   ],
+   [
+    "26.51.20.121",
+    {
+     "awards": 50,
+     "customers": 38,
+     "em_lots": 32,
+     "hhi": 0.114,
+     "lots": 59,
+     "observed_suppliers": 24,
+     "recent_winning_suppliers": 6,
+     "top1_share": 0.2,
+     "top3_award_counts": [
+      10,
+      9,
+      5
+     ],
+     "top3_share": 0.48,
+     "winning_suppliers": 14
+    }
+   ]
+  ],
+  "top_item_names_by_code": {
+   "01.11.71.110": [
+    [
+     "фасоль продовольственная",
+     222
+    ],
+    [
+     "фасоль продовольственная тип 4",
+     210
+    ],
+    [
+     "фасоль продовольственная тип 2",
+     19
+    ],
+    [
+     "фасоль продовольственная тип 3",
+     8
+    ],
+    [
+     "зерно фасоли",
+     6
+    ],
+    [
+     "фасоль сушеная (зерно) красная",
+     5
+    ]
+   ],
+   "01.13.16.000": [
+    [
+     "шпинат тип 1",
+     90
+    ],
+    [
+     "шпинат",
+     45
+    ],
+    [
+     "шпинат свежий",
+     6
+    ],
+    [
+     "шпинат замороженный",
+     3
+    ]
+   ],
+   "01.25.19.150": [
+    [
+     "клюква тип 1",
+     211
+    ],
+    [
+     "клюква",
+     9
+    ],
+    [
+     "клюква вяленая",
+     2
+    ],
+    [
+     "клюква свежая",
+     2
+    ],
+    [
+     "клюква замороженная",
+     1
+    ],
+    [
+     "клюква садовая с/м",
+     1
+    ]
+   ],
+   "01.25.39.000": [
+    [
+     "орехи тип 1",
+     54
+    ],
+    [
+     "орехи (кешью)",
+     7
+    ],
+    [
+     "орех кешью жаренный",
+     4
+    ],
+    [
+     "орех кедровый",
+     3
+    ],
+    [
+     "орехи",
+     3
+    ],
+    [
+     "орехи кедровые",
+     3
+    ]
+   ],
+   "08.12.11": [
+    [
+     "песок намывной",
+     8
+    ],
+    [
+     "пески природные",
+     7
+    ],
+    [
+     "песок для песочниц",
+     7
+    ],
+    [
+     "песок",
+     5
+    ],
+    [
+     "песок намывной для детских песочниц",
+     3
+    ],
+    [
+     "пескосоляная смесь 10% (мешок 50 кг)",
+     2
+    ]
+   ],
+   "08.12.12.150": [
+    [
+     "отсев гранитный",
+     23
+    ],
+    [
+     "отсев гранитный тип 1",
+     18
+    ],
+    [
+     "гранитный отсев",
+     9
+    ],
+    [
+     "гранитная крошка",
+     4
+    ],
+    [
+     "камень природный дробленый",
+     4
+    ],
+    [
+     "отсев гранитный розовый фр. 0,1 - 5 мм",
+     4
+    ]
+   ],
+   "08.92.10.119": [
+    [
+     "грунт плодородный",
+     15
+    ],
+    [
+     "торф неагломерированный прочий",
+     4
+    ],
+    [
+     "грунт",
+     3
+    ],
+    [
+     "земля плодородная",
+     3
+    ],
+    [
+     "4-х компонентная просеянная плодородная земля высшего качества",
+     2
+    ],
+    [
+     "грунт для рассады",
+     2
+    ]
+   ],
+   "10.12.10.170": [
+    [
+     "филе грудки цыпленка охлажденное",
+     156
+    ],
+    [
+     "мясо сельскохозяйственной птицы охлажденное для детского питания",
+     56
+    ],
+    [
+     "мясо сельскохозяйственной птицы охлажденное для детского питания тип 1",
+     41
+    ],
+    [
+     "филе цыпленка-бройлера охлажденное",
+     4
+    ],
+    [
+     "грудка куриная филе",
+     1
+    ],
+    [
+     "грудки кур охлажденные",
+     1
+    ]
+   ],
+   "10.12.20.110": [
+    [
+     "мясо сельскохозяйственной птицы замороженное, в том числе для детского",
+     1662
+    ],
+    [
+     "грудки кур замороженные",
+     59
+    ],
+    [
+     "окорочок куриный замороженный (отечественный)",
+     42
+    ],
+    [
+     "мясо цыплят- бройлеров (тушки) замороженное",
+     26
+    ],
+    [
+     "мясо кур, в том числе цыплят (включая цыплят-бройлеров) замороженное",
+     23
+    ],
+    [
+     "куриное бедро филе",
+     18
+    ]
+   ],
+   "10.12.20.120": [
+    [
+     "филе индейки замороженное",
+     161
+    ],
+    [
+     "мясо сельскохозяйственной птицы замороженное, в том числе для детского",
+     90
+    ],
+    [
+     "филе индейки",
+     15
+    ],
+    [
+     "грудка, индейки, филе, с/м",
+     4
+    ],
+    [
+     "мясо индеек, в том числе индюшат замороженное",
+     3
+    ],
+    [
+     "индейка",
+     2
+    ]
+   ],
+   "10.12.20.170": [
+    [
+     "мясо сельскохозяйственной птицы замороженное, в том числе для детского",
+     362
+    ],
+    [
+     "куриная грудка филе",
+     10
+    ],
+    [
+     "филе грудки цыпленка замороженное",
+     6
+    ],
+    [
+     "грудка цб, филе, с/м",
+     4
+    ],
+    [
+     "филе цыпленка-бройлера замороженное",
+     4
+    ],
+    [
+     "куриное бедро филе",
+     3
+    ]
+   ],
+   "10.20.14.110": [
+    [
+     "филе лососевых рыб мороженое тип 1",
+     754
+    ],
+    [
+     "филе горбуши мороженое",
+     150
+    ],
+    [
+     "филе лососевых рыб мороженое",
+     93
+    ],
+    [
+     "филе пресноводной рыбы мороженое",
+     8
+    ],
+    [
+     "филе горбуши мороженное",
+     6
+    ],
+    [
+     "филе лососевых рыб мороженое тип 2",
+     4
+    ]
+   ],
+   "10.32.19.111": [
+    [
+     "соки фруктовые прямого отжима в ассортименте не более 0,2 л",
+     145
+    ],
+    [
+     "соки фруктовые прямого отжима в ассортименте не более 1 л",
+     145
+    ],
+    [
+     "сок из фруктов и (или) овощей тип 6",
+     38
+    ],
+    [
+     "сок из фруктов и (или) овощей",
+     36
+    ],
+    [
+     "сок из фруктов и (или) овощей тип 5",
+     31
+    ],
+    [
+     "соки фруктовые прямого отжима в ассортименте",
+     11
+    ]
+   ],
+   "10.32.19.112": [
+    [
+     "сок из фруктов и (или) овощей тип 8",
+     709
+    ],
+    [
+     "соки фруктовые восстановленные",
+     44
+    ],
+    [
+     "сок из фруктов и (или) овощей",
+     39
+    ],
+    [
+     "сок из фруктов и (или) овощей тип 7",
+     30
+    ],
+    [
+     "соки из фруктов восстановленные прочие",
+     9
+    ],
+    [
+     "сок яблочный восстановленный осветленный",
+     5
+    ]
+   ],
+   "10.39.17.111": [
+    [
+     "пюре томатное тип 1",
+     280
+    ],
+    [
+     "пюре томатное",
+     50
+    ],
+    [
+     "томатное пюре",
+     9
+    ],
+    [
+     "томатная паста",
+     1
+    ]
+   ],
+   "10.42.10.111": [
+    [
+     "маргарин тип 3",
+     21
+    ],
+    [
+     "маргарин",
+     14
+    ],
+    [
+     "маргарин твердый",
+     5
+    ],
+    [
+     "маргарин сливочный",
+     3
+    ],
+    [
+     "маргарин тип 4",
+     2
+    ]
+   ],
+   "10.51.11.141": [
+    [
+     "молоко питьевое стерилизованное 2,5 % жирности длительного хранения",
+     139
+    ],
+    [
+     "молоко питьевое тип 23",
+     28
+    ],
+    [
+     "молоко питьевое стерилизованное 2,5% жирности длительного хранения",
+     9
+    ],
+    [
+     "молоко стерилизованное",
+     4
+    ],
+    [
+     "молоко питьевое",
+     2
+    ]
+   ],
+   "10.51.52.111": [
+    [
+     "йогурт тип 2",
+     636
+    ],
+    [
+     "йогурт",
+     20
+    ],
+    [
+     "биойогурт, массовая доля жира 2,5-3,2 %",
+     12
+    ],
+    [
+     "йогурт тип 12",
+     10
+    ],
+    [
+     "йогурт тип 10",
+     9
+    ],
+    [
+     "биойогурт,  массовая  доля жира  2,5-3,2 %",
+     7
+    ]
+   ],
+   "10.51.52.190": [
+    [
+     "кисломолочные продукты тип 1",
+     664
+    ],
+    [
+     "кисломолочные продукты, обогащенные бифидобактериями бифидум для детск",
+     156
+    ],
+    [
+     "кисломолочные продукты тип 7",
+     36
+    ],
+    [
+     "кисломолочные продукты тип 3",
+     26
+    ],
+    [
+     "кисломолочные продукты",
+     22
+    ],
+    [
+     "кисломолочные продукты тип 5",
+     8
+    ]
+   ],
+   "10.61.22.130": [
+    [
+     "мука рисовая",
+     64
+    ],
+    [
+     "мука рисовая тип 1",
+     60
+    ],
+    [
+     "рисовая мука",
+     8
+    ],
+    [
+     "мука рисовая тип 2",
+     3
+    ],
+    [
+     "мука рисовая ц/з без глютена",
+     1
+    ]
+   ],
+   "10.61.32.115": [
+    [
+     "крупа ячневая тип 1",
+     207
+    ],
+    [
+     "крупа ячневая",
+     73
+    ],
+    [
+     "крупа ячменная ячневая",
+     44
+    ],
+    [
+     "крупа  ячневая",
+     4
+    ],
+    [
+     "крупа ячневая тип 2",
+     2
+    ],
+    [
+     "крупа ячневая № 1",
+     2
+    ]
+   ],
+   "10.62.11.112": [
+    [
+     "крахмал кукурузный",
+     32
+    ],
+    [
+     "крахмалы, кроме модифицированных тип 3",
+     22
+    ],
+    [
+     "крахмалы, кроме модифицированных тип 4",
+     13
+    ],
+    [
+     "крахмалы, кроме модифицированных",
+     5
+    ],
+    [
+     "крахмалы, кроме модифицированных тип 3 кукурузный",
+     4
+    ],
+    [
+     "крахмалы, кроме модифицированных тип 3 (крахмал кукурузный)",
+     3
+    ]
+   ],
+   "10.84.30.130": [
+    [
+     "соль пищевая тип 11",
+     208
+    ],
+    [
+     "соль пищевая",
+     77
+    ],
+    [
+     "соль пищевая тип 7",
+     71
+    ],
+    [
+     "соль пищевая йодированная",
+     37
+    ],
+    [
+     "соль пищевая тип 8",
+     9
+    ],
+    [
+     "соль пищевая молотая йодированная",
+     4
+    ]
+   ],
+   "10.84.30.140": [
+    [
+     "соль пищевая тип 11",
+     670
+    ],
+    [
+     "соль пищевая йодированная",
+     192
+    ],
+    [
+     "соль пищевая",
+     53
+    ],
+    [
+     "соль пищевая молотая",
+     22
+    ],
+    [
+     "соль пищевая тип 1",
+     21
+    ],
+    [
+     "соль пищевая тип 7",
+     21
+    ]
+   ],
+   "10.86.10.126": [
+    [
+     "творог, обогащенный витаминно-минеральными комплексами для детского пи",
+     148
+    ],
+    [
+     "творог для детского питания",
+     36
+    ],
+    [
+     "творог для детского питания тип 2",
+     23
+    ],
+    [
+     "творог для детского питания тип 1",
+     15
+    ],
+    [
+     "биотворог для детского питания тип 1",
+     9
+    ],
+    [
+     "биотворог для детского питания",
+     5
+    ]
+   ],
+   "10.86.10.990": [
+    [
+     "специализированная пищевая продукция, в том числе диетическая, не вклю",
+     122
+    ],
+    [
+     "специализированный пищевой продукт диетического профилактического пита",
+     5
+    ],
+    [
+     "продукт специализированный стерилизованный для диетического лечебного ",
+     4
+    ],
+    [
+     "индивидуальный рацион питания в индивидуальной упаковке № 1",
+     3
+    ],
+    [
+     "индивидуальный рацион питания в индивидуальной упаковке № 2",
+     3
+    ],
+    [
+     "индивидуальный рацион питания в индивидуальной упаковке № 3",
+     3
+    ]
+   ],
+   "10.89.19.290": [
+    [
+     "гематоген тип 2",
+     36
+    ],
+    [
+     "продукты пищевые прочие, не включенные в другие группировки",
+     25
+    ],
+    [
+     "услуги по ремонту и техническому обслуживанию подъемно-транспортного о",
+     23
+    ],
+    [
+     "поставка продуктов питания",
+     12
+    ],
+    [
+     "поставка продуктов питания с 12.01.2026 по 31.01.2026",
+     12
+    ],
+    [
+     "поставка продуктов питания в январе 2026 года",
+     10
+    ]
+   ],
+   "11.07.19.159": [
+    [
+     "напитки сухие инстантные (быстрорастворимые) тип 1",
+     1015
+    ],
+    [
+     "напитки витаминизированные промышленного производства сухие инстантные",
+     44
+    ],
+    [
+     "напитки сухие инстантные",
+     40
+    ],
+    [
+     "напитки сухие инстантные (быстрорастворимые)",
+     30
+    ],
+    [
+     "концентраты напитков прочие",
+     12
+    ],
+    [
+     "напиток витаминизированный",
+     10
+    ]
+   ],
+   "14.19.22.130": [
+    [
+     "плавки",
+     11
+    ],
+    [
+     "купальник раздельный",
+     10
+    ],
+    [
+     "плавки мужские",
+     10
+    ],
+    [
+     "купальник (сплошной)",
+     9
+    ],
+    [
+     "купальник слитный",
+     8
+    ],
+    [
+     "гидрокостюм стартовый женский",
+     4
+    ]
+   ],
+   "17.12.14.142": [
+    [
+     "бумага для регистрации электрокардиограмм",
+     474
+    ],
+    [
+     "бумага диаграммная",
+     15
+    ],
+    [
+     "бумага для электроэнцефалографической регистрации",
+     7
+    ],
+    [
+     "бумага регистрирующая для экг",
+     7
+    ],
+    [
+     "бумага для ктг",
+     6
+    ],
+    [
+     "бумага регистрирующая для фетального монитора",
+     6
+    ]
+   ],
+   "17.12.71.000": [
+    [
+     "картон цветной набор тип 1",
+     83
+    ],
+    [
+     "картон",
+     2
+    ],
+    [
+     "картон цветной (a4, 10 листов, 10 цветов, немелованный)",
+     2
+    ],
+    [
+     "цветной музейный бескислотный картон для паспарту",
+     2
+    ],
+    [
+     "альбом для рисования",
+     1
+    ],
+    [
+     "бумага для акварели, а4, 40 листов, 200 г/м2",
+     1
+    ]
+   ],
+   "17.23.13.141": [
+    [
+     "бланк приложения к аттестату об основном общем образовании",
+     365
+    ],
+    [
+     "бланк приложения к аттестату о среднем общем образовании",
+     331
+    ],
+    [
+     "бланк аттестата о среднем общем образовании с отличием к медали \"за ос",
+     263
+    ],
+    [
+     "бланк аттестата о среднем общем образовании с отличием к медали «за ос",
+     259
+    ],
+    [
+     "бланк аттестата об основном общем образовании с твердой обложкой",
+     228
+    ],
+    [
+     "бланк аттестата о среднем общем образовании с твердой обложкой",
+     137
+    ]
+   ],
+   "18.11.10.000": [
+    [
+     "оказание услуг по размещению информации в периодическом печатном издан",
+     11
+    ],
+    [
+     "оказание услуг по подписке на периодическое печатное издание «царскосе",
+     5
+    ],
+    [
+     "услуги по печатанию газет",
+     4
+    ],
+    [
+     "подписка на периодическое печатное  издание \"царскосельская газета\" на",
+     3
+    ],
+    [
+     "оказание услуг по оформлению подписки на периодическое печатное издани",
+     2
+    ],
+    [
+     "публикация в газете \"санкт-петербургские ведомости\" 01.07.2025 г.",
+     2
+    ]
+   ],
+   "20.30.1": [
+    [
+     "грунтовка антикоррозийная",
+     108
+    ],
+    [
+     "лак для дерева",
+     42
+    ],
+    [
+     "материалы лакокрасочные на основе полимеров",
+     22
+    ],
+    [
+     "колеровочная паста",
+     4
+    ],
+    [
+     "грунтовка антикоррозийная тип 2",
+     3
+    ],
+    [
+     "грунтовка антикоррозийная тип 13",
+     2
+    ]
+   ],
+   "20.30.23.120": [
+    [
+     "колер паста универсал",
+     24
+    ],
+    [
+     "колер для краски",
+     8
+    ],
+    [
+     "колер паста",
+     8
+    ],
+    [
+     "колорант (красители оттеночные)",
+     8
+    ],
+    [
+     "красители оттеночные",
+     8
+    ],
+    [
+     "паста универсальная",
+     7
+    ]
+   ],
+   "20.42.14.120": [
+    [
+     "грим",
+     6
+    ],
+    [
+     "аквагрим",
+     4
+    ],
+    [
+     "грим жирный металлик",
+     4
+    ],
+    [
+     "грим жирный белый",
+     3
+    ],
+    [
+     "грим наливной палитра",
+     3
+    ],
+    [
+     "грим жирный",
+     2
+    ]
+   ],
+   "21.20.23.191": [
+    [
+     "аллергены",
+     103
+    ],
+    [
+     "аллергены бактерий",
+     26
+    ],
+    [
+     "аллерген туберкулезный рекомбинантный в стандартном разведении",
+     21
+    ],
+    [
+     "аллергены трав пыльцевые",
+     19
+    ],
+    [
+     "аллергены пищевые",
+     12
+    ],
+    [
+     "микст-аллерген из пыльцы сорных трав и подсолнечника для диагностики и",
+     12
+    ]
+   ],
+   "22.19.60.119": [
+    [
+     "перчатки смотровые/процедурные нитриловые, неопудренные, нестерильные",
+     1932
+    ],
+    [
+     "перчатки резиновые общего назначения (кроме медицинских)",
+     1761
+    ],
+    [
+     "перчатки смотровые/процедурные из латекса гевеи, неопудренные, нестери",
+     1047
+    ],
+    [
+     "перчатки смотровые/процедурные нитриловые, неопудренные, нестерильные ",
+     133
+    ],
+    [
+     "перчатки смотровые/процедурные из латекса гевеи, неопудренные, стериль",
+     88
+    ],
+    [
+     "перчатки",
+     77
+    ]
+   ],
+   "22.23.13.190": [
+    [
+     "бак тип 2",
+     17
+    ],
+    [
+     "емкость промышленная",
+     7
+    ],
+    [
+     "резервуары, цистерны, баки и аналогичные емкости пластмассовые вместим",
+     4
+    ],
+    [
+     "бак тип 1",
+     3
+    ],
+    [
+     "бак пластиковый с крышкой  45л d=42см, h=57см, для бытовых отходов",
+     2
+    ],
+    [
+     "емкость для воды sterh gor 500 h blue или эквивалент",
+     2
+    ]
+   ],
+   "26.20.11.110": [
+    [
+     "ноутбук",
+     1586
+    ],
+    [
+     "планшетный компьютер",
+     87
+    ],
+    [
+     "ноутбук¹ тип 3",
+     51
+    ],
+    [
+     "ноутбуки, в том числе портативные в защищенном исполнении, предназначе",
+     45
+    ],
+    [
+     "ноутбук¹ тип 7",
+     33
+    ],
+    [
+     "ноутбук¹ тип 1",
+     30
+    ]
+   ],
+   "26.20.13.000": [
+    [
+     "интерактивная панель",
+     1052
+    ],
+    [
+     "интерактивный стол",
+     45
+    ],
+    [
+     "интерактивная панель¹ тип 3",
+     34
+    ],
+    [
+     "машины вычислительные электронные цифровые, содержащие в одном корпусе",
+     26
+    ],
+    [
+     "интерактивная панель тип 13",
+     19
+    ],
+    [
+     "интерактивная панель тип 2",
+     10
+    ]
+   ],
+   "26.20.40.142": [
+    [
+     "установочный комплект фстэк «мастер скачиваний» с расширенным функцион",
+     55
+    ],
+    [
+     "системы и средства обеспечения безопасности информации (программные, п",
+     11
+    ],
+    [
+     "сертифицированный комплект для установки по vipnet client for windows ",
+     5
+    ],
+    [
+     "комплекс безопасности \"континент\". версия 4. узел безопасности. аппара",
+     4
+    ],
+    [
+     "передача права на использование по vipnet client for windows 4.х (кс3)",
+     4
+    ],
+    [
+     "право на использование программы \"комплекс безопасности \"континент\". в",
+     4
+    ]
+   ],
+   "31.01.11.150": [
+    [
+     "стул на металлическом каркасе",
+     1868
+    ],
+    [
+     "стул ученический",
+     1298
+    ],
+    [
+     "кресло офисное",
+     505
+    ],
+    [
+     "секция стульев многоместная",
+     254
+    ],
+    [
+     "скамейка для раздевалок",
+     207
+    ],
+    [
+     "стул",
+     149
+    ]
+   ],
+   "32.99.56.131": [
+    [
+     "памятный сувенир \"парусник\" в подарочной коробке",
+     20
+    ],
+    [
+     "изделия художественной обработки стекла",
+     6
+    ],
+    [
+     "памятный сувенир «парусник» в подарочной коробке",
+     4
+    ],
+    [
+     "изделия художественной резьбы по камню",
+     3
+    ],
+    [
+     "лафитник",
+     2
+    ],
+    [
+     "поставка памятного сувенира \"парусник\" в подарочной коробке",
+     2
+    ]
+   ],
+   "32.99.56.132": [
+    [
+     "изделия художественной обработки фарфора и полуфарфора",
+     39
+    ],
+    [
+     "подарочный набор",
+     6
+    ],
+    [
+     "ваза",
+     5
+    ],
+    [
+     "конфетница",
+     5
+    ],
+    [
+     "фарфоровая кружка «ван гог. куст»",
+     3
+    ],
+    [
+     "бокал с блюдцем форма ленинградский рисунок мамина дача",
+     2
+    ]
+   ],
+   "32.99.59.000": [
+    [
+     "изделия различные прочие, не включенные в другие группировки",
+     352
+    ],
+    [
+     "принадлежность для флажной продукции",
+     61
+    ],
+    [
+     "мешки для мусора",
+     49
+    ],
+    [
+     "флаг россии",
+     38
+    ],
+    [
+     "настольный флагшток с одним флагом",
+     36
+    ],
+    [
+     "губки бытовые",
+     31
+    ]
+   ]
+  }
+ },
+ "profile_version": "1.0.0",
+ "replay": {
+  "definition": "targets: platform=replay_platform, publish_date>=replay_from, has winner and items; history: all lots with strictly earlier publish_date; class = first 5 chars (XX.XX)",
+  "participant_seen_same_class_pct": 93.5,
+  "participant_seen_same_class_xx_xx": 342069,
+  "participants": 365829,
+  "pct": {
+   "winner_seen_any": 98.4,
+   "winner_seen_same_class_xx_xx": 92.5,
+   "winner_seen_same_customer": 66.8,
+   "winner_seen_same_full_code": 85.5
+  },
+  "target_lots": 134095,
+  "winner_seen_any": 131943,
+  "winner_seen_same_class_xx_xx": 124104,
+  "winner_seen_same_customer": 89610,
+  "winner_seen_same_full_code": 114665
+ },
+ "supplier_semantics": {
+  "all_ais_gz_rows_winner": true,
+  "by_platform_year": {
+   "АИС ГЗ|2024": {
+    "lots": 169494,
+    "lots_single_supplier": 146716,
+    "lots_single_supplier_pct": 99.8,
+    "lots_with_0_winners": 0,
+    "lots_with_0_winners_pct": 0.0,
+    "lots_with_2plus_suppliers": 267,
+    "lots_with_2plus_suppliers_pct": 0.2,
+    "lots_with_2plus_winners": 267,
+    "lots_with_supplier": 146983,
+    "max_suppliers_per_lot": 13,
+    "mean_suppliers_per_lot": 1.0,
+    "rows_non_winner": 0,
+    "rows_winner": 147610,
+    "supplier_rows": 147610,
+    "suppliers_per_lot=1": 146716,
+    "suppliers_per_lot=2": 115,
+    "suppliers_per_lot=3": 71,
+    "suppliers_per_lot=4": 28,
+    "suppliers_per_lot=5": 21,
+    "suppliers_per_lot=6": 32,
+    "winner_row_pct": 100.0
+   },
+   "АИС ГЗ|2025": {
+    "lots": 163152,
+    "lots_single_supplier": 131372,
+    "lots_single_supplier_pct": 100.0,
+    "lots_with_0_winners": 0,
+    "lots_with_0_winners_pct": 0.0,
+    "lots_with_2plus_suppliers": 12,
+    "lots_with_2plus_suppliers_pct": 0.0,
+    "lots_with_2plus_winners": 12,
+    "lots_with_supplier": 131384,
+    "max_suppliers_per_lot": 9,
+    "mean_suppliers_per_lot": 1.0,
+    "rows_non_winner": 0,
+    "rows_winner": 131421,
+    "supplier_rows": 131421,
+    "suppliers_per_lot=1": 131372,
+    "suppliers_per_lot=2": 5,
+    "suppliers_per_lot=3": 1,
+    "suppliers_per_lot=4": 1,
+    "suppliers_per_lot=5": 3,
+    "suppliers_per_lot=6": 2,
+    "winner_row_pct": 100.0
+   },
+   "ЭМ|2024": {
+    "lots": 134044,
+    "lots_single_supplier": 56961,
+    "lots_single_supplier_pct": 42.5,
+    "lots_with_0_winners": 3304,
+    "lots_with_0_winners_pct": 2.5,
+    "lots_with_2plus_suppliers": 77083,
+    "lots_with_2plus_suppliers_pct": 57.5,
+    "lots_with_2plus_winners": 9,
+    "lots_with_supplier": 134044,
+    "max_suppliers_per_lot": 23,
+    "mean_suppliers_per_lot": 2.63,
+    "rows_non_winner": 221925,
+    "rows_winner": 130749,
+    "supplier_rows": 352674,
+    "suppliers_per_lot=1": 56961,
+    "suppliers_per_lot=2": 25647,
+    "suppliers_per_lot=3": 17482,
+    "suppliers_per_lot=4": 11969,
+    "suppliers_per_lot=5": 8373,
+    "suppliers_per_lot=6": 13612,
+    "winner_row_pct": 37.1
+   },
+   "ЭМ|2025": {
+    "lots": 137762,
+    "lots_single_supplier": 55761,
+    "lots_single_supplier_pct": 40.5,
+    "lots_with_0_winners": 3666,
+    "lots_with_0_winners_pct": 2.7,
+    "lots_with_2plus_suppliers": 82001,
+    "lots_with_2plus_suppliers_pct": 59.5,
+    "lots_with_2plus_winners": 2,
+    "lots_with_supplier": 137762,
+    "max_suppliers_per_lot": 25,
+    "mean_suppliers_per_lot": 2.75,
+    "rows_non_winner": 244335,
+    "rows_winner": 134098,
+    "supplier_rows": 378433,
+    "suppliers_per_lot=1": 55761,
+    "suppliers_per_lot=2": 25966,
+    "suppliers_per_lot=3": 18578,
+    "suppliers_per_lot=4": 13134,
+    "suppliers_per_lot=5": 8897,
+    "suppliers_per_lot=6": 15426,
+    "winner_row_pct": 35.4
+   }
+  },
+  "em_participants_never_won_on_em": 4679,
+  "inn_platform_overlap": {
+   "ais_gz_only": 25375,
+   "both": 10339,
+   "em_only": 8482
+  }
+ },
+ "suppliers": {
+  "duplicate_lot_inn_pairs": 31,
+  "inn_checksum_invalid_unique": 14,
+  "inn_kind_unique": {
+   "individual_entrepreneur": 23597,
+   "invalid": 8,
+   "legal_entity": 20591
+  },
+  "inn_kind_unique_pct": {
+   "individual_entrepreneur": 53.4,
+   "invalid": 0.0,
+   "legal_entity": 46.6
+  },
+  "inn_length_rows": {
+   "10": 706494,
+   "12": 303637,
+   "13": 1,
+   "15": 1,
+   "9": 5
+  },
+  "inn_nondigit_rows": 6,
+  "inn_region_prefix_rows_top": [
+   [
+    "78",
+    751192,
+    74.4
+   ],
+   [
+    "47",
+    56707,
+    5.6
+   ],
+   [
+    "77",
+    38298,
+    3.8
+   ],
+   [
+    "66",
+    10447,
+    1.0
+   ],
+   [
+    "50",
+    9050,
+    0.9
+   ],
+   [
+    "97",
+    8837,
+    0.9
+   ],
+   [
+    "74",
+    8188,
+    0.8
+   ],
+   [
+    "61",
+    7362,
+    0.7
+   ]
+  ],
+  "inn_region_prefix_unique_top": [
+   [
+    "78",
+    23323,
+    52.8
+   ],
+   [
+    "77",
+    2981,
+    6.7
+   ],
+   [
+    "47",
+    2332,
+    5.3
+   ],
+   [
+    "50",
+    960,
+    2.2
+   ],
+   [
+    "97",
+    760,
+    1.7
+   ],
+   [
+    "66",
+    735,
+    1.7
+   ],
+   [
+    "74",
+    479,
+    1.1
+   ],
+   [
+    "23",
+    468,
+    1.1
+   ]
+  ],
+  "is_winner_values": {
+   "false": 466260,
+   "true": 543878
+  },
+  "kpp_bad_format_rows": 0,
+  "kpp_empty_pct": 18.9,
+  "kpp_empty_rows": 191361,
+  "malformed_rows": 0,
+  "orphan_lots": 0,
+  "orphan_rows_lot_not_in_notices": 0,
+  "rows": 1010138,
+  "unique_inns": 44196,
+  "unique_lots": 550173
+ }
+}

@@ -1,0 +1,40 @@
+{
+  "version": "0.2.0",
+  "description": "Machine-readable source-column -> canonical-field coverage for the organizer CSVs (P1-001B). Human-readable rules: docs/domain/DATA_MAPPING.md. Every source column must appear here as MAPPED or NOT_MAPPED (with reason); scripts/validate_contracts.py enforces this against reports/dataset_profile.json.",
+  "uuid_namespace": "9a58f195-b16e-554c-b016-5a636976af05",
+  "datasets": {
+    "notices_24_25": {
+      "file": "Извещения_24-25.csv",
+      "columns": {
+        "publish_date":      { "status": "MAPPED", "targets": ["ProcurementLot.publish_date", "SupplierHistory.publish_date", "Supplier.first_seen_publish_date (aggregate)"] },
+        "procedure_id":      { "status": "MAPPED", "targets": ["ProcurementLot.procedure_id"] },
+        "lot_id":            { "status": "MAPPED", "targets": ["ProcurementLot.lot_id", "ProcurementLot.id"] },
+        "start_price":       { "status": "MAPPED", "targets": ["ProcurementLot.start_price"] },
+        "reqnum":            { "status": "MAPPED", "targets": ["ProcurementLot.reqnum"] },
+        "procedure_name":    { "status": "MAPPED", "targets": ["ProcurementLot.procedure_name_variant (only when it differs from subject)"] },
+        "subject":           { "status": "MAPPED", "targets": ["ProcurementLot.subject"] },
+        "is_smp":            { "status": "MAPPED", "targets": ["ProcurementLot.is_smp"] },
+        "customer_inn":      { "status": "MAPPED", "targets": ["ProcurementLot.customer_inn"] },
+        "customer_kpp":      { "status": "MAPPED", "targets": ["ProcurementLot.customer_kpp"] },
+        "is_eshop_or_aisgz": { "status": "MAPPED", "targets": ["ProcurementLot.platform", "SupplierHistory.platform", "SupplierHistory.coverage_semantics"] }
+      }
+    },
+    "suppliers_24_25": {
+      "file": "Поставщики_24-25.csv",
+      "columns": {
+        "lot_id":       { "status": "MAPPED", "targets": ["SupplierHistory.lot_id", "SupplierHistory.id"] },
+        "supplier_inn": { "status": "MAPPED", "targets": ["SupplierHistory.supplier_inn", "SupplierHistory.supplier_id", "Supplier.inn", "Supplier.supplier_id", "Supplier.entity_type", "Supplier.inn_region_code"] },
+        "supplier_kpp": { "status": "MAPPED", "targets": ["SupplierHistory.supplier_kpp"] },
+        "is_winner":    { "status": "MAPPED", "targets": ["SupplierHistory.is_winner"] }
+      }
+    },
+    "items_24_25": {
+      "file": "ТРУ_24-25.csv",
+      "columns": {
+        "lot_id":       { "status": "MAPPED", "targets": ["ProcurementItem.lot_id", "ProcurementItem.line_no", "ProcurementItem.id"] },
+        "product_name": { "status": "MAPPED", "targets": ["ProcurementItem.product_name_raw", "ProcurementItem.product_name_normalized (P1-001C)", "ProcurementItem.content_hash"] },
+        "okpd2_code":   { "status": "MAPPED", "targets": ["ProcurementItem.okpd2_code_raw", "ProcurementItem.okpd2_code", "ProcurementItem.okpd2_depth", "ProcurementItem.okpd2_section", "ProcurementItem.okpd2_class", "ProcurementItem.okpd2_subclass", "ProcurementItem.okpd2_group", "ProcurementItem.okpd2_subgroup", "ProcurementItem.okpd2_kind"] }
+      }
+    }
+  }
+}

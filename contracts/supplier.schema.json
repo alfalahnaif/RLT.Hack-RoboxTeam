@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "supplier.schema.json",
+  "title": "Supplier",
+  "version": "0.2.0",
+  "description": "Canonical supplier identity, one per distinct INN. Built from organizer supplier relations or from curated external enrichment. No names, regions or roles here (those are SupplierProfile + SupplierEvidence). 'Known' is temporal and computed, never stored: known_at(T) := first_seen_publish_date < T (strict).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["supplier_id", "inn", "entity_type", "inn_region_code", "origin", "first_seen_publish_date", "data_quality_flags"],
+  "properties": {
+    "supplier_id": { "$ref": "common.schema.json#/$defs/uuid", "description": "UUIDv5('supplier:inn:' + inn) — identity is the INN string; KPP never participates." },
+    "inn": { "$ref": "common.schema.json#/$defs/inn" },
+    "entity_type": {
+      "type": "string",
+      "enum": ["legal_entity", "individual_entrepreneur", "unknown"],
+      "description": "Legal form from INN shape only: 10 digits -> legal_entity; 12 digits -> individual_entrepreneur (natural-person INN: IE or other individual); otherwise unknown. Never a market role (HD-09, BR-48)."
+    },
+    "inn_region_code": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{2}$",
+      "description": "First two INN digits = tax-registration region evidence (A-115). Not delivery capability, not location of production. Null when INN is malformed."
+    },
+    "origin": {
+      "type": "string",
+      "enum": ["ORGANIZER_DATA", "EXTERNAL_ENRICHMENT"],
+      "description": "ORGANIZER_DATA if the INN occurs in Поставщики_24-25.csv; EXTERNAL_ENRICHMENT for curated candidates absent from organizer data."
+    },
+    "first_seen_publish_date": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/date" }, { "type": "null" }],
+      "description": "Earliest publish_date among the supplier's SupplierHistory lots (any platform, winner or not). Null for EXTERNAL_ENRICHMENT. Temporal knownness for replay: known_at(T) = first_seen_publish_date < T."
+    },
+    "data_quality_flags": {
+      "allOf": [
+        { "$ref": "common.schema.json#/$defs/quality_flags" },
+        { "items": { "enum": ["INVALID_INN_FORMAT", "INVALID_INN_CHECKSUM"] } }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "entity_type": { "const": "legal_entity" } } },
+      "then": { "properties": { "inn": { "pattern": "^[0-9]{10}$" }, "inn_region_code": { "type": "string" },
+                                "data_quality_flags": { "not": { "contains": { "const": "INVALID_INN_FORMAT" } } } } }
+    },
+    {
+      "if": { "properties": { "entity_type": { "const": "individual_entrepreneur" } } },
+      "then": { "properties": { "inn": { "pattern": "^[0-9]{12}$" }, "inn_region_code": { "type": "string" },
+                                "data_quality_flags": { "not": { "contains": { "const": "INVALID_INN_FORMAT" } } } } }
+    },
+    {
+      "if": { "properties": { "entity_type": { "const": "unknown" } } },
+      "then": { "properties": { "inn_region_code": { "type": "null" }, "data_quality_flags": { "contains": { "const": "INVALID_INN_FORMAT" } } } }
+    },
+    {
+      "if": { "properties": { "origin": { "const": "ORGANIZER_DATA" } } },
+      "then": { "properties": { "first_seen_publish_date": { "type": "string" } } },
+      "else": { "properties": { "first_seen_publish_date": { "type": "null" } } }
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+{
+ "checks": {
+  "INN checksum invalid (distinct)": {
+   "expected": 14,
+   "normalize": 14,
+   "ok": true
+  },
+  "INN checksum invalid (rows)": {
+   "expected": 119,
+   "normalize": 119,
+   "ok": true
+  },
+  "INVALID_KPP_FORMAT rows": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "INVALID_OKPD2 rows": {
+   "expected": 1,
+   "normalize": 1,
+   "ok": true
+  },
+  "MISSING_OKPD2 rows": {
+   "expected": 238,
+   "normalize": 238,
+   "ok": true
+  },
+  "MISSING_PRODUCT_NAME rows": {
+   "expected": 114,
+   "normalize": 114,
+   "ok": true
+  },
+  "MISSING_START_PRICE": {
+   "expected": 3,
+   "normalize": 3,
+   "ok": true
+  },
+  "MISSING_SUBJECT": {
+   "expected": 1,
+   "normalize": 1,
+   "ok": true
+  },
+  "ZERO_START_PRICE": {
+   "expected": 21,
+   "normalize": 21,
+   "ok": true
+  },
+  "customer INVALID_INN_CHECKSUM": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "customer INVALID_INN_FORMAT": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "customer MISSING_INN": {
+   "expected": 8449,
+   "normalize": 8449,
+   "ok": true
+  },
+  "customer MISSING_KPP": {
+   "expected": 8449,
+   "normalize": 8449,
+   "ok": true
+  },
+  "digit-count mismatches": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "distinct supplier INNs": {
+   "expected": 44196,
+   "normalize": 44196,
+   "ok": true
+  },
+  "distinct valid OKPD2": {
+   "expected": 8452,
+   "normalize": 8452,
+   "ok": true
+  },
+  "individual_entrepreneur": {
+   "expected": 23597,
+   "normalize": 23597,
+   "ok": true
+  },
+  "is_smp true": {
+   "expected": 149963,
+   "normalize": 149963,
+   "ok": true
+  },
+  "is_winner true": {
+   "expected": 543878,
+   "normalize": 543878,
+   "ok": true
+  },
+  "legal_entity": {
+   "expected": 20591,
+   "normalize": 20591,
+   "ok": true
+  },
+  "non-idempotent names": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "platform AIS_GZ lots": {
+   "expected": 332646,
+   "normalize": 332646,
+   "ok": true
+  },
+  "platform EM lots": {
+   "expected": 271806,
+   "normalize": 271806,
+   "ok": true
+  },
+  "reference-mapping mismatches": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "structural errors (platform/bool/price/date)": {
+   "expected": 0,
+   "normalize": 0,
+   "ok": true
+  },
+  "supplier MISSING_KPP rows": {
+   "expected": 191361,
+   "normalize": 191361,
+   "ok": true
+  },
+  "unknown (malformed)": {
+   "expected": 8,
+   "normalize": 8,
+   "ok": true
+  }
+ },
+ "items": {
+  "chars_outside_core_alphabet_rows": {
+   "µ": 16,
+   "¼": 29,
+   "½": 162,
+   "¾": 42,
+   "à": 12,
+   "á": 38,
+   "â": 17,
+   "ä": 8,
+   "æ": 23,
+   "è": 22,
+   "é": 80,
+   "ê": 9,
+   "í": 40,
+   "ñ": 8,
+   "ó": 14,
+   "ö": 35,
+   "ø": 613,
+   "ü": 16,
+   "α": 72,
+   "β": 167,
+   "σ": 6,
+   "φ": 37,
+   "ѐ": 36,
+   "ѕ": 8,
+   "і": 39
+  },
+  "digit_count_mismatch_distinct_names": 0,
+  "distinct_product_names": 1109612,
+  "distinct_raw_okpd2": 8454,
+  "distinct_valid_okpd2": 8452,
+  "generic_type_marker_rows": 305284,
+  "non_idempotent_distinct_names": 0,
+  "nonempty_names_normalized_to_null_examples": [
+   "----",
+   "------"
+  ],
+  "nonempty_names_normalized_to_null_rows": 3,
+  "okpd2_depth_distinct_valid": {
+   "1": 9,
+   "2": 261,
+   "3": 1475,
+   "4": 6707
+  },
+  "okpd2_flags_rows": {
+   "INVALID_OKPD2": 1,
+   "MISSING_OKPD2": 238,
+   "OK": 2971412
+  },
+  "okpd2_invalid_values": [
+   "25.71.11.1200"
+  ],
+  "product_name_flags_rows": {
+   "MISSING_PRODUCT_NAME": 114,
+   "OK": 2971537
+  },
+  "top_type_markers": [
+   [
+    "тип 1",
+    111889
+   ],
+   [
+    "тип 2",
+    57531
+   ],
+   [
+    "тип 3",
+    30646
+   ],
+   [
+    "тип 4",
+    18458
+   ],
+   [
+    "тип 5",
+    11373
+   ]
+  ]
+ },
+ "normalization_version": "1.0.0",
+ "notices": {
+  "customer_inn": {
+   "MISSING_INN": 8449,
+   "legal_entity": 596003
+  },
+  "customer_kpp": {
+   "MISSING_KPP": 8449,
+   "OK": 596003
+  },
+  "date_shapes": {
+   "9999-99-99": 604452
+  },
+  "distinct_dates": 705,
+  "invalid_dates": 0,
+  "is_smp": {
+   "False": 454489,
+   "True": 149963
+  },
+  "platform": {
+   "AIS_GZ": 332646,
+   "EM": 271806
+  },
+  "procedure_name_variant_lots": 5533,
+  "start_price_flags": {
+   "MISSING_START_PRICE": 3,
+   "OK": 604428,
+   "ZERO_START_PRICE": 21
+  },
+  "structural_errors": {},
+  "subject_flags": {
+   "MISSING_SUBJECT": 1,
+   "OK": 604451
+  }
+ },
+ "reference_mismatch_examples": [],
+ "suppliers": {
+  "distinct_canonical_inns": 44196,
+  "distinct_raw_inn_spellings": 44199,
+  "entity_type_distinct": {
+   "individual_entrepreneur": 23597,
+   "legal_entity": 20591,
+   "unknown": 8
+  },
+  "inn_flags_distinct": {
+   "INVALID_INN_CHECKSUM": 14,
+   "INVALID_INN_FORMAT": 8
+  },
+  "inn_flags_rows": {
+   "INVALID_INN_CHECKSUM": 119,
+   "INVALID_INN_FORMAT": 12
+  },
+  "is_winner": {
+   "False": 466260,
+   "True": 543878
+  },
+  "is_winner_errors": 0,
+  "kpp_flags_rows": {
+   "MISSING_KPP": 191361,
+   "OK": 818777
+  },
+  "malformed_inn_shapes": {
+   "999999999": 4,
+   "9999999999999": 1,
+   "999999999999999": 1,
+   "aa9999999": 1,
+   "aa99999999": 1
+  }
+ }
+}

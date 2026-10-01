@@ -1,0 +1,105 @@
+{
+ "benchmark_name": "supplier-radar-temporal-replay",
+ "benchmark_version": "1.0.0",
+ "created_from_ingestion_delivery": [
+  {
+   "delivery_id": "2afa7461-1008-53a2-ad9a-65d7e0cec227",
+   "normalization_version": "1.0.0"
+  }
+ ],
+ "difficulty": {
+  "EASY": "a winner had a relation (any role) before T on a lot with the same full OKPD2 code",
+  "HARD": "otherwise (seen only in other categories, or never)",
+  "MEDIUM": "otherwise, a winner had a relation before T in the same OKPD2 group (XX.XX)",
+  "note": "metadata for analysis only; computed after selection; text similarity not used"
+ },
+ "eligibility": {
+  "golden_lots_excluded": [
+   "5542696",
+   "5545252",
+   "5612123",
+   "5659204",
+   "5718896"
+  ],
+  "has_items": true,
+  "min_observed_relations": 2,
+  "min_winner_relations": 1,
+  "platform": "EM",
+  "publish_date": "valid DATE (all are)"
+ },
+ "files": {
+  "qrels.csv": "c5eb5b84c218255e73f530c4686170b3bd6738fdf33d7ebf69be9bdfff705f76",
+  "queries.csv": "31fcf0f5f1b319946350f5c3506184e644653580669edc88e65dc2f8ab55b227",
+  "query_metadata.csv": "4821f998591edf80faaadd67bf26e217c650d527440ade3023c217762f6091d2"
+ },
+ "generator": "backend/app/benchmark/temporal.py",
+ "generator_version": "1.0.0",
+ "known_limitations": [
+  "Weak labels: unjudged suppliers are not proven irrelevant; precision-style metrics underestimate quality.",
+  "ЭМ participant-list completeness is not officially confirmed (coverage MIXED_WINNER_NONWINNER_ROWS_OBSERVED).",
+  "АИС ГЗ is excluded from the primary benchmark (only winner rows observed; OQ-33).",
+  "History window starts 2024-01-08: early-2024 targets have little history (warm-up split only).",
+  "Lot-level labels: a supplier is relevant to the lot, not to a specific item of a multi-item lot.",
+  "~40% of eligible ЭМ lots have exactly 2 observed relations; small label sets make per-query metrics noisy."
+ ],
+ "label_semantics": {
+  "1": "observed non-winning relation on the target lot",
+  "2": "observed winner relation on the target lot",
+  "unjudged": "supplier not observed on the target lot — NOT evidence of irrelevance; it did not appear in the delivered ЭМ rows (it may not have bid, or may be relevant but absent)"
+ },
+ "qrel_counts": {
+  "dev|grade_1": 856,
+  "dev|grade_2": 300,
+  "holdout|grade_1": 751,
+  "holdout|grade_2": 300,
+  "warmup|grade_1": 110,
+  "warmup|grade_2": 50
+ },
+ "query_counts": {
+  "dev": 300,
+  "holdout": 300,
+  "warmup": 50
+ },
+ "sampling": "per split: strata = OKPD2 section of the lot's items (single section letter, MULTI, NONE); allocation proportional to sqrt(stratum size) (largest remainder, capped); within a stratum lots ordered by sha256(f'{seed}:{lot_id}') and the first k taken. Difficulty is NOT used for selection. query_metadata.stratum_weight = eligible/selected in the stratum (inverse inclusion probability) — report population-weighted metrics alongside unweighted ones.",
+ "sampling_seed": 20261001,
+ "schema_revision": "0001_organizer_schema",
+ "source_files": {
+  "items_24_25": {
+   "file": "ТРУ_24-25.csv",
+   "sha256": "faca00b80a48c9cb5f81dccb32016f8dc4c236567b36dcc29823d82bf53aafda"
+  },
+  "notices_24_25": {
+   "file": "Извещения_24-25.csv",
+   "sha256": "093516677eb01120c1a034f37428589dbfd85a22cb91af6dd03866042128aba4"
+  },
+  "suppliers_24_25": {
+   "file": "Поставщики_24-25.csv",
+   "sha256": "e24ff84e63444a83bb36506382773f11dac076e08c72e9163c0bfa9e687bd51b"
+  }
+ },
+ "splits": [
+  {
+   "from": "2024-07-01",
+   "name": "warmup",
+   "role": "debugging only",
+   "target_size": 50,
+   "to": "2024-12-31"
+  },
+  {
+   "from": "2025-01-01",
+   "name": "dev",
+   "role": "development + tuning",
+   "target_size": 300,
+   "to": "2025-06-30"
+  },
+  {
+   "from": "2025-07-01",
+   "name": "holdout",
+   "role": "SEALED final evaluation — never tune",
+   "target_size": 300,
+   "to": "2025-12-31"
+  }
+ ],
+ "temporal_rule": "For a query lot with publish_date T only supplier_history / lots / items with publish_date < T (strict) are visible; same-day and later facts are invisible (VISIBLE_HISTORY_SQL)."
+}
+        

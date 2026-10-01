@@ -1,0 +1,88 @@
+{
+  "description": "Synthetic enrichment fixtures (SupplierProfile / SupplierEvidence) — fictional supplier ids and example.org URLs; they illustrate the role-verification rules (ADR-H1 A2), not real companies.",
+  "supplier_profile": {
+    "manufacturer_verified_registry": {
+      "supplier_id": "6f1d6b6e-2a0b-5c3e-9f47-1b2c3d4e5f60",
+      "display_name": "Example Dairy Plant",
+      "legal_status": "active",
+      "region": "Ленинградская область",
+      "website": "https://example.org/dairy",
+      "okved_primary": "10.51",
+      "market_role": "manufacturer",
+      "role_basis": "official_registry",
+      "role_verification": "VERIFIED",
+      "role_confidence": 0.95,
+      "role_evidence_ids": ["0b9e4a1c-6d2f-5a8b-9c3e-7f1a2b3c4d5e"],
+      "observed_at": "2026-10-01T10:00:00Z"
+    },
+    "manufacturer_inferred_okved": {
+      "supplier_id": "7a2e7c7f-3b1c-5d4f-8a58-2c3d4e5f6071",
+      "legal_status": "active",
+      "okved_primary": "10.51",
+      "market_role": "manufacturer",
+      "role_basis": "okved",
+      "role_verification": "INFERRED",
+      "role_confidence": 0.3,
+      "role_evidence_ids": ["1c0f5b2d-7e3a-5b9c-8d4f-8a2b3c4d5e6f"],
+      "observed_at": "2026-10-01T10:00:00Z"
+    },
+    "supplier_from_procurement_history": {
+      "supplier_id": "8b3f8d80-4c2d-5e50-9b69-3d4e5f607182",
+      "market_role": "supplier",
+      "role_basis": "procurement_history",
+      "role_verification": "VERIFIED",
+      "role_confidence": 0.8,
+      "role_evidence_ids": ["2d1a6c3e-8f4b-5cad-9e50-9b3c4d5e6f70"],
+      "observed_at": "2026-10-01T10:00:00Z"
+    },
+    "role_unknown": {
+      "supplier_id": "9c409e91-5d3e-5f61-8c7a-4e5f60718293",
+      "market_role": "unknown",
+      "role_basis": null,
+      "role_verification": "UNVERIFIED",
+      "role_confidence": 0,
+      "role_evidence_ids": [],
+      "observed_at": "2026-10-01T10:00:00Z"
+    }
+  },
+  "supplier_evidence": {
+    "registry_role": {
+      "evidence_id": "0b9e4a1c-6d2f-5a8b-9c3e-7f1a2b3c4d5e",
+      "supplier_id": "6f1d6b6e-2a0b-5c3e-9f47-1b2c3d4e5f60",
+      "claim": "Listed in an official industrial-products registry as producer of sterilized milk",
+      "evidence_type": "OFFICIAL_REGISTRY",
+      "supports": "MARKET_ROLE",
+      "source_name": "official industrial registry (example)",
+      "source_url": "https://example.org/registry/record/123",
+      "observed_at": "2026-10-01T10:00:00Z",
+      "verification_status": "VERIFIED",
+      "confidence": 0.95,
+      "related_okpd2_codes": ["10.51.11.141"]
+    },
+    "okved_only": {
+      "evidence_id": "1c0f5b2d-7e3a-5b9c-8d4f-8a2b3c4d5e6f",
+      "supplier_id": "7a2e7c7f-3b1c-5d4f-8a58-2c3d4e5f6071",
+      "claim": "Primary OKVED 10.51 (dairy production) in the legal registry — production not confirmed",
+      "evidence_type": "LEGAL_REGISTRY",
+      "supports": "MARKET_ROLE",
+      "source_name": "legal entity registry (example)",
+      "source_record_ref": "registry-record-000001",
+      "observed_at": "2026-10-01T10:00:00Z",
+      "verification_status": "UNVERIFIED",
+      "confidence": 0.3
+    },
+    "procurement_history": {
+      "evidence_id": "2d1a6c3e-8f4b-5cad-9e50-9b3c4d5e6f70",
+      "supplier_id": "8b3f8d80-4c2d-5e50-9b69-3d4e5f607182",
+      "claim": "Won lot 5718896 (laptop) on 2025-06-16",
+      "evidence_type": "PROCUREMENT_HISTORY",
+      "supports": "PRODUCT_RELEVANCE",
+      "source_name": "organizer_dataset_2024_2025",
+      "source_record_ref": "lot:5718896",
+      "observed_at": "2025-06-16T00:00:00Z",
+      "verification_status": "VERIFIED",
+      "confidence": 1.0,
+      "related_okpd2_codes": ["26.20.11.110"]
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "title": "Search results",
+  "refine": "Refine request",
+  "newSearch": "New search",
+  "listLabel": "Supplier list",
+  "count": "Showing {shown} of {total}",
+  "countNone": "No suppliers found",
+  "sortedByMatch": "sorted by match",
+  "loadMore": "Show more",
+  "meta": "Response time {ms} ms · ranking {ranking} · parser {parser}",
+  "notFound": {
+    "title": "Search results unavailable",
+    "text": "The link has expired or the search ran in another session. Please search again."
+  },
+  "noRun": {
+    "title": "You have not searched yet",
+    "text": "Describe a need and the supplier market map will appear here."
+  },
+  "degraded": {
+    "title": "Results were produced in limited mode"
+  },
+  "lowConfidence": {
+    "title": "Low confidence results",
+    "text": "All top results have confidence below {value}. Check the evidence in the profiles before relying on them."
+  },
+  "filteredEmpty": {
+    "title": "The filters excluded every result",
+    "text": "Relax or reset the filters to see suppliers.",
+    "clear": "Reset filters"
+  },
+  "empty": {
+    "title": "No matching suppliers found",
+    "text": "Remove some characteristics or mandatory conditions, or describe the product in other words.",
+    "refine": "Refine request"
+  },
+  "summary": {
+    "label": "Market summary",
+    "suppliers": "Suppliers found",
+    "candidates": "{count, plural, one {# matching offering} other {# matching offerings}}",
+    "external": "New to AIS",
+    "share": "{value}% of found",
+    "known": "Known",
+    "knownHint": "Have supplied customers",
+    "byType": "By supplier type",
+    "none": "No data"
+  },
+  "intent": {
+    "label": "Search parameters",
+    "none": "No parameters recognised",
+    "edit": "Edit",
+    "edited": "edited",
+    "mandatory": "Mandatory",
+    "quantity": "{count} pcs",
+    "attr": {
+      "screen_size_inches": "Screen size",
+      "ram_gb": "RAM, GB",
+      "adjustable": "Adjustable",
+      "touch_points": "Touch points"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "scope": "Supplier scope",
+    "type": "Supplier type",
+    "any": "Any",
+    "region": "Region",
+    "anyRegion": "Any region",
+    "searchRegion": "Search region…",
+    "nothingFound": "Nothing found",
+    "clearRegion": "Clear region",
+    "experience": "Has similar procurement experience",
+    "minConfidence": "Minimum confidence",
+    "anyConfidence": "Any",
+    "atLeast": "At least {value}",
+    "reset": "Reset",
+    "apply": "Apply"
+  },
+  "card": {
+    "rank": "Rank {rank}",
+    "regionUnknown": "Region unknown",
+    "bestOffering": "Best offering",
+    "moreReasons": "More reasons: {count}",
+    "match": "Match",
+    "confidence": "Confidence",
+    "unknown": "no data",
+    "why": "Why it matches",
+    "hideWhy": "Hide explanation",
+    "compare": "Compare",
+    "openProfile": "Profile"
+  },
+  "why": {
+    "contributions": "What the match is made of",
+    "contributionsHint": "Feature points add up to the final score.",
+    "notApplicable": "not applicable",
+    "total": "Match",
+    "reasons": "Reasons",
+    "evidence": "Evidence",
+    "noEvidence": "There is no evidence for this supplier.",
+    "internalSource": "internal data",
+    "observed": "observed {date}",
+    "evidenceConfidence": "reliability {value}"
+  },
+  "compare": {
+    "tray": "Comparison selection",
+    "selected": "{count} of {max} selected",
+    "otherSearch": "from another search",
+    "clear": "Clear",
+    "needMore": "Select at least one more (minimum {min})",
+    "open": "Compare",
+    "limit": "You can compare at most {max} suppliers",
+    "conflictTitle": "Start a new comparison?",
+    "conflictText": "The comparison already contains suppliers from another search. Only results of one search can be compared.",
+    "keep": "Cancel",
+    "startNew": "Start new"
+  }
+}

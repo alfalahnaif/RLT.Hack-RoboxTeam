@@ -1,0 +1,36 @@
+{
+  "description": "Representative source rows for contract validation (P1-001B). Shapes, literals and texts follow the real organizer CSVs (lot ids, dates, prices, subjects and item texts of lots 5718896, 5545252, 4900162, 2077538 are real public procurement data). ALL INNs and KPPs are synthetic masks that preserve format (checksum-valid where the case requires it) — fixtures preserve structure, not identity. procedure_id values and lots 9900001/9900002 are synthetic edge cases. row_number values are fixture-local.",
+  "notices_24_25": [
+    { "row_number": 1, "publish_date": "2025-06-16", "procedure_id": "9000001", "lot_id": "5718896", "start_price": "71985.00", "reqnum": "", "procedure_name": "Поставка компьютерного оборудования", "subject": "Поставка компьютерного оборудования", "is_smp": "false", "customer_inn": "7800000010", "customer_kpp": "780001001", "is_eshop_or_aisgz": "ЭМ" },
+    { "row_number": 2, "publish_date": "2024-07-11", "procedure_id": "1841706", "lot_id": "2077538", "start_price": "530000.00", "reqnum": "", "procedure_name": "Преподавательские услуги (п.33 ч.1 ст.93 Федерального закона №44-ФЗ)", "subject": "Преподавательские услуги (п.33 ч.1 ст.93 Федерального закона №44-ФЗ)", "is_smp": "false", "customer_inn": "7800000027", "customer_kpp": "780001002", "is_eshop_or_aisgz": "АИС ГЗ" },
+    { "row_number": 3, "publish_date": "2025-02-04", "procedure_id": "9000003", "lot_id": "5545252", "start_price": "79840.00", "reqnum": "", "procedure_name": "Поставка кресел в ГБОУ СОШ № 358 Московского района Санкт-Петербурга", "subject": "Поставка кресел в ГБОУ СОШ № 358 Московского района Санкт-Петербурга", "is_smp": "false", "customer_inn": "7800000098", "customer_kpp": "780001003", "is_eshop_or_aisgz": "ЭМ" },
+    { "row_number": 4, "publish_date": "2024-03-05", "procedure_id": "9000004", "lot_id": "9900001", "start_price": "0.00", "reqnum": "12345", "procedure_name": "Закупка медицинских изделий (лот 2)", "subject": "Поставка медицинских изделий", "is_smp": "true", "customer_inn": "", "customer_kpp": "", "is_eshop_or_aisgz": "ЭМ" },
+    { "row_number": 5, "publish_date": "2024-11-20", "procedure_id": "9000005", "lot_id": "9900002", "start_price": "", "reqnum": "", "procedure_name": "", "subject": "", "is_smp": "true", "customer_inn": "4715000038", "customer_kpp": "471501001", "is_eshop_or_aisgz": "АИС ГЗ" },
+    { "row_number": 6, "publish_date": "2024-04-02", "procedure_id": "9000006", "lot_id": "4900162", "start_price": "250000.50", "reqnum": "", "procedure_name": "Поставка строительных товаров и материалов", "subject": "Поставка строительных товаров и материалов", "is_smp": "false", "customer_inn": "7800000010", "customer_kpp": "780001001", "is_eshop_or_aisgz": "АИС ГЗ" }
+  ],
+  "items_24_25": [
+    { "row_number": 1, "lot_id": "5718896", "product_name": "Ноутбук Acer Aspire 5 A515-57-50R7 15.6\"", "okpd2_code": "26.20.11.110" },
+    { "row_number": 2, "lot_id": "5545252", "product_name": "Кресло офисное Бюрократ CH-695NLT, Материал обивки сетка , ткань, Цвет обивки черный, Минимальная высота сиденья 445 мм, Максимальная высота сиденья 540 мм , Внутренняя ширина сиденья 480 мм, Глубина сиденья 440 мм, Максимальная статическая нагрузка кг 120, Высота спинки 445 мм, Механизм качания отсутствует, Материал крестовины пластик ,Подлокотники Да, Регулируемые подлокотники Нет, Поясничный упор Нет ,Гарантийный срок 12 мес ,Сборка мебели - бесплатная сборка", "okpd2_code": "31.01.11.150" },
+    { "row_number": 3, "lot_id": "4900162", "product_name": "Сверло по металлу Практика (033-543) 8х117 мм кобальтовое", "okpd2_code": "32.99.59.000" },
+    { "row_number": 4, "lot_id": "4900162", "product_name": "Дрель ударная Bosch GSB 13 RE (601217102) 600 Вт ключевой патрон", "okpd2_code": "32.99.59.000" },
+    { "row_number": 5, "lot_id": "2077538", "product_name": "Преподавательские услуги", "okpd2_code": "85.42.19.900" },
+    { "row_number": 6, "lot_id": "9900001", "product_name": "", "okpd2_code": "21.20" },
+    { "row_number": 7, "lot_id": "9900001", "product_name": "Пюре томатное тип 1¹", "okpd2_code": "" },
+    { "row_number": 8, "lot_id": "9900002", "product_name": "Услуги по ремонту и техническому обслуживанию оборудования общего назначения", "okpd2_code": "33.12.1" },
+    { "row_number": 9, "lot_id": "9900002", "product_name": "Перчатки смотровые нитриловые", "okpd2_code": "22.19.6O.119" },
+    { "row_number": 10, "lot_id": "9900002", "product_name": "Ремонт оборудования", "okpd2_code": "33" },
+    { "row_number": 11, "lot_id": "9900002", "product_name": "Изделие класса без раздела", "okpd2_code": "04.11" },
+    { "row_number": 12, "lot_id": "9900002", "product_name": "Ремонт оборудования", "okpd2_code": "33" }
+  ],
+  "suppliers_24_25": [
+    { "row_number": 1, "lot_id": "5718896", "supplier_inn": "7800000010", "supplier_kpp": "780101001", "is_winner": "true" },
+    { "row_number": 2, "lot_id": "5718896", "supplier_inn": "780000000177", "supplier_kpp": "", "is_winner": "false" },
+    { "row_number": 3, "lot_id": "2077538", "supplier_inn": "4715000038", "supplier_kpp": "471501001", "is_winner": "true" },
+    { "row_number": 4, "lot_id": "9900001", "supplier_inn": "470000000239", "supplier_kpp": "", "is_winner": "true" },
+    { "row_number": 5, "lot_id": "9900001", "supplier_inn": "470000000239", "supplier_kpp": "470101001", "is_winner": "true" },
+    { "row_number": 6, "lot_id": "9900001", "supplier_inn": "123456789", "supplier_kpp": "", "is_winner": "false" },
+    { "row_number": 7, "lot_id": "9900002", "supplier_inn": "7800000042", "supplier_kpp": "780201001", "is_winner": "true" },
+    { "row_number": 8, "lot_id": "9900002", "supplier_inn": "78О0000010", "supplier_kpp": "78020100", "is_winner": "true" },
+    { "row_number": 9, "lot_id": "5545252", "supplier_inn": "7800000010", "supplier_kpp": "780101001", "is_winner": "false" }
+  ]
+}

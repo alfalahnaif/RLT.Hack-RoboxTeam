@@ -1,0 +1,55 @@
+{
+  "title": "Compare suppliers",
+  "subtitle": "Up to {max} suppliers from one search side by side.",
+  "backToResults": "Back to results",
+  "toSearch": "Go to search",
+  "empty": {
+    "title": "No suppliers selected for comparison",
+    "text": "Tick “Compare” on {min}–{max} suppliers in the search results."
+  },
+  "needMore": {
+    "title": "Select more suppliers — at least {min}"
+  },
+  "noContext": {
+    "title": "Search context unavailable",
+    "text": "The original search results are no longer stored. Match scores are not shown; profile data is current."
+  },
+  "why": {
+    "title": "Why {a} ranks above {b}",
+    "text": "The main difference is {features}.",
+    "and": " and "
+  },
+  "tableLabel": "Supplier comparison",
+  "forQuery": "Request: “{query}”",
+  "suppliers": "Suppliers",
+  "rank": "Rank {rank}",
+  "remove": "Remove from comparison: {name}",
+  "bigDifference": "Largest difference",
+  "sections": {
+    "scores": "Scores",
+    "supplier": "Supplier",
+    "contributions": "Feature contributions to the match"
+  },
+  "rows": {
+    "match": "Match",
+    "confidence": "Confidence",
+    "type": "Manufacturer / distributor",
+    "market": "New / known",
+    "region": "Region",
+    "status": "Company status",
+    "contracts": "Similar contracts",
+    "evidence": "Product evidence",
+    "risks": "Risks"
+  },
+  "contracts": "{count, plural, one {# contract} other {# contracts}}",
+  "noContracts": "none",
+  "noRisks": "none detected",
+  "notApplicable": "not applicable",
+  "noScore": "The score is available only within a search context",
+  "noConfidence": "Not enough data to score",
+  "noRegion": "Region not stated in the sources",
+  "noStatus": "Legal entity status could not be checked",
+  "noContextValue": "Requires a search context",
+  "noEvidence": "No official evidence",
+  "footnote": "“—” means the data is missing, not a zero value. Hover to see the reason."
+}

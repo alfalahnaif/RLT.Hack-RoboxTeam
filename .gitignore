@@ -1,0 +1,8 @@
+# Organizer raw data (large, read-only input — never commit or modify)
+data/raw/
+# Non-deterministic profiler run metadata
+reports/*.meta.json
+__pycache__/
+*.pyc
+.env
+.pytest_cache/

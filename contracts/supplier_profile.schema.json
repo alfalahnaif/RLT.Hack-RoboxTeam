@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "supplier_profile.schema.json",
+  "title": "SupplierProfile",
+  "version": "0.2.0",
+  "description": "Curated enrichment for selected suppliers (P3-002/P3-003); not populated from organizer CSVs. market_role is separate from Supplier.entity_type (HD-09). Every role other than 'unknown' needs a basis and >= 1 SupplierEvidence (BR-47). Manufacturer VERIFIED only from an official registry or explicit first-party production evidence; OKVED alone -> INFERRED (displayed as INFERRED_MANUFACTURER_CANDIDATE) (ADR-H1 A2). Individuals/IEs: registry-public fields only, no contacts (NFR-PRIV-01).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["supplier_id", "market_role", "role_basis", "role_verification", "role_confidence", "role_evidence_ids", "observed_at"],
+  "properties": {
+    "supplier_id": { "$ref": "common.schema.json#/$defs/uuid" },
+    "display_name": { "type": "string", "minLength": 1, "maxLength": 300, "description": "Legal name from a registry or the company's own site (evidence-backed)." },
+    "ogrn": { "type": "string", "pattern": "^([0-9]{13}|[0-9]{15})$" },
+    "legal_status": { "type": "string", "enum": ["active", "inactive", "unknown"] },
+    "region": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Registered/production region as stated by the source (evidence-backed)." },
+    "city": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "website": { "type": "string", "format": "uri", "pattern": "^https?://" },
+    "okved_primary": { "type": "string", "pattern": "^[0-9]{2}(\\.[0-9]{1,2}){0,2}$" },
+    "market_role": {
+      "type": "string",
+      "enum": ["manufacturer", "distributor", "dealer", "supplier", "reseller", "other_intermediary", "unknown"]
+    },
+    "role_basis": {
+      "type": ["string", "null"],
+      "enum": ["official_registry", "first_party_production", "dealer_certificate", "company_website", "okved",
+               "procurement_history", "procurement_pattern", "declared", "manual_review", null],
+      "description": "official_registry = e.g. ГИСП / реестр российской промышленной продукции; first_party_production = the company's own site/catalog explicitly stating own production (plant, address); okved = legal-registry activity code only; procurement_history = observed supplying in organizer data; procurement_pattern = inferred from breadth of won categories; declared = unverified self-description; manual_review = team review of cited evidence."
+    },
+    "role_verification": { "type": "string", "enum": ["VERIFIED", "INFERRED", "UNVERIFIED"] },
+    "role_confidence": { "type": "number", "minimum": 0, "maximum": 1, "description": "Separate from Match (BR-02)." },
+    "role_evidence_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/uuid" }, "uniqueItems": true },
+    "observed_at": { "$ref": "common.schema.json#/$defs/datetime", "description": "When the profile facts were observed/verified." }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "market_role": { "not": { "const": "unknown" } } } },
+      "then": { "properties": { "role_basis": { "type": "string" }, "role_evidence_ids": { "minItems": 1 } } },
+      "else": { "properties": { "role_verification": { "const": "UNVERIFIED" } } }
+    },
+    {
+      "if": { "properties": { "role_basis": { "enum": ["okved", "procurement_pattern", "declared"] } } },
+      "then": { "properties": { "role_verification": { "enum": ["INFERRED", "UNVERIFIED"] }, "role_confidence": { "maximum": 0.4 } } }
+    },
+    {
+      "if": { "properties": { "market_role": { "const": "manufacturer" }, "role_verification": { "const": "VERIFIED" } } },
+      "then": { "properties": { "role_basis": { "enum": ["official_registry", "first_party_production"] } } }
+    }
+  ]
+}

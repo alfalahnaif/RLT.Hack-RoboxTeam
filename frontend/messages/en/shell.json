@@ -1,0 +1,27 @@
+{
+  "nav": {
+    "search": "Search",
+    "results": "Results",
+    "compare": "Compare",
+    "compareCount": "Selected for comparison: {count}",
+    "history": "History"
+  },
+  "menu": "Menu",
+  "skipToContent": "Skip to content",
+  "demo": {
+    "title": "Demo data.",
+    "text": "All companies, identifiers, procurements and links are synthetic and do not refer to real organisations."
+  },
+  "status": {
+    "checking": "Checking…",
+    "ok": "All systems operational",
+    "degraded": "Limited mode",
+    "down": "Service unavailable",
+    "unreachable": "Server unreachable",
+    "component": {
+      "ok": "operational",
+      "degraded": "limited",
+      "down": "unavailable"
+    }
+  }
+}

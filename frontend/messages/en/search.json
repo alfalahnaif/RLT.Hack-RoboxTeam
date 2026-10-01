@@ -1,0 +1,98 @@
+{
+  "title": "Supplier search",
+  "subtitle": "Describe the need — the system finds known and new suppliers and explains every result.",
+  "refineTitle": "Refine the request",
+  "refineSubtitle": "Check how the system understood the request and correct the parameters if needed.",
+  "expired": "The original search is no longer available. Run a new search.",
+  "queryLabel": "What do you need to procure?",
+  "queryPlaceholder": "For example: 75-inch interactive panel for a school in Saint Petersburg",
+  "queryHint": "Product, key characteristics, quantity, region. {min} to {max} characters.",
+  "scopeLabel": "Supplier scope",
+  "scopeHint": {
+    "all": "Known and new",
+    "known": "Have supplied AIS customers",
+    "external": "Market expansion"
+  },
+  "examples": "Example requests",
+  "shortcut": "Ctrl + Enter — start search",
+  "slow": "Analysing the request and matching suppliers…",
+  "submit": "Find suppliers",
+  "searchAgain": "Search again",
+  "how": {
+    "title": "How to read the results",
+    "subtitle": "Three indicators are assessed separately.",
+    "match": {
+      "title": "Match",
+      "text": "How well the supplier's product fits the request. Every point is explained."
+    },
+    "confidence": {
+      "title": "Confidence",
+      "text": "How reliable the evidence is: registries, catalogues, recency and number of sources."
+    },
+    "market": {
+      "title": "New suppliers",
+      "text": "Companies that have not yet supplied AIS customers are marked separately."
+    }
+  },
+  "scenario": {
+    "title": "Demo scenario",
+    "subtitle": "Demo mode only: simulates server behaviour to show every state.",
+    "options": {
+      "normal": "Normal operation",
+      "unavailable": "Search unavailable (503)",
+      "llm_down": "Language model unavailable",
+      "semantic_down": "Semantic search unavailable",
+      "slow": "Slow response"
+    }
+  },
+  "intent": {
+    "title": "How the system understood the request",
+    "description": "This is an interpretation, not a fact. Corrected fields are used when you search again.",
+    "parser": {
+      "rules": "Rule-based parsing",
+      "llm": "Language-model parsing",
+      "fallback": "Fallback parsing"
+    },
+    "origin": {
+      "extracted": "Recognised",
+      "user_edited": "Edited",
+      "empty": "Not set"
+    },
+    "fields": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "category": "Categories",
+      "attributes": "Characteristics",
+      "region": "Region",
+      "supplierTypes": "Supplier type",
+      "constraints": "Mandatory conditions"
+    },
+    "placeholders": {
+      "product": "For example: interactive panel",
+      "quantity": "For example: 40",
+      "tags": "Type and press Enter",
+      "region": "Any region",
+      "search": "Search…",
+      "any": "Any"
+    },
+    "hints": {
+      "supplierTypes": "A preference, not a hard filter.",
+      "constraints": "Suppliers that do not meet a condition are excluded."
+    },
+    "attributes": {
+      "screen_size_inches": "Screen size, inches",
+      "ram_gb": "Memory, GB",
+      "adjustable": "Height adjustable",
+      "touch_points": "Touch points"
+    },
+    "noAttributes": "No characteristics recognised.",
+    "nothingFound": "Nothing found",
+    "remove": "Remove",
+    "removeAttribute": "Remove characteristic",
+    "clearField": "Clear field",
+    "editedCount": "{count, plural, one {# field edited} other {# fields edited}}",
+    "noEdits": "No changes",
+    "reset": "Discard changes",
+    "apply": "Search with corrections"
+  }
+}

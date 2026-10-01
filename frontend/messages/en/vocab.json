@@ -1,0 +1,116 @@
+{
+  "supplierType": {
+    "manufacturer": "Manufacturer",
+    "distributor": "Distributor",
+    "supplier": "Supplier",
+    "service_provider": "Service provider",
+    "unknown": "Type unknown"
+  },
+  "verified": "verified",
+  "unverified": "not verified",
+  "market": {
+    "known": "Known",
+    "external": "New to AIS"
+  },
+  "scope": {
+    "all": "All suppliers",
+    "known": "Known only",
+    "external": "New only"
+  },
+  "reason": {
+    "CATEGORY_MATCH": "Product category matches the request",
+    "ATTRIBUTE_MATCH": "Required characteristics match",
+    "SEMANTIC_MATCH": "Product description is close in meaning to the request",
+    "PROCUREMENT_EXPERIENCE": "Has experience with similar procurements",
+    "VERIFIED_MANUFACTURER": "Verified manufacturer",
+    "STRONG_PRODUCT_EVIDENCE": "Official product evidence available",
+    "MULTI_SOURCE_VERIFICATION": "Confirmed by several sources",
+    "KNOWN_SUPPLIER": "Has already supplied AIS customers",
+    "EXTERNAL_SUPPLIER": "New supplier for AIS — market expansion"
+  },
+  "reasonWithParams": {
+    "PROCUREMENT_EXPERIENCE": "{count, plural, one {# similar contract} other {# similar contracts}}",
+    "ATTRIBUTE_MATCH": "Characteristics matched: {matched} of {requested}",
+    "MULTI_SOURCE_VERIFICATION": "Confirmed by {count, plural, one {# source} other {# sources}}"
+  },
+  "risk": {
+    "LOW_EVIDENCE": {
+      "label": "Little evidence",
+      "meaning": "No official confirmation that the supplier offers this product."
+    },
+    "STALE_INFORMATION": {
+      "label": "Outdated data",
+      "meaning": "The latest information about the supplier is old and may no longer be accurate."
+    },
+    "UNVERIFIED_MANUFACTURER": {
+      "label": "Manufacturer not verified",
+      "meaning": "The company calls itself a manufacturer, but no registry or official catalogue confirms it."
+    },
+    "UNKNOWN_LEGAL_STATUS": {
+      "label": "Legal status unknown",
+      "meaning": "The registration and status of the legal entity could not be checked."
+    },
+    "AMBIGUOUS_ENTITY": {
+      "label": "Possible duplicate",
+      "meaning": "This record may refer to the same company as another record. They were not merged automatically."
+    },
+    "NO_PROCUREMENT_HISTORY": {
+      "label": "No procurement history",
+      "meaning": "The available data contains no procurements involving this supplier."
+    }
+  },
+  "feature": {
+    "semantic": "Semantic similarity",
+    "lexical": "Term overlap",
+    "category": "Category",
+    "attributes": "Characteristics",
+    "experience": "Procurement experience",
+    "geography": "Region",
+    "supplier_type": "Supplier type",
+    "delivery": "Delivery to region"
+  },
+  "evidenceType": {
+    "PRODUCT_CATALOG": "Product catalogue",
+    "MANUFACTURER_REGISTRY": "Manufacturer registry",
+    "LEGAL_REGISTRY": "Legal entity registry",
+    "PROCUREMENT_HISTORY": "Procurement history",
+    "COMPANY_WEBSITE": "Company website",
+    "DELIVERY_REGION": "Delivery region",
+    "CERTIFICATION": "Certificate",
+    "OPEN_WEB_MENTION": "Open sources"
+  },
+  "warning": {
+    "SEMANTIC_UNAVAILABLE": "Semantic search is unavailable — results are based on term and category matches.",
+    "LLM_UNAVAILABLE": "The language model is unavailable — the request was parsed by rules.",
+    "PARSER_FALLBACK": "A fallback parser was used. Please check the recognised parameters.",
+    "HISTORY_UNAVAILABLE": "Procurement history is temporarily unavailable — supplier experience was not considered.",
+    "STALE_EXTERNAL_DATA": "Some external data is outdated. Take the observation date into account.",
+    "MULTI_ITEM_QUERY_DETECTED": "The request contains several items — the main one was searched. Search items separately.",
+    "LOW_INFORMATION_QUERY": "The request is too general. Specify the product or characteristics.",
+    "FILTER_REGION_OVERRIDES_QUERY": "The region filter replaced the region stated in the request.",
+    "NO_RESULTS": "No suppliers found."
+  },
+  "error": {
+    "QUERY_TOO_SHORT": "Describe the procurement in more detail — at least 3 characters.",
+    "QUERY_TOO_LONG": "The request is too long — at most 1000 characters.",
+    "INVALID_FILTER": "Invalid filter value. Reset the filters and try again.",
+    "VALIDATION_ERROR": "The request contains an error. Check the entered data.",
+    "SEARCH_UNAVAILABLE": "Search is temporarily unavailable. Try again in a few seconds.",
+    "SUPPLIER_NOT_FOUND": "Supplier not found.",
+    "REQUEST_NOT_FOUND": "These search results are no longer available.",
+    "NETWORK_ERROR": "No connection to the server. Check your connection and try again."
+  },
+  "confidenceComponent": {
+    "product_evidence": "Product evidence",
+    "legal_identity": "Legal entity check",
+    "recency": "Information recency",
+    "multi_source": "Source agreement",
+    "completeness": "Profile completeness"
+  },
+  "legalStatus": {
+    "active": "Active",
+    "liquidating": "Being liquidated",
+    "liquidated": "Liquidated",
+    "unknown": "Status unknown"
+  }
+}

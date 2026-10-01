@@ -1,0 +1,1594 @@
+{
+ "baseline_reproduced": {
+  "candidate_winner_coverage": {
+   "now": 0.8967,
+   "p1_002": 0.8967
+  },
+  "ndcg@10": {
+   "now": 0.5056,
+   "p1_002": 0.5056
+  },
+  "winner_mrr": {
+   "now": 0.3885,
+   "p1_002": 0.3885
+  },
+  "winner_recall@10": {
+   "now": 0.6533,
+   "p1_002": 0.6533
+  }
+ },
+ "conditional_baseline": {
+  "ndcg@10": 0.5497,
+  "queries_with_winner_in_pool": 269,
+  "winner_mrr": 0.4332,
+  "winner_recall@1": 0.2937,
+  "winner_recall@10": 0.7286,
+  "winner_recall@20": 0.8327,
+  "winner_recall@5": 0.6171
+ },
+ "definition": "ranking failure = winner in candidate pool and best winner rank > 10",
+ "dominant_cause_counts": {
+  "historical_relevance": 29,
+  "okpd2": 18,
+  "product_text": 14,
+  "relevant_awards": 12
+ },
+ "evidence_shape_winner_vs_top10_mean (medians over failures)": {
+  "days_since_latest": {
+   "top10_mean": 19.8,
+   "winner": 30
+  },
+  "distinct_products": {
+   "top10_mean": 17.8,
+   "winner": 2
+  },
+  "relevance_sum": {
+   "top10_mean": 13.257,
+   "winner": 1.25
+  },
+  "relevant_awards": {
+   "top10_mean": 10.9,
+   "winner": 1
+  },
+  "relevant_em_participations": {
+   "top10_mean": 25.6,
+   "winner": 2
+  },
+  "relevant_lots": {
+   "top10_mean": 27.9,
+   "winner": 2
+  },
+  "top_lot_share": {
+   "top10_mean": 0.082,
+   "winner": 0.5
+  }
+ },
+ "mean_contribution_deficit_vs_suppliers_above": {
+  "em_participation": 0.0123,
+  "evidence_quality": 0.0,
+  "historical_relevance": 0.0466,
+  "item_coverage": 0.0,
+  "okpd2": 0.0333,
+  "product_text": 0.0277,
+  "recency": 0.0039,
+  "relevant_awards": 0.0413,
+  "same_customer": 0.0039
+ },
+ "pairwise_examples": [
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "прочие персональные услуги не включенные в другие группировки"
+    ],
+    "components": {
+     "em_participation": 0.2168,
+     "evidence_quality": 0.7292,
+     "historical_relevance": 0.3061,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9981,
+     "relevant_awards": 0.4561,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0108,
+     "historical_relevance": 0.0612,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0499,
+     "relevant_awards": 0.0912,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 1,
+     "distinct_products": 5,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 3.6537,
+     "top_lot_share": 0.2492
+    },
+    "rank": 10,
+    "relevant_awards": 7,
+    "relevant_em_participations": 4,
+    "relevant_lots": 7,
+    "same_customer_history": false,
+    "score": 0.663171
+   },
+   "query_id": "rpl-5511078",
+   "query_items": 1,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "прочие персональные услуги не включенные в другие группировки"
+    ],
+    "components": {
+     "em_participation": 0.6233,
+     "evidence_quality": 0.9,
+     "historical_relevance": 0.4912,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9591,
+     "relevant_awards": 0.4512,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0312,
+     "historical_relevance": 0.0982,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.048,
+     "relevant_awards": 0.0902,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 22,
+     "distinct_products": 2,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 6.758,
+     "top_lot_share": 0.1332
+    },
+    "rank": 1,
+    "relevant_awards": 4,
+    "relevant_em_participations": 7,
+    "relevant_lots": 8,
+    "same_customer_history": true,
+    "score": 0.767607
+   },
+   "winner": {
+    "best_products": [
+     "прочие персональные услуги не включенные в другие группировки"
+    ],
+    "components": {
+     "em_participation": 0.3035,
+     "evidence_quality": 0.601,
+     "historical_relevance": 0.195,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9554,
+     "relevant_awards": 0.3035,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0152,
+     "historical_relevance": 0.039,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0478,
+     "relevant_awards": 0.0607,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 24,
+     "distinct_products": 4,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 2.1697,
+     "top_lot_share": 0.4609
+    },
+    "rank": 11,
+    "relevant_awards": 4,
+    "relevant_em_participations": 4,
+    "relevant_lots": 4,
+    "same_customer_history": true,
+    "score": 0.662645
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "оказание услуг по дератизации помещений в 2025 году"
+    ],
+    "components": {
+     "em_participation": 0.332,
+     "evidence_quality": 0.9378,
+     "historical_relevance": 0.5987,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9536,
+     "relevant_awards": 0.6731,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0166,
+     "historical_relevance": 0.1197,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0477,
+     "relevant_awards": 0.1346,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 25,
+     "distinct_products": 11,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 9.1299,
+     "top_lot_share": 0.1038
+    },
+    "rank": 12,
+    "relevant_awards": 8,
+    "relevant_em_participations": 3,
+    "relevant_lots": 11,
+    "same_customer_history": false,
+    "score": 0.768645
+   },
+   "query_id": "rpl-5512483",
+   "query_items": 2,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "оказание услуг по дератизации и дезинсекции в помещениях спб гбу сон цспсид в 2025 году оказание услуг по дератизации"
+    ],
+    "components": {
+     "em_participation": 1.0,
+     "evidence_quality": 0.9511,
+     "historical_relevance": 0.9999,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9943,
+     "relevant_awards": 0.9994,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.05,
+     "historical_relevance": 0.2,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0497,
+     "relevant_awards": 0.1999,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 3,
+     "distinct_products": 63,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 97.2559,
+     "top_lot_share": 0.0098
+    },
+    "rank": 1,
+    "relevant_awards": 51,
+    "relevant_em_participations": 98,
+    "relevant_lots": 117,
+    "same_customer_history": true,
+    "score": 0.999578
+   },
+   "winner": {
+    "best_products": [
+     "оказание услуг по дератизации и дезинсекции в помещениях спб гбу сон цспсид в 2025 году оказание услуг по дератизации"
+    ],
+    "components": {
+     "em_participation": 0.9886,
+     "evidence_quality": 0.9492,
+     "historical_relevance": 0.9317,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9554,
+     "relevant_awards": 0.1009,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0494,
+     "historical_relevance": 0.1863,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0478,
+     "relevant_awards": 0.0202,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 24,
+     "distinct_products": 22,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 26.842,
+     "top_lot_share": 0.0356
+    },
+    "rank": 13,
+    "relevant_awards": 1,
+    "relevant_em_participations": 32,
+    "relevant_lots": 32,
+    "same_customer_history": false,
+    "score": 0.75373
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "осмотр врача акушера-гинеколога с проведением бактериологического на флору и цитологического на атипичные клетки исследования"
+    ],
+    "components": {
+     "em_participation": 0.8036,
+     "evidence_quality": 0.6183,
+     "historical_relevance": 0.6234,
+     "item_coverage": 0.883,
+     "okpd2": 1.0,
+     "product_text": 0.8235,
+     "recency": 0.9962,
+     "relevant_awards": 0.1676,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0402,
+     "historical_relevance": 0.1247,
+     "okpd2": 0.2,
+     "product_text": 0.2059,
+     "recency": 0.0498,
+     "relevant_awards": 0.0335,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 2,
+     "distinct_products": 12,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 9.7648,
+     "top_lot_share": 0.0659
+    },
+    "rank": 16,
+    "relevant_awards": 2,
+    "relevant_em_participations": 19,
+    "relevant_lots": 19,
+    "same_customer_history": false,
+    "score": 0.654068
+   },
+   "query_id": "rpl-5524182",
+   "query_items": 8,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "исследование на носительство возбудителей кишечных инфекций и серологическое обследование на брюшной тиф"
+    ],
+    "components": {
+     "em_participation": 0.9519,
+     "evidence_quality": 0.7685,
+     "historical_relevance": 0.911,
+     "item_coverage": 0.9708,
+     "okpd2": 1.0,
+     "product_text": 0.8929,
+     "recency": 0.9887,
+     "relevant_awards": 0.7915,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0476,
+     "historical_relevance": 0.1822,
+     "okpd2": 0.2,
+     "product_text": 0.2232,
+     "recency": 0.0494,
+     "relevant_awards": 0.1583,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 6,
+     "distinct_products": 22,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 24.1948,
+     "top_lot_share": 0.0353
+    },
+    "rank": 1,
+    "relevant_awards": 17,
+    "relevant_em_participations": 33,
+    "relevant_lots": 44,
+    "same_customer_history": true,
+    "score": 0.910764
+   },
+   "winner": {
+    "best_products": [
+     "исследование на носительство возбудителей кишечных инфекций и серологическое обследование на брюшной тиф"
+    ],
+    "components": {
+     "em_participation": 0.3417,
+     "evidence_quality": 0.6611,
+     "historical_relevance": 0.2622,
+     "item_coverage": 0.914,
+     "okpd2": 0.8,
+     "product_text": 0.8929,
+     "recency": 0.9831,
+     "relevant_awards": 0.3975,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0171,
+     "historical_relevance": 0.0524,
+     "okpd2": 0.16,
+     "product_text": 0.2232,
+     "recency": 0.0492,
+     "relevant_awards": 0.0795,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 9,
+     "distinct_products": 5,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 3.0404,
+     "top_lot_share": 0.2811
+    },
+    "rank": 17,
+    "relevant_awards": 5,
+    "relevant_em_participations": 4,
+    "relevant_lots": 5,
+    "same_customer_history": true,
+    "score": 0.631404
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "выполнение работ по техническому обслуживанию систем индивидуального теплового пункта узла учета тепловой энергии с подготовкой и предъявлением систем итп и уутэ к отопительному сезону в 2025 году в здании гбоу школа 471 выборгского района санкт-петербурга расположенном по адресу 194362 санкт-петербург п парголово осиновая роща юкковское шоссе д 6 кор 2 лит а"
+    ],
+    "components": {
+     "em_participation": 0.2493,
+     "evidence_quality": 0.5735,
+     "historical_relevance": 0.1581,
+     "item_coverage": 0.865,
+     "okpd2": 0.775,
+     "product_text": 0.9101,
+     "recency": 0.9482,
+     "relevant_awards": 0.2493,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0125,
+     "historical_relevance": 0.0316,
+     "okpd2": 0.155,
+     "product_text": 0.2275,
+     "recency": 0.0474,
+     "relevant_awards": 0.0499,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 28,
+     "distinct_products": 2,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 1.7204,
+     "top_lot_share": 0.5
+    },
+    "rank": 14,
+    "relevant_awards": 2,
+    "relevant_em_participations": 2,
+    "relevant_lots": 2,
+    "same_customer_history": false,
+    "score": 0.523861
+   },
+   "query_id": "rpl-5524232",
+   "query_items": 2,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "техническое обслуживание уутэ в 2025 году 195274 санкт-петербург пр культуры д 15 корп 5 литер а"
+    ],
+    "components": {
+     "em_participation": 1.0,
+     "evidence_quality": 0.7022,
+     "historical_relevance": 0.9998,
+     "item_coverage": 0.865,
+     "okpd2": 0.775,
+     "product_text": 0.7661,
+     "recency": 0.9357,
+     "relevant_awards": 1.0,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.05,
+     "historical_relevance": 0.2,
+     "okpd2": 0.155,
+     "product_text": 0.1915,
+     "recency": 0.0468,
+     "relevant_awards": 0.2,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 35,
+     "distinct_products": 43,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 87.256,
+     "top_lot_share": 0.0081
+    },
+    "rank": 1,
+    "relevant_awards": 143,
+    "relevant_em_participations": 143,
+    "relevant_lots": 145,
+    "same_customer_history": false,
+    "score": 0.843284
+   },
+   "winner": {
+    "best_products": [
+     "то и подготовка к отопительному сезону итп элеваторный узел в 2025 году"
+    ],
+    "components": {
+     "em_participation": 0.5933,
+     "evidence_quality": 0.6173,
+     "historical_relevance": 0.4172,
+     "item_coverage": 0.7829,
+     "okpd2": 0.775,
+     "product_text": 0.6596,
+     "recency": 0.9962,
+     "relevant_awards": 0.1567,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0297,
+     "historical_relevance": 0.0834,
+     "okpd2": 0.155,
+     "product_text": 0.1649,
+     "recency": 0.0498,
+     "relevant_awards": 0.0313,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 2,
+     "distinct_products": 10,
+     "query_items": 2,
+     "query_text_redundant": false,
+     "relevance_sum": 5.3987,
+     "top_lot_share": 0.1271
+    },
+    "rank": 15,
+    "relevant_awards": 2,
+    "relevant_em_participations": 10,
+    "relevant_lots": 10,
+    "same_customer_history": false,
+    "score": 0.514145
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "розы срезанные"
+    ],
+    "components": {
+     "em_participation": 0.231,
+     "evidence_quality": 0.5253,
+     "historical_relevance": 0.1458,
+     "item_coverage": 0.8364,
+     "okpd2": 1.0,
+     "product_text": 0.7547,
+     "recency": 0.8526,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0115,
+     "historical_relevance": 0.0292,
+     "okpd2": 0.2,
+     "product_text": 0.1887,
+     "recency": 0.0426,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 84,
+     "distinct_products": 3,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 1.5758,
+     "top_lot_share": 0.4927
+    },
+    "rank": 24,
+    "relevant_awards": 0,
+    "relevant_em_participations": 3,
+    "relevant_lots": 3,
+    "same_customer_history": false,
+    "score": 0.471998
+   },
+   "query_id": "rpl-5528109",
+   "query_items": 1,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "роза срезанная тип 1"
+    ],
+    "components": {
+     "em_participation": 0.9497,
+     "evidence_quality": 0.9186,
+     "historical_relevance": 0.9578,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9981,
+     "relevant_awards": 0.9517,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0475,
+     "historical_relevance": 0.1916,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0499,
+     "relevant_awards": 0.1903,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 1,
+     "distinct_products": 38,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 31.6612,
+     "top_lot_share": 0.0292
+    },
+    "rank": 1,
+    "relevant_awards": 33,
+    "relevant_em_participations": 39,
+    "relevant_lots": 62,
+    "same_customer_history": false,
+    "score": 0.929293
+   },
+   "winner": {
+    "best_products": [
+     "роза одноголовая от 60 см"
+    ],
+    "components": {
+     "em_participation": 0.2151,
+     "evidence_quality": 0.4845,
+     "historical_relevance": 0.1353,
+     "item_coverage": 0.5773,
+     "okpd2": 1.0,
+     "product_text": 0.3659,
+     "recency": 0.8542,
+     "relevant_awards": 0.2151,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0108,
+     "historical_relevance": 0.0271,
+     "okpd2": 0.2,
+     "product_text": 0.0915,
+     "recency": 0.0427,
+     "relevant_awards": 0.043,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 83,
+     "distinct_products": 3,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 1.4535,
+     "top_lot_share": 0.4209
+    },
+    "rank": 25,
+    "relevant_awards": 3,
+    "relevant_em_participations": 3,
+    "relevant_lots": 3,
+    "same_customer_history": true,
+    "score": 0.465019
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "оказание услуги по изготовлению и поставке полиграфической продукции"
+    ],
+    "components": {
+     "em_participation": 0.1266,
+     "evidence_quality": 0.2707,
+     "historical_relevance": 0.078,
+     "item_coverage": 0.4275,
+     "okpd2": 0.0,
+     "product_text": 0.6413,
+     "recency": 0.9924,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0063,
+     "historical_relevance": 0.0156,
+     "okpd2": 0.0,
+     "product_text": 0.1603,
+     "recency": 0.0496,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 4,
+     "distinct_products": 2,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 0.8122,
+     "top_lot_share": 0.5015
+    },
+    "rank": 135,
+    "relevant_awards": 0,
+    "relevant_em_participations": 2,
+    "relevant_lots": 2,
+    "same_customer_history": false,
+    "score": 0.231866
+   },
+   "query_id": "rpl-5530573",
+   "query_items": 1,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "поставка книжной продукции"
+    ],
+    "components": {
+     "em_participation": 0.2529,
+     "evidence_quality": 0.4829,
+     "historical_relevance": 0.5444,
+     "item_coverage": 0.5212,
+     "okpd2": 1.0,
+     "product_text": 0.2819,
+     "recency": 0.9269,
+     "relevant_awards": 0.7302,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0126,
+     "historical_relevance": 0.1089,
+     "okpd2": 0.2,
+     "product_text": 0.0705,
+     "recency": 0.0463,
+     "relevant_awards": 0.146,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 40,
+     "distinct_products": 16,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 7.8608,
+     "top_lot_share": 0.0614
+    },
+    "rank": 1,
+    "relevant_awards": 21,
+    "relevant_em_participations": 5,
+    "relevant_lots": 21,
+    "same_customer_history": false,
+    "score": 0.584371
+   },
+   "winner": {
+    "best_products": [
+     "оказание услуги по изготовлению и поставке полиграфической продукции"
+    ],
+    "components": {
+     "em_participation": 0.1259,
+     "evidence_quality": 0.2692,
+     "historical_relevance": 0.0776,
+     "item_coverage": 0.4275,
+     "okpd2": 0.0,
+     "product_text": 0.6413,
+     "recency": 0.9924,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0063,
+     "historical_relevance": 0.0155,
+     "okpd2": 0.0,
+     "product_text": 0.1603,
+     "recency": 0.0496,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 4,
+     "distinct_products": 2,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 0.8077,
+     "top_lot_share": 0.5042
+    },
+    "rank": 136,
+    "relevant_awards": 0,
+    "relevant_em_participations": 2,
+    "relevant_lots": 2,
+    "same_customer_history": false,
+    "score": 0.231751
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "предрейсовый осмотр водителя в декабре 2025 года"
+    ],
+    "components": {
+     "em_participation": 0.0,
+     "evidence_quality": 0.6854,
+     "historical_relevance": 0.2643,
+     "item_coverage": 0.7388,
+     "okpd2": 1.0,
+     "product_text": 0.8409,
+     "recency": 0.9008,
+     "relevant_awards": 0.4005,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0,
+     "historical_relevance": 0.0529,
+     "okpd2": 0.2,
+     "product_text": 0.2102,
+     "recency": 0.045,
+     "relevant_awards": 0.0801,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 55,
+     "distinct_products": 4,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 3.07,
+     "top_lot_share": 0.244
+    },
+    "rank": 15,
+    "relevant_awards": 5,
+    "relevant_em_participations": 0,
+    "relevant_lots": 5,
+    "same_customer_history": false,
+    "score": 0.588244
+   },
+   "query_id": "rpl-5531133",
+   "query_items": 1,
+   "query_text_redundant": true,
+   "top1": {
+    "best_products": [
+     "услуги по проведению предрейсовых и послерейсовых медицинских осмотров в первом полугодии 2025 года"
+    ],
+    "components": {
+     "em_participation": 0.9945,
+     "evidence_quality": 0.6681,
+     "historical_relevance": 0.9558,
+     "item_coverage": 0.7232,
+     "okpd2": 1.0,
+     "product_text": 0.8221,
+     "recency": 0.9924,
+     "relevant_awards": 0.4847,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0497,
+     "historical_relevance": 0.1912,
+     "okpd2": 0.2,
+     "product_text": 0.2055,
+     "recency": 0.0496,
+     "relevant_awards": 0.0969,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 4,
+     "distinct_products": 51,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 31.1812,
+     "top_lot_share": 0.023
+    },
+    "rank": 1,
+    "relevant_awards": 8,
+    "relevant_em_participations": 58,
+    "relevant_lots": 58,
+    "same_customer_history": false,
+    "score": 0.792942
+   },
+   "winner": {
+    "best_products": [
+     "оказание услуг по предрейсовому осмотру водителей для нужд спб гбпоу колледж метростроя в 2025 году"
+    ],
+    "components": {
+     "em_participation": 0.3488,
+     "evidence_quality": 0.7311,
+     "historical_relevance": 0.313,
+     "item_coverage": 0.8357,
+     "okpd2": 1.0,
+     "product_text": 0.7536,
+     "recency": 0.9905,
+     "relevant_awards": 0.3167,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0174,
+     "historical_relevance": 0.0626,
+     "okpd2": 0.2,
+     "product_text": 0.1884,
+     "recency": 0.0495,
+     "relevant_awards": 0.0633,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 5,
+     "distinct_products": 6,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 3.7545,
+     "top_lot_share": 0.2204
+    },
+    "rank": 16,
+    "relevant_awards": 4,
+    "relevant_em_participations": 4,
+    "relevant_lots": 6,
+    "same_customer_history": false,
+    "score": 0.581311
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "оказание услуг по перевозке театрального груза"
+    ],
+    "components": {
+     "em_participation": 0.2522,
+     "evidence_quality": 0.5812,
+     "historical_relevance": 0.16,
+     "item_coverage": 0.7753,
+     "okpd2": 1.0,
+     "product_text": 0.6629,
+     "recency": 0.6635,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0126,
+     "historical_relevance": 0.032,
+     "okpd2": 0.2,
+     "product_text": 0.1657,
+     "recency": 0.0332,
+     "relevant_awards": 0.0,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 216,
+     "distinct_products": 3,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 1.7436,
+     "top_lot_share": 0.4382
+    },
+    "rank": 20,
+    "relevant_awards": 0,
+    "relevant_em_participations": 3,
+    "relevant_lots": 3,
+    "same_customer_history": false,
+    "score": 0.443511
+   },
+   "query_id": "rpl-5531373",
+   "query_items": 1,
+   "query_text_redundant": true,
+   "top1": {
+    "best_products": [
+     "оказание услуг по перевозке грузов автотранспортными средствами"
+    ],
+    "components": {
+     "em_participation": 0.9233,
+     "evidence_quality": 0.8176,
+     "historical_relevance": 0.8097,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9905,
+     "relevant_awards": 0.859,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0462,
+     "historical_relevance": 0.1619,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0495,
+     "relevant_awards": 0.1718,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 5,
+     "distinct_products": 24,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 16.5891,
+     "top_lot_share": 0.0603
+    },
+    "rank": 1,
+    "relevant_awards": 22,
+    "relevant_em_participations": 29,
+    "relevant_lots": 31,
+    "same_customer_history": true,
+    "score": 0.929417
+   },
+   "winner": {
+    "best_products": [
+     "оказание услуг по перевозке декораций"
+    ],
+    "components": {
+     "em_participation": 0.438,
+     "evidence_quality": 0.5906,
+     "historical_relevance": 0.2923,
+     "item_coverage": 0.6101,
+     "okpd2": 1.0,
+     "product_text": 0.4152,
+     "recency": 0.9375,
+     "relevant_awards": 0.0592,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0219,
+     "historical_relevance": 0.0585,
+     "okpd2": 0.2,
+     "product_text": 0.1038,
+     "recency": 0.0469,
+     "relevant_awards": 0.0118,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 34,
+     "distinct_products": 7,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 3.4578,
+     "top_lot_share": 0.1708
+    },
+    "rank": 21,
+    "relevant_awards": 1,
+    "relevant_em_participations": 7,
+    "relevant_lots": 7,
+    "same_customer_history": false,
+    "score": 0.442887
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "тряпка для очистки поверхностей тип 13"
+    ],
+    "components": {
+     "em_participation": 0.5588,
+     "evidence_quality": 0.6071,
+     "historical_relevance": 0.3879,
+     "item_coverage": 0.7966,
+     "okpd2": 0.75,
+     "product_text": 0.6108,
+     "recency": 0.9887,
+     "relevant_awards": 0.0,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0279,
+     "historical_relevance": 0.0776,
+     "okpd2": 0.15,
+     "product_text": 0.1527,
+     "recency": 0.0494,
+     "relevant_awards": 0.0,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 6,
+     "distinct_products": 7,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 4.9094,
+     "top_lot_share": 0.1332
+    },
+    "rank": 17,
+    "relevant_awards": 0,
+    "relevant_em_participations": 10,
+    "relevant_lots": 10,
+    "same_customer_history": true,
+    "score": 0.507665
+   },
+   "query_id": "rpl-5531678",
+   "query_items": 8,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "перчатки трикотажные для защиты от внешних воздействий тип 1"
+    ],
+    "components": {
+     "em_participation": 0.9903,
+     "evidence_quality": 0.7153,
+     "historical_relevance": 0.938,
+     "item_coverage": 0.8121,
+     "okpd2": 0.8,
+     "product_text": 0.732,
+     "recency": 0.9943,
+     "relevant_awards": 0.7069,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0495,
+     "historical_relevance": 0.1876,
+     "okpd2": 0.16,
+     "product_text": 0.183,
+     "recency": 0.0497,
+     "relevant_awards": 0.1414,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 3,
+     "distinct_products": 20,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 27.8026,
+     "top_lot_share": 0.0268
+    },
+    "rank": 1,
+    "relevant_awards": 15,
+    "relevant_em_participations": 55,
+    "relevant_lots": 55,
+    "same_customer_history": true,
+    "score": 0.821193
+   },
+   "winner": {
+    "best_products": [
+     "тряпка для очистки поверхностей тип 13"
+    ],
+    "components": {
+     "em_participation": 0.6045,
+     "evidence_quality": 0.5641,
+     "historical_relevance": 0.4268,
+     "item_coverage": 0.7869,
+     "okpd2": 0.7125,
+     "product_text": 0.5342,
+     "recency": 0.9924,
+     "relevant_awards": 0.0647,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0302,
+     "historical_relevance": 0.0854,
+     "okpd2": 0.1425,
+     "product_text": 0.1335,
+     "recency": 0.0496,
+     "relevant_awards": 0.0129,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 4,
+     "distinct_products": 7,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 5.5652,
+     "top_lot_share": 0.1072
+    },
+    "rank": 18,
+    "relevant_awards": 1,
+    "relevant_em_participations": 12,
+    "relevant_lots": 12,
+    "same_customer_history": true,
+    "score": 0.504193
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "оказание услуг по профилактической дезинфекции помещений гбоу сош 358 московского района санкт-петербурга"
+    ],
+    "components": {
+     "em_participation": 0.0869,
+     "evidence_quality": 0.1818,
+     "historical_relevance": 0.0531,
+     "item_coverage": 0.5521,
+     "okpd2": 1.0,
+     "product_text": 0.3281,
+     "recency": 0.941,
+     "relevant_awards": 0.0869,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0043,
+     "historical_relevance": 0.0106,
+     "okpd2": 0.2,
+     "product_text": 0.082,
+     "recency": 0.0471,
+     "relevant_awards": 0.0174,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 32,
+     "distinct_products": 1,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 0.5454,
+     "top_lot_share": 1.0
+    },
+    "rank": 24,
+    "relevant_awards": 1,
+    "relevant_em_participations": 1,
+    "relevant_lots": 1,
+    "same_customer_history": false,
+    "score": 0.361418
+   },
+   "query_id": "rpl-5532243",
+   "query_items": 8,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "оказание услуг по дезинфекции помещений гбоу школа 464 пушкинского района санкт-петербурга по адресу санкт-петербург г павловск ул конюшенная д 24 лит а 3532,5 кв м"
+    ],
+    "components": {
+     "em_participation": 1.0,
+     "evidence_quality": 0.6976,
+     "historical_relevance": 0.9997,
+     "item_coverage": 0.7059,
+     "okpd2": 1.0,
+     "product_text": 0.5589,
+     "recency": 0.9943,
+     "relevant_awards": 0.9918,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.05,
+     "historical_relevance": 0.1999,
+     "okpd2": 0.2,
+     "product_text": 0.1397,
+     "recency": 0.0497,
+     "relevant_awards": 0.1984,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 3,
+     "distinct_products": 147,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 81.2921,
+     "top_lot_share": 0.0087
+    },
+    "rank": 1,
+    "relevant_awards": 58,
+    "relevant_em_participations": 147,
+    "relevant_lots": 168,
+    "same_customer_history": false,
+    "score": 0.837738
+   },
+   "winner": {
+    "best_products": [
+     "оказание услуг по профилактической дератизации и дезинсекции для гбдоу детский сад 21 московского района санкт-петербурга в 2025 году"
+    ],
+    "components": {
+     "em_participation": 0.1355,
+     "evidence_quality": 0.4419,
+     "historical_relevance": 0.1242,
+     "item_coverage": 0.5117,
+     "okpd2": 1.0,
+     "product_text": 0.2511,
+     "recency": 0.9111,
+     "relevant_awards": 0.0726,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.0068,
+     "historical_relevance": 0.0248,
+     "okpd2": 0.2,
+     "product_text": 0.0628,
+     "recency": 0.0456,
+     "relevant_awards": 0.0145,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 49,
+     "distinct_products": 3,
+     "query_items": 8,
+     "query_text_redundant": false,
+     "relevance_sum": 1.3258,
+     "top_lot_share": 0.3758
+    },
+    "rank": 25,
+    "relevant_awards": 1,
+    "relevant_em_participations": 2,
+    "relevant_lots": 3,
+    "same_customer_history": false,
+    "score": 0.354473
+   }
+  },
+  {
+   "difficulty": "MEDIUM",
+   "immediately_above": {
+    "best_products": [
+     "выполнение работ по измерению сопротивления заземляющих устройств и изоляции электропроводок в здании гбу цппмсп выборгского района санкт-петербурга по адресу г санкт-петербург костромской пр д 7 лит а пом 1-н г санкт-петербург ул орбели д 31 лит о пом 1-н"
+    ],
+    "components": {
+     "em_participation": 0.073,
+     "evidence_quality": 0.1515,
+     "historical_relevance": 0.0444,
+     "item_coverage": 0.4362,
+     "okpd2": 0.0,
+     "product_text": 0.6543,
+     "recency": 0.5593,
+     "relevant_awards": 0.073,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0036,
+     "historical_relevance": 0.0089,
+     "okpd2": 0.0,
+     "product_text": 0.1636,
+     "recency": 0.028,
+     "relevant_awards": 0.0146,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 306,
+     "distinct_products": 1,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 0.4546,
+     "top_lot_share": 1.0
+    },
+    "rank": 152,
+    "relevant_awards": 1,
+    "relevant_em_participations": 1,
+    "relevant_lots": 1,
+    "same_customer_history": true,
+    "score": 0.268663
+   },
+   "query_id": "rpl-5534810",
+   "query_items": 1,
+   "query_text_redundant": true,
+   "top1": {
+    "best_products": [
+     "выполнение работ по замене дверных блоков в здании гбу цппмсп выборгского района санкт-петербурга по адресу спб улица орбели дом 31 литера о помещение 1-н"
+    ],
+    "components": {
+     "em_participation": 0.8744,
+     "evidence_quality": 0.7463,
+     "historical_relevance": 0.725,
+     "item_coverage": 1.0,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9981,
+     "relevant_awards": 0.5817,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.0437,
+     "historical_relevance": 0.145,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0499,
+     "relevant_awards": 0.1163,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 1,
+     "distinct_products": 22,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 12.9093,
+     "top_lot_share": 0.0771
+    },
+    "rank": 1,
+    "relevant_awards": 12,
+    "relevant_em_participations": 26,
+    "relevant_lots": 27,
+    "same_customer_history": true,
+    "score": 0.854971
+   },
+   "winner": {
+    "best_products": [
+     "выполнение работ по текущему ремонту части помещений с установкой противопожарных дверей по адресу санкт-петербург наб кан грибоедова д 88-90 лит а"
+    ],
+    "components": {
+     "em_participation": 0.0601,
+     "evidence_quality": 0.1239,
+     "historical_relevance": 0.0365,
+     "item_coverage": 0.3884,
+     "okpd2": 0.7,
+     "product_text": 0.2327,
+     "recency": 0.9164,
+     "relevant_awards": 0.0601,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.003,
+     "historical_relevance": 0.0073,
+     "okpd2": 0.14,
+     "product_text": 0.0582,
+     "recency": 0.0458,
+     "relevant_awards": 0.012,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 46,
+     "distinct_products": 1,
+     "query_items": 1,
+     "query_text_redundant": true,
+     "relevance_sum": 0.3717,
+     "top_lot_share": 1.0
+    },
+    "rank": 153,
+    "relevant_awards": 1,
+    "relevant_em_participations": 1,
+    "relevant_lots": 1,
+    "same_customer_history": false,
+    "score": 0.266297
+   }
+  },
+  {
+   "difficulty": "EASY",
+   "immediately_above": {
+    "best_products": [
+     "бумага для офисной техники тип 11"
+    ],
+    "components": {
+     "em_participation": 0.3591,
+     "evidence_quality": 0.6691,
+     "historical_relevance": 0.2343,
+     "item_coverage": 0.7089,
+     "okpd2": 1.0,
+     "product_text": 0.5634,
+     "recency": 0.9043,
+     "relevant_awards": 0.1065,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.018,
+     "historical_relevance": 0.0469,
+     "okpd2": 0.2,
+     "product_text": 0.1408,
+     "recency": 0.0452,
+     "relevant_awards": 0.0213,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 53,
+     "distinct_products": 2,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 2.6691,
+     "top_lot_share": 0.2532
+    },
+    "rank": 34,
+    "relevant_awards": 1,
+    "relevant_em_participations": 4,
+    "relevant_lots": 4,
+    "same_customer_history": false,
+    "score": 0.472164
+   },
+   "query_id": "rpl-5537058",
+   "query_items": 1,
+   "query_text_redundant": false,
+   "top1": {
+    "best_products": [
+     "бумага офисная а4 в пачке 500л"
+    ],
+    "components": {
+     "em_participation": 0.9997,
+     "evidence_quality": 0.7338,
+     "historical_relevance": 0.9996,
+     "item_coverage": 0.9,
+     "okpd2": 1.0,
+     "product_text": 1.0,
+     "recency": 0.9943,
+     "relevant_awards": 0.9998,
+     "same_customer": 0.0
+    },
+    "contributions": {
+     "em_participation": 0.05,
+     "historical_relevance": 0.1999,
+     "okpd2": 0.2,
+     "product_text": 0.25,
+     "recency": 0.0497,
+     "relevant_awards": 0.2,
+     "same_customer": 0.0
+    },
+    "diagnostics": {
+     "days_since_latest": 3,
+     "distinct_products": 15,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 78.8215,
+     "top_lot_share": 0.0106
+    },
+    "rank": 1,
+    "relevant_awards": 77,
+    "relevant_em_participations": 72,
+    "relevant_lots": 118,
+    "same_customer_history": false,
+    "score": 0.949586
+   },
+   "winner": {
+    "best_products": [
+     "бумага для офисной техники"
+    ],
+    "components": {
+     "em_participation": 0.1998,
+     "evidence_quality": 0.4458,
+     "historical_relevance": 0.1252,
+     "item_coverage": 0.7089,
+     "okpd2": 1.0,
+     "product_text": 0.5634,
+     "recency": 0.9181,
+     "relevant_awards": 0.0,
+     "same_customer": 1.0
+    },
+    "contributions": {
+     "em_participation": 0.01,
+     "historical_relevance": 0.025,
+     "okpd2": 0.2,
+     "product_text": 0.1408,
+     "recency": 0.0459,
+     "relevant_awards": 0.0,
+     "same_customer": 0.05
+    },
+    "diagnostics": {
+     "days_since_latest": 45,
+     "distinct_products": 2,
+     "query_items": 1,
+     "query_text_redundant": false,
+     "relevance_sum": 1.3375,
+     "top_lot_share": 0.5052
+    },
+    "rank": 35,
+    "relevant_awards": 0,
+    "relevant_em_participations": 2,
+    "relevant_lots": 2,
+    "same_customer_history": true,
+    "score": 0.471776
+   }
+  }
+ ],
+ "query_flags": {
+  "failure": {
+   "difficulty_EASY": 59,
+   "difficulty_HARD": 6,
+   "difficulty_MEDIUM": 8,
+   "multi_item_query": 28,
+   "queries": 73,
+   "text_redundant_query": 14,
+   "winner_same_customer": 36,
+   "winner_single_relevant_lot": 20
+  },
+  "success": {
+   "difficulty_EASY": 191,
+   "difficulty_MEDIUM": 5,
+   "multi_item_query": 76,
+   "queries": 196,
+   "text_redundant_query": 57,
+   "winner_same_customer": 136,
+   "winner_single_relevant_lot": 4
+  }
+ },
+ "query_groups": {
+  "ranked_top10": 196,
+  "ranking_failure (in pool, rank > 10)": 73,
+  "retrieval_failure (winner not in pool)": 31
+ },
+ "ranking_failures": 73,
+ "runtime_seconds": 310.0,
+ "share_of_above_suppliers_with_higher_component": {
+  "em_participation": 0.734,
+  "evidence_quality": 0.743,
+  "historical_relevance": 0.814,
+  "item_coverage": 0.52,
+  "okpd2": 0.305,
+  "product_text": 0.405,
+  "recency": 0.52,
+  "relevant_awards": 0.714,
+  "same_customer": 0.078
+ }
+}
