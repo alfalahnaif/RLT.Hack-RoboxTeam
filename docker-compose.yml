@@ -1,5 +1,7 @@
-# Supplier Radar — development stack (P1-001D). Frontend is not containerized yet.
-#   docker compose up -d postgres                       # start DB (named volume postgres_data)
+# Supplier Radar — development stack. Frontend is not containerized yet (run `npm run dev` in /frontend, port 3000).
+#   docker compose up -d --build                        # postgres (pgvector) + api: migrations, then FastAPI on :8000
+#   curl http://localhost:8000/api/v1/health
+# Tools (profile "tools", one-off): docker compose run --rm backend <cmd>
 #   docker compose run --rm backend alembic upgrade head
 #   docker compose run --rm backend python -m app.cli ingest organizer /data/raw
 # `docker compose down` keeps the data; only `docker compose down -v` deletes the volume.
@@ -41,11 +43,39 @@ services:
       - ./reports:/srv/reports
       - ./benchmark:/srv/benchmark
       - ./data/raw:/data/raw:ro
+      - ./data/seed:/srv/data/seed:ro
       - models:/models
     depends_on:
       postgres:
         condition: service_healthy
     profiles: ["tools"]
+
+  api:   # P4-001: the product backend. Startup = `alembic upgrade head` (no-op at head) + uvicorn; never rebuilds embeddings.
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-supplier_radar}:${POSTGRES_PASSWORD:-supplier_radar_dev}@postgres:5432/${POSTGRES_DB:-supplier_radar}
+      REPO_ROOT: /srv
+      PYTHONIOENCODING: utf-8
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+    working_dir: /srv/backend
+    command: ["sh", "-c", "alembic upgrade head && exec uvicorn app.api.main:app --host 0.0.0.0 --port 8000"]
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/srv/backend
+      - ./data/seed:/srv/data/seed:ro
+      - models:/models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=5)\""]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 30s
 
 volumes:
   postgres_data:

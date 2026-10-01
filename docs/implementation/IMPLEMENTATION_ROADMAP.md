@@ -81,6 +81,7 @@ Status values: `Not started · In progress · In review · Done · Blocked · Cu
 | P3-002 | Supplier role enrichment | P1-001B, P3-001 | Not started |
 | P3-003 | Targeted external supplier expansion | P3-001, P3-002 | Not started |
 | P4 | Integrated product UI | P1-002, P2-003, P3-001 | Partly done — UI S-00…S-05 built on mock API (v1/P6-005…P6-011); live wiring + stakeholder levels pending |
+| P4-001 | Final backend integration | P2-001, P3-002C | **Done (2026-10-02)** — branch `integration/hackathon-final` (P2 + P3 merged, no conflicts); one FastAPI app: `/health`, `/recommendations/{lot_id}`, `/procurements/{lot_id}/analysis`, `/market-intelligence/{okpd2}`; `docker compose up -d` runs postgres + migrations + API (semantic warm-up, no rebuild); frontend UI untouched (reports/p4_001_*) |
 | P5 | Evaluation + demo freeze | P4 | Not started |
 
 ---

@@ -3,6 +3,28 @@
 Evidence-based supplier discovery for public procurement. Project knowledge base: [`docs/README.md`](docs/README.md) ·
 authoritative plan: [`docs/HACKATHON_EXECUTION_BASELINE.md`](docs/HACKATHON_EXECUTION_BASELINE.md).
 
+## Run the product backend (existing database volume — short path)
+
+```bash
+docker compose up -d --build         # postgres (pgvector) + api: `alembic upgrade head` (no-op at head), then FastAPI
+curl http://localhost:8000/api/v1/health      # api / postgres / semantic READY + pinned revision / curated catalog
+```
+
+- API base URL: `http://localhost:8000/api/v1` (port `API_PORT`, default 8000); OpenAPI docs at `http://localhost:8000/docs`.
+- Routes: `GET /health`, `GET /recommendations/{lot_id}`, `GET /procurements/{lot_id}/analysis`,
+  `GET /market-intelligence/{okpd2}`.
+- Startup never builds embeddings. When the semantic index is READY the pinned model is loaded once at startup (~6 s);
+  otherwise the API still starts and recommendations fall back to P2-003 with a `SEMANTIC_UNAVAILABLE` warning.
+- Frontend: the Next.js client calls `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000/api/v1`) from the browser with
+  `NEXT_PUBLIC_API_MODE=live`; CORS allows only `http://localhost:3000` and `http://127.0.0.1:3000` (override with `CORS_ORIGINS`;
+  `*` is ignored), GET only.
+
+## Fresh environment bootstrap (new machine / empty volume — one-off, hours)
+
+Run the steps below once, in order: ingest (~15–20 min) → `search build-stats` (~1 min) → `semantic download-model` →
+`semantic build` (~3.4 h on CPU, resumable) → `docker compose up -d api`. Until `semantic build` finishes, the API serves
+P2-003 recommendations with a `SEMANTIC_UNAVAILABLE` warning.
+
 ## Database from scratch (Docker only — no local PostgreSQL needed)
 
 Prerequisites: Docker Desktop (Compose v2) and the three organizer CSVs in `data/raw/`

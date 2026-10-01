@@ -2,3 +2,8 @@ alembic==1.14.0
 SQLAlchemy==2.0.36
 psycopg[binary]==3.2.3
 pytest==8.3.4
+# P3-002C / P4-001 API (versions validated by the accepted P3 work)
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.13.5
+httpx==0.28.1
