@@ -1,0 +1,383 @@
+{
+  "task": "P3-002B",
+  "target_okpd2": "10.51.11.141",
+  "target_label": "Молоко питьевое коровье стерилизованное",
+  "checked_at": "2026-10-01T20:45:00+03:00",
+  "historical_as_of": "2026-01-01",
+  "seed_path": "data/seed/p3_002b_evidence_seed.json",
+  "seed_sha256": "75327417bce95f6e371b1fa2600220c7e9bb4e4a92ba436c35ca08a35cc1f153",
+  "reconciliation_definition": "Observed canonical procurement history with publish_date before historical_as_of; independent of evidence verification.",
+  "verification_definition": "Curated status validated against active evidence with structured direct-product support, auditable http(s) source URLs, and explicit review reasons at checked_at; EXTERNAL_NEW alone gives no verification.",
+  "exact_okpd2_definition": "True only when a structured source assertion names the exact target OKPD2 value; direct product wording and broader codes are separate.",
+  "verification_status_counts": {
+    "UNVERIFIED": 0,
+    "UNDER_REVIEW": 2,
+    "VERIFIED": 4
+  },
+  "candidates": [
+    {
+      "supplier_inn": "7622012124",
+      "company_name": "ООО «Переславский молочный комбинат»",
+      "aliases": [
+        "ООО «Эдельвейс»"
+      ],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "verification_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED",
+        "IDENTITY_MATCH_INN"
+      ],
+      "review_reasons": [
+        "LEGAL_NAME_CHANGED_RECENTLY_ALIAS_PRESERVED"
+      ],
+      "why_candidate": "Curated active strong declaration directly supports the target product and names the INN-linked entity as manufacturer/applicant. The curated seed records no exact target OKPD2 source assertion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura05v5253926/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА05.В.52539/26",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное цельное 3.5–4.5%",
+            "Молоко питьевое стерилизованное нормализованное 2.5%",
+            "Стерилизованное топленое молоко"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": "2026-06-30",
+          "valid_until": "2029-06-01",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        },
+        {
+          "evidence_type": "LEGAL_IDENTITY",
+          "source_name": "Firmoteka (FNS/EGRUL-derived)",
+          "source_url": "https://firmoteka.ru/7622012124",
+          "source_record_id": null,
+          "source_authority": "FNS_EGRUL_DERIVED",
+          "product_scope": [],
+          "target_product_support": "NONE",
+          "evidence_date": "2026-08-28",
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "ACTIVE_LEGAL_ENTITY",
+          "asserted_okpd2_codes": [],
+          "notes": "Current legal name differs from older Эдельвейс records; identity continuity is by INN/OGRN."
+        }
+      ],
+      "evidence_count": 2,
+      "active_evidence_count": 2
+    },
+    {
+      "supplier_inn": "0257011170",
+      "company_name": "ООО «Бирский комбинат молочных продуктов»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "verification_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED",
+        "FIRST_PARTY_DAIRY_SITE"
+      ],
+      "review_reasons": [],
+      "why_candidate": "Curated active strong declaration directly supports the target product and names the INN-linked entity as manufacturer/applicant. The curated seed records no exact target OKPD2 source assertion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://www.xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura03v6018325/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА03.В.60183/25",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное 1.5%, 2.5%, 3.2%, 3.5%, 4.0%"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": "2025-04-21",
+          "valid_until": "2028-04-20",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        },
+        {
+          "evidence_type": "FIRST_PARTY_WEBSITE",
+          "source_name": "Бирский комбинат молочных продуктов",
+          "source_url": "https://molloko.ru/",
+          "source_record_id": null,
+          "source_authority": "FIRST_PARTY",
+          "product_scope": [
+            "Питьевое молоко",
+            "Ультрапастеризованное молоко"
+          ],
+          "target_product_support": "RELATED",
+          "evidence_date": null,
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "DAIRY_PRODUCER",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        }
+      ],
+      "evidence_count": 2,
+      "active_evidence_count": 2
+    },
+    {
+      "supplier_inn": "5320000979",
+      "company_name": "АО «Боровичский молочный завод»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "verification_strength": "STRONG",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED"
+      ],
+      "review_reasons": [],
+      "why_candidate": "Curated active strong declaration directly supports the target product and names the INN-linked entity as manufacturer/applicant. The curated seed records no exact target OKPD2 source assertion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://www.xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura10v5076124/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА10.В.50761/24",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное",
+            "Пастеризованное, топленое и ультрапастеризованное питьевое молоко"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": "2024-11-14",
+          "valid_until": "2027-11-13",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        }
+      ],
+      "evidence_count": 1,
+      "active_evidence_count": 1
+    },
+    {
+      "supplier_inn": "5028002303",
+      "company_name": "ЗАО ЗСМ «Можайский»",
+      "aliases": [
+        "ЗАО «Завод стерилизованного молока «Можайский»"
+      ],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "VERIFIED",
+      "verification_strength": "MODERATE",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_LEGAL_ENTITY",
+        "DAIRY_MANUFACTURER_ROLE",
+        "CURRENT_PRODUCT_LISTING"
+      ],
+      "review_reasons": [
+        "NO_CURRENT_REGISTRY_DECLARATION_LOCATED_IN_THIS_RESEARCH_PASS"
+      ],
+      "why_candidate": "Curated active legal-identity record and current product listing jointly support the target product. The curated seed records no exact target OKPD2 source assertion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "LEGAL_IDENTITY",
+          "source_name": "FNS/EGRUL-derived company record",
+          "source_url": "https://check.tochka.com/company/1025003475793/",
+          "source_record_id": null,
+          "source_authority": "FNS_EGRUL_DERIVED",
+          "product_scope": [
+            "Молочная продукция"
+          ],
+          "target_product_support": "RELATED",
+          "evidence_date": null,
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "ACTIVE_DAIRY_MANUFACTURER",
+          "asserted_okpd2_codes": [],
+          "notes": "Legal name is 'Завод стерилизованного молока Можайский'; OKVED includes drinking milk production."
+        },
+        {
+          "evidence_type": "CURRENT_PRODUCT_LISTING",
+          "source_name": "Азбука вкуса",
+          "source_url": "https://av.ru/i/030612",
+          "source_record_id": null,
+          "source_authority": "RETAIL_SECONDARY",
+          "product_scope": [
+            "Молоко питьевое стерилизованное «Можайское» 3.2%"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": null,
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "MANUFACTURER_NAMED_ON_PRODUCT_LISTING",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        }
+      ],
+      "evidence_count": 2,
+      "active_evidence_count": 2
+    },
+    {
+      "supplier_inn": "5007126820",
+      "company_name": "ООО «ААП»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER_ASSERTED_BY_DECLARATION",
+      "verification_status": "UNDER_REVIEW",
+      "verification_strength": "MODERATE",
+      "target_product_match": "DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "ACTIVE_DECLARATION",
+        "DIRECT_PRODUCT_SCOPE",
+        "MANUFACTURER_ASSERTED"
+      ],
+      "review_reasons": [
+        "MAIN_OKVED_IS_RESTAURANT_OR_FOOD_DELIVERY",
+        "RECENT_COMPANY",
+        "MANY_UNRELATED_DECLARATIONS_REQUIRE_OPERATIONAL_CORROBORATION"
+      ],
+      "why_candidate": "Curated review required: MAIN_OKVED_IS_RESTAURANT_OR_FOOD_DELIVERY, RECENT_COMPANY, MANY_UNRELATED_DECLARATIONS_REQUIRE_OPERATIONAL_CORROBORATION. Evidence is retained without a current verified conclusion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura08v5431726/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА08.В.54317/26",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": "2026-09-25",
+          "valid_until": "2029-09-24",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        },
+        {
+          "evidence_type": "BUSINESS_PROFILE",
+          "source_name": "RBC Companies",
+          "source_url": "https://companies.rbc.ru/alphabetical-catalog/companies/a-a-p/",
+          "source_record_id": null,
+          "source_authority": "SECONDARY_BUSINESS_PROFILE",
+          "product_scope": [],
+          "target_product_support": "NONE",
+          "evidence_date": "2026-09-01",
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "MODERATE",
+          "role_assertion": "MAIN_OKVED_56_10",
+          "asserted_okpd2_codes": [],
+          "notes": "Creates an inconsistency that warrants manual review; not proof that declaration is invalid."
+        }
+      ],
+      "evidence_count": 2,
+      "active_evidence_count": 2
+    },
+    {
+      "supplier_inn": "3128004452",
+      "company_name": "ЗАО МК «Авида»",
+      "aliases": [],
+      "reconciliation_status": "EXTERNAL_NEW",
+      "market_role": "MANUFACTURER",
+      "verification_status": "UNDER_REVIEW",
+      "verification_strength": "MODERATE",
+      "target_product_match": "HISTORICAL_DIRECT_PRODUCT_TEXT",
+      "exact_okpd2_asserted_by_source": false,
+      "verification_reason_codes": [
+        "FIRST_PARTY_DAIRY_MANUFACTURER",
+        "HISTORICAL_DIRECT_PRODUCT_DECLARATION"
+      ],
+      "review_reasons": [
+        "DIRECT_STERILIZED_MILK_DECLARATION_FOUND_IS_TERMINATED"
+      ],
+      "why_candidate": "Curated review required: DIRECT_STERILIZED_MILK_DECLARATION_FOUND_IS_TERMINATED. Evidence is retained without a current verified conclusion.",
+      "evidence_summary": [
+        {
+          "evidence_type": "FIRST_PARTY_WEBSITE",
+          "source_name": "Авида",
+          "source_url": "https://xn----8sbahkxkp.xn--p1ai/",
+          "source_record_id": null,
+          "source_authority": "FIRST_PARTY",
+          "product_scope": [
+            "Производство и переработка молочной продукции"
+          ],
+          "target_product_support": "RELATED",
+          "evidence_date": null,
+          "valid_until": null,
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "ACTIVE",
+          "verification_strength": "STRONG",
+          "role_assertion": "DAIRY_MANUFACTURER",
+          "asserted_okpd2_codes": [],
+          "notes": "Site states processing capacity of 300 tons of milk/day and more than 60 products."
+        },
+        {
+          "evidence_type": "CONFORMITY_DECLARATION",
+          "source_name": "ФГИС РосАккредитации mirror / official registry extract",
+          "source_url": "https://xn----7sbajahheyaepn1ca0aveqcb0fxl.xn--p1acf/document/eaes-n-ru-d-rura03v6020925/",
+          "source_record_id": "ЕАЭС N RU Д-RU.РА03.В.60209/25",
+          "source_authority": "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE",
+          "product_scope": [
+            "Молоко питьевое стерилизованное"
+          ],
+          "target_product_support": "DIRECT",
+          "evidence_date": "2025-04-15",
+          "valid_until": "2030-04-14",
+          "retrieved_at": "2026-10-01T20:45:00+03:00",
+          "evidence_status": "TERMINATED",
+          "verification_strength": "STRONG",
+          "role_assertion": "MANUFACTURER_AND_APPLICANT",
+          "asserted_okpd2_codes": [],
+          "notes": null
+        }
+      ],
+      "evidence_count": 2,
+      "active_evidence_count": 1
+    }
+  ],
+  "limitations": [
+    "Evidence facts and source URLs are reproduced from the supplied curated seed; this run does not fetch or independently check the URLs.",
+    "Evidence records are associated with the canonical supplier INN by the curated seed.",
+    "The curated seed classifies each evidence record as DIRECT, RELATED, or NONE for the target product; the evaluator does not interpret product wording.",
+    "Only evidence with an http(s) source URL can support VERIFIED; URLs are validated syntactically and are never fetched.",
+    "A terminated or suspended declaration remains historical evidence and does not alone support current verification.",
+    "All exact target OKPD2 assertions in this seed are false; product wording does not assert the leaf code."
+  ]
+}
