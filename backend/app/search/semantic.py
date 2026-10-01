@@ -21,19 +21,27 @@ MAX_SEQ_LEN = 128   # feasibility: 512 vs 128 tokens -> mean cosine 1.000, min 0
 _encoder = None
 
 
-def download_model() -> dict:
+def download_model(update_lock: bool = False) -> dict:
+    """Normal setup: download EXACTLY lock["model"] @ lock["revision"]; the committed lock is never rewritten.
+    update_lock=True is the explicit maintenance action: resolve the current Hugging Face revision and rewrite the lock
+    (stored embeddings then no longer match -> `semantic build --reembed`)."""
     from huggingface_hub import HfApi, snapshot_download
+    if not update_lock:
+        lk = lock()
+        path = snapshot_download(lk["model"], revision=lk["revision"])
+        return {**lk, "path": path, "lock_rewritten": False}
     info = HfApi().model_info(MODEL_ID)
     path = snapshot_download(MODEL_ID, revision=info.sha)
-    lock = {"model": MODEL_ID, "revision": info.sha, "dimension": DIM, "license": "MIT (intfloat/multilingual-e5-small)",
-            "prefixes": {"query": "query: ", "document": "passage: "}, "normalized": True, "source": "huggingface.co"}
-    LOCK.write_text(json.dumps(lock, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-    return {**lock, "path": path}
+    lk = {"model": MODEL_ID, "revision": info.sha, "dimension": DIM, "license": "MIT (intfloat/multilingual-e5-small)",
+          "prefixes": {"query": "query: ", "document": "passage: "}, "normalized": True, "source": "huggingface.co"}
+    LOCK.write_text(json.dumps(lk, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+    return {**lk, "path": path, "lock_rewritten": True}
 
 
 def lock() -> dict:
     if not LOCK.exists():
-        raise RuntimeError("semantic model not pinned — run `python -m app.cli semantic download-model`")
+        raise RuntimeError("semantic model lock missing — restore backend/semantic_model.lock.json from the repository "
+                           "(maintenance only: `python -m app.cli semantic download-model --update-lock`)")
     return json.loads(LOCK.read_text(encoding="utf-8"))
 
 
@@ -45,7 +53,7 @@ def encoder():
         import torch
         from sentence_transformers import SentenceTransformer
         torch.set_num_threads(os.cpu_count() or 1)
-        _encoder = SentenceTransformer(MODEL_ID, revision=lock()["revision"], device="cpu")
+        _encoder = SentenceTransformer(lock()["model"], revision=lock()["revision"], device="cpu")
         _encoder.max_seq_length = MAX_SEQ_LEN   # same truncation for queries and documents
     return _encoder
 

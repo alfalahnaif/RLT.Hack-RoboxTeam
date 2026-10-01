@@ -219,7 +219,7 @@ def _cmd_semantic(args) -> int:
     from app.search import semantic
     out = repo_root() / "reports"
     if args.action == "download-model":
-        print(json.dumps(semantic.download_model(), indent=1))
+        print(json.dumps(semantic.download_model(update_lock=args.update_lock), indent=1))
         return 0
     if args.action == "feasibility":
         from app.search import semantic_feasibility as SF
@@ -233,7 +233,12 @@ def _cmd_semantic(args) -> int:
     from app.search import semantic_index as SI
     with psycopg.connect(database_url()) as conn:
         if args.action == "build":
-            print(json.dumps(SI.build(conn, log=lambda m: print(f"[sem] {m}", file=sys.stderr, flush=True)), indent=1, default=str))
+            try:
+                r = SI.build(conn, log=lambda m: print(f"[sem] {m}", file=sys.stderr, flush=True), reembed=args.reembed)
+            except SI.RevisionMismatch as e:
+                print(f"ERROR: {e}", file=sys.stderr)
+                return 2
+            print(json.dumps(r, indent=1, default=str))
         else:
             print(json.dumps(SI.status(conn), indent=1, default=str))
     return 0
@@ -271,6 +276,9 @@ def main(argv=None) -> int:
     ev.set_defaults(func=_cmd_evaluate)
     sm = sub.add_parser("semantic", help="P2-001 semantic retrieval (model, feasibility gate, index)")
     sm.add_argument("action", choices=["download-model", "feasibility", "build", "status"])
+    sm.add_argument("--update-lock", action="store_true",
+                    help="maintenance only: resolve the latest model revision and REWRITE the lock (then build --reembed)")
+    sm.add_argument("--reembed", action="store_true", help="build: clear ALL embeddings and re-embed with the pinned revision")
     sm.set_defaults(func=_cmd_semantic)
     args = ap.parse_args(argv)
     return args.func(args)

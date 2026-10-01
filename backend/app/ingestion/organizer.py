@@ -409,6 +409,7 @@ def reset_organizer_data(conn) -> None:
     suppliers referenced by enrichment are kept."""
     conn.execute(f"TRUNCATE {', '.join(ORGANIZER_TABLES)}")
     if conn.execute("SELECT to_regclass('semantic_text') IS NOT NULL").fetchone()[0]:
+        conn.execute("DROP INDEX IF EXISTS ix_semantic_text_hnsw")   # drops the READY stamp: an emptied index is never READY
         conn.execute("TRUNCATE semantic_text")          # derived from organizer item texts (P2-001)
     conn.execute("DELETE FROM ingestion_delivery")
     conn.execute("""DELETE FROM supplier s WHERE origin = 'ORGANIZER_DATA'

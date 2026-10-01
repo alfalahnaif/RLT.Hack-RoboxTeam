@@ -6,7 +6,7 @@ from dataclasses import asdict
 from datetime import date
 
 from app.search.candidates import build_pool, score_lots
-from app.search.models import BASELINE_VERSION, SearchConfig
+from app.search.models import BASELINE_VERSION, DEFAULT_CONFIG, SearchConfig
 from app.search.retrieval import build_query, retrieve
 from app.search.scoring import rank_suppliers
 
@@ -29,7 +29,9 @@ def prepare(conn, lot_id: str, cfg: SearchConfig, as_of: date | None = None, poo
     return q, ret, pool, t
 
 
-def recommend(conn, lot_id: str, cfg: SearchConfig = SearchConfig(), as_of: date | None = None) -> dict:
+def recommend(conn, lot_id: str, cfg: SearchConfig | None = None, as_of: date | None = None) -> dict:
+    """cfg omitted -> DEFAULT_CONFIG (the accepted P2-001 configuration)."""
+    cfg = cfg or DEFAULT_CONFIG
     t0 = time.perf_counter()
     q, ret, pool, t = prepare(conn, lot_id, cfg, as_of)
     t4 = time.perf_counter()

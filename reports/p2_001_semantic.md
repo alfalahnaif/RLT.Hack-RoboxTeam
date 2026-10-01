@@ -86,7 +86,7 @@
 | rpl-5563770 | HARD | STILL_MISSING | related history exists but outside the semantic cap / lot limit (different terminology or broad category) (best history cos 0.863) |
 | rpl-5548383 | HARD | STILL_MISSING | genuinely unseen supplier (no visible history before the lot date) |
 | rpl-5581528 | MEDIUM | STILL_MISSING | related history exists but outside the semantic cap / lot limit (different terminology or broad category) (best history cos 0.8684) |
-| rpl-5583213 | HARD | RECOVERED | winner rank 15; «» cos None lot None None |
+| rpl-5583213 | HARD | RECOVERED | winner rank 15; «обслуживание системы контроля загазованности скз стг-3-и-ех» cos 0.8879 lot 5253057 2024-08-02 |
 | rpl-5592531 | HARD | STILL_MISSING | related history exists but outside the semantic cap / lot limit (different terminology or broad category) (best history cos 0.8621) |
 | rpl-5612337 | MEDIUM | STILL_MISSING | related history exists but outside the semantic cap / lot limit (different terminology or broad category) (best history cos 0.9063) |
 | rpl-5558279 | MEDIUM | STILL_MISSING | related history exists but outside the semantic cap / lot limit (different terminology or broad category) (best history cos 0.8706) |

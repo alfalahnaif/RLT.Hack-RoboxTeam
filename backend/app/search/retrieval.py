@@ -191,12 +191,20 @@ ORDER BY nn.dist, nn.text_hash, it.publish_date DESC, it.item_id"""
 
 
 def semantic_unavailable(conn) -> str | None:
-    """Reason the semantic branch cannot run (model not pinned, index not built), or None. Search then degrades to lexical/OKPD2."""
-    from app.search import semantic
+    """Reason the semantic branch must not run, or None. Cheap (lock file + two catalog lookups, no table scan): READY means the HNSW
+    index exists, is valid, and carries the build's READY stamp for the currently pinned model revision (semantic_index.mark_ready).
+    Otherwise search degrades to lexical/OKPD2 (identical to P2-003) with a warning — never a sequential vector scan."""
+    from app.search import semantic, semantic_index
     if not semantic.LOCK.exists():
-        return "model not pinned (semantic download-model)"
-    if conn.execute("SELECT to_regclass('semantic_text')").fetchone()[0] is None or             conn.execute("SELECT 1 FROM semantic_text WHERE embedding IS NOT NULL LIMIT 1").fetchone() is None:
-        return "semantic index not built (semantic build)"
+        return "model lock missing (backend/semantic_model.lock.json)"
+    if conn.execute("SELECT to_regclass('semantic_text')").fetchone()[0] is None:
+        return "semantic_text table missing (migration 0004)"
+    state = semantic_index.index_state(conn)
+    if state is None or state.get("state") != "READY":
+        return "semantic index not READY (missing/invalid HNSW index or interrupted build; run `semantic build`)"
+    pinned = semantic.lock()["revision"]
+    if state.get("revision") != pinned:
+        return f"semantic index built with model revision {state.get('revision')}, pinned revision is {pinned}"
     return None
 
 

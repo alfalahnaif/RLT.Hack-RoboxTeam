@@ -59,7 +59,7 @@ class Recommendation:
     evidence_lot_ids: list
     reasons: list = field(default_factory=list)
     diagnostics: dict = field(default_factory=dict)   # raw evidence shape (not scored unless a weight uses it)
-    semantic_evidence: list = field(default_factory=list)  # P2-001: lots whose best text evidence is a semantic match
+    semantic_evidence: list = field(default_factory=list)  # P2-001: lots retrieved by the semantic branch (provenance, not scored)
 
 
 def _sat(x: float, s: float) -> float:
@@ -118,14 +118,22 @@ def rank_suppliers(q: QueryLot, pool: Pool, cfg: SearchConfig) -> tuple[list[Rec
             best_products=[n for n in dict.fromkeys(e.best_item_name for e in ordered[:5]) if n][:3],
             best_okpd2=best.best_item_okpd2, most_recent_relevant=latest.isoformat(),
             same_customer_history=sid in pool.same_customer, evidence_lot_ids=[e.lot_id for e in ordered[:5]], diagnostics=diag,
-            semantic_evidence=[{"lot_id": e.lot_id, "publish_date": e.publish_date.isoformat(), "product": e.best_item_name,
-                                "okpd2": e.best_item_okpd2, "cosine": round(e.semantic_cosine, 4)}
-                               for e in ordered if e.semantic_cosine is not None][:2]))
+            semantic_evidence=_semantic_evidence(ordered)))
     recs.sort(key=lambda r: (-r.score, -r.components["relevant_awards"], r.supplier_id))
     for i, r in enumerate(recs, 1):
         r.rank = i
         r.reasons = explain(r)
     return recs, [r.supplier_id for r in recs]
+
+
+def _semantic_evidence(ordered: list) -> list:
+    """Top-2 semantically retrieved lots of a supplier: lots found only by the semantic branch first, then by lot relevance.
+    `semantic_score_won` tells whether the calibrated semantic similarity was also the winning text component."""
+    lots = sorted((e for e in ordered if e.semantic_discovery), key=lambda e: not e.semantic_discovery["semantic_only"])
+    return [{"lot_id": e.lot_id, "publish_date": e.publish_date.isoformat(), "product": e.semantic_discovery["product"],
+             "okpd2": e.semantic_discovery["okpd2"], "cosine": round(e.semantic_discovery["cosine"], 4),
+             "discovered_only_by_semantic": e.semantic_discovery["semantic_only"], "semantic_score_won": e.semantic_cosine is not None}
+            for e in lots[:2]]
 
 
 def explain(r: Recommendation) -> list[str]:

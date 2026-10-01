@@ -249,11 +249,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9012,
+       "discovered_only_by_semantic": true,
        "lot_id": "5343005",
        "okpd2": "71.20.14.000",
        "product": "проведение технического осмотра автотранспортного средства ford transit kombi в251сс178",
        "publish_date": "2024-10-23",
-       "rank": 115
+       "rank": 115,
+       "semantic_score_won": true
       }
      ]
     },
@@ -267,19 +269,23 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9224,
+       "discovered_only_by_semantic": false,
        "lot_id": "5230751",
        "okpd2": "43.33.29.150",
        "product": "выполнение работ по ремонту помещений шереметевского дворца помещение 1-н ч п 121 помещение 1-н ч п 148 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-07-11",
-       "rank": 133
+       "rank": 133,
+       "semantic_score_won": true
       },
       {
        "cosine": 0.9157,
+       "discovered_only_by_semantic": false,
        "lot_id": "5355031",
        "okpd2": "43.34.10.110",
        "product": "выполнение работ по ремонту помещений покраска помещений шереметевского дворца 1-н ч п ч п 112 49 44 45 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-10-30",
-       "rank": 133
+       "rank": 133,
+       "semantic_score_won": true
       }
      ]
     },
@@ -293,11 +299,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9308,
+       "discovered_only_by_semantic": false,
        "lot_id": "5483010",
        "okpd2": "33.19.10.000",
        "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2025 году",
        "publish_date": "2024-12-24",
-       "rank": 51
+       "rank": 51,
+       "semantic_score_won": true
       }
      ]
     }
@@ -449,11 +457,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9012,
+       "discovered_only_by_semantic": true,
        "lot_id": "5343005",
        "okpd2": "71.20.14.000",
        "product": "проведение технического осмотра автотранспортного средства ford transit kombi в251сс178",
        "publish_date": "2024-10-23",
-       "rank": 115
+       "rank": 115,
+       "semantic_score_won": true
       }
      ]
     },
@@ -467,19 +477,23 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9224,
+       "discovered_only_by_semantic": false,
        "lot_id": "5230751",
        "okpd2": "43.33.29.150",
        "product": "выполнение работ по ремонту помещений шереметевского дворца помещение 1-н ч п 121 помещение 1-н ч п 148 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-07-11",
-       "rank": 144
+       "rank": 144,
+       "semantic_score_won": true
       },
       {
        "cosine": 0.9157,
+       "discovered_only_by_semantic": false,
        "lot_id": "5355031",
        "okpd2": "43.34.10.110",
        "product": "выполнение работ по ремонту помещений покраска помещений шереметевского дворца 1-н ч п ч п 112 49 44 45 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-10-30",
-       "rank": 144
+       "rank": 144,
+       "semantic_score_won": true
       }
      ]
     },
@@ -493,11 +507,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9308,
+       "discovered_only_by_semantic": false,
        "lot_id": "5483010",
        "okpd2": "33.19.10.000",
        "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2025 году",
        "publish_date": "2024-12-24",
-       "rank": 50
+       "rank": 50,
+       "semantic_score_won": true
       }
      ]
     },
@@ -508,7 +524,28 @@
       "установка системы контроля загазованности"
      ],
      "winner_rank": 16,
-     "winner_semantic_evidence": []
+     "winner_semantic_evidence": [
+      {
+       "cosine": 0.8879,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5253057",
+       "okpd2": "80.20.10.000",
+       "product": "обслуживание системы контроля загазованности скз стг-3-и-ех",
+       "publish_date": "2024-08-02",
+       "rank": 16,
+       "semantic_score_won": false
+      },
+      {
+       "cosine": 0.8851,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5230891",
+       "okpd2": "80.20.10.000",
+       "product": "система контроля загазованности скз стг-3-и-ех поверка",
+       "publish_date": "2024-07-10",
+       "rank": 16,
+       "semantic_score_won": false
+      }
+     ]
     }
    ],
    "unweighted": {
@@ -658,11 +695,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9012,
+       "discovered_only_by_semantic": true,
        "lot_id": "5343005",
        "okpd2": "71.20.14.000",
        "product": "проведение технического осмотра автотранспортного средства ford transit kombi в251сс178",
        "publish_date": "2024-10-23",
-       "rank": 115
+       "rank": 115,
+       "semantic_score_won": true
       }
      ]
     },
@@ -676,19 +715,23 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9224,
+       "discovered_only_by_semantic": false,
        "lot_id": "5230751",
        "okpd2": "43.33.29.150",
        "product": "выполнение работ по ремонту помещений шереметевского дворца помещение 1-н ч п 121 помещение 1-н ч п 148 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-07-11",
-       "rank": 153
+       "rank": 153,
+       "semantic_score_won": true
       },
       {
        "cosine": 0.9157,
+       "discovered_only_by_semantic": false,
        "lot_id": "5355031",
        "okpd2": "43.34.10.110",
        "product": "выполнение работ по ремонту помещений покраска помещений шереметевского дворца 1-н ч п ч п 112 49 44 45 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
        "publish_date": "2024-10-30",
-       "rank": 153
+       "rank": 153,
+       "semantic_score_won": true
       }
      ]
     },
@@ -702,19 +745,23 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9308,
+       "discovered_only_by_semantic": false,
        "lot_id": "5483010",
        "okpd2": "33.19.10.000",
        "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2025 году",
        "publish_date": "2024-12-24",
-       "rank": 47
+       "rank": 47,
+       "semantic_score_won": true
       },
       {
        "cosine": 0.925,
+       "discovered_only_by_semantic": false,
        "lot_id": "4980222",
        "okpd2": "33.19.10.000",
        "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2024 году",
        "publish_date": "2024-01-22",
-       "rank": 47
+       "rank": 47,
+       "semantic_score_won": true
       }
      ]
     },
@@ -725,7 +772,28 @@
       "установка системы контроля загазованности"
      ],
      "winner_rank": 15,
-     "winner_semantic_evidence": []
+     "winner_semantic_evidence": [
+      {
+       "cosine": 0.8879,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5253057",
+       "okpd2": "80.20.10.000",
+       "product": "обслуживание системы контроля загазованности скз стг-3-и-ех",
+       "publish_date": "2024-08-02",
+       "rank": 15,
+       "semantic_score_won": false
+      },
+      {
+       "cosine": 0.8831,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5233772",
+       "okpd2": "81.10.10.000",
+       "product": "система контроля загазованности поверка стг-3-и-ех",
+       "publish_date": "2024-07-12",
+       "rank": 15,
+       "semantic_score_won": false
+      }
+     ]
     },
     {
      "difficulty": "MEDIUM",
@@ -738,11 +806,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9096,
+       "discovered_only_by_semantic": true,
        "lot_id": "5125302",
        "okpd2": "95.11.10.120",
        "product": "техническое обслуживание мфу kyocera",
        "publish_date": "2024-04-16",
-       "rank": 43
+       "rank": 43,
+       "semantic_score_won": true
       }
      ]
     }
@@ -895,11 +965,13 @@
      "winner_semantic_evidence": [
       {
        "cosine": 0.9308,
+       "discovered_only_by_semantic": false,
        "lot_id": "5483010",
        "okpd2": "33.19.10.000",
        "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2025 году",
        "publish_date": "2024-12-24",
-       "rank": 54
+       "rank": 54,
+       "semantic_score_won": true
       }
      ]
     },
@@ -910,7 +982,28 @@
       "установка системы контроля загазованности"
      ],
      "winner_rank": 16,
-     "winner_semantic_evidence": []
+     "winner_semantic_evidence": [
+      {
+       "cosine": 0.8879,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5253057",
+       "okpd2": "80.20.10.000",
+       "product": "обслуживание системы контроля загазованности скз стг-3-и-ех",
+       "publish_date": "2024-08-02",
+       "rank": 16,
+       "semantic_score_won": false
+      },
+      {
+       "cosine": 0.8851,
+       "discovered_only_by_semantic": true,
+       "lot_id": "5230891",
+       "okpd2": "80.20.10.000",
+       "product": "система контроля загазованности скз стг-3-и-ех поверка",
+       "publish_date": "2024-07-10",
+       "rank": 16,
+       "semantic_score_won": false
+      }
+     ]
     }
    ],
    "unweighted": {
@@ -1024,13 +1117,16 @@
       "18 relevant historical award(s), 17 on АИС ГЗ",
       "7 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2024-07-10",
-      "has earlier procurement history with the same customer"
+      "has earlier procurement history with the same customer",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные размер l» (cosine 0.94, lot 5091638, 2024-04-26, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные из латекса гевеи неопудренные нестерильные тип 1» (cosine 0.92, lot 5147977, 2024-05-02, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 18,
      "relevant_em_participations": 7,
      "relevant_lots": 24,
      "same_customer_history": true,
-     "score": 0.950001
+     "score": 0.950001,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1058,13 +1154,15 @@
       "strongest matched product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (text similarity 1.00)",
       "17 relevant historical award(s), 17 on АИС ГЗ",
       "1 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2024-12-13"
+      "most recent relevant activity: 2024-12-13",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные стерильные» (cosine 0.94, lot 5399453, 2024-11-22, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 17,
      "relevant_em_participations": 1,
      "relevant_lots": 18,
      "same_customer_history": false,
-     "score": 0.875624
+     "score": 0.875624,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1093,13 +1191,15 @@
       "9 relevant historical award(s), 8 on АИС ГЗ",
       "1 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2024-07-05",
-      "has earlier procurement history with the same customer"
+      "has earlier procurement history with the same customer",
+      "semantically similar historical product: «перчатки смотровые процедурные нитриловые неопудренные нестерильные размер м повышенной прочности» (cosine 0.92, lot 5002787, 2024-02-02, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 9,
      "relevant_em_participations": 1,
      "relevant_lots": 9,
      "same_customer_history": true,
-     "score": 0.872275
+     "score": 0.872275,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1127,13 +1227,16 @@
       "strongest matched product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (text similarity 1.00)",
       "13 relevant historical award(s), 11 on АИС ГЗ",
       "2 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2025-01-31"
+      "most recent relevant activity: 2025-01-31",
+      "semantically similar historical product: «01 перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (cosine 0.94, lot 5216358, 2024-06-27, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (cosine 0.95, lot 5537619, 2025-01-31, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 13,
      "relevant_em_participations": 2,
      "relevant_lots": 13,
      "same_customer_history": false,
-     "score": 0.870496
+     "score": 0.870496,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1161,13 +1264,15 @@
       "strongest matched product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (text similarity 1.00)",
       "12 relevant historical award(s), 12 on АИС ГЗ",
       "1 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2025-01-27"
+      "most recent relevant activity: 2025-01-27",
+      "semantically similar historical product: «перчатки смотровые/процедурные из латекса гевеи неопудренные нестерильные» (cosine 0.92, lot 5529598, 2025-01-27, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 12,
      "relevant_em_participations": 1,
      "relevant_lots": 13,
      "same_customer_history": false,
-     "score": 0.862356
+     "score": 0.862356,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1196,13 +1301,15 @@
       "6 relevant historical award(s), 6 on АИС ГЗ",
       "1 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2024-11-27",
-      "has earlier procurement history with the same customer"
+      "has earlier procurement history with the same customer",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные стерильные» (cosine 0.94, lot 5405200, 2024-11-27, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 6,
      "relevant_em_participations": 1,
      "relevant_lots": 7,
      "same_customer_history": true,
-     "score": 0.858771
+     "score": 0.858771,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1232,13 +1339,16 @@
       "2 relevant historical award(s)",
       "6 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-01-27",
-      "has earlier procurement history with the same customer"
+      "has earlier procurement history with the same customer",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные размер l» (cosine 0.94, lot 5091638, 2024-04-26, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные из латекса гевеи неопудренные нестерильные» (cosine 0.92, lot 5529598, 2025-01-27, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 2,
      "relevant_em_participations": 6,
      "relevant_lots": 6,
      "same_customer_history": true,
-     "score": 0.850433
+     "score": 0.850433,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1266,13 +1376,16 @@
       "exact OKPD2 match (22.19.60.119)",
       "strongest matched product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (text similarity 1.00)",
       "11 relevant historical award(s), 11 on АИС ГЗ",
-      "most recent relevant activity: 2024-12-26"
+      "most recent relevant activity: 2024-12-26",
+      "semantically similar historical product: «перчатки смотровые/процедурные из латекса гевеи неопудренные нестерильные» (cosine 0.92, lot 5489807, 2024-12-26, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные из латекса гевеи неопудренные стерильные не антибактериальные» (cosine 0.91, lot 5471918, 2024-12-19, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 11,
      "relevant_em_participations": 0,
      "relevant_lots": 11,
      "same_customer_history": false,
-     "score": 0.842303
+     "score": 0.842303,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1301,13 +1414,16 @@
       "strongest matched product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные» (text similarity 1.00)",
       "4 relevant historical award(s), 1 on АИС ГЗ",
       "8 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2025-01-27"
+      "most recent relevant activity: 2025-01-27",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные м» (cosine 0.95, lot 4995985, 2024-01-29, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные размер l» (cosine 0.94, lot 5091638, 2024-04-26, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 4,
      "relevant_em_participations": 8,
      "relevant_lots": 9,
      "same_customer_history": false,
-     "score": 0.840319
+     "score": 0.840319,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "22.19.60.119",
@@ -1338,13 +1454,16 @@
       "2 relevant historical award(s)",
       "6 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2024-12-09",
-      "has earlier procurement history with the same customer"
+      "has earlier procurement history with the same customer",
+      "semantically similar historical product: «перчатки медицинские смотровые нитриловые benovy нестерильные неопудренные размер l 8-9 голубые 100 пар/200 штук в упако» (cosine 0.92, lot 5348459, 2024-10-25, OKPD2 22.19.60.119)",
+      "semantically similar historical product: «перчатки смотровые/процедурные нитриловые неопудренные нестерильные тип 1» (cosine 0.94, lot 5431818, 2024-12-04, OKPD2 22.19.60.119)"
      ],
      "relevant_awards": 2,
      "relevant_em_participations": 6,
      "relevant_lots": 6,
      "same_customer_history": true,
-     "score": 0.839116
+     "score": 0.839116,
+     "semantic_evidence": []
     }
    ],
    "winner_rank": 16
@@ -1407,14 +1526,15 @@
       "38 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-02-03",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)",
-      "semantically similar historical product: «кресло офисное brabix pilot ex-610 ch premium хром ткань-сетка черное» (cosine 0.87, lot 5434473, 2024-12-05, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «кресло офисное метta хром ткань-сетка сиденье и спинка мягкие черное» (cosine 0.87, lot 5380086, 2024-11-13, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «кресло офисное everprof ep 705 сетка/ткань черная сетка» (cosine 0.86, lot 5325939, 2024-10-11, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 18,
      "relevant_em_participations": 38,
      "relevant_lots": 39,
      "same_customer_history": true,
-     "score": 0.778977
+     "score": 0.778977,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1446,14 +1566,15 @@
       "38 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-01-30",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)",
-      "semantically similar historical product: «кресло офисное brabix pilot ex-610 ch premium хром ткань-сетка черное» (cosine 0.87, lot 5434473, 2024-12-05, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «офисное кресло chairman 590 мет tw black черное» (cosine 0.86, lot 5202987, 2024-06-17, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «кресло офисное рабочее поворотное brabix space ex-508 или эквивалент» (cosine 0.86, lot 5297328, 2024-09-18, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 16,
      "relevant_em_participations": 38,
      "relevant_lots": 38,
      "same_customer_history": true,
-     "score": 0.776154
+     "score": 0.776154,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1485,14 +1606,15 @@
       "54 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-02-03",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)",
-      "semantically similar historical product: «кресло офисное brabix pilot ex-610 ch premium хром ткань-сетка черное» (cosine 0.87, lot 5434473, 2024-12-05, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «кресло офисное хром рециклированная кожа подголовник сиденье и спинка мягкие цвет черный» (cosine 0.88, lot 5190045, 2024-06-24, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «кресло офисное метta хром ткань-сетка сиденье и спинка мягкие черное» (cosine 0.87, lot 5380086, 2024-11-13, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 8,
      "relevant_em_participations": 54,
      "relevant_lots": 54,
      "same_customer_history": true,
-     "score": 0.765435
+     "score": 0.765435,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1524,14 +1646,15 @@
       "27 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-02-03",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)",
-      "semantically similar historical product: «кресло офисное эргономичное на колесах с обрабатываемой поверхностью бюрократ kb-9n/eco на колесиках эко кожа черный» (cosine 0.87, lot 5384870, 2024-11-15, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «кресло офисное everprof ep 705 сетка/ткань черная сетка» (cosine 0.86, lot 5325939, 2024-10-11, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 27,
      "relevant_lots": 27,
      "same_customer_history": true,
-     "score": 0.709459
+     "score": 0.709459,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1563,14 +1686,15 @@
       "26 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-02-03",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное бюрократ сн-808ахsn на колесиках ткань пластик черное ограничение по весу 120кг тип механизма качания с ф» (cosine 0.91, lot 5095137, 2024-03-26, OKPD2 31.01.11.150)",
-      "semantically similar historical product: «кресло офисное brabix alpha gm-018 без механизма качания макс нагрузка 120 кг» (cosine 0.87, lot 5259942, 2024-08-13, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «шкаф металлический офисный brabix mk 18/91/46 1830x915x460 мм 47 кг 4 полки разборный» (cosine 0.87, lot 5160931, 2024-05-21, OKPD2 31.01.11.129)",
+      "semantically similar historical product: «кресло офисное с подлокотниками» (cosine 0.86, lot 5415078, 2024-12-02, OKPD2 31.01.12.160)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 26,
      "relevant_lots": 26,
      "same_customer_history": true,
-     "score": 0.704582
+     "score": 0.704582,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1609,7 +1733,8 @@
      "relevant_em_participations": 14,
      "relevant_lots": 14,
      "same_customer_history": true,
-     "score": 0.679652
+     "score": 0.679652,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1647,7 +1772,8 @@
      "relevant_em_participations": 22,
      "relevant_lots": 27,
      "same_customer_history": false,
-     "score": 0.667299
+     "score": 0.667299,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.12.160",
@@ -1679,14 +1805,15 @@
       "14 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-02-03",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное марвин черное механизм качания с фиксацией в рабочем положении материал экокожа материал подлокотников хр» (cosine 0.91, lot 5073076, 2024-03-14, OKPD2 31.01.12.160)",
-      "semantically similar historical product: «кресло спинка низкая ткань сетка т-образные подлокотники черный газ лифт топ-ган механизм качания с фиксацией кресла вра» (cosine 0.88, lot 5208122, 2024-06-20, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «мебель для сидения преимущественно с металлическим каркасом кресло офисное» (cosine 0.87, lot 5215864, 2024-06-27, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «кресло офисное everprof ep 705 сетка/ткань черная сетка» (cosine 0.86, lot 5325939, 2024-10-11, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 1,
      "relevant_em_participations": 14,
      "relevant_lots": 14,
      "same_customer_history": true,
-     "score": 0.665794
+     "score": 0.665794,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.12.160",
@@ -1725,7 +1852,8 @@
      "relevant_em_participations": 13,
      "relevant_lots": 13,
      "same_customer_history": true,
-     "score": 0.652854
+     "score": 0.652854,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "31.01.11.150",
@@ -1757,13 +1885,15 @@
       "6 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-01-30",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «кресло офисное метta хром ткань-сетка сиденье и спинка мягкие черное» (cosine 0.87, lot 5380086, 2024-11-13, OKPD2 31.01.11.150)"
+      "semantically similar historical product: «кресло офисное метta хром ткань-сетка сиденье и спинка мягкие черное» (cosine 0.87, lot 5380086, 2024-11-13, OKPD2 31.01.11.150)",
+      "semantically similar historical product: «табурет медицинский лабораторный м95-02 цвет обивки черный материал обивки искусственная кожа минимальная высота сиденья» (cosine 0.90, lot 5537566, 2025-01-30, OKPD2 31.01.11.150)"
      ],
      "relevant_awards": 0,
      "relevant_em_participations": 6,
      "relevant_lots": 6,
      "same_customer_history": true,
-     "score": 0.628743
+     "score": 0.628743,
+     "semantic_evidence": []
     }
    ],
    "winner_rank": 15
@@ -1827,7 +1957,8 @@
      "relevant_em_participations": 6,
      "relevant_lots": 23,
      "same_customer_history": true,
-     "score": 0.843746
+     "score": 0.843746,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -1862,7 +1993,8 @@
      "relevant_em_participations": 17,
      "relevant_lots": 24,
      "same_customer_history": true,
-     "score": 0.839107
+     "score": 0.839107,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -1896,7 +2028,8 @@
      "relevant_em_participations": 0,
      "relevant_lots": 8,
      "same_customer_history": false,
-     "score": 0.814882
+     "score": 0.814882,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -1932,7 +2065,8 @@
      "relevant_em_participations": 13,
      "relevant_lots": 15,
      "same_customer_history": true,
-     "score": 0.803444
+     "score": 0.803444,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -1969,7 +2103,8 @@
      "relevant_em_participations": 12,
      "relevant_lots": 12,
      "same_customer_history": true,
-     "score": 0.740928
+     "score": 0.740928,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -1998,13 +2133,15 @@
       "strongest matched product: «интерактивная панель» (text similarity 0.69)",
       "7 relevant historical award(s), 7 on АИС ГЗ",
       "5 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2025-03-21"
+      "most recent relevant activity: 2025-03-21",
+      "semantically similar historical product: «интерактивная панель» (cosine 0.90, lot 5616907, 2025-03-21, OKPD2 26.20.13.000)"
      ],
      "relevant_awards": 7,
      "relevant_em_participations": 5,
      "relevant_lots": 12,
      "same_customer_history": false,
-     "score": 0.737953
+     "score": 0.737953,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -2034,13 +2171,15 @@
       "strongest matched product: «интерактивная панель тип 3» (text similarity 0.69)",
       "1 relevant historical award(s)",
       "27 relevant observed ЭМ participation(s) (winner or not)",
-      "most recent relevant activity: 2025-02-10"
+      "most recent relevant activity: 2025-02-10",
+      "semantically similar historical product: «интерактивная панель в комплекте с мобильной стойкой» (cosine 0.89, lot 5417709, 2024-12-16, OKPD2 26.20.13.000)"
      ],
      "relevant_awards": 1,
      "relevant_em_participations": 27,
      "relevant_lots": 27,
      "same_customer_history": false,
-     "score": 0.73642
+     "score": 0.73642,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -2075,7 +2214,8 @@
      "relevant_em_participations": 3,
      "relevant_lots": 8,
      "same_customer_history": false,
-     "score": 0.712921
+     "score": 0.712921,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -2111,7 +2251,8 @@
      "relevant_em_participations": 7,
      "relevant_lots": 7,
      "same_customer_history": true,
-     "score": 0.710318
+     "score": 0.710318,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.13.000",
@@ -2145,7 +2286,8 @@
      "relevant_em_participations": 1,
      "relevant_lots": 8,
      "same_customer_history": false,
-     "score": 0.703575
+     "score": 0.703575,
+     "semantic_evidence": []
     }
    ],
    "winner_rank": 32
@@ -2208,14 +2350,15 @@
       "38 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-05-27",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.90, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «процессор amd ryzen 5 4600g» (cosine 0.87, lot 5084764, 2024-03-26, OKPD2 26.20.40.190)",
+      "semantically similar historical product: «материнская плата asus prime h510m-e r2.0 или эквивалент» (cosine 0.87, lot 5240403, 2024-07-19, OKPD2 26.20.40.190)"
      ],
      "relevant_awards": 16,
      "relevant_em_participations": 38,
      "relevant_lots": 39,
      "same_customer_history": true,
-     "score": 0.768976
+     "score": 0.768976,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2247,14 +2390,15 @@
       "51 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-06-10",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.90, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «ноутбук asus b1 b1500cba» (cosine 0.88, lot 5436374, 2024-12-11, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 5,
      "relevant_em_participations": 51,
      "relevant_lots": 51,
      "same_customer_history": true,
-     "score": 0.742254
+     "score": 0.742254,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2286,14 +2430,15 @@
       "62 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-06-04",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «15.6\" ноутбук acer extensa 15 ex215-34-32ru 1920x1080 intel core i3 n305 16gb lpddr5 ssd 512gb silver или эквивалент» (cosine 0.90, lot 5208329, 2024-06-20, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «ноутбук asus b1 b1500cba» (cosine 0.88, lot 5436374, 2024-12-11, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 2,
      "relevant_em_participations": 62,
      "relevant_lots": 62,
      "same_customer_history": true,
-     "score": 0.73736
+     "score": 0.73736,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2325,14 +2470,15 @@
       "29 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-06-10",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.90, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «материнская плата asus prime b550m-k» (cosine 0.88, lot 5734710, 2025-06-10, OKPD2 26.20.40.190)",
+      "semantically similar historical product: «процессор amd ryzen 5 4600g» (cosine 0.87, lot 5084764, 2024-03-26, OKPD2 26.20.40.190)"
      ],
      "relevant_awards": 6,
      "relevant_em_participations": 29,
      "relevant_lots": 29,
      "same_customer_history": true,
-     "score": 0.724534
+     "score": 0.724534,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2364,14 +2510,15 @@
       "24 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-06-10",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «24.5\" монитор acer ek251qgbi черный» (cosine 0.87, lot 5569952, 2025-02-21, OKPD2 26.20.17.110)"
+      "semantically similar historical product: «материнская плата asus prime b550m-k» (cosine 0.88, lot 5734710, 2025-06-10, OKPD2 26.20.40.190)",
+      "semantically similar historical product: «материнская плата asus prime h510m-e r2.0 или эквивалент» (cosine 0.87, lot 5240403, 2024-07-19, OKPD2 26.20.40.190)"
      ],
      "relevant_awards": 7,
      "relevant_em_participations": 24,
      "relevant_lots": 26,
      "same_customer_history": true,
-     "score": 0.70059
+     "score": 0.70059,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2403,14 +2550,15 @@
       "29 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-05-29",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук digma pro sprint m 15.6\" fhd ips ryzen 7 3700u/8gb/ssd 256gb/rx vega 10/cr microsd win11pro» (cosine 0.88, lot 5206158, 2024-06-19, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «ноутбук asus b1 b1500cba» (cosine 0.88, lot 5436374, 2024-12-11, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук asus vivobook 17 x1704za-au343 fhd i5 1235u/16gb/ssd512gb/os» (cosine 0.87, lot 5434481, 2024-12-05, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 1,
      "relevant_em_participations": 29,
      "relevant_lots": 29,
      "same_customer_history": true,
-     "score": 0.67717
+     "score": 0.67717,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2441,14 +2589,15 @@
       "3 relevant historical award(s), 1 on АИС ГЗ",
       "20 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-06-05",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.90, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «24.5\" монитор acer ek251qgbi черный» (cosine 0.87, lot 5569952, 2025-02-21, OKPD2 26.20.17.110)"
+      "semantically similar historical product: «ноутбук asus b1 b1500cba» (cosine 0.88, lot 5436374, 2024-12-11, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 20,
      "relevant_lots": 21,
      "same_customer_history": false,
-     "score": 0.646135
+     "score": 0.646135,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2486,7 +2635,8 @@
      "relevant_em_participations": 15,
      "relevant_lots": 15,
      "same_customer_history": true,
-     "score": 0.633954
+     "score": 0.633954,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2518,14 +2668,15 @@
       "8 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-05-07",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «24.5\" монитор acer ek251qgbi черный» (cosine 0.87, lot 5569952, 2025-02-21, OKPD2 26.20.17.110)"
+      "semantically similar historical product: «материнская плата asus prime b550m-k» (cosine 0.88, lot 5445920, 2024-12-13, OKPD2 26.20.40.190)",
+      "semantically similar historical product: «ноутбук tecno megabook t1 15.6\"» (cosine 0.89, lot 5554326, 2025-02-21, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 2,
      "relevant_em_participations": 8,
      "relevant_lots": 8,
      "same_customer_history": true,
-     "score": 0.623364
+     "score": 0.623364,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2563,7 +2714,8 @@
      "relevant_em_participations": 2,
      "relevant_lots": 2,
      "same_customer_history": true,
-     "score": 0.589571
+     "score": 0.589571,
+     "semantic_evidence": []
     }
    ],
    "winner_rank": 1
@@ -2636,14 +2788,15 @@
       "53 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.91, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 4 ноутбук asus vivobook 17 x1704za-au345 17.3\" fhd i5-1235u ssd 512гб 16гб ddr4 windows 10 pro или эквивален» (cosine 0.93, lot 5548946, 2025-02-11, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «мфу лазерное hp laserjet pro 4103fdn» (cosine 0.92, lot 5656940, 2025-04-15, OKPD2 26.20.18.120)",
+      "semantically similar historical product: «ноутбук digma pro sprint m 15.6\" fhd ips ryzen 7 3700u/8gb/ssd 256gb/rx vega 10/cr microsd win11pro» (cosine 0.88, lot 5206158, 2024-06-19, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 21,
      "relevant_em_participations": 53,
      "relevant_lots": 54,
      "same_customer_history": true,
-     "score": 0.789338
+     "score": 0.789338,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2675,14 +2828,15 @@
       "76 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.91, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «мфу лазерное hp laserjet pro 4103fdw» (cosine 0.92, lot 5717272, 2025-11-28, OKPD2 26.20.18.110)"
+      "semantically similar historical product: «мфу лазерное hp laserjet pro 4103fdn» (cosine 0.92, lot 5656940, 2025-04-15, OKPD2 26.20.18.120)",
+      "semantically similar historical product: «ноутбук digma pro sprint m 15.6\" fhd ips ryzen 7 3700u/8gb/ssd 256gb/rx vega 10/cr microsd win11pro» (cosine 0.88, lot 5206158, 2024-06-19, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 76,
      "relevant_lots": 76,
      "same_customer_history": true,
-     "score": 0.743581
+     "score": 0.743581,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2714,14 +2868,15 @@
       "55 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.91, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 4 ноутбук asus vivobook 17 x1704za-au345 17.3\" fhd i5-1235u ssd 512гб 16гб ddr4 windows 10 pro или эквивален» (cosine 0.93, lot 5548946, 2025-02-11, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «мфу лазерное hp laserjet pro 4103fdn» (cosine 0.92, lot 5656940, 2025-04-15, OKPD2 26.20.18.120)",
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 55,
      "relevant_lots": 55,
      "same_customer_history": true,
-     "score": 0.738318
+     "score": 0.738318,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2752,14 +2907,15 @@
       "9 relevant historical award(s), 5 on АИС ГЗ",
       "40 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.91, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «мфу лазерный canon i-sensys mf461dw черно-белая печать a4 цвет белый» (cosine 0.93, lot 5148667, 2024-05-02, OKPD2 26.20.18)"
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «мфу лазерный печать цветная максимальный формат а4» (cosine 0.91, lot 5655157, 2025-04-21, OKPD2 26.20.18.110)"
      ],
      "relevant_awards": 9,
      "relevant_em_participations": 40,
      "relevant_lots": 45,
      "same_customer_history": false,
-     "score": 0.700236
+     "score": 0.700236,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2791,14 +2947,15 @@
       "28 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук тип 4 ноутбук asus vivobook 17 x1704za-au345 17.3\" fhd i5-1235u ssd 512гб 16гб ddr4 windows 10 pro или эквивален» (cosine 0.93, lot 5548946, 2025-02-11, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «мфу лазерный pantum m7100dn черно-белая печать a4» (cosine 0.92, lot 5032903, 2024-02-27, OKPD2 26.20.18.120)"
+      "semantically similar historical product: «мфу лазерный печать цветная максимальный формат а4» (cosine 0.91, lot 5655157, 2025-04-21, OKPD2 26.20.18.110)",
+      "semantically similar historical product: «картридж для принтера hp laser jet pro m104a» (cosine 0.91, lot 6019339, 2025-12-16, OKPD2 26.20.40.120)"
      ],
      "relevant_awards": 5,
      "relevant_em_participations": 28,
      "relevant_lots": 28,
      "same_customer_history": true,
-     "score": 0.651549
+     "score": 0.651549,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2829,14 +2986,15 @@
       "3 relevant historical award(s)",
       "22 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-10",
-      "semantically similar historical product: «ноутбук тип 6 asus vivobook 15 x1504za-bq1150 15.6\" или эквивалент» (cosine 0.91, lot 5339457, 2024-10-23, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук тип 4 ноутбук asus vivobook 17 x1704za-au345 17.3\" fhd i5-1235u ssd 512гб 16гб ddr4 windows 10 pro или эквивален» (cosine 0.93, lot 5548946, 2025-02-11, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «принтер лазерный hp laserjet pro 4004dn» (cosine 0.90, lot 5757953, 2025-06-30, OKPD2 26.20.16.122)",
+      "semantically similar historical product: «мфу лазерный печать цветная максимальный формат а4» (cosine 0.91, lot 5655157, 2025-04-21, OKPD2 26.20.18.110)"
      ],
      "relevant_awards": 3,
      "relevant_em_participations": 22,
      "relevant_lots": 22,
      "same_customer_history": false,
-     "score": 0.646679
+     "score": 0.646679,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2868,14 +3026,15 @@
       "9 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-15",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук acer 15.6\" fhd ryzen 7 5700u/16gb/ssd512g/alse орел» (cosine 0.90, lot 6007155, 2025-12-10, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «мфу pantum m7100dw черно-белая печать a4 лазерный» (cosine 0.93, lot 5619681, 2025-03-25, OKPD2 26.20.18.120)"
+      "semantically similar historical product: «ноутбук рикор nino 201.1/15/5500u/1x8gb/1x256gb/8port/astra linux» (cosine 0.88, lot 5428952, 2024-12-03, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук acer 15.6\" fhd ryzen 7 5700u/16gb/ssd512g/alse орел» (cosine 0.90, lot 6007155, 2025-12-10, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 16,
      "relevant_em_participations": 9,
      "relevant_lots": 17,
      "same_customer_history": true,
-     "score": 0.635285
+     "score": 0.635285,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.11.110",
@@ -2907,14 +3066,15 @@
       "22 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-12",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «ноутбук тип 4 ноутбук asus vivobook 17 x1704za-au345 17.3\" fhd i5-1235u ssd 512гб 16гб ddr4 windows 10 pro или эквивален» (cosine 0.93, lot 5548946, 2025-02-11, OKPD2 26.20.11.110)",
-      "semantically similar historical product: «ноутбук asus vivobook 17 x1704za-au343 fhd i5 1235u/16gb/ssd512gb/os» (cosine 0.94, lot 5434481, 2024-12-05, OKPD2 26.20.11.110)"
+      "semantically similar historical product: «ноутбук digma pro sprint m 15.6\" fhd ips ryzen 7 3700u/8gb/ssd 256gb/rx vega 10/cr microsd win11pro» (cosine 0.88, lot 5206158, 2024-06-19, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук acer aspire 5 a515-57-506d 15.6\" ips intel core i5 12450 ddr4 16гб ssd 512гб windows 10 pro microsoft office 202» (cosine 0.87, lot 5743626, 2025-07-18, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 1,
      "relevant_em_participations": 22,
      "relevant_lots": 22,
      "same_customer_history": true,
-     "score": 0.626233
+     "score": 0.626233,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.16.120",
@@ -2946,14 +3106,15 @@
       "21 relevant observed ЭМ participation(s) (winner or not)",
       "most recent relevant activity: 2025-12-16",
       "has earlier procurement history with the same customer",
-      "semantically similar historical product: «мфу лазерный hp color laserjet pro цветная печать a4» (cosine 0.93, lot 5197084, 2024-06-11, OKPD2 26.20.18.120)",
-      "semantically similar historical product: «мфу лазерный черно-белый двусторонняя печать а4 1200x1200 dpi до 40 стр/мин wi-fi» (cosine 0.92, lot 5938556, 2025-12-12, OKPD2 26.20.18.120)"
+      "semantically similar historical product: «ноутбук lenovo thinkbook 16g6 21kh0016ru i3-1315u/8gb/256gbssd/16/w11p» (cosine 0.88, lot 5342350, 2024-11-07, OKPD2 26.20.11.110)",
+      "semantically similar historical product: «ноутбук acer aspire 5 a515-57-506d 15.6\" ips intel core i5 12450 ddr4 16гб ssd 512гб windows 10 pro microsoft office 202» (cosine 0.87, lot 5743931, 2025-07-08, OKPD2 26.20.11.110)"
      ],
      "relevant_awards": 2,
      "relevant_em_participations": 21,
      "relevant_lots": 23,
      "same_customer_history": true,
-     "score": 0.623726
+     "score": 0.623726,
+     "semantic_evidence": []
     },
     {
      "best_okpd2": "26.20.18.110",
@@ -2991,7 +3152,8 @@
      "relevant_em_participations": 6,
      "relevant_lots": 6,
      "same_customer_history": true,
-     "score": 0.587757
+     "score": 0.587757,
+     "semantic_evidence": []
     }
    ],
    "winner_rank": 9
@@ -3071,6 +3233,7 @@
   "model_load_seconds_once_per_process": 6.31
  },
  "latency_gate_passed": true,
+ "provenance_repair": "2026-10-02 hardening: semantic evidence now records semantic DISCOVERY provenance (separate from the winning text component). Re-run verified every metric, rank, acceptance result and failure status unchanged; only semantic_evidence / winner_semantic_evidence / golden reasons were replaced. Latency numbers are from the original run.",
  "retrieval_failure_analysis": [
   {
    "difficulty": "EASY",
@@ -3113,11 +3276,13 @@
    "semantic_evidence": [
     {
      "cosine": 0.9012,
+     "discovered_only_by_semantic": true,
      "lot_id": "5343005",
      "okpd2": "71.20.14.000",
      "product": "проведение технического осмотра автотранспортного средства ford transit kombi в251сс178",
      "publish_date": "2024-10-23",
-     "rank": 115
+     "rank": 115,
+     "semantic_score_won": true
     }
    ],
    "status": "RECOVERED",
@@ -3133,19 +3298,23 @@
    "semantic_evidence": [
     {
      "cosine": 0.9224,
+     "discovered_only_by_semantic": false,
      "lot_id": "5230751",
      "okpd2": "43.33.29.150",
      "product": "выполнение работ по ремонту помещений шереметевского дворца помещение 1-н ч п 121 помещение 1-н ч п 148 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
      "publish_date": "2024-07-11",
-     "rank": 153
+     "rank": 153,
+     "semantic_score_won": true
     },
     {
      "cosine": 0.9157,
+     "discovered_only_by_semantic": false,
      "lot_id": "5355031",
      "okpd2": "43.34.10.110",
      "product": "выполнение работ по ремонту помещений покраска помещений шереметевского дворца 1-н ч п ч п 112 49 44 45 расположенных по адресу санкт-петербург набережная реки фонтанки д 34 лит а",
      "publish_date": "2024-10-30",
-     "rank": 153
+     "rank": 153,
+     "semantic_score_won": true
     }
    ],
    "status": "RECOVERED",
@@ -3161,19 +3330,23 @@
    "semantic_evidence": [
     {
      "cosine": 0.9308,
+     "discovered_only_by_semantic": false,
      "lot_id": "5483010",
      "okpd2": "33.19.10.000",
      "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2025 году",
      "publish_date": "2024-12-24",
-     "rank": 47
+     "rank": 47,
+     "semantic_score_won": true
     },
     {
      "cosine": 0.925,
+     "discovered_only_by_semantic": false,
      "lot_id": "4980222",
      "okpd2": "33.19.10.000",
      "product": "оказание услуг техническому обслуживанию и ремонту узлов учета тепловой энергии по комплексному техническому обслуживанию индивидуального теплового пункта подготовка итп и элеваторного узла к отопительному сезону в 2024 году",
      "publish_date": "2024-01-22",
-     "rank": 47
+     "rank": 47,
+     "semantic_score_won": true
     }
    ],
    "status": "RECOVERED",
@@ -3229,7 +3402,28 @@
    "query_items": [
     "установка системы контроля загазованности"
    ],
-   "semantic_evidence": [],
+   "semantic_evidence": [
+    {
+     "cosine": 0.8879,
+     "discovered_only_by_semantic": true,
+     "lot_id": "5253057",
+     "okpd2": "80.20.10.000",
+     "product": "обслуживание системы контроля загазованности скз стг-3-и-ех",
+     "publish_date": "2024-08-02",
+     "rank": 15,
+     "semantic_score_won": false
+    },
+    {
+     "cosine": 0.8831,
+     "discovered_only_by_semantic": true,
+     "lot_id": "5233772",
+     "okpd2": "81.10.10.000",
+     "product": "система контроля загазованности поверка стг-3-и-ех",
+     "publish_date": "2024-07-12",
+     "rank": 15,
+     "semantic_score_won": false
+    }
+   ],
    "status": "RECOVERED",
    "winner_rank": 15,
    "winner_visible_relations": 114
@@ -3288,11 +3482,13 @@
    "semantic_evidence": [
     {
      "cosine": 0.9096,
+     "discovered_only_by_semantic": true,
      "lot_id": "5125302",
      "okpd2": "95.11.10.120",
      "product": "техническое обслуживание мфу kyocera",
      "publish_date": "2024-04-16",
-     "rank": 43
+     "rank": 43,
+     "semantic_score_won": true
     }
    ],
    "status": "RECOVERED",

@@ -78,6 +78,9 @@ class LotEvidence:
     customer_inn: str | None = None
     item_match: tuple = ()   # per query item (q.items order): best combined text/OKPD2 match in this lot, in [0, 1]
     semantic_cosine: float | None = None   # P2-001: raw cosine of the best item when its text evidence came from the semantic branch
+    # P2-001 provenance (not scored): the semantically retrieved item of this lot with the highest raw cosine, kept even when lexical
+    # similarity is the larger text component. None when the semantic branch retrieved no item of this lot.
+    semantic_discovery: dict | None = None
 
 
 def score_lots(q: QueryLot, ret: Retrieval, idf: Idf, cfg: SearchConfig) -> list[LotEvidence]:
@@ -124,11 +127,26 @@ def score_lots(q: QueryLot, ret: Retrieval, idf: Idf, cfg: SearchConfig) -> list
         rel = (weights["text"] * text + weights["okpd2"] * okpd + weights["subject"] * subj) / wsum
         if best_item is None:
             best_item = max(items, key=lambda it: (okpd2_similarity(qokpd[0].okpd2, it.okpd2) if qokpd else 0, it.item_id))
+        discovery = _semantic_discovery(items, ret, len(q.items))
         out.append(LotEvidence(lot_id, items[0].publish_date, rel, text, okpd, subj, best_item.name,
                                best_item.okpd2["code"] if best_item.okpd2 else None, ret.lot_customer.get(lot_id),
-                               tuple(item_match), best_sem))
+                               tuple(item_match), best_sem, discovery))
     out.sort(key=lambda e: (-e.relevance, -e.publish_date.toordinal(), e.lot_id))
     return out
+
+
+def _semantic_discovery(items: list[HistItem], ret: Retrieval, n_query_items: int) -> dict | None:
+    """Deterministic provenance of the semantic branch for one lot: highest raw cosine (ties -> smaller item_id)."""
+    found = []
+    for it in items:
+        cos = [ret.semantic[(i, it.item_id)][0] for i in range(n_query_items) if (i, it.item_id) in ret.semantic]
+        if cos:
+            found.append((max(cos), it))
+    if not found:
+        return None
+    cos, it = min(found, key=lambda x: (-x[0], x[1].item_id))
+    return {"item_id": it.item_id, "product": it.name, "okpd2": it.okpd2["code"] if it.okpd2 else None, "cosine": cos,
+            "semantic_only": not any(i.item_id in ret.lexical_ids for i in items)}
 
 
 @dataclass
