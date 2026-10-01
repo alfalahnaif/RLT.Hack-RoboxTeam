@@ -1,0 +1,1267 @@
+{
+  "as_of": "2026-01-01",
+  "recent_days": 365,
+  "metric_definitions": {
+    "lot_count": "Distinct lots with a matching OKPD2 scope and publish_date < as_of",
+    "procurement_count": "Distinct procedure_id values among matching lots",
+    "award_count": "Distinct (lot_id, supplier_id) winning relations in scope",
+    "top1_share": "Largest supplier award_count / total award_count",
+    "top3_share": "Three largest supplier award_counts / total award_count",
+    "hhi": "Sum of squared supplier award shares, on a 0–1 scale",
+    "recent_winning": "Winning supplier with publish_date >= as_of - recent_days and < as_of"
+  },
+  "platform_semantics": {
+    "AIS_GZ": "WINNER_ROWS_ONLY_OBSERVED",
+    "EM": "MIXED_WINNER_NONWINNER_ROWS_OBSERVED"
+  },
+  "distribution": {
+    "all_codes": 8452,
+    "codes_with_awards": 8354,
+    "eligible_codes": 2896,
+    "all_awarded_percentiles": {
+      "lot_count": {
+        "p25": 2.0,
+        "p50": 8.0,
+        "p75": 44.0,
+        "p90": 236.0,
+        "p95": 608.7
+      },
+      "award_count": {
+        "p25": 2.0,
+        "p50": 7.0,
+        "p75": 39.0,
+        "p90": 207.0,
+        "p95": 538.35
+      },
+      "observed_supplier_count": {
+        "p25": 3.0,
+        "p50": 9.0,
+        "p75": 35.0,
+        "p90": 102.0,
+        "p95": 192.35
+      },
+      "winning_supplier_count": {
+        "p25": 2.0,
+        "p50": 5.0,
+        "p75": 22.0,
+        "p90": 66.0,
+        "p95": 127.0
+      },
+      "top1_share": {
+        "p25": 0.1538,
+        "p50": 0.3333,
+        "p75": 0.6667,
+        "p90": 1.0,
+        "p95": 1.0
+      },
+      "top3_share": {
+        "p25": 0.3529,
+        "p50": 0.7,
+        "p75": 1.0,
+        "p90": 1.0,
+        "p95": 1.0
+      },
+      "hhi": {
+        "p25": 0.0816,
+        "p50": 0.2278,
+        "p75": 0.5556,
+        "p90": 1.0,
+        "p95": 1.0
+      }
+    },
+    "eligible_percentiles": {
+      "lot_count": {
+        "p25": 41.0,
+        "p50": 88.5,
+        "p75": 297.5,
+        "p90": 885.5,
+        "p95": 1618.5
+      },
+      "award_count": {
+        "p25": 36.0,
+        "p50": 80.0,
+        "p75": 263.25,
+        "p90": 776.0,
+        "p95": 1493.75
+      },
+      "observed_supplier_count": {
+        "p25": 32.0,
+        "p50": 56.0,
+        "p75": 117.0,
+        "p90": 248.0,
+        "p95": 360.0
+      },
+      "winning_supplier_count": {
+        "p25": 21.0,
+        "p50": 37.0,
+        "p75": 77.0,
+        "p90": 168.5,
+        "p95": 250.5
+      },
+      "top1_share": {
+        "p25": 0.0846,
+        "p50": 0.1351,
+        "p75": 0.2223,
+        "p90": 0.3497,
+        "p95": 0.4444
+      },
+      "top3_share": {
+        "p25": 0.2,
+        "p50": 0.2951,
+        "p75": 0.44,
+        "p90": 0.6094,
+        "p95": 0.7267
+      },
+      "hhi": {
+        "p25": 0.0321,
+        "p50": 0.0559,
+        "p75": 0.1001,
+        "p90": 0.1807,
+        "p95": 0.2632
+      }
+    }
+  },
+  "thresholds": {
+    "min_lots": 20,
+    "min_awards": 20,
+    "moderate_top1": 0.25,
+    "high_top1": 0.5,
+    "very_high_top1": 0.8,
+    "moderate_hhi": 0.125,
+    "high_hhi": 0.32,
+    "very_high_hhi": 0.6
+  },
+  "category_counts": {
+    "INSUFFICIENT_DATA": 5556,
+    "LOW": 2250,
+    "MODERATE": 530,
+    "HIGH": 85,
+    "VERY_HIGH": 31
+  },
+  "demo_selection": {
+    "primary": "Sterilized milk: recognizable product and very high concentration",
+    "contrast": "Natural canned fish: recognizable food product and more dispersed awards",
+    "backup": "Cranberry: another high-concentration example",
+    "basis": "Similar support, understandable source product names, visible structural contrast; no recommendation score"
+  },
+  "top_concentrated_with_100_lots_and_awards": [
+    {
+      "code": "49.31.21.140",
+      "lot_count": 444,
+      "procurement_count": 444,
+      "customer_count": 159,
+      "observed_supplier_count": 3,
+      "winning_supplier_count": 2,
+      "em_observed_supplier_count": 3,
+      "em_winning_supplier_count": 2,
+      "ais_gz_winning_supplier_count": 1,
+      "award_count": 273,
+      "top1_share": 0.9633699633699634,
+      "top3_share": 1.0,
+      "hhi": 0.9294234459069624
+    },
+    {
+      "code": "62.02",
+      "lot_count": 116,
+      "procurement_count": 116,
+      "customer_count": 58,
+      "observed_supplier_count": 17,
+      "winning_supplier_count": 6,
+      "em_observed_supplier_count": 14,
+      "em_winning_supplier_count": 3,
+      "ais_gz_winning_supplier_count": 3,
+      "award_count": 115,
+      "top1_share": 0.9565217391304348,
+      "top3_share": 0.9739130434782609,
+      "hhi": 0.91531190926276
+    },
+    {
+      "code": "10.51.11.141",
+      "lot_count": 182,
+      "procurement_count": 182,
+      "customer_count": 39,
+      "observed_supplier_count": 6,
+      "winning_supplier_count": 5,
+      "em_observed_supplier_count": 5,
+      "em_winning_supplier_count": 3,
+      "ais_gz_winning_supplier_count": 3,
+      "award_count": 173,
+      "top1_share": 0.9421965317919075,
+      "top3_share": 0.9884393063583815,
+      "hhi": 0.8894717498078787
+    },
+    {
+      "code": "58.19.14.110",
+      "lot_count": 138,
+      "procurement_count": 138,
+      "customer_count": 71,
+      "observed_supplier_count": 9,
+      "winning_supplier_count": 9,
+      "em_observed_supplier_count": 4,
+      "em_winning_supplier_count": 3,
+      "ais_gz_winning_supplier_count": 7,
+      "award_count": 130,
+      "top1_share": 0.9153846153846154,
+      "top3_share": 0.9461538461538461,
+      "hhi": 0.8389349112426036
+    },
+    {
+      "code": "01.25.19.150",
+      "lot_count": 227,
+      "procurement_count": 227,
+      "customer_count": 73,
+      "observed_supplier_count": 16,
+      "winning_supplier_count": 15,
+      "em_observed_supplier_count": 6,
+      "em_winning_supplier_count": 4,
+      "ais_gz_winning_supplier_count": 13,
+      "award_count": 219,
+      "top1_share": 0.8812785388127854,
+      "top3_share": 0.9269406392694064,
+      "hhi": 0.7783615854548487
+    },
+    {
+      "code": "10.61.22.130",
+      "lot_count": 136,
+      "procurement_count": 136,
+      "customer_count": 79,
+      "observed_supplier_count": 11,
+      "winning_supplier_count": 9,
+      "em_observed_supplier_count": 5,
+      "em_winning_supplier_count": 3,
+      "ais_gz_winning_supplier_count": 7,
+      "award_count": 110,
+      "top1_share": 0.8636363636363636,
+      "top3_share": 0.9090909090909091,
+      "hhi": 0.7484297520661157
+    },
+    {
+      "code": "35.12.10.120",
+      "lot_count": 262,
+      "procurement_count": 262,
+      "customer_count": 66,
+      "observed_supplier_count": 20,
+      "winning_supplier_count": 19,
+      "em_observed_supplier_count": 10,
+      "em_winning_supplier_count": 9,
+      "ais_gz_winning_supplier_count": 13,
+      "award_count": 223,
+      "top1_share": 0.8340807174887892,
+      "top3_share": 0.9103139013452914,
+      "hhi": 0.6992901526272396
+    },
+    {
+      "code": "53.10.12.000",
+      "lot_count": 204,
+      "procurement_count": 204,
+      "customer_count": 78,
+      "observed_supplier_count": 13,
+      "winning_supplier_count": 13,
+      "em_observed_supplier_count": 3,
+      "em_winning_supplier_count": 3,
+      "ais_gz_winning_supplier_count": 12,
+      "award_count": 193,
+      "top1_share": 0.8134715025906736,
+      "top3_share": 0.917098445595855,
+      "hhi": 0.6688233241160837
+    },
+    {
+      "code": "10.86.10.990",
+      "lot_count": 152,
+      "procurement_count": 152,
+      "customer_count": 103,
+      "observed_supplier_count": 18,
+      "winning_supplier_count": 16,
+      "em_observed_supplier_count": 6,
+      "em_winning_supplier_count": 4,
+      "ais_gz_winning_supplier_count": 14,
+      "award_count": 148,
+      "top1_share": 0.8108108108108109,
+      "top3_share": 0.8918918918918919,
+      "hhi": 0.6621621621621622
+    },
+    {
+      "code": "61.10.12.000",
+      "lot_count": 160,
+      "procurement_count": 160,
+      "customer_count": 89,
+      "observed_supplier_count": 5,
+      "winning_supplier_count": 4,
+      "em_observed_supplier_count": 5,
+      "em_winning_supplier_count": 4,
+      "ais_gz_winning_supplier_count": 3,
+      "award_count": 138,
+      "top1_share": 0.782608695652174,
+      "top3_share": 0.9927536231884058,
+      "hhi": 0.6421970174333124
+    }
+  ],
+  "lower_concentration_comparisons": [
+    {
+      "code": "85.21.12.000",
+      "lot_count": 949,
+      "procurement_count": 949,
+      "customer_count": 34,
+      "observed_supplier_count": 560,
+      "winning_supplier_count": 536,
+      "em_observed_supplier_count": 44,
+      "em_winning_supplier_count": 20,
+      "ais_gz_winning_supplier_count": 520,
+      "award_count": 941,
+      "top1_share": 0.012752391073326248,
+      "top3_share": 0.03400637619553666,
+      "hhi": 0.0028086429861284433
+    },
+    {
+      "code": "82.11.10.000",
+      "lot_count": 717,
+      "procurement_count": 717,
+      "customer_count": 58,
+      "observed_supplier_count": 504,
+      "winning_supplier_count": 470,
+      "em_observed_supplier_count": 71,
+      "em_winning_supplier_count": 36,
+      "ais_gz_winning_supplier_count": 438,
+      "award_count": 702,
+      "top1_share": 0.03133903133903134,
+      "top3_share": 0.05128205128205128,
+      "hhi": 0.003660684572365484
+    },
+    {
+      "code": "28.99.39.190",
+      "lot_count": 610,
+      "procurement_count": 610,
+      "customer_count": 361,
+      "observed_supplier_count": 508,
+      "winning_supplier_count": 338,
+      "em_observed_supplier_count": 370,
+      "em_winning_supplier_count": 189,
+      "ais_gz_winning_supplier_count": 179,
+      "award_count": 511,
+      "top1_share": 0.021526418786692758,
+      "top3_share": 0.04500978473581213,
+      "hhi": 0.004423236736991663
+    },
+    {
+      "code": "90.01.10.000",
+      "lot_count": 502,
+      "procurement_count": 502,
+      "customer_count": 55,
+      "observed_supplier_count": 316,
+      "winning_supplier_count": 313,
+      "em_observed_supplier_count": 65,
+      "em_winning_supplier_count": 62,
+      "ais_gz_winning_supplier_count": 259,
+      "award_count": 480,
+      "top1_share": 0.022916666666666665,
+      "top3_share": 0.05416666666666667,
+      "hhi": 0.004887152777777778
+    },
+    {
+      "code": "26.51.51.110",
+      "lot_count": 866,
+      "procurement_count": 866,
+      "customer_count": 533,
+      "observed_supplier_count": 491,
+      "winning_supplier_count": 331,
+      "em_observed_supplier_count": 405,
+      "em_winning_supplier_count": 232,
+      "ais_gz_winning_supplier_count": 134,
+      "award_count": 754,
+      "top1_share": 0.025198938992042442,
+      "top3_share": 0.06631299734748011,
+      "hhi": 0.007025307994849749
+    },
+    {
+      "code": "25.94.12.190",
+      "lot_count": 542,
+      "procurement_count": 542,
+      "customer_count": 333,
+      "observed_supplier_count": 410,
+      "winning_supplier_count": 261,
+      "em_observed_supplier_count": 362,
+      "em_winning_supplier_count": 208,
+      "ais_gz_winning_supplier_count": 63,
+      "award_count": 472,
+      "top1_share": 0.029661016949152543,
+      "top3_share": 0.06779661016949153,
+      "hhi": 0.007244685435219765
+    },
+    {
+      "code": "43.22.12.190",
+      "lot_count": 779,
+      "procurement_count": 779,
+      "customer_count": 435,
+      "observed_supplier_count": 440,
+      "winning_supplier_count": 337,
+      "em_observed_supplier_count": 317,
+      "em_winning_supplier_count": 194,
+      "ais_gz_winning_supplier_count": 189,
+      "award_count": 688,
+      "top1_share": 0.03197674418604651,
+      "top3_share": 0.0872093023255814,
+      "hhi": 0.007428001622498648
+    },
+    {
+      "code": "23.12.13.110",
+      "lot_count": 575,
+      "procurement_count": 575,
+      "customer_count": 361,
+      "observed_supplier_count": 370,
+      "winning_supplier_count": 256,
+      "em_observed_supplier_count": 289,
+      "em_winning_supplier_count": 169,
+      "ais_gz_winning_supplier_count": 119,
+      "award_count": 483,
+      "top1_share": 0.024844720496894408,
+      "top3_share": 0.07039337474120083,
+      "hhi": 0.007574296259146381
+    },
+    {
+      "code": "27.90.40.190",
+      "lot_count": 464,
+      "procurement_count": 464,
+      "customer_count": 328,
+      "observed_supplier_count": 423,
+      "winning_supplier_count": 259,
+      "em_observed_supplier_count": 342,
+      "em_winning_supplier_count": 171,
+      "ais_gz_winning_supplier_count": 106,
+      "award_count": 411,
+      "top1_share": 0.031630170316301706,
+      "top3_share": 0.09002433090024331,
+      "hhi": 0.007642625842849616
+    },
+    {
+      "code": "26.20.40.110",
+      "lot_count": 805,
+      "procurement_count": 805,
+      "customer_count": 495,
+      "observed_supplier_count": 478,
+      "winning_supplier_count": 323,
+      "em_observed_supplier_count": 349,
+      "em_winning_supplier_count": 177,
+      "ais_gz_winning_supplier_count": 181,
+      "award_count": 688,
+      "top1_share": 0.03343023255813953,
+      "top3_share": 0.08430232558139535,
+      "hhi": 0.00775757166035695
+    }
+  ],
+  "demo_categories": {
+    "primary": {
+      "scope": {
+        "kind": "okpd2_code",
+        "value": "10.51.11.141",
+        "as_of": "2026-01-01",
+        "recent_days": 365
+      },
+      "support": {
+        "lots": 182,
+        "procurements": 182,
+        "customers": 39,
+        "awards": 173
+      },
+      "suppliers": {
+        "observed": 6,
+        "winning": 5,
+        "recent_winning": 3,
+        "em_observed": 5,
+        "em_winning": 3,
+        "ais_gz_winning": 3
+      },
+      "concentration": {
+        "top1_share": 0.9421965317919075,
+        "top3_share": 0.9884393063583815,
+        "hhi": 0.8894717498078787,
+        "label": "VERY_HIGH"
+      },
+      "dominant_supplier": {
+        "inn": "7804471404",
+        "awards": 163,
+        "em_winning": true,
+        "em_observed": true,
+        "supplier_id": "26c65462-6713-5c76-b072-d113de0c7b85",
+        "recent_awards": 68,
+        "ais_gz_winning": true,
+        "observed_relations": 164
+      },
+      "alternatives": {
+        "total_count": 5,
+        "winning_count": 4,
+        "observed_only_count": 1,
+        "suppliers": [
+          {
+            "inn": "7806410527",
+            "awards": 7,
+            "em_winning": false,
+            "em_observed": true,
+            "supplier_id": "206a29b9-191d-5357-b8fa-7441e628c42d",
+            "recent_awards": 3,
+            "ais_gz_winning": true,
+            "observed_relations": 8
+          },
+          {
+            "inn": "7806240956",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "2a215a2d-114c-5fab-ae49-c9ad04bff4b1",
+            "recent_awards": 1,
+            "ais_gz_winning": false,
+            "observed_relations": 4
+          },
+          {
+            "inn": "7817120989",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "aa160cce-bf33-5b49-bd85-85652d57b422",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7814455521",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "fb3afc3e-84a8-5212-a68e-7d8c3388d3be",
+            "recent_awards": 0,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7804355302",
+            "awards": 0,
+            "em_winning": false,
+            "em_observed": true,
+            "supplier_id": "19c89f2f-a365-5508-9238-dceaa1a4f761",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 13
+          }
+        ]
+      },
+      "reasons": [
+        "5 suppliers won 173 observed awards across 182 lots.",
+        "The top supplier accounts for 94.2% of observed awards.",
+        "The top three suppliers account for 98.8% of observed awards.",
+        "Award-share HHI is 0.889.",
+        "Supplier Radar historical concentration label: VERY_HIGH."
+      ],
+      "limitations": [
+        "Historical procurement concentration does not establish current market concentration.",
+        "Procurement records do not cover the entire supplier market.",
+        "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+        "Observed EM non-winners do not establish a complete participant or market population.",
+        "Supplier registration region does not establish delivery capability.",
+        "External supplier expansion is a separate stage.",
+        "Labels are Supplier Radar analytical categories, not legal classifications."
+      ],
+      "representative_product_names": [
+        "Молоко питьевое стерилизованное 2,5 % жирности длительного хранения",
+        "Молоко питьевое тип 23",
+        "Молоко питьевое стерилизованное 2,5 % жирности длительного хранения"
+      ]
+    },
+    "contrast": {
+      "scope": {
+        "kind": "okpd2_code",
+        "value": "10.20.25.111",
+        "as_of": "2026-01-01",
+        "recent_days": 365
+      },
+      "support": {
+        "lots": 179,
+        "procurements": 179,
+        "customers": 74,
+        "awards": 169
+      },
+      "suppliers": {
+        "observed": 45,
+        "winning": 42,
+        "recent_winning": 30,
+        "em_observed": 19,
+        "em_winning": 14,
+        "ais_gz_winning": 36
+      },
+      "concentration": {
+        "top1_share": 0.1301775147928994,
+        "top3_share": 0.28994082840236685,
+        "hhi": 0.04933300654738978,
+        "label": "LOW"
+      },
+      "dominant_supplier": {
+        "inn": "7806410527",
+        "awards": 22,
+        "em_winning": true,
+        "em_observed": true,
+        "supplier_id": "206a29b9-191d-5357-b8fa-7441e628c42d",
+        "recent_awards": 12,
+        "ais_gz_winning": true,
+        "observed_relations": 22
+      },
+      "alternatives": {
+        "total_count": 44,
+        "winning_count": 41,
+        "observed_only_count": 3,
+        "suppliers": [
+          {
+            "inn": "7814455521",
+            "awards": 14,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "fb3afc3e-84a8-5212-a68e-7d8c3388d3be",
+            "recent_awards": 6,
+            "ais_gz_winning": true,
+            "observed_relations": 14
+          },
+          {
+            "inn": "7804471404",
+            "awards": 13,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "26c65462-6713-5c76-b072-d113de0c7b85",
+            "recent_awards": 6,
+            "ais_gz_winning": true,
+            "observed_relations": 14
+          },
+          {
+            "inn": "7810937066",
+            "awards": 8,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "6b3ae3cc-5b05-5e35-8c55-cb111270a861",
+            "recent_awards": 7,
+            "ais_gz_winning": true,
+            "observed_relations": 8
+          },
+          {
+            "inn": "7810813293",
+            "awards": 8,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "8c0fa008-0801-5f52-b6eb-1b4cbf5e0191",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 8
+          },
+          {
+            "inn": "7804054351",
+            "awards": 7,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "61009a26-d7d3-521f-87db-d9d0d5f60094",
+            "recent_awards": 3,
+            "ais_gz_winning": true,
+            "observed_relations": 7
+          },
+          {
+            "inn": "7817080623",
+            "awards": 7,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "e80a202b-e4a2-5434-ae2a-3437af78277e",
+            "recent_awards": 6,
+            "ais_gz_winning": true,
+            "observed_relations": 7
+          },
+          {
+            "inn": "7814741459",
+            "awards": 6,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "181c3698-d089-567e-bffa-608e03154106",
+            "recent_awards": 3,
+            "ais_gz_winning": true,
+            "observed_relations": 6
+          },
+          {
+            "inn": "7814607703",
+            "awards": 6,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "27028206-a3e0-5061-b611-b47997a7ae92",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 6
+          },
+          {
+            "inn": "7806240956",
+            "awards": 6,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "2a215a2d-114c-5fab-ae49-c9ad04bff4b1",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 8
+          },
+          {
+            "inn": "7811530202",
+            "awards": 5,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "4c1652ac-b4e7-53c1-9a9d-329609fc5a5e",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 5
+          }
+        ]
+      },
+      "reasons": [
+        "42 suppliers won 169 observed awards across 179 lots.",
+        "The top supplier accounts for 13.0% of observed awards.",
+        "The top three suppliers account for 29.0% of observed awards.",
+        "Award-share HHI is 0.049.",
+        "Supplier Radar historical concentration label: LOW."
+      ],
+      "limitations": [
+        "Historical procurement concentration does not establish current market concentration.",
+        "Procurement records do not cover the entire supplier market.",
+        "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+        "Observed EM non-winners do not establish a complete participant or market population.",
+        "Supplier registration region does not establish delivery capability.",
+        "External supplier expansion is a separate stage.",
+        "Labels are Supplier Radar analytical categories, not legal classifications."
+      ],
+      "representative_product_names": [
+        "Консервы рыбные натуральные",
+        "Консервы рыбные натуральные тип 1",
+        "Консервы рыбные натуральные \"Горбуша\""
+      ]
+    },
+    "backup": {
+      "scope": {
+        "kind": "okpd2_code",
+        "value": "01.25.19.150",
+        "as_of": "2026-01-01",
+        "recent_days": 365
+      },
+      "support": {
+        "lots": 227,
+        "procurements": 227,
+        "customers": 73,
+        "awards": 219
+      },
+      "suppliers": {
+        "observed": 16,
+        "winning": 15,
+        "recent_winning": 12,
+        "em_observed": 6,
+        "em_winning": 4,
+        "ais_gz_winning": 13
+      },
+      "concentration": {
+        "top1_share": 0.8812785388127854,
+        "top3_share": 0.9269406392694064,
+        "hhi": 0.7783615854548487,
+        "label": "VERY_HIGH"
+      },
+      "dominant_supplier": {
+        "inn": "7817306535",
+        "awards": 193,
+        "em_winning": true,
+        "em_observed": true,
+        "supplier_id": "2b5fcedc-4bc4-51f2-891b-d297dc3bbdbc",
+        "recent_awards": 192,
+        "ais_gz_winning": true,
+        "observed_relations": 198
+      },
+      "alternatives": {
+        "total_count": 15,
+        "winning_count": 14,
+        "observed_only_count": 1,
+        "suppliers": [
+          {
+            "inn": "7804054351",
+            "awards": 7,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "61009a26-d7d3-521f-87db-d9d0d5f60094",
+            "recent_awards": 5,
+            "ais_gz_winning": true,
+            "observed_relations": 57
+          },
+          {
+            "inn": "7806410527",
+            "awards": 3,
+            "em_winning": false,
+            "em_observed": true,
+            "supplier_id": "206a29b9-191d-5357-b8fa-7441e628c42d",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 4
+          },
+          {
+            "inn": "7806240956",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "2a215a2d-114c-5fab-ae49-c9ad04bff4b1",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7801678129",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "8e2682b4-b9fd-5405-a913-afe175269538",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7842180692",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "fbba10f9-2812-5674-9202-5ca725751469",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7806254638",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "fccaa283-8255-5a7e-9422-96a400d9e41a",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7804691858",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "19cffe91-d6b1-5ecc-bae3-ad081fef5cca",
+            "recent_awards": 0,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7804471404",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "26c65462-6713-5c76-b072-d113de0c7b85",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7811530202",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "4c1652ac-b4e7-53c1-9a9d-329609fc5a5e",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7804680408",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "62534c9d-c101-5e21-aa3b-adee4939153d",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          }
+        ]
+      },
+      "reasons": [
+        "15 suppliers won 219 observed awards across 227 lots.",
+        "The top supplier accounts for 88.1% of observed awards.",
+        "The top three suppliers account for 92.7% of observed awards.",
+        "Award-share HHI is 0.778.",
+        "Supplier Radar historical concentration label: VERY_HIGH."
+      ],
+      "limitations": [
+        "Historical procurement concentration does not establish current market concentration.",
+        "Procurement records do not cover the entire supplier market.",
+        "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+        "Observed EM non-winners do not establish a complete participant or market population.",
+        "Supplier registration region does not establish delivery capability.",
+        "External supplier expansion is a separate stage.",
+        "Labels are Supplier Radar analytical categories, not legal classifications."
+      ],
+      "representative_product_names": [
+        "Клюква тип 1",
+        "Клюква",
+        "Клюква"
+      ]
+    },
+    "reconciliation": {
+      "scope": {
+        "kind": "okpd2_code",
+        "value": "10.39.17.111",
+        "as_of": "2026-01-01",
+        "recent_days": 365
+      },
+      "support": {
+        "lots": 337,
+        "procurements": 337,
+        "customers": 193,
+        "awards": 313
+      },
+      "suppliers": {
+        "observed": 16,
+        "winning": 12,
+        "recent_winning": 8,
+        "em_observed": 14,
+        "em_winning": 9,
+        "ais_gz_winning": 7
+      },
+      "concentration": {
+        "top1_share": 0.3865814696485623,
+        "top3_share": 0.7571884984025559,
+        "hhi": 0.24672090150966125,
+        "label": "MODERATE"
+      },
+      "dominant_supplier": {
+        "inn": "7807313727",
+        "awards": 121,
+        "em_winning": true,
+        "em_observed": true,
+        "supplier_id": "71d70fb2-fe0e-5180-b98d-dcf3a8addbc2",
+        "recent_awards": 99,
+        "ais_gz_winning": false,
+        "observed_relations": 122
+      },
+      "alternatives": {
+        "total_count": 15,
+        "winning_count": 11,
+        "observed_only_count": 4,
+        "suppliers": [
+          {
+            "inn": "7804054351",
+            "awards": 61,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "61009a26-d7d3-521f-87db-d9d0d5f60094",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 61
+          },
+          {
+            "inn": "4705055285",
+            "awards": 55,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "a21f9a87-b0e2-5053-ae06-458891d5f5fb",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 55
+          },
+          {
+            "inn": "7802862201",
+            "awards": 51,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "660b7f27-66b5-5dcf-82b2-1dd35423e7cc",
+            "recent_awards": 3,
+            "ais_gz_winning": true,
+            "observed_relations": 53
+          },
+          {
+            "inn": "7804471404",
+            "awards": 12,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "26c65462-6713-5c76-b072-d113de0c7b85",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 12
+          },
+          {
+            "inn": "7806410527",
+            "awards": 5,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "206a29b9-191d-5357-b8fa-7441e628c42d",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 59
+          },
+          {
+            "inn": "7817306535",
+            "awards": 3,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "2b5fcedc-4bc4-51f2-891b-d297dc3bbdbc",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 5
+          },
+          {
+            "inn": "7826082842",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "0b73e537-8ac1-5fc4-88c5-62703bea3fa2",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7814607703",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "27028206-a3e0-5061-b611-b47997a7ae92",
+            "recent_awards": 0,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7842469029",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "52b45764-188f-5429-8b6f-6c99ed8dcbfb",
+            "recent_awards": 1,
+            "ais_gz_winning": false,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7840476380",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "a66554a9-0db4-5d2c-859c-7a02a6b55607",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 4
+          }
+        ]
+      },
+      "reasons": [
+        "12 suppliers won 313 observed awards across 337 lots.",
+        "The top supplier accounts for 38.7% of observed awards.",
+        "The top three suppliers account for 75.7% of observed awards.",
+        "Award-share HHI is 0.247.",
+        "Supplier Radar historical concentration label: MODERATE."
+      ],
+      "limitations": [
+        "Historical procurement concentration does not establish current market concentration.",
+        "Procurement records do not cover the entire supplier market.",
+        "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+        "Observed EM non-winners do not establish a complete participant or market population.",
+        "Supplier registration region does not establish delivery capability.",
+        "External supplier expansion is a separate stage.",
+        "Labels are Supplier Radar analytical categories, not legal classifications."
+      ],
+      "representative_product_names": [
+        "Пюре томатное тип 1",
+        "Пюре томатное",
+        "Пюре томатное"
+      ]
+    },
+    "rice_flour": {
+      "scope": {
+        "kind": "okpd2_code",
+        "value": "10.61.22.130",
+        "as_of": "2026-01-01",
+        "recent_days": 365
+      },
+      "support": {
+        "lots": 136,
+        "procurements": 136,
+        "customers": 79,
+        "awards": 110
+      },
+      "suppliers": {
+        "observed": 11,
+        "winning": 9,
+        "recent_winning": 8,
+        "em_observed": 5,
+        "em_winning": 3,
+        "ais_gz_winning": 7
+      },
+      "concentration": {
+        "top1_share": 0.8636363636363636,
+        "top3_share": 0.9090909090909091,
+        "hhi": 0.7484297520661157,
+        "label": "VERY_HIGH"
+      },
+      "dominant_supplier": {
+        "inn": "7807313727",
+        "awards": 95,
+        "em_winning": true,
+        "em_observed": true,
+        "supplier_id": "71d70fb2-fe0e-5180-b98d-dcf3a8addbc2",
+        "recent_awards": 95,
+        "ais_gz_winning": false,
+        "observed_relations": 95
+      },
+      "alternatives": {
+        "total_count": 10,
+        "winning_count": 8,
+        "observed_only_count": 2,
+        "suppliers": [
+          {
+            "inn": "7804471404",
+            "awards": 3,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "26c65462-6713-5c76-b072-d113de0c7b85",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 3
+          },
+          {
+            "inn": "7806410527",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "206a29b9-191d-5357-b8fa-7441e628c42d",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7814607703",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "27028206-a3e0-5061-b611-b47997a7ae92",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7804054351",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "61009a26-d7d3-521f-87db-d9d0d5f60094",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7802862201",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "660b7f27-66b5-5dcf-82b2-1dd35423e7cc",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7801678129",
+            "awards": 2,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "8e2682b4-b9fd-5405-a913-afe175269538",
+            "recent_awards": 2,
+            "ais_gz_winning": true,
+            "observed_relations": 2
+          },
+          {
+            "inn": "7826082842",
+            "awards": 1,
+            "em_winning": false,
+            "em_observed": false,
+            "supplier_id": "0b73e537-8ac1-5fc4-88c5-62703bea3fa2",
+            "recent_awards": 1,
+            "ais_gz_winning": true,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7802896296",
+            "awards": 1,
+            "em_winning": true,
+            "em_observed": true,
+            "supplier_id": "b9130556-79c3-574d-a098-6bb21ce5b2a4",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 1
+          },
+          {
+            "inn": "7813037232",
+            "awards": 0,
+            "em_winning": false,
+            "em_observed": true,
+            "supplier_id": "06101b29-7328-5bc2-b906-2f6a2cc81fc6",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 7
+          },
+          {
+            "inn": "7840476380",
+            "awards": 0,
+            "em_winning": false,
+            "em_observed": true,
+            "supplier_id": "a66554a9-0db4-5d2c-859c-7a02a6b55607",
+            "recent_awards": 0,
+            "ais_gz_winning": false,
+            "observed_relations": 3
+          }
+        ]
+      },
+      "reasons": [
+        "9 suppliers won 110 observed awards across 136 lots.",
+        "The top supplier accounts for 86.4% of observed awards.",
+        "The top three suppliers account for 90.9% of observed awards.",
+        "Award-share HHI is 0.748.",
+        "Supplier Radar historical concentration label: VERY_HIGH."
+      ],
+      "limitations": [
+        "Historical procurement concentration does not establish current market concentration.",
+        "Procurement records do not cover the entire supplier market.",
+        "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+        "Observed EM non-winners do not establish a complete participant or market population.",
+        "Supplier registration region does not establish delivery capability.",
+        "External supplier expansion is a separate stage.",
+        "Labels are Supplier Radar analytical categories, not legal classifications."
+      ],
+      "representative_product_names": [
+        "Мука рисовая тип 1",
+        "Мука рисовая",
+        "Мука рисовая"
+      ]
+    }
+  },
+  "performance": {
+    "distribution_seconds": 29.95,
+    "single_code": {
+      "samples_ms": [
+        27.76,
+        29.15,
+        29.13
+      ],
+      "median_ms": 29.13,
+      "explain_execution_ms": 31.39,
+      "explain_planning_ms": 2.0,
+      "plan_root": "Result"
+    },
+    "group": {
+      "samples_ms": [
+        338.75,
+        248.65,
+        259.76
+      ],
+      "median_ms": 259.76,
+      "explain_execution_ms": 284.79,
+      "explain_planning_ms": 0.97,
+      "plan_root": "Result"
+    }
+  },
+  "limitations": [
+    "Historical procurement concentration does not establish current market concentration.",
+    "Procurement records do not cover the entire supplier market.",
+    "AIS_GZ provides observed winner rows only; EM contains observed winner and non-winner rows.",
+    "Observed EM non-winners do not establish a complete participant or market population.",
+    "Supplier registration region does not establish delivery capability.",
+    "External supplier expansion is a separate stage.",
+    "Labels are Supplier Radar analytical categories, not legal classifications."
+  ]
+}
