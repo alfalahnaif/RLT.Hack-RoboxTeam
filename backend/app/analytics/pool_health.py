@@ -122,7 +122,7 @@ def _reasons(support: PoolSupport, suppliers: PoolSuppliers, concentration: Pool
 
 def analyze_pool(conn: Connection, scope: PoolScope, thresholds: PoolThresholds,
                  alternative_limit: int = 10) -> PoolHealth:
-    """Analyze one full code, group or class using history strictly before as_of."""
+    """Analyze one exact observed OKPD2 value, group or class before as_of."""
     if alternative_limit < 0:
         raise ValueError("alternative_limit must be non-negative")
     scope = replace(scope, as_of=_effective_as_of(conn, scope.as_of))

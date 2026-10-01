@@ -28,7 +28,7 @@ from app.analytics.pool_health import analyze_pool, classify, explain_pool  # no
 from app.shared.config import database_url  # noqa: E402
 
 
-# Calibrated from the 2026-01-01 full-code distribution; overridable in the service.
+# Calibrated from the 2026-01-01 distribution of exact observed OKPD2 values; overridable in the service.
 THRESHOLDS = PoolThresholds(20, 20, moderate_top1=.25, high_top1=.50, very_high_top1=.80,
                             moderate_hhi=.125, high_hhi=.32, very_high_hhi=.60)
 DEMO_CODES = {
@@ -119,14 +119,14 @@ def markdown(report: dict) -> str:
              f"As of **{report['as_of']}** (strictly earlier publish dates); recent window **{report['recent_days']} days**.",
              "Source: canonical `procurement_lot`, `procurement_item`, `supplier_history`, `supplier` only.", "",
              "## Metric definitions", "",
-             "- A category lot counts once even when it has repeated matching items; procurements are distinct procedure IDs and customers are distinct non-null customer INNs.",
+             "- A category lot counts once even when it has repeated matching items; procurements are distinct procedure IDs and customers are distinct known/non-null customer INNs.",
              "- An observed supplier has a valid historical relation. AIS_GZ supplies observed winner rows only; EM supplies observed winner and non-winner rows. AIS_GZ is never treated as a complete participant list.",
              "- A winning supplier has at least one `is_winner=true` relation. An award is one distinct `(lot_id, supplier_id)` winning relation; it is not a monetary share.",
              "- A recent winning supplier has at least one winning relation with publish date in `[as_of - recent_days, as_of)`.",
              "- Top-one and top-three shares use award counts. HHI = Σ(awards for supplier / total awards)², on a 0–1 scale.",
              "- Winning alternatives are other historical winners; observed-only alternatives have EM non-winning evidence but no award in this scope. No recommendation score is used.", "",
              "## Dataset distribution", "",
-             f"**{d['all_codes']:,}** full OKPD2 codes; **{d['codes_with_awards']:,}** with awards; **{d['eligible_codes']:,}** pass the support rule.", "",
+             f"**{d['all_codes']:,}** distinct observed OKPD2 values as represented in the source dataset (mixed depths); **{d['codes_with_awards']:,}** with awards; **{d['eligible_codes']:,}** pass the support rule.", "",
              "| Metric | Population | p25 | p50 | p75 | p90 | p95 |", "|---|---|---:|---:|---:|---:|---:|"]
     for population, key in (("All with awards", "all_awarded_percentiles"), ("Eligible", "eligible_percentiles")):
         for field, values in d[key].items():
@@ -139,7 +139,7 @@ def markdown(report: dict) -> str:
               "| Label | Top-one share | HHI |", "|---|---:|---:|",
               "| MODERATE | ≥ 25% | ≥ 0.125 |", "| HIGH | ≥ 50% | ≥ 0.320 |",
               "| VERY_HIGH | ≥ 80% | ≥ 0.600 |", "| LOW | below both MODERATE boundaries | |", "",
-              "## Category counts", "", "| Label | Full-code categories |", "|---|---:|"]
+              "## Category counts", "", "| Label | Observed OKPD2 categories |", "|---|---:|"]
     for label in ("INSUFFICIENT_DATA", "LOW", "MODERATE", "HIGH", "VERY_HIGH"):
         lines.append(f"| {label} | {report['category_counts'][label]:,} |")
     primary_lots = report["demo_categories"]["primary"]["support"]["lots"]
@@ -204,6 +204,7 @@ def report_run(conn: psycopg.Connection, as_of: date | None, recent_days: int) -
         "metric_definitions": {
             "lot_count": "Distinct lots with a matching OKPD2 scope and publish_date < as_of",
             "procurement_count": "Distinct procedure_id values among matching lots",
+            "customer_count": "Distinct known/non-null customer INNs among matching lots",
             "award_count": "Distinct (lot_id, supplier_id) winning relations in scope",
             "top1_share": "Largest supplier award_count / total award_count",
             "top3_share": "Three largest supplier award_counts / total award_count",

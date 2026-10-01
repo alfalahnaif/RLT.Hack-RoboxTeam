@@ -125,3 +125,31 @@ def test_full_distribution_agrees_with_single_pool_and_deduplicates_lots(pool_db
     assert row["winning_supplier_count"] == pool.suppliers.winning == 2
     assert row["top1_share"] == pool.concentration.top1_share == .5
     assert row["hhi"] == pool.concentration.hhi == .5
+
+
+@pytest.mark.parametrize("kind,value", [("okpd2_group", "10.51"), ("okpd2_class", "10")])
+def test_group_and_class_deduplicate_different_exact_codes_in_one_lot(pool_db, kind, value):
+    add_lot(pool_db, "multi-code", "2025-02-01", "A", ("B",))
+    pool_db.execute("""INSERT INTO procurement_item VALUES
+                    ('multi-code', '2025-02-01', '10.51.11.142', '10.51', '10', 'Milk variant')""")
+
+    result = analyze_pool(pool_db, PoolScope(kind, value), PoolThresholds(1, 1))
+
+    assert result.support.lots == 1
+    assert result.support.procurements == 1
+    assert result.support.awards == 1
+    assert result.suppliers.winning == 1
+    assert result.suppliers.observed == 2
+
+
+def test_unknown_customer_lot_counts_but_not_as_distinct_customer(pool_db):
+    add_lot(pool_db, "known", "2025-02-01", "A")
+    add_lot(pool_db, "unknown", "2025-02-02", "B")
+    pool_db.execute("UPDATE procurement_lot SET customer_inn = NULL WHERE lot_id = 'unknown'")
+
+    result = analyze_pool(pool_db, PoolScope("okpd2_code", "10.51.11.141"), PoolThresholds(1, 1))
+    _, rows = full_code_distribution(pool_db)
+    distribution_row = next(r for r in rows if r["code"] == "10.51.11.141")
+
+    assert result.support.lots == distribution_row["lot_count"] == 2
+    assert result.support.customers == distribution_row["customer_count"] == 1

@@ -4,6 +4,7 @@
   "metric_definitions": {
     "lot_count": "Distinct lots with a matching OKPD2 scope and publish_date < as_of",
     "procurement_count": "Distinct procedure_id values among matching lots",
+    "customer_count": "Distinct known/non-null customer INNs among matching lots",
     "award_count": "Distinct (lot_id, supplier_id) winning relations in scope",
     "top1_share": "Largest supplier award_count / total award_count",
     "top3_share": "Three largest supplier award_counts / total award_count",
@@ -1231,27 +1232,27 @@
     }
   },
   "performance": {
-    "distribution_seconds": 29.95,
+    "distribution_seconds": 29.2,
     "single_code": {
       "samples_ms": [
-        27.76,
-        29.15,
-        29.13
+        35.2,
+        26.18,
+        22.99
       ],
-      "median_ms": 29.13,
-      "explain_execution_ms": 31.39,
-      "explain_planning_ms": 2.0,
+      "median_ms": 26.18,
+      "explain_execution_ms": 24.87,
+      "explain_planning_ms": 1.42,
       "plan_root": "Result"
     },
     "group": {
       "samples_ms": [
-        338.75,
-        248.65,
-        259.76
+        322.04,
+        260.22,
+        244.28
       ],
-      "median_ms": 259.76,
-      "explain_execution_ms": 284.79,
-      "explain_planning_ms": 0.97,
+      "median_ms": 260.22,
+      "explain_execution_ms": 232.51,
+      "explain_planning_ms": 1.18,
       "plan_root": "Result"
     }
   },

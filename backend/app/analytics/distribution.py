@@ -1,4 +1,4 @@
-"""Set-based distribution of full-code supplier pools for threshold calibration."""
+"""Set-based distribution of exact observed OKPD2 values for threshold calibration."""
 from __future__ import annotations
 
 from datetime import date
@@ -68,7 +68,7 @@ ORDER BY s.code
 
 
 def full_code_distribution(conn: Connection, as_of: date | None = None) -> tuple[date, list[dict]]:
-    """Return one aggregated row per valid full OKPD2 code, including zero-award pools."""
+    """Return one row per exact OKPD2 value represented in the source, including zero-award pools."""
     cutoff = _effective_as_of(conn, as_of)
     with conn.cursor(row_factory=dict_row) as cursor:
         cursor.execute(DISTRIBUTION_SQL, {"as_of": cutoff})

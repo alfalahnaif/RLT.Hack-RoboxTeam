@@ -5,7 +5,7 @@ Source: canonical `procurement_lot`, `procurement_item`, `supplier_history`, `su
 
 ## Metric definitions
 
-- A category lot counts once even when it has repeated matching items; procurements are distinct procedure IDs and customers are distinct non-null customer INNs.
+- A category lot counts once even when it has repeated matching items; procurements are distinct procedure IDs and customers are distinct known/non-null customer INNs.
 - An observed supplier has a valid historical relation. AIS_GZ supplies observed winner rows only; EM supplies observed winner and non-winner rows. AIS_GZ is never treated as a complete participant list.
 - A winning supplier has at least one `is_winner=true` relation. An award is one distinct `(lot_id, supplier_id)` winning relation; it is not a monetary share.
 - A recent winning supplier has at least one winning relation with publish date in `[as_of - recent_days, as_of)`.
@@ -14,7 +14,7 @@ Source: canonical `procurement_lot`, `procurement_item`, `supplier_history`, `su
 
 ## Dataset distribution
 
-**8,452** full OKPD2 codes; **8,354** with awards; **2,896** pass the support rule.
+**8,452** distinct observed OKPD2 values as represented in the source dataset (mixed depths); **8,354** with awards; **2,896** pass the support rule.
 
 | Metric | Population | p25 | p50 | p75 | p90 | p95 |
 |---|---|---:|---:|---:|---:|---:|
@@ -49,7 +49,7 @@ Thresholds are product analytics, not legal or competition-law thresholds. The l
 
 ## Category counts
 
-| Label | Full-code categories |
+| Label | Observed OKPD2 categories |
 |---|---:|
 | INSUFFICIENT_DATA | 5,556 |
 | LOW | 2,250 |
@@ -125,9 +125,9 @@ Lower concentration comparisons with 100–1,000 lots and at least 20 winning su
 
 ## Performance
 
-Full distribution query: **29.95 s** for 8,452 codes.
-- single_code: median service latency **29.13 ms** (three runs); EXPLAIN ANALYZE execution **31.39 ms**, plan root `Result`.
-- group: median service latency **259.76 ms** (three runs); EXPLAIN ANALYZE execution **284.79 ms**, plan root `Result`.
+Full distribution query: **29.20 s** for 8,452 codes.
+- single_code: median service latency **26.18 ms** (three runs); EXPLAIN ANALYZE execution **24.87 ms**, plan root `Result`.
+- group: median service latency **260.22 ms** (three runs); EXPLAIN ANALYZE execution **232.51 ms**, plan root `Result`.
 Existing indexes supported interactive single-code and group analysis in this run; the full distribution is a batch report. No new index or migration was added.
 
 ## Limitations
