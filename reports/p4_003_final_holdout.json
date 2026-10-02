@@ -1,0 +1,718 @@
+{
+ "benchmark_files_sha256": {
+  "qrels.csv": "c5eb5b84c218255e73f530c4686170b3bd6738fdf33d7ebf69be9bdfff705f76",
+  "queries.csv": "31fcf0f5f1b319946350f5c3506184e644653580669edc88e65dc2f8ab55b227",
+  "query_metadata.csv": "4821f998591edf80faaadd67bf26e217c650d527440ade3023c217762f6091d2"
+ },
+ "configurations": {
+  "A P1-002 baseline": {
+   "by_difficulty": {
+    "EASY": {
+     "candidate_observed_coverage": 0.929,
+     "candidate_winner_coverage": 0.97,
+     "candidates": 115.9813,
+     "ndcg@10": 0.5961,
+     "ndcg@20": 0.6289,
+     "observed_recall@1": 0.1973,
+     "observed_recall@10": 0.7008,
+     "observed_recall@20": 0.8044,
+     "observed_recall@5": 0.5499,
+     "queries": 267,
+     "winner_mrr": 0.5105,
+     "winner_recall@1": 0.3708,
+     "winner_recall@10": 0.7865,
+     "winner_recall@20": 0.8839,
+     "winner_recall@5": 0.6891
+    },
+    "HARD": {
+     "candidate_observed_coverage": 0.5401,
+     "candidate_winner_coverage": 0.3529,
+     "candidates": 153.5294,
+     "ndcg@10": 0.112,
+     "ndcg@20": 0.1496,
+     "observed_recall@1": 0.0868,
+     "observed_recall@10": 0.208,
+     "observed_recall@20": 0.336,
+     "observed_recall@5": 0.1211,
+     "queries": 17,
+     "winner_mrr": 0.0173,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.0588,
+     "winner_recall@20": 0.1765,
+     "winner_recall@5": 0.0
+    },
+    "MEDIUM": {
+     "candidate_observed_coverage": 0.6943,
+     "candidate_winner_coverage": 0.5625,
+     "candidates": 201.3125,
+     "ndcg@10": 0.1869,
+     "ndcg@20": 0.2117,
+     "observed_recall@1": 0.0651,
+     "observed_recall@10": 0.3307,
+     "observed_recall@20": 0.4266,
+     "observed_recall@5": 0.2057,
+     "queries": 16,
+     "winner_mrr": 0.0677,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.1875,
+     "winner_recall@20": 0.25,
+     "winner_recall@5": 0.1875
+    }
+   },
+   "conditional_unweighted": {
+    "ndcg@10": 0.5894,
+    "queries_with_winner_in_pool": 274,
+    "winner_mrr": 0.5025,
+    "winner_recall@1": 0.3613,
+    "winner_recall@10": 0.781,
+    "winner_recall@20": 0.8869,
+    "winner_recall@5": 0.6825
+   },
+   "conditional_weighted": {
+    "ndcg@10": 0.5281,
+    "queries_with_winner_in_pool": 274,
+    "winner_mrr": 0.4356,
+    "winner_recall@1": 0.3005,
+    "winner_recall@10": 0.7086,
+    "winner_recall@20": 0.8264,
+    "winner_recall@5": 0.6104
+   },
+   "config_delta_vs_default": {
+    "semantic_top_k": 0,
+    "w_historical_relevance": 0.2,
+    "w_okpd2": 0.2,
+    "w_product_text": 0.25,
+    "w_relevant_awards": 0.2
+   },
+   "unweighted": {
+    "candidate_observed_coverage": 0.8944,
+    "candidate_winner_coverage": 0.9133,
+    "candidates": 122.66,
+    "ndcg@10": 0.5469,
+    "ndcg@20": 0.5795,
+    "observed_recall@1": 0.184,
+    "observed_recall@10": 0.6531,
+    "observed_recall@20": 0.7577,
+    "observed_recall@5": 0.5073,
+    "winner_mrr": 0.4589,
+    "winner_recall@1": 0.33,
+    "winner_recall@10": 0.7133,
+    "winner_recall@20": 0.81,
+    "winner_recall@5": 0.6233
+   },
+   "weighted": {
+    "candidate_observed_coverage": 0.876,
+    "candidate_winner_coverage": 0.8883,
+    "candidates": 149.8689,
+    "ndcg@10": 0.4847,
+    "ndcg@20": 0.5172,
+    "observed_recall@1": 0.1508,
+    "observed_recall@10": 0.596,
+    "observed_recall@20": 0.6934,
+    "observed_recall@5": 0.4515,
+    "winner_mrr": 0.3869,
+    "winner_recall@1": 0.2669,
+    "winner_recall@10": 0.6295,
+    "winner_recall@20": 0.7341,
+    "winner_recall@5": 0.5423
+   }
+  },
+  "B P2-003 ranking": {
+   "by_difficulty": {
+    "EASY": {
+     "candidate_observed_coverage": 0.929,
+     "candidate_winner_coverage": 0.97,
+     "candidates": 115.9813,
+     "ndcg@10": 0.6095,
+     "ndcg@20": 0.6386,
+     "observed_recall@1": 0.199,
+     "observed_recall@10": 0.7169,
+     "observed_recall@20": 0.8043,
+     "observed_recall@5": 0.5584,
+     "queries": 267,
+     "winner_mrr": 0.5181,
+     "winner_recall@1": 0.3708,
+     "winner_recall@10": 0.8015,
+     "winner_recall@20": 0.8914,
+     "winner_recall@5": 0.6891
+    },
+    "HARD": {
+     "candidate_observed_coverage": 0.5401,
+     "candidate_winner_coverage": 0.3529,
+     "candidates": 153.5294,
+     "ndcg@10": 0.1167,
+     "ndcg@20": 0.1512,
+     "observed_recall@1": 0.0868,
+     "observed_recall@10": 0.208,
+     "observed_recall@20": 0.3424,
+     "observed_recall@5": 0.1702,
+     "queries": 17,
+     "winner_mrr": 0.0173,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.0588,
+     "winner_recall@20": 0.1176,
+     "winner_recall@5": 0.0588
+    },
+    "MEDIUM": {
+     "candidate_observed_coverage": 0.6943,
+     "candidate_winner_coverage": 0.5625,
+     "candidates": 201.3125,
+     "ndcg@10": 0.187,
+     "ndcg@20": 0.2108,
+     "observed_recall@1": 0.0651,
+     "observed_recall@10": 0.3516,
+     "observed_recall@20": 0.437,
+     "observed_recall@5": 0.1875,
+     "queries": 16,
+     "winner_mrr": 0.0648,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.1875,
+     "winner_recall@20": 0.25,
+     "winner_recall@5": 0.125
+    }
+   },
+   "conditional_unweighted": {
+    "ndcg@10": 0.6024,
+    "queries_with_winner_in_pool": 274,
+    "winner_mrr": 0.5097,
+    "winner_recall@1": 0.3613,
+    "winner_recall@10": 0.7956,
+    "winner_recall@20": 0.8905,
+    "winner_recall@5": 0.6825
+   },
+   "conditional_weighted": {
+    "ndcg@10": 0.5305,
+    "queries_with_winner_in_pool": 274,
+    "winner_mrr": 0.432,
+    "winner_recall@1": 0.2875,
+    "winner_recall@10": 0.7046,
+    "winner_recall@20": 0.8297,
+    "winner_recall@5": 0.5739
+   },
+   "config_delta_vs_default": {
+    "semantic_top_k": 0
+   },
+   "unweighted": {
+    "candidate_observed_coverage": 0.8944,
+    "candidate_winner_coverage": 0.9133,
+    "candidates": 122.66,
+    "ndcg@10": 0.559,
+    "ndcg@20": 0.5882,
+    "observed_recall@1": 0.1855,
+    "observed_recall@10": 0.6686,
+    "observed_recall@20": 0.7586,
+    "observed_recall@5": 0.5166,
+    "winner_mrr": 0.4656,
+    "winner_recall@1": 0.33,
+    "winner_recall@10": 0.7267,
+    "winner_recall@20": 0.8133,
+    "winner_recall@5": 0.6233
+   },
+   "weighted": {
+    "candidate_observed_coverage": 0.876,
+    "candidate_winner_coverage": 0.8883,
+    "candidates": 149.8689,
+    "ndcg@10": 0.4874,
+    "ndcg@20": 0.5214,
+    "observed_recall@1": 0.1528,
+    "observed_recall@10": 0.5968,
+    "observed_recall@20": 0.6974,
+    "observed_recall@5": 0.4478,
+    "winner_mrr": 0.3838,
+    "winner_recall@1": 0.2554,
+    "winner_recall@10": 0.6259,
+    "winner_recall@20": 0.7371,
+    "winner_recall@5": 0.5098
+   }
+  },
+  "C P2-001 S3 (final)": {
+   "by_difficulty": {
+    "EASY": {
+     "candidate_observed_coverage": 0.9363,
+     "candidate_winner_coverage": 0.9775,
+     "candidates": 115.7041,
+     "ndcg@10": 0.6111,
+     "ndcg@20": 0.6423,
+     "observed_recall@1": 0.2017,
+     "observed_recall@10": 0.7087,
+     "observed_recall@20": 0.8076,
+     "observed_recall@5": 0.5609,
+     "queries": 267,
+     "winner_mrr": 0.5247,
+     "winner_recall@1": 0.3858,
+     "winner_recall@10": 0.809,
+     "winner_recall@20": 0.8989,
+     "winner_recall@5": 0.7079
+    },
+    "HARD": {
+     "candidate_observed_coverage": 0.591,
+     "candidate_winner_coverage": 0.3529,
+     "candidates": 166.9412,
+     "ndcg@10": 0.1334,
+     "ndcg@20": 0.1808,
+     "observed_recall@1": 0.0868,
+     "observed_recall@10": 0.255,
+     "observed_recall@20": 0.4307,
+     "observed_recall@5": 0.1623,
+     "queries": 17,
+     "winner_mrr": 0.0237,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.0588,
+     "winner_recall@20": 0.1765,
+     "winner_recall@5": 0.0588
+    },
+    "MEDIUM": {
+     "candidate_observed_coverage": 0.738,
+     "candidate_winner_coverage": 0.5625,
+     "candidates": 201.5,
+     "ndcg@10": 0.1759,
+     "ndcg@20": 0.2109,
+     "observed_recall@1": 0.0651,
+     "observed_recall@10": 0.312,
+     "observed_recall@20": 0.4651,
+     "observed_recall@5": 0.1927,
+     "queries": 16,
+     "winner_mrr": 0.0569,
+     "winner_recall@1": 0.0,
+     "winner_recall@10": 0.1875,
+     "winner_recall@20": 0.25,
+     "winner_recall@5": 0.1875
+    }
+   },
+   "conditional_unweighted": {
+    "ndcg@10": 0.6003,
+    "queries_with_winner_in_pool": 276,
+    "winner_mrr": 0.5123,
+    "winner_recall@1": 0.3732,
+    "winner_recall@10": 0.7971,
+    "winner_recall@20": 0.8949,
+    "winner_recall@5": 0.6993
+   },
+   "conditional_weighted": {
+    "ndcg@10": 0.5383,
+    "queries_with_winner_in_pool": 276,
+    "winner_mrr": 0.4416,
+    "winner_recall@1": 0.2991,
+    "winner_recall@10": 0.7141,
+    "winner_recall@20": 0.8446,
+    "winner_recall@5": 0.6181
+   },
+   "config_delta_vs_default": {},
+   "unweighted": {
+    "candidate_observed_coverage": 0.9061,
+    "candidate_winner_coverage": 0.92,
+    "candidates": 123.1833,
+    "ndcg@10": 0.5608,
+    "ndcg@20": 0.5932,
+    "observed_recall@1": 0.1879,
+    "observed_recall@10": 0.6618,
+    "observed_recall@20": 0.7679,
+    "observed_recall@5": 0.5187,
+    "winner_mrr": 0.4713,
+    "winner_recall@1": 0.3433,
+    "winner_recall@10": 0.7333,
+    "winner_recall@20": 0.8233,
+    "winner_recall@5": 0.6433
+   },
+   "weighted": {
+    "candidate_observed_coverage": 0.8812,
+    "candidate_winner_coverage": 0.8886,
+    "candidates": 149.5422,
+    "ndcg@10": 0.4951,
+    "ndcg@20": 0.5312,
+    "observed_recall@1": 0.1559,
+    "observed_recall@10": 0.6007,
+    "observed_recall@20": 0.7088,
+    "observed_recall@5": 0.4564,
+    "winner_mrr": 0.3924,
+    "winner_recall@1": 0.2658,
+    "winner_recall@10": 0.6346,
+    "winner_recall@20": 0.7505,
+    "winner_recall@5": 0.5493
+   }
+  }
+ },
+ "difficulty_counts": {
+  "EASY": 267,
+  "HARD": 17,
+  "MEDIUM": 16
+ },
+ "final_vs_p2003_winner_pool": {
+  "lost": 3,
+  "newly_recovered": 5,
+  "present_before": 271,
+  "still_absent": 21
+ },
+ "freeze": {
+  "benchmark": "supplier-radar-temporal-replay 1.0.0; file hashes equal manifest.json",
+  "branch": "integration/hackathon-final",
+  "default_config": "P2_001_SEMANTIC (S3)",
+  "dev_size": 300,
+  "frozen_commit": "31517a9e716d79046dcc92164b4bc829ff3ce05f",
+  "holdout_size": 300,
+  "ranking_weights": {
+   "w_em_participation": 0.05,
+   "w_evidence_quality": 0.0,
+   "w_historical_relevance": 0.1,
+   "w_item_coverage": 0.0,
+   "w_lot_okpd2": 0.3,
+   "w_lot_subject": 0.1,
+   "w_lot_text": 0.6,
+   "w_okpd2": 0.3,
+   "w_product_text": 0.35,
+   "w_recency": 0.05,
+   "w_relevant_awards": 0.1,
+   "w_same_customer": 0.05
+  },
+  "semantic_index": {
+   "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+   "state": "READY",
+   "texts": 993289
+  },
+  "semantic_top_k": 100
+ },
+ "frozen_final_config": {
+  "awards_saturation": 6.0,
+  "evidence_saturation": 10.0,
+  "historical_lot_limit": 300,
+  "max_df_ratio": 0.02,
+  "max_or_lexemes": 6,
+  "max_query_items": 8,
+  "min_lot_relevance": 0.05,
+  "min_tech_token_len": 5,
+  "okpd2_broad_lots_limit": 200,
+  "okpd2_exact_lots_limit": 300,
+  "participation_saturation": 6.0,
+  "quality_top_k": 3,
+  "recency_half_life_days": 365,
+  "redundancy_jaccard": 0.8,
+  "redundant_text_factor": 1.0,
+  "semantic_ceiling": 0.95,
+  "semantic_ef_search": 200,
+  "semantic_floor": 0.82,
+  "semantic_items_per_text": 5,
+  "semantic_top_k": 100,
+  "semantic_weight": 0.8,
+  "tech_items_limit": 100,
+  "text_items_limit": 300,
+  "top_k": 20,
+  "w_em_participation": 0.05,
+  "w_evidence_quality": 0.0,
+  "w_historical_relevance": 0.1,
+  "w_item_coverage": 0.0,
+  "w_lot_okpd2": 0.3,
+  "w_lot_subject": 0.1,
+  "w_lot_text": 0.6,
+  "w_okpd2": 0.3,
+  "w_product_text": 0.35,
+  "w_recency": 0.05,
+  "w_relevant_awards": 0.1,
+  "w_same_customer": 0.05
+ },
+ "governance": {
+  "configurations_scored": "three pre-existing frozen configs only (P1_002_BASELINE, P2_003_RANKING, P2_001_SEMANTIC); no selection",
+  "holdout_evaluations": 1,
+  "holdout_previously": "NOT EVALUATED (sealed) in p1_002_baseline, p2_003_ranking, p2_001_semantic",
+  "holdout_used_for_selection": false,
+  "pipeline_verified_on_dev_first": "reports/p4_003_dev_reproduction.json reproduces every published DEV metric exactly",
+  "tuning_after_holdout": "none; no recommendation/retrieval/ranking code changed"
+ },
+ "paired_bootstrap_90ci": {
+  "B_vs_A_weighted_ndcg10": {
+   "ci90": [
+    -0.0087,
+    0.0133
+   ],
+   "delta": 0.0027
+  },
+  "B_vs_A_weighted_winner_recall10": {
+   "ci90": [
+    -0.0279,
+    0.0187
+   ],
+   "delta": -0.0036
+  },
+  "C_vs_A_weighted_ndcg10": {
+   "ci90": [
+    -0.0027,
+    0.0225
+   ],
+   "delta": 0.0105
+  },
+  "C_vs_B_weighted_coverage": {
+   "ci90": [
+    -0.0247,
+    0.0252
+   ],
+   "delta": 0.0003
+  },
+  "C_vs_B_weighted_ndcg10": {
+   "ci90": [
+    -0.0015,
+    0.0164
+   ],
+   "delta": 0.0078
+  },
+  "C_vs_B_weighted_winner_recall10": {
+   "ci90": [
+    -0.0196,
+    0.0369
+   ],
+   "delta": 0.0087
+  }
+ },
+ "queries": 300,
+ "retrieval_failure_analysis": {
+  "baseline_failures": 26,
+  "by_difficulty": {
+   "EASY": {
+    "no relevant historical procurement": 1,
+    "recovered by semantic retrieval": 3,
+    "related history outside cap/lot limit": 4
+   },
+   "HARD": {
+    "no relevant historical procurement": 2,
+    "recovered by semantic retrieval": 1,
+    "related history outside cap/lot limit": 3,
+    "unseen supplier before cutoff": 5
+   },
+   "MEDIUM": {
+    "no relevant historical procurement": 4,
+    "recovered by semantic retrieval": 1,
+    "related history outside cap/lot limit": 2
+   }
+  },
+  "final_system_failures": 24,
+  "rows": [
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5768677",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8636,
+    "winner_visible_relations": 30
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "HARD",
+    "query_id": "rpl-5780601",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8608,
+    "winner_visible_relations": 7
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5780798",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8426,
+    "winner_visible_relations": 10
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5784534",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8568,
+    "winner_visible_relations": 116
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "EASY",
+    "query_id": "rpl-5796442",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8669,
+    "winner_visible_relations": 158
+   },
+   {
+    "category": "unseen supplier before cutoff",
+    "difficulty": "HARD",
+    "query_id": "rpl-5814879",
+    "status": "STILL_MISSING",
+    "winner_visible_relations": 0
+   },
+   {
+    "category": "unseen supplier before cutoff",
+    "difficulty": "HARD",
+    "query_id": "rpl-5814892",
+    "status": "STILL_MISSING",
+    "winner_visible_relations": 0
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "HARD",
+    "query_id": "rpl-5825024",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.7651,
+    "winner_visible_relations": 1
+   },
+   {
+    "category": "recovered by semantic retrieval",
+    "difficulty": "EASY",
+    "has_semantic_evidence": true,
+    "query_id": "rpl-5830980",
+    "status": "RECOVERED",
+    "winner_rank": 71,
+    "winner_visible_relations": 133
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5831029",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.871,
+    "winner_visible_relations": 260
+   },
+   {
+    "category": "recovered by semantic retrieval",
+    "difficulty": "EASY",
+    "has_semantic_evidence": true,
+    "query_id": "rpl-5831825",
+    "status": "RECOVERED",
+    "winner_rank": 42,
+    "winner_visible_relations": 489
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5856262",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8548,
+    "winner_visible_relations": 565
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "HARD",
+    "query_id": "rpl-5860547",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.9418,
+    "winner_visible_relations": 2
+   },
+   {
+    "category": "recovered by semantic retrieval",
+    "difficulty": "HARD",
+    "has_semantic_evidence": true,
+    "query_id": "rpl-5872930",
+    "status": "RECOVERED",
+    "winner_rank": 123,
+    "winner_visible_relations": 3
+   },
+   {
+    "category": "recovered by semantic retrieval",
+    "difficulty": "EASY",
+    "has_semantic_evidence": true,
+    "query_id": "rpl-5898208",
+    "status": "RECOVERED",
+    "winner_rank": 12,
+    "winner_visible_relations": 21
+   },
+   {
+    "category": "unseen supplier before cutoff",
+    "difficulty": "HARD",
+    "query_id": "rpl-5908794",
+    "status": "STILL_MISSING",
+    "winner_visible_relations": 0
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "MEDIUM",
+    "query_id": "rpl-5909228",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8539,
+    "winner_visible_relations": 148
+   },
+   {
+    "category": "unseen supplier before cutoff",
+    "difficulty": "HARD",
+    "query_id": "rpl-5922270",
+    "status": "STILL_MISSING",
+    "winner_visible_relations": 0
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "EASY",
+    "query_id": "rpl-5937486",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.9197,
+    "winner_visible_relations": 421
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "HARD",
+    "query_id": "rpl-5952856",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8773,
+    "winner_visible_relations": 3
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "HARD",
+    "query_id": "rpl-5953192",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8543,
+    "winner_visible_relations": 1
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "EASY",
+    "query_id": "rpl-5958539",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.9112,
+    "winner_visible_relations": 72
+   },
+   {
+    "category": "no relevant historical procurement",
+    "difficulty": "EASY",
+    "query_id": "rpl-5980209",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.8558,
+    "winner_visible_relations": 2830
+   },
+   {
+    "category": "unseen supplier before cutoff",
+    "difficulty": "HARD",
+    "query_id": "rpl-5999797",
+    "status": "STILL_MISSING",
+    "winner_visible_relations": 0
+   },
+   {
+    "category": "related history outside cap/lot limit",
+    "difficulty": "EASY",
+    "query_id": "rpl-6009585",
+    "status": "STILL_MISSING",
+    "winner_best_history_cosine": 0.9121,
+    "winner_visible_relations": 12
+   },
+   {
+    "category": "recovered by semantic retrieval",
+    "difficulty": "MEDIUM",
+    "has_semantic_evidence": true,
+    "query_id": "rpl-6048480",
+    "status": "RECOVERED",
+    "winner_rank": 55,
+    "winner_visible_relations": 194
+   }
+  ],
+  "summary": {
+   "no relevant historical procurement": 7,
+   "recovered by semantic retrieval": 5,
+   "related history outside cap/lot limit": 9,
+   "unseen supplier before cutoff": 5
+  }
+ },
+ "runtime_seconds": 567.0,
+ "semantic_model": {
+  "dimension": 384,
+  "license": "MIT (intfloat/multilingual-e5-small)",
+  "model": "intfloat/multilingual-e5-small",
+  "normalized": true,
+  "prefixes": {
+   "document": "passage: ",
+   "query": "query: "
+  },
+  "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "source": "huggingface.co"
+ },
+ "split": "holdout",
+ "task": "P4-003"
+}
