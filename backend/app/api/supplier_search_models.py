@@ -31,10 +31,13 @@ class QueryEcho(BaseModel):
 
 class SuggestedOkpd2(BaseModel):
     okpd2: str
-    share: float = Field(description="Share of the text-matching historical evidence carrying this code.")
+    share: float = Field(description="Share of text-matching historical evidence; 0 when suggestion comes only from category terminology.")
     supporting_items: int
     supporting_lots: int
     example_products: list[str]
+    confidence: float = Field(description="Evidence strength in [0,1], not a calibrated probability.")
+    basis: Literal["EXACT_TERM", "HISTORICAL_DOMINANT", "FUZZY", "SEMANTIC", "UNCERTAIN"]
+    evidence: list[str]
 
 
 class CodeHistoryResponse(BaseModel):
@@ -46,6 +49,7 @@ class CodeHistoryResponse(BaseModel):
 
 class Classification(BaseModel):
     provided_okpd2: str | None
+    category_state: Literal["RESOLVED", "CATEGORY_UNCERTAIN"]
     suggested_okpd2: list[SuggestedOkpd2]
     history_status: Literal["SUFFICIENT", "SPARSE", "NONE"] = Field(
         description="Procurement history of the analyzed code (the supplied code, else the top suggestion).")

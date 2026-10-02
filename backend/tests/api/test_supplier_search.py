@@ -46,7 +46,7 @@ def _strip(d):
 def test_text_only_search(client):
     d = post(client, query=MILK_TEXT)
     c = d["classification"]
-    assert c["provided_okpd2"] is None and c["text_okpd2_alignment"] is None and c["ranking_okpd2"] is None
+    assert c["provided_okpd2"] is None and c["text_okpd2_alignment"] is None
     assert c["suggested_okpd2"] and c["suggested_okpd2"][0]["okpd2"].startswith("10.51.11")
     assert c["history_status"] in ("SUFFICIENT", "SPARSE", "NONE") and c["history"]["okpd2"] == c["suggested_okpd2"][0]["okpd2"]
     assert d["query"]["as_of"] == "2026-01-01" and d["query"]["okpd2"] is None
@@ -55,6 +55,31 @@ def test_text_only_search(client):
     assert d["price_intelligence"] == {"available": False, "reason": PRICE_REASON}
     assert d["integration"]["export_available"] and d["integration"]["export_url"].endswith(f"/{d['search_id']}/export")
     assert [p["source"] for p in d["pool_health"]] == ["SUGGESTED"]
+
+
+def test_rare_official_term_resolves_to_exact_observed_code_and_suppliers(client):
+    d = post(client, query="Асфальтиты")
+    c = d["classification"]
+    assert c["category_state"] == "RESOLVED"
+    assert c["suggested_okpd2"][0]["okpd2"] == "08.99.10.120"
+    assert c["suggested_okpd2"][0]["basis"] == "EXACT_TERM"
+    assert c["suggested_okpd2"][0]["confidence"] >= 0.9
+    assert c["ranking_okpd2"] == "08.99.10.120"
+    with psycopg.connect(database_url()) as conn:
+        actual = {str(row[0]) for row in conn.execute("""
+            SELECT DISTINCT h.supplier_id FROM supplier_history h
+            JOIN procurement_item i ON i.lot_id = h.lot_id
+            WHERE i.okpd2_code = '08.99.10.120'""")}
+    assert actual and {s["supplier_id"] for s in d["suppliers"]} == actual
+    assert all(s["historical_evidence"]["best_okpd2"] == "08.99.10.120" for s in d["suppliers"])
+
+
+def test_generic_term_keeps_category_uncertain(client):
+    d = post(client, query="Асфальт")
+    assert d["classification"]["category_state"] == "CATEGORY_UNCERTAIN"
+    assert d["classification"]["ranking_okpd2"] is None
+    assert any(w.startswith("CATEGORY_UNCERTAIN") for w in d["classification"]["warnings"])
+    assert not d["pool_health"]  # no concentration claim for an unconfirmed category
 
 
 def test_text_with_aligned_okpd2_uses_code_and_returns_external_candidates(client):
@@ -89,15 +114,16 @@ def test_unseen_okpd2_preserved_with_text_ranking(client):
     assert any(w.startswith("OKPD2_NOT_OBSERVED") for w in c["warnings"])
     provided = next(p for p in d["pool_health"] if p["source"] == "PROVIDED")
     assert provided["okpd2"] == UNSEEN_CODE and provided["status"] == "UNAVAILABLE" and provided["error"]["code"] == "CATEGORY_NOT_OBSERVED"
-    assert any(p["source"] == "SUGGESTED" and p["status"] == "OK" for p in d["pool_health"])
+    assert c["category_state"] == "CATEGORY_UNCERTAIN"
+    assert any(w.startswith("CATEGORY_UNCERTAIN") for w in c["warnings"])
     assert d["suppliers"] and any(x["okpd2"] == UNSEEN_CODE for x in d["external_expansion"])
 
 
-def test_mismatch_keeps_code_suggests_and_ranks_by_text(client):
+def test_mismatch_keeps_supplied_code_but_ranks_by_resolved_text_category(client):
     d = post(client, query=MILK_TEXT, okpd2=LAPTOP_CODE)
     c = d["classification"]
     assert c["provided_okpd2"] == LAPTOP_CODE and c["text_okpd2_alignment"] == "MISMATCH"
-    assert c["ranking_okpd2"] is None and c["suggested_okpd2"][0]["okpd2"].startswith("10.51")
+    assert c["ranking_okpd2"] == "10.51.11.121" and c["suggested_okpd2"][0]["okpd2"].startswith("10.51")
     assert any(w.startswith("OKPD2_TEXT_MISMATCH") for w in c["warnings"])
     assert any(p["okpd2"] == LAPTOP_CODE and p["source"] == "PROVIDED" for p in d["pool_health"])
     text_only = post(client, query=MILK_TEXT)

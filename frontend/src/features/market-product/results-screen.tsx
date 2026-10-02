@@ -30,6 +30,9 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
 
   const data = run.data;
   const classification = data.classification;
+  const categoryUncertain = classification.warnings.some((warning) => warning.startsWith("CATEGORY_UNCERTAIN"));
+  const leadingSuggestion = classification.suggested_okpd2[0] as
+    ((typeof classification.suggested_okpd2)[number] & { confidence?: number; basis?: string }) | undefined;
   const selectedPool = data.pool_health.find((entry) => entry.okpd2 === classification.ranking_okpd2) ?? data.pool_health[0];
   const externalGroups = data.external_expansion.filter((entry) => entry.available && entry.candidates.length);
   return (
@@ -44,16 +47,18 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
           <div className="flex flex-wrap gap-2">
             {classification.provided_okpd2 ? <Badge color="primary">{t("providedCode")}: <span dir="ltr">{classification.provided_okpd2}</span></Badge> : null}
             {classification.suggested_okpd2.length ? classification.suggested_okpd2.map((s, i) => (
-              <Badge key={s.okpd2} color="info">{i === 0 ? `${t("suggestedCode")}: ` : ""}<span dir="ltr">{s.okpd2}</span> · {Math.round(s.share * 100)}%</Badge>
+              <Badge key={s.okpd2} color="info">{i === 0 ? `${t("suggestedCode")}: ` : ""}<span dir="ltr">{s.okpd2}</span>{s.supporting_items ? ` · ${Math.round(s.share * 100)}%` : ""}</Badge>
             )) : <Badge color="gray">{t("noCode")}</Badge>}
             <Badge color={classification.history_status === "SUFFICIENT" ? "success" : "warning"}>{t(`historyStatus.${classification.history_status}`)}</Badge>
           </div>
           {classification.text_okpd2_alignment ? <p className="text-xs text-muted">{t("alignmentLabel")}: <span className="font-medium text-heading">{t(`alignment.${classification.text_okpd2_alignment}`)}</span></p> : null}
+          {leadingSuggestion?.confidence !== undefined && leadingSuggestion.basis ? <p className="text-xs text-muted">{t("categoryConfidence", { percent: Math.round(leadingSuggestion.confidence * 100) })} · {t(`categoryBasis.${leadingSuggestion.basis}`)}</p> : null}
           {classification.ranking_okpd2 ? <p className="text-xs text-muted">{t("rankingCode")}: <span dir="ltr">{classification.ranking_okpd2}</span></p>
             : <p className="text-xs text-muted">{t("rankingTextOnly")}</p>}
         </CardBody></Card>
 
-        {classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
+        {categoryUncertain ? <Alert tone="warning" appearance="inline" description={t("categoryUncertain")} /> : null}
+        {!categoryUncertain && classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
         {classification.text_okpd2_alignment === "MISMATCH" ? <Alert tone="warning" appearance="inline" description={t("mismatchWarning")} /> : null}
 
         <PoolHealthPanel entry={selectedPool} />

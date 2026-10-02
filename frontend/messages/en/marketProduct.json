@@ -22,6 +22,15 @@
   "interpretedAs": "Search terms",
   "providedCode": "Provided OKPD2",
   "suggestedCode": "Suggested OKPD2",
+  "categoryConfidence": "Category evidence strength: {percent}%",
+  "categoryBasis": {
+    "EXACT_TERM": "OKPD2 category terminology",
+    "HISTORICAL_DOMINANT": "distinctive historical product wording",
+    "FUZZY": "approximate term match",
+    "SEMANTIC": "semantic similarity",
+    "UNCERTAIN": "preliminary historical match"
+  },
+  "categoryUncertain": "We could not identify the procurement category with high confidence. Supplier results are exploratory; check the OKPD2 code before contacting suppliers.",
   "noCode": "No OKPD2 suggestion available",
   "rankingCode": "Ranking category",
   "history": "History status",
