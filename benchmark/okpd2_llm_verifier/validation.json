@@ -1,0 +1,42 @@
+[
+  {
+    "id": "medical-table-context",
+    "query": "Стол для осмотра пациента с регулировкой высоты",
+    "deterministic": {"status": "CATEGORY_AMBIGUOUS", "margin": 0.03, "candidates": [
+      {"code": "31.01.12.110", "official_name": "Столы письменные деревянные для офисов, административных помещений", "score": 0.62, "basis": "OFFICIAL_TERMS"},
+      {"code": "32.50.30.111", "official_name": "Столы смотровые, терапевтические", "score": 0.59, "basis": "OFFICIAL_TERMS"}
+    ]},
+    "expected_code": "32.50.30.111",
+    "fixture_response": {"decision": "RESOLVED", "selected_code": "32.50.30.111", "confidence": "HIGH", "reason": "Patient examination matches the examination table.", "matched_constraints": ["patient examination"]}
+  },
+  {
+    "id": "office-desk-context",
+    "query": "Письменный стол для административного офиса",
+    "deterministic": {"status": "CATEGORY_AMBIGUOUS", "margin": 0.02, "candidates": [
+      {"code": "32.50.30.111", "official_name": "Столы смотровые, терапевтические", "score": 0.57, "basis": "OFFICIAL_TERMS"},
+      {"code": "31.01.12.110", "official_name": "Столы письменные деревянные для офисов, административных помещений", "score": 0.55, "basis": "OFFICIAL_TERMS"}
+    ]},
+    "expected_code": "31.01.12.110",
+    "fixture_response": {"decision": "RESOLVED", "selected_code": "31.01.12.110", "confidence": "HIGH", "reason": "Administrative office use matches the office desk.", "matched_constraints": ["office use"]}
+  },
+  {
+    "id": "generic-table",
+    "query": "Стол",
+    "deterministic": {"status": "CATEGORY_AMBIGUOUS", "margin": 0.01, "candidates": [
+      {"code": "31.01.12.110", "official_name": "Столы письменные деревянные для офисов, административных помещений", "score": 0.50, "basis": "OFFICIAL_TERMS"},
+      {"code": "32.50.30.111", "official_name": "Столы смотровые, терапевтические", "score": 0.49, "basis": "OFFICIAL_TERMS"}
+    ]},
+    "expected_code": null,
+    "fixture_response": {"decision": "AMBIGUOUS", "selected_code": null, "confidence": "LOW", "reason": "The intended use is not specified.", "matched_constraints": []}
+  },
+  {
+    "id": "mineral-water-context",
+    "query": "Вода минеральная",
+    "deterministic": {"status": "CATEGORY_AMBIGUOUS", "margin": 0.02, "candidates": [
+      {"code": "11.07.11.111", "official_name": "Воды минеральные природные столовые", "score": 0.61, "basis": "OFFICIAL_TERMS"},
+      {"code": "11.07.11.112", "official_name": "Воды минеральные природные лечебно-столовые", "score": 0.59, "basis": "OFFICIAL_TERMS"}
+    ]},
+    "expected_code": null,
+    "fixture_response": {"decision": "AMBIGUOUS", "selected_code": null, "confidence": "LOW", "reason": "The water type is unspecified.", "matched_constraints": []}
+  }
+]
