@@ -56,17 +56,29 @@ class Classification(BaseModel):
     warnings: list[str]
 
 
-class Contact(BaseModel):
-    phone: str | None
-    email: str | None
-    website: str | None = Field(description="Only a source-backed first-party website; never inferred.")
-    address: str | None
-
-
 class Freshness(BaseModel):
     last_checked_at: datetime | None
     source_url: str | None
     status: Literal["FRESH", "STALE", "UNKNOWN"]
+
+
+class ContactSource(BaseModel):
+    value: str
+    source_url: str
+    source_authority: Literal["FIRST_PARTY", "FNS_EGRUL_DERIVED_REGISTRY", "REGULATORY_REGISTRY"]
+    checked_at: datetime
+    address_type: Literal["PUBLISHED_COMPANY_ADDRESS", "REGISTERED_LEGAL_ADDRESS"] | None = None
+
+
+class Contact(BaseModel):
+    phone: str | None
+    email: str | None
+    website: str | None = Field(description="Only a source-backed website; never inferred.")
+    address: str | None
+    sources: dict[str, ContactSource] = Field(default_factory=dict,
+                                              description="Provenance of every populated field (value, source_url, authority, checked_at).")
+    identity_basis: str | None = Field(None, description="Why the contact source belongs to this INN.")
+    freshness: Freshness | None = Field(None, description="Freshness of the contact information itself (an outdated page is STALE).")
 
 
 class HistoricalEvidence(BaseModel):

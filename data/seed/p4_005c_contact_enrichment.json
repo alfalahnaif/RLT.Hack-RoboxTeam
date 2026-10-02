@@ -1,0 +1,97 @@
+{
+ "task": "P4-005C source-backed contact enrichment for the six curated external candidates of OKPD2 10.51.11.141",
+ "checked_at": "2026-10-02T03:55:00+03:00",
+ "policy_notes": [
+  "Contact evidence is separate from product / market-role evidence and never changes verification status.",
+  "Values are quoted as published by the source (no reformatting, no inferred e-mail patterns or phone numbers).",
+  "Preferred source: the company's own website. A current FNS/EGRUL-derived registry record is used only for the registered legal address when the company publishes no postal address, and to confirm that a website belongs to the INN.",
+  "Named employees' personal e-mails and mobile numbers are not recorded; only general / department contacts.",
+  "content_currency describes the page, not the retrieval: OUTDATED pages are STALE even when checked today; undated pages are UNKNOWN."
+ ],
+ "contacts": [
+  {
+   "supplier_inn": "7622012124",
+   "company_name": "ООО «Переславский молочный комбинат»",
+   "identity_basis": "The FNS-derived registry record for INN 7622012124 (ООО «ПЕРЕСЛАВСКИЙ МОЛОЧНЫЙ КОМБИНАТ», д. Лунино) lists the same phone +7 960 530-91-00 and the pervozdannoe.ru e-mail domain; the website names «Переславский Молочный Комбинат» in д. Лунино.",
+   "identity_source_url": "https://checko.ru/company/pmk-1027601048640",
+   "content_currency": "CURRENT",
+   "content_currency_note": "Website footer «Copyright © 2026»; registry contacts match.",
+   "fields": {
+    "website": {"value": "https://pervozdannoe.ru/", "source_url": "https://pervozdannoe.ru/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "email": {"value": "sales@pervozdannoe.ru", "source_url": "https://pervozdannoe.ru/contact/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "phone": {"value": "+7-960-530-91-00", "source_url": "https://pervozdannoe.ru/contact/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "address": {"value": "152020, Ярославская область, Переславский район, д. Лунино, ул. Центральная, д. 13", "source_url": "https://checko.ru/company/pmk-1027601048640", "source_authority": "FNS_EGRUL_DERIVED_REGISTRY", "address_type": "REGISTERED_LEGAL_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  },
+  {
+   "supplier_inn": "0257011170",
+   "company_name": "ООО «Бирский комбинат молочных продуктов»",
+   "identity_basis": "The website names ООО «Бирский комбинат молочных продуктов» at г. Бирск, ул. Интернациональная, 163 — the registered legal address of INN 0257011170 in the FNS-derived registry.",
+   "identity_source_url": "https://checko.ru/company/birsky-kombinat-molochnyh-produktov-1160280121242",
+   "content_currency": "CURRENT",
+   "content_currency_note": "Website footer «© 2016-2026»; news items dated 2025.",
+   "fields": {
+    "website": {"value": "https://molloko.ru/", "source_url": "https://molloko.ru/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "email": {"value": "hello@molloko.ru", "source_url": "https://molloko.ru/contacts/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "phone": {"value": "+7 (34784) 3-37-78", "source_url": "https://molloko.ru/contacts/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "address": {"value": "Россия, Республика Башкортостан, г. Бирск, ул. Интернациональная, д .163", "source_url": "https://molloko.ru/contacts/", "source_authority": "FIRST_PARTY", "address_type": "PUBLISHED_COMPANY_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  },
+  {
+   "supplier_inn": "5320000979",
+   "company_name": "АО «Боровичский молочный завод»",
+   "identity_basis": "The website names АО «Боровичский молочный завод» at 174411, г. Боровичи, ул. Ленинградская, 65 — the registered legal address of INN 5320000979 in the FNS-derived registry.",
+   "identity_source_url": "https://checko.ru/company/borovichsky-molochny-zavod-1025300992530",
+   "content_currency": "CURRENT",
+   "content_currency_note": "Website news include a shareholders' meeting notice for 10 April 2026 (footer «© 2016» is a static design year).",
+   "fields": {
+    "website": {"value": "http://bormoloko.ru/", "source_url": "http://bormoloko.ru/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "email": {"value": "bormoloko@mail.ru", "source_url": "http://bormoloko.ru/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "phone": {"value": "8-816-642-8088", "source_url": "http://bormoloko.ru/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "address": {"value": "Россия, 174411 Новгородская обл, г. Боровичи, ул. Ленинградская, 65", "source_url": "http://bormoloko.ru/", "source_authority": "FIRST_PARTY", "address_type": "PUBLISHED_COMPANY_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  },
+  {
+   "supplier_inn": "5028002303",
+   "company_name": "ЗАО ЗСМ «Можайский»",
+   "identity_basis": "The website names ЗАО «Завод стерилизованного молока «Можайский» at Можайск, ул. Мира, д.106 — the registered legal address of INN 5028002303 in the FNS-derived registry.",
+   "identity_source_url": "https://checko.ru/company/zsm-mozhaysky-1025003475793",
+   "content_currency": "OUTDATED",
+   "content_currency_note": "Website footer «© 2011»; the most recent news item is dated 2 April 2012. Contacts are published but may be out of date.",
+   "fields": {
+    "website": {"value": "http://mozhayskiy.ru/", "source_url": "http://mozhayskiy.ru/index.php", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "email": {"value": "sales@mozhayskiy.ru", "source_url": "http://mozhayskiy.ru/Contact.html", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "phone": {"value": "+7-49638-21052", "source_url": "http://mozhayskiy.ru/Contact.html", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "address": {"value": "РФ, Московская область Можайск, ул. Мира, д.106", "source_url": "http://mozhayskiy.ru/Contact.html", "source_authority": "FIRST_PARTY", "address_type": "PUBLISHED_COMPANY_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  },
+  {
+   "supplier_inn": "5007126820",
+   "company_name": "ООО «ААП»",
+   "identity_basis": "FNS-derived registry record for INN 5007126820 (ООО «ААП», active). No company website was found.",
+   "identity_source_url": "https://checko.ru/company/aap-1255000083678",
+   "content_currency": "CURRENT",
+   "content_currency_note": "Registry record shows the company as active with a current legal address; no first-party contact page exists, so phone / e-mail / website are not recorded.",
+   "fields": {
+    "website": null,
+    "email": null,
+    "phone": null,
+    "address": {"value": "141865, Московская область, м. о. Дмитровский, д. Горки Сухаревские, д. 67, стр. 5", "source_url": "https://checko.ru/company/aap-1255000083678", "source_authority": "FNS_EGRUL_DERIVED_REGISTRY", "address_type": "REGISTERED_LEGAL_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  },
+  {
+   "supplier_inn": "3128004452",
+   "company_name": "ЗАО МК «Авида»",
+   "identity_basis": "The website's contacts page publishes ИНН 3128004452 in the company requisites.",
+   "identity_source_url": "https://xn----8sbahkxkp.xn--p1ai/kontakty/",
+   "content_currency": "UNDATED",
+   "content_currency_note": "Website footer «Copyright 2012» and news items without a year; the currency of the contacts cannot be confirmed.",
+   "fields": {
+    "website": {"value": "https://xn----8sbahkxkp.xn--p1ai/", "source_url": "https://xn----8sbahkxkp.xn--p1ai/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "email": {"value": "info@mk-avida.ru", "source_url": "https://xn----8sbahkxkp.xn--p1ai/kontakty/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "phone": {"value": "(4725)42-93-28", "source_url": "https://xn----8sbahkxkp.xn--p1ai/kontakty/", "source_authority": "FIRST_PARTY", "checked_at": "2026-10-02T03:55:00+03:00"},
+    "address": {"value": "Россия, 309504, Белгородская обл. г. Старый Оскол, Промкомзона (район авторынка)", "source_url": "https://xn----8sbahkxkp.xn--p1ai/kontakty/", "source_authority": "FIRST_PARTY", "address_type": "PUBLISHED_COMPANY_ADDRESS", "checked_at": "2026-10-02T03:55:00+03:00"}
+   }
+  }
+ ]
+}

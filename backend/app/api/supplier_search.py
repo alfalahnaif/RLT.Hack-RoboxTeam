@@ -21,10 +21,11 @@ from app.api.market_service import (InvalidCategory, UnknownCategory, _external_
                                     build_market_intelligence)
 from app.api.market_models import ExternalCandidateResponse, ExternalExpansionResponse
 from app.api.recommendation_models import SectionError
-from app.api.supplier_search_models import (Classification, CodeHistoryResponse, Contact, ExternalCandidateResult,
+from app.api.supplier_search_models import (Classification, CodeHistoryResponse, Contact, ContactSource, ExternalCandidateResult,
                                             ExternalExpansionEntry, Freshness, HistoricalEvidence, Integration,
                                             PoolHealthEntry, PriceIntelligence, QueryEcho, SuggestedOkpd2,
                                             SupplierResult, SupplierSearchRequest, SupplierSearchResponse)
+from app.enrichment import contacts as CE
 from app.enrichment.catalog import CuratedEvidenceCatalog, EvidenceCatalogError
 from app.search import text_query as TQ
 from app.search.models import DEFAULT_CONFIG
@@ -57,9 +58,24 @@ def decode_search_id(search_id: str) -> SupplierSearchRequest:
 
 
 # ------------------------------------------------------------------------------------------------ contact / freshness
-def contact_of(c: ExternalCandidateResponse) -> Contact:
-    site = next((e.source_url for e in c.evidence_summary if e.evidence_type == "FIRST_PARTY_WEBSITE" and e.source_url), None)
-    return Contact(phone=None, email=None, website=site, address=None)
+def contact_of(c: ExternalCandidateResponse | None, record: CE.ContactRecord | None, today: date) -> Contact | None:
+    """Source-backed contact. P4-005C enrichment record when present; otherwise only a first-party website from the
+    verification evidence. Absent fields stay null. Verification evidence and status are never modified here."""
+    if record is not None:
+        src = {k: ContactSource(value=f.value, source_url=f.source_url, source_authority=f.source_authority,
+                                checked_at=f.checked_at, address_type=f.address_type)
+               for k, f in record.fields.items() if f is not None}
+        last, url, status = record.freshness(today)
+        return Contact(phone=src["phone"].value if "phone" in src else None, email=src["email"].value if "email" in src else None,
+                       website=src["website"].value if "website" in src else None,
+                       address=src["address"].value if "address" in src else None, sources=src,
+                       identity_basis=record.identity_basis, freshness=Freshness(last_checked_at=last, source_url=url, status=status))
+    if c is None:
+        return None
+    ev = next((e for e in c.evidence_summary if e.evidence_type == "FIRST_PARTY_WEBSITE" and e.source_url), None)
+    src = {"website": ContactSource(value=ev.source_url, source_url=ev.source_url, source_authority="FIRST_PARTY",
+                                    checked_at=ev.retrieved_at)} if ev else {}
+    return Contact(phone=None, email=None, website=ev.source_url if ev else None, address=None, sources=src)
 
 
 def freshness_of(c: ExternalCandidateResponse, today: date) -> Freshness:
@@ -72,11 +88,13 @@ def freshness_of(c: ExternalCandidateResponse, today: date) -> Freshness:
                      status="FRESH" if (today - last.date()).days <= FRESH_DAYS else "STALE")
 
 
-def _external_entry(x: ExternalExpansionResponse, code: str, source: str, today: date) -> ExternalExpansionEntry:
+def _external_entry(x: ExternalExpansionResponse, code: str, source: str, today: date,
+                    records: dict[str, CE.ContactRecord]) -> ExternalExpansionEntry:
     return ExternalExpansionEntry(
         okpd2=code, source=source, available=x.available, evidence_checked_at=x.evidence_checked_at,
         verified_count=x.verified_count, under_review_count=x.under_review_count,
-        candidates=[ExternalCandidateResult(**c.model_dump(), contact=contact_of(c), freshness=freshness_of(c, today))
+        candidates=[ExternalCandidateResult(**c.model_dump(), contact=contact_of(c, records.get(c.supplier_inn), today),
+                                            freshness=freshness_of(c, today))
                     for c in x.candidates])
 
 
@@ -146,6 +164,7 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     conn.rollback()                                    # end the read transaction (SET LOCAL hnsw settings)
 
     t = time.perf_counter()
+    records = CE.load()
     pool_entries, external_entries = [], []
     for code, source in analyzed:
         try:
@@ -160,7 +179,7 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
         try:
             with conn.transaction():
                 x = build_external_expansion(conn, catalog, code, as_of)
-            external_entries.append(_external_entry(x, code, source, today))
+            external_entries.append(_external_entry(x, code, source, today, records))
         except (InvalidCategory, EvidenceCatalogError, psycopg.Error) as e:
             warnings.append(f"EXTERNAL_EVIDENCE_UNAVAILABLE for {code}: {e}")
     with conn.transaction():
@@ -169,7 +188,8 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     timings["market_ms"] = (time.perf_counter() - t) * 1000
 
     visible = [r for r in recs if not req.region or regions.get(r.supplier_id) == req.region][:req.limit]
-    suppliers = [_supplier(r, regions.get(r.supplier_id), profiles.get(r.supplier_inn), today) for r in visible]
+    suppliers = [_supplier(r, regions.get(r.supplier_id), profiles.get(r.supplier_inn), records.get(r.supplier_inn), today)
+                 for r in visible]
     timings["total_ms"] = (time.perf_counter() - t0) * 1000
     search_id = encode_search_id(req)
     return SupplierSearchResponse(
@@ -196,10 +216,11 @@ def _pool_unavailable(code: str, source: str, err: str, e: Exception) -> PoolHea
                            pool_health=None, concentration=None, historical_alternatives=[])
 
 
-def _supplier(r, region: str | None, profile: ExternalCandidateResponse | None, today: date) -> SupplierResult:
+def _supplier(r, region: str | None, profile: ExternalCandidateResponse | None, record: CE.ContactRecord | None,
+              today: date) -> SupplierResult:
     return SupplierResult(
         rank=r.rank, supplier_id=r.supplier_id, inn=r.supplier_inn, registration_region=region, score=r.score,
-        company_name=profile.company_name if profile else None,
+        company_name=profile.company_name if profile else record.company_name if record else None,
         role=profile.market_role if profile else None,
         role_evidence_status=profile.verification_status if profile else "NO_EVIDENCE",
         reasons=[x for x in r.reasons if not x.startswith("semantically similar")],
@@ -209,14 +230,23 @@ def _supplier(r, region: str | None, profile: ExternalCandidateResponse | None, 
             best_products=r.best_products, best_okpd2=r.best_okpd2, evidence_lot_ids=r.evidence_lot_ids,
             components=r.components, contributions=r.contributions),
         semantic_evidence=r.semantic_evidence,
-        contact=contact_of(profile) if profile else None,
+        contact=contact_of(profile, record, today),
         freshness=freshness_of(profile, today) if profile else None)
 
 
 # ------------------------------------------------------------------------------------------------ export (CRM / ERP / SRM)
 EXPORT_COLUMNS = ["record_type", "rank", "supplier_id", "inn", "company_name", "score", "role", "role_evidence_status",
                   "verification_status", "registration_region", "phone", "email", "website", "address", "last_checked_at",
-                  "freshness_status", "source_url", "reasons", "evidence_summary"]
+                  "freshness_status", "source_url", "reasons", "evidence_summary", "contact_checked_at",
+                  "contact_freshness_status", "contact_sources"]
+
+
+def _contact_cols(c: Contact | None) -> dict:
+    f = c.freshness if c else None
+    return {"contact_checked_at": f.last_checked_at.isoformat() if f and f.last_checked_at else None,
+            "contact_freshness_status": f.status if f else None,
+            "contact_sources": "; ".join(f"{k}={v.source_url} ({v.source_authority}, {v.checked_at.date().isoformat()})"
+                                         for k, v in sorted(c.sources.items())) if c and c.sources else None}
 
 
 def export_rows(res: SupplierSearchResponse) -> list[dict]:
@@ -232,7 +262,8 @@ def export_rows(res: SupplierSearchResponse) -> list[dict]:
                      "freshness_status": f.status if f else None, "source_url": f.source_url if f else None,
                      "reasons": "; ".join(s.reasons),
                      "evidence_summary": f"{h.relevant_lots} relevant lots; {h.relevant_awards} relevant awards; "
-                                         f"last {h.most_recent_relevant.isoformat()}; lots {', '.join(h.evidence_lot_ids)}"})
+                                         f"last {h.most_recent_relevant.isoformat()}; lots {', '.join(h.evidence_lot_ids)}",
+                     **_contact_cols(c)})
     for x in res.external_expansion:
         for c in x.candidates:
             rows.append({"record_type": "EXTERNAL_CANDIDATE", "rank": None, "supplier_id": None, "inn": c.supplier_inn,
@@ -245,7 +276,8 @@ def export_rows(res: SupplierSearchResponse) -> list[dict]:
                          "reasons": "; ".join(c.verification_reason_codes + [f"REVIEW:{r}" for r in c.review_reasons]),
                          "evidence_summary": f"OKPD2 {x.okpd2}; {c.evidence_count} evidence records "
                                              f"({c.active_evidence_count} active); exact OKPD2 asserted by source: "
-                                             f"{str(c.exact_okpd2_asserted_by_source).lower()}"})
+                                             f"{str(c.exact_okpd2_asserted_by_source).lower()}",
+                         **_contact_cols(c.contact)})
     return rows
 
 

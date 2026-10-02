@@ -113,13 +113,15 @@ def test_technical_tokens_are_kept(client):
 
 def test_no_contact_is_never_invented(client):
     d = post(client, query=MILK_TEXT, okpd2=MILK_CODE)
-    for s in d["suppliers"]:                                           # historical suppliers: no curated profile
-        assert s["company_name"] is None and s["role"] is None and s["role_evidence_status"] == "NO_EVIDENCE"
-        assert s["contact"] is None and s["freshness"] is None
+    for s_ in d["suppliers"]:                                          # historical suppliers: no curated profile / contact record
+        assert s_["company_name"] is None and s_["role"] is None and s_["role_evidence_status"] == "NO_EVIDENCE"
+        assert s_["contact"] is None and s_["freshness"] is None
     cands = [x for e in d["external_expansion"] for x in e["candidates"]]
-    assert all(x["contact"]["phone"] is None and x["contact"]["email"] is None and x["contact"]["address"] is None for x in cands)
-    borovichi = next(x for x in cands if x["supplier_inn"] == "5320000979")
-    assert borovichi["contact"]["website"] is None                     # no first-party website evidence in the seed
+    for x in cands:                                                    # every populated contact field has its own source
+        populated = {k for k in ("phone", "email", "website", "address") if x["contact"][k] is not None}
+        assert populated == set(x["contact"]["sources"])
+    aap = next(x for x in cands if x["supplier_inn"] == "5007126820")  # no company website exists: nothing invented
+    assert (aap["contact"]["phone"], aap["contact"]["email"], aap["contact"]["website"]) == (None, None, None)
 
 
 def test_supplier_with_contact_and_freshness():
@@ -132,7 +134,7 @@ def test_supplier_with_contact_and_freshness():
     def birsk(res):
         return next(x for e in res.external_expansion for x in e.candidates if x.supplier_inn == "0257011170")
     b = birsk(fresh)
-    assert b.contact.website == "https://molloko.ru/"                  # FIRST_PARTY_WEBSITE evidence
+    assert b.contact.website == "https://molloko.ru/"                  # first-party website (P4-005C record)
     assert b.freshness.status == "FRESH" and b.freshness.last_checked_at.date() == date(2026, 10, 1)
     assert b.freshness.source_url and b.freshness.source_url.startswith("https://")
     assert birsk(stale).freshness.status == "STALE"
