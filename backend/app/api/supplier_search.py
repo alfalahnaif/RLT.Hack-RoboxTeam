@@ -21,15 +21,19 @@ from app.api.market_service import (InvalidCategory, UnknownCategory, _external_
                                     build_market_intelligence)
 from app.api.market_models import ExternalCandidateResponse, ExternalExpansionResponse
 from app.api.recommendation_models import SectionError
-from app.api.supplier_search_models import (Classification, CodeHistoryResponse, Contact, ContactSource, ExternalCandidateResult,
+from app.api.supplier_search_models import (CategoryCandidate, Classification, CodeHistoryResponse, Contact,
+                                            ContactSource, ExternalCandidateResult,
                                             ExternalExpansionEntry, Freshness, HistoricalEvidence, Integration,
                                             PoolHealthEntry, PriceIntelligence, QueryEcho, SuggestedOkpd2,
                                             SupplierResult, SupplierSearchRequest, SupplierSearchResponse)
 from app.enrichment import contacts as CE
 from app.enrichment.catalog import CuratedEvidenceCatalog, EvidenceCatalogError
 from app.search import text_query as TQ
+from app.search.category_resolver import CategorySuggestion, load_index, resolve
+from app.search.candidates import build_pool, score_lots
 from app.search.models import DEFAULT_CONFIG
 from app.search.recommend import prepare_query
+from app.search.retrieval import retrieve
 from app.search.scoring import rank_suppliers
 
 FRESH_DAYS = 180   # curated evidence checked within this many days is FRESH, older is STALE
@@ -124,16 +128,67 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     # 1) text-only pass (text / technical / semantic): ranking for text-only searches and the OKPD2 suggestions + alignment
     q, idf = TQ.build_text_query(conn, req.query, None, cfg, as_of)
     ret, pool, timings = prepare_query(conn, q, idf, cfg)
-    suggestions, support = TQ.suggest_codes(q, ret, idf, cfg)
-    align = TQ.alignment(provided, suggestions, support)
+    historical_suggestions, support = TQ.suggest_codes(q, ret, idf, cfg)
+    resolution = resolve(load_index(), req.query, q.items[0].lexemes,
+                         [(s.okpd2, s.share) for s in historical_suggestions])
+    historical_by_code = {s.okpd2: s for s in historical_suggestions}
+    if resolution.state != "CATEGORY_UNCERTAIN":
+        ordered = resolution.suggestions
+    else:
+        # Preserve useful baseline suggestions for exploratory searches (notably
+        # technical model strings) while labeling their category as uncertain.
+        ordered = [next((s for s in resolution.suggestions if s.okpd2 == h.okpd2),
+                        CategorySuggestion(h.okpd2, min(0.49, round(h.share, 3)), "UNCERTAIN",
+                                           ["Historical text/semantic retrieval; category not confirmed"]))
+                   for h in historical_suggestions]
+        ordered += [s for s in resolution.suggestions if s.okpd2 not in historical_by_code]
+    suggestions = [SuggestedOkpd2(
+        okpd2=s.okpd2, share=historical_by_code[s.okpd2].share if s.okpd2 in historical_by_code else 0.0,
+        supporting_items=historical_by_code[s.okpd2].supporting_items if s.okpd2 in historical_by_code else 0,
+        supporting_lots=historical_by_code[s.okpd2].supporting_lots if s.okpd2 in historical_by_code else 0,
+        example_products=historical_by_code[s.okpd2].example_products if s.okpd2 in historical_by_code else [],
+        confidence=s.confidence, basis=s.basis, evidence=s.evidence) for s in ordered[:3]]
+    align = TQ.alignment(provided, historical_suggestions, support)
+    if provided and resolution.ranking_code:
+        relation = TQ._relation(provided, resolution.ranking_code)
+        align = "ALIGNED" if relation >= 2 else "UNCERTAIN" if relation == 1 else "MISMATCH"
+    elif provided and resolution.state == "CATEGORY_AMBIGUOUS" and provided in {s.okpd2 for s in resolution.suggestions}:
+        align = "ALIGNED"                              # the user confirmed one of the ambiguous candidates
+    category_confirmed = resolution.state == "RESOLVED" or (provided is not None and align == "ALIGNED")
     # 2) the supplied code joins the ranking only when it has history and does not contradict the text evidence;
     #    it is never replaced by a suggested code (a contradicting code is analyzed in pool health, not ranked on)
     ranking_code = o if hist_provided is not None and hist_provided.status != "NONE" and align != "MISMATCH" else None
+    inferred_code = ranking_code is None and resolution.ranking_code is not None and (provided is None or align == "MISMATCH")
+    resolved_history = TQ.code_history(conn, resolution.ranking_code, as_of) if inferred_code else None
+    if inferred_code and resolved_history.status == "NONE":
+        # An official category without procurement history has no exact-code supplier pool;
+        # keep text ranking (exploratory) rather than return an empty list.
+        inferred_code = False
+        warnings.append("RESOLVED_CATEGORY_NOT_OBSERVED: the identified category has no procurement history; "
+                        "supplier results come from text evidence and are exploratory")
+    if inferred_code:
+        ranking_code = TQ.normalize_code(resolution.ranking_code)
     if ranking_code is not None:
         conn.rollback()
         conn.execute("SET TRANSACTION READ ONLY")
         q, idf = TQ.build_text_query(conn, req.query, ranking_code, cfg, as_of)
-        ret, pool, t2 = prepare_query(conn, q, idf, cfg)
+        if inferred_code:
+            # Keep the frozen scorer and weights. For an inferred exact category,
+            # construct its candidate pool from exact-code items only so generic
+            # semantic/text neighbors cannot supply or rank unrelated companies.
+            t_retrieve = time.perf_counter()
+            ret = retrieve(conn, q, cfg.with_(semantic_top_k=0), idf)
+            t2 = {"retrieval_ms": (time.perf_counter() - t_retrieve) * 1000}
+            ret.items = {item_id: item for item_id, item in ret.items.items()
+                         if item.okpd2 and item.okpd2["code"] == ranking_code.okpd2_code}
+            t_lots = time.perf_counter()
+            lots = score_lots(q, ret, idf, cfg)
+            t2["lot_aggregation_ms"] = (time.perf_counter() - t_lots) * 1000
+            t_pool = time.perf_counter()
+            pool = build_pool(conn, q, lots, cfg.historical_lot_limit)
+            t2["candidates_ms"] = (time.perf_counter() - t_pool) * 1000
+        else:
+            ret, pool, t2 = prepare_query(conn, q, idf, cfg)
         timings = {k: timings[k] + t2[k] for k in t2}
     t = time.perf_counter()
     recs, _ = rank_suppliers(q, pool, cfg)
@@ -144,11 +199,16 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     elif hist_provided and hist_provided.status == "SPARSE":
         warnings.append("OKPD2_HISTORY_SPARSE: little procurement history for the supplied code; results rely mostly on text evidence")
     warnings += [w for w in ret.warnings]
-    if support < TQ.WEAK_EVIDENCE_ITEMS:
+    if support < TQ.WEAK_EVIDENCE_ITEMS and resolution.state == "CATEGORY_UNCERTAIN":
         warnings.append("WEAK_TEXT_EVIDENCE: few historical items match the text; OKPD2 suggestions are unreliable")
+    if resolution.state == "CATEGORY_UNCERTAIN" and ranking_code is None:
+        warnings.append("CATEGORY_UNCERTAIN: category identification is low confidence; supplier results are exploratory")
+    if resolution.state == "CATEGORY_AMBIGUOUS" and not category_confirmed:
+        warnings.append("CATEGORY_AMBIGUOUS: several procurement categories match the request; select the intended "
+                        "category — supplier results are exploratory until it is confirmed")
     if align == "MISMATCH":
         warnings.append("OKPD2_TEXT_MISMATCH: the supplied OKPD2 does not match the historical codes of similar products; "
-                        "it is kept as supplied and analyzed below, ranking uses text and semantic evidence — see suggested_okpd2")
+                        "it is kept as supplied and analyzed below; see ranking_okpd2 and suggested_okpd2")
     elif align == "UNCERTAIN":
         warnings.append("OKPD2_ALIGNMENT_UNCERTAIN: the supplied OKPD2 could not be confirmed from historical text evidence")
     if req.region:
@@ -157,8 +217,8 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
 
     top_suggested = suggestions[0].okpd2 if suggestions else None
     analyzed = ([(provided, "PROVIDED")] if provided else []) + \
-               ([(top_suggested, "SUGGESTED")] if top_suggested and top_suggested != provided else [])
-    hist = hist_provided or (TQ.code_history(conn, top_suggested, as_of) if top_suggested else None)
+               ([(top_suggested, "SUGGESTED")] if resolution.state == "RESOLVED" and top_suggested and top_suggested != provided else [])
+    hist = hist_provided or (TQ.code_history(conn, top_suggested, as_of) if resolution.state == "RESOLVED" and top_suggested else None)
     regions = dict(conn.execute("SELECT supplier_id::text, inn_region_code FROM supplier WHERE supplier_id = ANY(%s::uuid[])",
                                 ([r.supplier_id for r in recs],)).fetchall()) if recs else {}
     conn.rollback()                                    # end the read transaction (SET LOCAL hnsw settings)
@@ -197,8 +257,10 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
         query=QueryEcho(text=req.query, normalized_text=q.items[0].product_name, technical_tokens=q.items[0].tech_tokens,
                         okpd2=provided, region=req.region, limit=req.limit, as_of=as_of),
         classification=Classification(
-            provided_okpd2=provided,
-            suggested_okpd2=[SuggestedOkpd2(**s.__dict__) for s in suggestions],
+            provided_okpd2=provided, category_state=resolution.state,
+            top_candidates=[CategoryCandidate(code=s.okpd2, official_name=s.official_name, score=s.confidence, basis=s.basis)
+                            for s in resolution.suggestions],
+            suggested_okpd2=suggestions,
             history_status=hist.status if hist else "NONE",
             history=CodeHistoryResponse(**hist.__dict__) if hist else None,
             text_okpd2_alignment=align, ranking_okpd2=ranking_code.okpd2_code if ranking_code else None,

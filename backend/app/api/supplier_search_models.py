@@ -31,10 +31,22 @@ class QueryEcho(BaseModel):
 
 class SuggestedOkpd2(BaseModel):
     okpd2: str
-    share: float = Field(description="Share of the text-matching historical evidence carrying this code.")
+    share: float = Field(description="Share of text-matching historical evidence; 0 when suggestion comes only from category terminology.")
     supporting_items: int
     supporting_lots: int
     example_products: list[str]
+    confidence: float = Field(description="Evidence strength in [0,1], not a calibrated probability.")
+    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "HISTORICAL_DOMINANT",
+                   "FUZZY", "SEMANTIC", "UNCERTAIN"]
+    evidence: list[str]
+
+
+class CategoryCandidate(BaseModel):
+    code: str
+    official_name: str | None
+    score: float = Field(description="Category evidence score in [0,1], not a calibrated probability.")
+    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "HISTORICAL_DOMINANT",
+                   "FUZZY", "SEMANTIC"]
 
 
 class CodeHistoryResponse(BaseModel):
@@ -46,6 +58,11 @@ class CodeHistoryResponse(BaseModel):
 
 class Classification(BaseModel):
     provided_okpd2: str | None
+    category_state: Literal["RESOLVED", "CATEGORY_AMBIGUOUS", "CATEGORY_UNCERTAIN"] = Field(
+        description="CATEGORY_AMBIGUOUS: several official categories match with similar strong evidence; "
+                    "the user selects one (re-search with okpd2) before suppliers are ranked as exact matches.")
+    top_candidates: list[CategoryCandidate] = Field(
+        description="Official OKPD2 candidates from the category resolver, best first (alternatives for confirmation).")
     suggested_okpd2: list[SuggestedOkpd2]
     history_status: Literal["SUFFICIENT", "SPARSE", "NONE"] = Field(
         description="Procurement history of the analyzed code (the supplied code, else the top suggestion).")

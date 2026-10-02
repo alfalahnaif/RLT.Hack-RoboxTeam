@@ -22,6 +22,17 @@
   "interpretedAs": "Search terms",
   "providedCode": "Provided OKPD2",
   "suggestedCode": "Suggested OKPD2",
+  "categoryConfidence": "Category evidence strength: {percent}%",
+  "categoryBasis": {
+    "OFFICIAL_EXACT_TITLE": "exact official OKPD2 title",
+    "OFFICIAL_MORPH_TITLE": "official OKPD2 title (word forms)",
+    "OFFICIAL_TERMS": "official OKPD2 terms",
+    "HISTORICAL_DOMINANT": "distinctive historical product wording",
+    "FUZZY": "approximate term match",
+    "SEMANTIC": "semantic similarity",
+    "UNCERTAIN": "preliminary historical match"
+  },
+  "categoryUncertain": "We could not identify the procurement category with high confidence. Supplier results are exploratory; check the OKPD2 code before contacting suppliers.",
   "noCode": "No OKPD2 suggestion available",
   "rankingCode": "Ranking category",
   "history": "History status",
@@ -114,5 +125,12 @@
   },
   "rankingTextOnly": "Ranked by text and semantic evidence (no OKPD2 code)",
   "poolTop1": "Top supplier share: {share}%",
-  "verifiedNotApproval": "“Verified” means the evidence was confirmed — it is not vendor approval or a guarantee of award suitability."
+  "verifiedNotApproval": "“Verified” means the evidence was confirmed — it is not vendor approval or a guarantee of award suitability.",
+  "categoryAmbiguousTitle": "Several procurement categories match your request.",
+  "categoryAmbiguousHint": "Please select the intended category. Until a category is confirmed, the suppliers below are related results, not exact matches.",
+  "candidateScore": "evidence {percent}%",
+  "noOfficialName": "Official name unavailable",
+  "resolvedNotObserved": "The category was identified, but it has no procurement history in the dataset. Supplier results come from text evidence and are exploratory.",
+  "exploratoryBadge": "Exploratory",
+  "exploratorySubtitle": "Related suppliers from text evidence — the procurement category is not confirmed."
 }

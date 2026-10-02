@@ -1,0 +1,21 @@
+# Rare OKPD2 terminology precision: Асфальтиты
+
+## Canonical evidence
+
+The observed code `08.99.10.120` has **1 procurement item**, **1 lot** (`5411974`, published 2024-11-27), and **4 distinct historical suppliers**, of which **1 won**. Its raw item text is `Асфальт холодный 25 кг мешок`. No normalized procurement item contains `асфальтит` or `асфальтиты`. The observed supplier INNs are `7842187497` (winner), `602508120107`, `7811548390`, and `7814829270` (participants), all on the EM platform.
+
+Generic `асфальт` appears with many other codes: `42.11.20.300` (539 items), `23.99.13.111` (304), `42.11.20.230` (197), `42.11.20.200` (192), and others. That wording alone cannot establish this rare code.
+
+## Root cause and previous result
+
+For the exact production query `Асфальтиты`, normalization produced `асфальтиты`, Russian FTS produced `асфальтит`, and no technical token was found. The TEXT branch matched **0** items; there is no plain-text trigram retrieval branch in the accepted engine. A diagnostic `pg_trgm` lookup found `асфальт` under both `46.49.21.000` and `08.99.10.110` (similarity 0.583), while `асфальтиты` did not appear in the historical product names. The semantic branch returned **256** item rows, with top neighbors including asphalt chalk and asphalt mixture under unrelated codes. The top cosine similarity was about **0.887**; after the frozen calibration and semantic weight this contributes about **0.412**, below `SUGGEST_MIN_SIMILARITY = 0.5`. The proposal list was empty, so the API ranked text/semantic suppliers without a category. **0 of the first 20** displayed suppliers had evidence from the target lot.
+
+## Resolution
+
+The new `okpd2_category_index.json` covers **8,452 distinct observed OKPD2 values** and **2,971,412 coded procurement items**. It contains observed item/lot frequency, up to five frequent normalized product phrases per code, distinctive terms, and code/name terminology when available. The name source is a pinned [OKPD2 code/name snapshot](https://github.com/prog815/okpd2/tree/71fe224628b3404056376249a6cd99bcc9dad44e) dated 2025-12-05; its raw JSON SHA-256 is `23e6e447a2eeb0981fb7ceecc0a69024f581a330783978097d223cedbc9982c7`. The specific `08.99.10.120` wording, `Асфальтиты и породы асфальтные`, is also listed in a [Rosstat OKPD2 publication](https://61.rosstat.gov.ru/storage/2018/12-05/0P4Tx0cG/%D0%9E%D0%B1%D1%89%D0%B5%D1%80%D0%BE%D1%81%D1%81%D0%B8%D0%B9%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%82%D0%BE%D1%80%20%D0%BF%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%86%D0%B8%D0%B8%20%D0%BF%D0%BE%20%D0%B2%D0%B8%D0%B4%D0%B0%D0%BC%20%D1%8D%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B9%20%D0%B4%D0%B5%D1%8F%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%28%D1%87%D0%B0%D1%81%D1%82%D1%8C%201%29%20%28%D0%9E%D0%9A%D0%9F%D0%942%29%20%281%29.pdf). The snapshot should be refreshed when classification names change.
+
+The resolver prioritizes distinctive category terminology, then dominant historical phrase evidence. Fuzzy matches can suggest alternatives but cannot establish a category; semantic neighbors remain supporting evidence only. The result includes `confidence`, `basis`, and `evidence`. A code is used for automatic ranking only when evidence strength is at least **0.82** and leads the next candidate by at least **0.10**. These are deterministic decision scores, not calibrated probabilities. With no confident resolution, the API returns `CATEGORY_UNCERTAIN`, omits unconfirmed pool-health claims, and the UI marks supplier results exploratory.
+
+For `Асфальтиты`, the result is `08.99.10.120`, `EXACT_TERM`, confidence **0.98**. The inferred-code free-text path uses exact-code historical items to construct its supplier pool while retaining the accepted supplier scorer and weights. It returns the **4** suppliers of lot `5411974`; therefore precision against actual target-lot supplier evidence improves from **0/20** visible before to **4/4** visible after. This measures consistency with the observed lot, not external supplier suitability.
+
+The index builder runs a read-only transaction. No canonical procurement tables, frozen benchmark configuration, or sealed HOLDOUT data were changed or rerun.
