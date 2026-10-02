@@ -35,6 +35,20 @@ def test_exact_official_title_comes_first(index):
     assert result.suggestions[0].official_name == "Вина столовые прочие"
 
 
+def test_polysemous_one_word_exact_title_requires_confirmation(index):
+    result = resolve(index, "Трубы")
+    assert result.state == "CATEGORY_AMBIGUOUS" and result.ranking_code is None
+    assert result.suggestions[0].okpd2 == "32.20.13.161"
+    assert any(s.okpd2 != "32.20.13.161" and not index.related(s.okpd2, "32.20.13.161")
+               for s in result.suggestions)
+
+
+@pytest.mark.parametrize("query, code", [("Принтеры", "26.20.16.120"), ("Песчаник", "08.11.12.180")])
+def test_distinctive_one_word_exact_titles_still_resolve(index, query, code):
+    result = resolve(index, query)
+    assert result.state == "RESOLVED" and result.ranking_code == code
+
+
 def test_morphological_title_variant(index):
     result = resolve(index, "Вино столовое прочее")
     assert result.state == "RESOLVED" and result.ranking_code == "11.02.12.159"

@@ -40,6 +40,8 @@ W_EXACT, W_MORPH, W_LEX, W_HIST, W_SEM = 0.10, 0.15, 0.62, 0.10, 0.03
 ACCEPT = 0.36
 MARGIN = 0.18
 TOP_K = 5
+ONE_WORD_EXACT_MIN_SPECIFICITY = 0.60
+ONE_WORD_EXACT_RIVAL_SCORE = 0.40
 
 # Procurement boilerplate lemmas that never identify a product category.
 _BOILERPLATE = {"поставка", "закупка", "приобретение", "нужда", "товар", "продукция", "оказание",
@@ -236,6 +238,7 @@ class Evidence:
     title: list[CategorySuggestion]             # stage 1/2: exact, else morphology-aware official title matches
     historical: list[CategorySuggestion]        # dominant historical phrases (V3 rule)
     weak: list[CategorySuggestion]              # official partials + fuzzy + semantic, for uncertain results
+    polysemous_exact_title: bool = False
 
 
 def collect(index: CategoryIndex, text: str, lexemes: list[str], semantic: list[tuple[str, float]]) -> Evidence:
@@ -262,6 +265,12 @@ def collect(index: CategoryIndex, text: str, lexemes: list[str], semantic: list[
         margin = round(top.confidence - (rival.confidence if rival else 0.0), 3)
     exact = [s for s in official if s.basis == "OFFICIAL_EXACT_TITLE"]
     title = exact or [s for s in official if s.basis == "OFFICIAL_MORPH_TITLE"]
+    polysemous_exact_title = (
+        len(q.words) == 1 and bool(exact)
+        and q.weights[0] / math.log(index.n) < ONE_WORD_EXACT_MIN_SPECIFICITY
+        and any(not index.related(exact[0].okpd2, s.okpd2)
+                and s.confidence >= ONE_WORD_EXACT_RIVAL_SCORE for s in official)
+    )
 
     historical = []
     for code in sorted(index.phrase_items):
@@ -283,7 +292,7 @@ def collect(index: CategoryIndex, text: str, lexemes: list[str], semantic: list[
             weak.append(CategorySuggestion(code, round(min(0.2, 0.2 * similarity), 3), "SEMANTIC",
                                            ["Related retrieved product text"], index.codes[code].name))
             seen.add(code)
-    return Evidence(official, margin, title, historical, sorted(weak, key=order))
+    return Evidence(official, margin, title, historical, sorted(weak, key=order), polysemous_exact_title)
 
 
 def decision(index: CategoryIndex, ev: Evidence, accept: float = ACCEPT,
@@ -294,7 +303,9 @@ def decision(index: CategoryIndex, ev: Evidence, accept: float = ACCEPT,
         # identifies the category; the same title on unrelated lines is ambiguous.
         top = ev.title[0]
         one_line = all(index.related(top.okpd2, s.okpd2) for s in ev.title)
-        return ("RESOLVED", top, "title") if one_line else ("CATEGORY_AMBIGUOUS", None, "title")
+        if not one_line or ev.polysemous_exact_title:
+            return "CATEGORY_AMBIGUOUS", None, "title"
+        return "RESOLVED", top, "title"
     if ev.official and ev.official[0].confidence >= accept:
         # Stage 3: weighted official terms.
         if ev.margin >= min_margin:

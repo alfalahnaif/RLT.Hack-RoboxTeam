@@ -114,6 +114,19 @@ def test_ambiguous_response_preserves_ambiguity(settings):
     assert outcome.resolution is original and outcome.status == "AMBIGUOUS"
 
 
+@pytest.mark.parametrize("decision, expected_state", [
+    ("AMBIGUOUS", "CATEGORY_AMBIGUOUS"),
+    ("ABSTAIN", "CATEGORY_UNCERTAIN"),
+])
+def test_verifier_can_withhold_weak_deterministic_resolution(settings, decision, expected_state):
+    original = Resolution("RESOLVED", [MEDICAL, OFFICE], .03)
+    outcome = verify_resolution("Стол для процедур", original,
+                                FakeProvider(result(decision, None, "LOW")), settings)
+    assert outcome.status == decision
+    assert outcome.resolution.state == expected_state
+    assert outcome.resolution.ranking_code is None
+
+
 def test_nonsense_query_and_missing_official_names_never_call_provider(settings):
     provider = FakeProvider(result())
     original = Resolution("CATEGORY_UNCERTAIN", [Suggestion("00.00.00.000", .12, "FUZZY", [])])
@@ -166,7 +179,7 @@ def test_benchmark_candidates_are_in_official_index_and_replay_is_labeled():
     index = load_index()
     for case in cases:
         for candidate in case["deterministic"]["candidates"]:
-            assert index.codes[candidate["code"]]["name"] == candidate["official_name"]
+            assert index.codes[candidate["code"]].name == candidate["official_name"]
     from app.search.llm_benchmark import FixtureReplayProvider
     report = run_benchmark(cases, FixtureReplayProvider(), fixture_replay=True)
     assert report["mode"] == "fixture_replay_not_model_accuracy"

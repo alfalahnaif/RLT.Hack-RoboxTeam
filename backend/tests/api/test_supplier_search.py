@@ -88,7 +88,7 @@ def test_generic_term_is_ambiguous_not_ranked_on_a_guessed_code(client):
     assert not d["pool_health"]  # no concentration claim for an unconfirmed category
 
 
-def test_broad_query_returns_candidates_and_a_confirmed_choice_ranks_on_it(client):
+def test_broad_query_returns_candidates_and_a_confirmed_choice_ranks_on_it(client, monkeypatch):
     d = post(client, query="Стол")
     c = d["classification"]
     assert c["category_state"] == "CATEGORY_AMBIGUOUS" and c["ranking_okpd2"] is None
@@ -100,6 +100,9 @@ def test_broad_query_returns_candidates_and_a_confirmed_choice_ranks_on_it(clien
         observed = [x["code"] for x in c["top_candidates"]
                     if conn.execute("SELECT 1 FROM procurement_item WHERE okpd2_code = %s LIMIT 1", (x["code"],)).fetchone()]
     assert observed
+    def verifier_must_not_override_selection(*args, **kwargs):
+        raise AssertionError("explicit category selection must bypass the LLM")
+    monkeypatch.setattr(S, "verify_resolution", verifier_must_not_override_selection)
     chosen = post(client, query="Стол", okpd2=observed[0])            # the user selects a candidate
     cc = chosen["classification"]
     assert cc["text_okpd2_alignment"] == "ALIGNED" and cc["ranking_okpd2"] == observed[0]

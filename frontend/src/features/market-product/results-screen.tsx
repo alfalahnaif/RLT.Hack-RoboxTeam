@@ -36,6 +36,9 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
   const resolvedNotObserved = hasWarning("RESOLVED_CATEGORY_NOT_OBSERVED");
   const exploratory = categoryUncertain || categoryAmbiguous || resolvedNotObserved;
   const leadingSuggestion = classification.suggested_okpd2[0];
+  const evidenceStrength = leadingSuggestion && classification.category_state === "RESOLVED"
+    ? t(`categoryEvidenceStrength.${leadingSuggestion.confidence >= 0.7 ? "high" : "medium"}`)
+    : null;
   const selectedPool = data.pool_health.find((entry) => entry.okpd2 === classification.ranking_okpd2) ?? data.pool_health[0];
   const externalGroups = data.external_expansion.filter((entry) => entry.available && entry.candidates.length);
   return (
@@ -55,7 +58,7 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
             <Badge color={classification.history_status === "SUFFICIENT" ? "success" : "warning"}>{t(`historyStatus.${classification.history_status}`)}</Badge>
           </div>
           {classification.text_okpd2_alignment ? <p className="text-xs text-muted">{t("alignmentLabel")}: <span className="font-medium text-heading">{t(`alignment.${classification.text_okpd2_alignment}`)}</span></p> : null}
-          {leadingSuggestion?.confidence !== undefined && leadingSuggestion.basis ? <p className="text-xs text-muted">{t("categoryConfidence", { percent: Math.round(leadingSuggestion.confidence * 100) })} · {t(`categoryBasis.${leadingSuggestion.basis}`)}</p> : null}
+          <p className="text-xs text-muted">{t(`categoryState.${classification.category_state}`)}{evidenceStrength ? ` · ${evidenceStrength}` : ""}{leadingSuggestion?.basis ? ` · ${t(`categoryBasis.${leadingSuggestion.basis}`)}` : ""}</p>
           {classification.ranking_okpd2 ? <p className="text-xs text-muted">{t("rankingCode")}: <span dir="ltr">{classification.ranking_okpd2}</span></p>
             : <p className="text-xs text-muted">{t("rankingTextOnly")}</p>}
         </CardBody></Card>
@@ -113,7 +116,7 @@ function CategoryChoice({ candidates, query, region }: {
             <Link href={href(c.code)} className="flex flex-col gap-0.5 rounded-md border border-line bg-surface px-3 py-2 text-start hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus sm:flex-row sm:items-center sm:gap-3">
               <span dir="ltr" className="text-sm font-semibold text-heading">{c.code}</span>
               <span className="flex-1 text-sm text-body">{c.official_name ?? t("noOfficialName")}</span>
-              <span className="text-xs text-muted">{t("candidateScore", { percent: Math.round(c.score * 100) })} · {t(`categoryBasis.${c.basis}`)}</span>
+              <span className="text-xs text-muted">{t(`categoryBasis.${c.basis}`)}</span>
             </Link>
           </li>
         ))}

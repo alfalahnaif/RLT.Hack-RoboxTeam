@@ -30,7 +30,7 @@ from app.enrichment import contacts as CE
 from app.enrichment.catalog import CuratedEvidenceCatalog, EvidenceCatalogError
 from app.search import text_query as TQ
 from app.search.category_resolver import CategorySuggestion, load_index, resolve
-from app.search.llm_verifier import verify_resolution
+from app.search.llm_verifier import VerificationOutcome, verify_resolution
 from app.search.candidates import build_pool, score_lots
 from app.search.models import DEFAULT_CONFIG
 from app.search.recommend import prepare_query
@@ -133,11 +133,13 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     category_index = load_index()
     resolution = resolve(category_index, req.query, q.items[0].lexemes,
                          [(s.okpd2, s.share) for s in historical_suggestions])
-    verification = verify_resolution(req.query, resolution, index=category_index)
+    verification = (verify_resolution(req.query, resolution, index=category_index) if provided is None
+                    else VerificationOutcome(resolution, "USER_SELECTED", False))
     resolution = verification.resolution
     timings["llm_verification_ms"] = verification.latency_ms
     if verification.fallback_used:
-        warnings.append(f"LLM_VERIFIER_FALLBACK: {verification.status}; deterministic classification retained")
+        failure = f" ({verification.failure_code})" if verification.failure_code else ""
+        warnings.append(f"LLM_VERIFIER_FALLBACK: {verification.status}{failure}; deterministic classification retained")
     elif verification.status == "RESOLVED":
         warnings.append(f"LLM_VERIFIED_CATEGORY: {verification.reason}")
     elif verification.status in {"AMBIGUOUS", "ABSTAIN"}:

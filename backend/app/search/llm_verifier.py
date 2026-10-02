@@ -257,6 +257,10 @@ def verify_resolution(query: str, resolution: object, provider: LlmVerifierProvi
             reordered = [selected] + [s for s in resolution.suggestions if s.okpd2 != decision.selected_code]
             updated = replace(resolution, state="RESOLVED", suggestions=reordered)
             outcome = VerificationOutcome(updated, "RESOLVED", False, reason=decision.reason)
+        elif resolution.state == "RESOLVED":
+            state = "CATEGORY_AMBIGUOUS" if decision.decision == "AMBIGUOUS" else "CATEGORY_UNCERTAIN"
+            outcome = VerificationOutcome(replace(resolution, state=state), decision.decision, False,
+                                          reason=decision.reason)
         else:
             outcome = VerificationOutcome(resolution, decision.decision, False, reason=decision.reason)
     except Exception as exc:

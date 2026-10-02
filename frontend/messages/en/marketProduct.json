@@ -22,7 +22,15 @@
   "interpretedAs": "Search terms",
   "providedCode": "Provided OKPD2",
   "suggestedCode": "Suggested OKPD2",
-  "categoryConfidence": "Category evidence strength: {percent}%",
+  "categoryState": {
+    "RESOLVED": "Resolved",
+    "CATEGORY_AMBIGUOUS": "Ambiguous",
+    "CATEGORY_UNCERTAIN": "Uncertain"
+  },
+  "categoryEvidenceStrength": {
+    "high": "High confidence",
+    "medium": "Medium confidence"
+  },
   "categoryBasis": {
     "OFFICIAL_EXACT_TITLE": "exact official OKPD2 title",
     "OFFICIAL_MORPH_TITLE": "official OKPD2 title (word forms)",
@@ -128,7 +136,6 @@
   "verifiedNotApproval": "“Verified” means the evidence was confirmed — it is not vendor approval or a guarantee of award suitability.",
   "categoryAmbiguousTitle": "Several procurement categories match your request.",
   "categoryAmbiguousHint": "Please select the intended category. Until a category is confirmed, the suppliers below are related results, not exact matches.",
-  "candidateScore": "evidence {percent}%",
   "noOfficialName": "Official name unavailable",
   "resolvedNotObserved": "The category was identified, but it has no procurement history in the dataset. Supplier results come from text evidence and are exploratory.",
   "exploratoryBadge": "Exploratory",
