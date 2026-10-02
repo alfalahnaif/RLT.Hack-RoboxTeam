@@ -484,6 +484,9 @@ export type SupplierSearchResult = {
   freshness: SupplierFreshness | null;
 };
 
+export type CategoryBasis =
+  | "OFFICIAL_EXACT_TITLE" | "OFFICIAL_MORPH_TITLE" | "OFFICIAL_TERMS" | "HISTORICAL_DOMINANT" | "FUZZY" | "SEMANTIC";
+
 export type SupplierSearchResponse = {
   search_id: string;
   query: {
@@ -497,7 +500,12 @@ export type SupplierSearchResponse = {
   };
   classification: {
     provided_okpd2: string | null;
-    suggested_okpd2: { okpd2: string; share: number; supporting_items: number; supporting_lots: number; example_products: string[] }[];
+    category_state: "RESOLVED" | "CATEGORY_AMBIGUOUS" | "CATEGORY_UNCERTAIN";
+    top_candidates: { code: string; official_name: string | null; score: number; basis: CategoryBasis }[];
+    suggested_okpd2: {
+      okpd2: string; share: number; supporting_items: number; supporting_lots: number; example_products: string[];
+      confidence: number; basis: CategoryBasis | "UNCERTAIN"; evidence: string[];
+    }[];
     history_status: "SUFFICIENT" | "SPARSE" | "NONE";
     history: { okpd2: string; lots: number; awards: number; status: "SUFFICIENT" | "SPARSE" | "NONE" } | null;
     text_okpd2_alignment: "ALIGNED" | "UNCERTAIN" | "MISMATCH" | null;

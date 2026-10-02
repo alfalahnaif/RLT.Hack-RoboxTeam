@@ -30,9 +30,12 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
 
   const data = run.data;
   const classification = data.classification;
-  const categoryUncertain = classification.warnings.some((warning) => warning.startsWith("CATEGORY_UNCERTAIN"));
-  const leadingSuggestion = classification.suggested_okpd2[0] as
-    ((typeof classification.suggested_okpd2)[number] & { confidence?: number; basis?: string }) | undefined;
+  const hasWarning = (code: string) => classification.warnings.some((warning) => warning.startsWith(code));
+  const categoryUncertain = hasWarning("CATEGORY_UNCERTAIN");
+  const categoryAmbiguous = hasWarning("CATEGORY_AMBIGUOUS");
+  const resolvedNotObserved = hasWarning("RESOLVED_CATEGORY_NOT_OBSERVED");
+  const exploratory = categoryUncertain || categoryAmbiguous || resolvedNotObserved;
+  const leadingSuggestion = classification.suggested_okpd2[0];
   const selectedPool = data.pool_health.find((entry) => entry.okpd2 === classification.ranking_okpd2) ?? data.pool_health[0];
   const externalGroups = data.external_expansion.filter((entry) => entry.available && entry.candidates.length);
   return (
@@ -57,14 +60,20 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
             : <p className="text-xs text-muted">{t("rankingTextOnly")}</p>}
         </CardBody></Card>
 
+        {categoryAmbiguous ? <CategoryChoice candidates={classification.top_candidates} query={query} region={region} /> : null}
         {categoryUncertain ? <Alert tone="warning" appearance="inline" description={t("categoryUncertain")} /> : null}
-        {!categoryUncertain && classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
+        {resolvedNotObserved ? <Alert tone="warning" appearance="inline" description={t("resolvedNotObserved")} /> : null}
+        {!exploratory && classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
         {classification.text_okpd2_alignment === "MISMATCH" ? <Alert tone="warning" appearance="inline" description={t("mismatchWarning")} /> : null}
 
         <PoolHealthPanel entry={selectedPool} />
 
         <section aria-labelledby="historical-title" className="flex flex-col gap-3">
-          <div><h2 id="historical-title" className="text-lg font-semibold text-heading">{t("historicalTitle")}</h2><p className="text-sm text-muted">{t("historicalSubtitle")}</p></div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2"><h2 id="historical-title" className="text-lg font-semibold text-heading">{t("historicalTitle")}</h2>
+              {exploratory ? <Badge color="warning">{t("exploratoryBadge")}</Badge> : null}</div>
+            <p className="text-sm text-muted">{exploratory ? t("exploratorySubtitle") : t("historicalSubtitle")}</p>
+          </div>
           {data.suppliers.length ? <ol className="grid gap-3 lg:grid-cols-2">{data.suppliers.map((supplier) => <li key={supplier.supplier_id}><HistoricalSupplierCard supplier={supplier} rankingCode={classification.ranking_okpd2} /></li>)}</ol>
             : <Alert tone="info" appearance="inline" description={t("noHistorical")} />}
         </section>
@@ -84,6 +93,32 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
         <ExportControl data={data} />
       </div>
     </>
+  );
+}
+
+function CategoryChoice({ candidates, query, region }: {
+  candidates: SupplierSearchResponse["classification"]["top_candidates"]; query: string; region: string | null;
+}) {
+  const t = useTranslations("marketProduct");
+  const href = (code: string) => {
+    const params = new URLSearchParams({ q: query, okpd2: code });
+    if (region) params.set("region", region);
+    return `/results?${params.toString()}`;
+  };
+  return (
+    <Alert tone="warning" title={t("categoryAmbiguousTitle")} description={t("categoryAmbiguousHint")}>
+      <ul className="mt-3 flex flex-col gap-2">
+        {candidates.map((c) => (
+          <li key={c.code}>
+            <Link href={href(c.code)} className="flex flex-col gap-0.5 rounded-md border border-line bg-surface px-3 py-2 text-start hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus sm:flex-row sm:items-center sm:gap-3">
+              <span dir="ltr" className="text-sm font-semibold text-heading">{c.code}</span>
+              <span className="flex-1 text-sm text-body">{c.official_name ?? t("noOfficialName")}</span>
+              <span className="text-xs text-muted">{t("candidateScore", { percent: Math.round(c.score * 100) })} · {t(`categoryBasis.${c.basis}`)}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Alert>
   );
 }
 

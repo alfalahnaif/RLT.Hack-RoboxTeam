@@ -21,7 +21,8 @@ from app.api.market_service import (InvalidCategory, UnknownCategory, _external_
                                     build_market_intelligence)
 from app.api.market_models import ExternalCandidateResponse, ExternalExpansionResponse
 from app.api.recommendation_models import SectionError
-from app.api.supplier_search_models import (Classification, CodeHistoryResponse, Contact, ContactSource, ExternalCandidateResult,
+from app.api.supplier_search_models import (CategoryCandidate, Classification, CodeHistoryResponse, Contact,
+                                            ContactSource, ExternalCandidateResult,
                                             ExternalExpansionEntry, Freshness, HistoricalEvidence, Integration,
                                             PoolHealthEntry, PriceIntelligence, QueryEcho, SuggestedOkpd2,
                                             SupplierResult, SupplierSearchRequest, SupplierSearchResponse)
@@ -131,7 +132,7 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     resolution = resolve(load_index(), req.query, q.items[0].lexemes,
                          [(s.okpd2, s.share) for s in historical_suggestions])
     historical_by_code = {s.okpd2: s for s in historical_suggestions}
-    if resolution.state == "RESOLVED":
+    if resolution.state != "CATEGORY_UNCERTAIN":
         ordered = resolution.suggestions
     else:
         # Preserve useful baseline suggestions for exploratory searches (notably
@@ -151,10 +152,20 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
     if provided and resolution.ranking_code:
         relation = TQ._relation(provided, resolution.ranking_code)
         align = "ALIGNED" if relation >= 2 else "UNCERTAIN" if relation == 1 else "MISMATCH"
+    elif provided and resolution.state == "CATEGORY_AMBIGUOUS" and provided in {s.okpd2 for s in resolution.suggestions}:
+        align = "ALIGNED"                              # the user confirmed one of the ambiguous candidates
+    category_confirmed = resolution.state == "RESOLVED" or (provided is not None and align == "ALIGNED")
     # 2) the supplied code joins the ranking only when it has history and does not contradict the text evidence;
     #    it is never replaced by a suggested code (a contradicting code is analyzed in pool health, not ranked on)
     ranking_code = o if hist_provided is not None and hist_provided.status != "NONE" and align != "MISMATCH" else None
     inferred_code = ranking_code is None and resolution.ranking_code is not None and (provided is None or align == "MISMATCH")
+    resolved_history = TQ.code_history(conn, resolution.ranking_code, as_of) if inferred_code else None
+    if inferred_code and resolved_history.status == "NONE":
+        # An official category without procurement history has no exact-code supplier pool;
+        # keep text ranking (exploratory) rather than return an empty list.
+        inferred_code = False
+        warnings.append("RESOLVED_CATEGORY_NOT_OBSERVED: the identified category has no procurement history; "
+                        "supplier results come from text evidence and are exploratory")
     if inferred_code:
         ranking_code = TQ.normalize_code(resolution.ranking_code)
     if ranking_code is not None:
@@ -192,6 +203,9 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
         warnings.append("WEAK_TEXT_EVIDENCE: few historical items match the text; OKPD2 suggestions are unreliable")
     if resolution.state == "CATEGORY_UNCERTAIN" and ranking_code is None:
         warnings.append("CATEGORY_UNCERTAIN: category identification is low confidence; supplier results are exploratory")
+    if resolution.state == "CATEGORY_AMBIGUOUS" and not category_confirmed:
+        warnings.append("CATEGORY_AMBIGUOUS: several procurement categories match the request; select the intended "
+                        "category — supplier results are exploratory until it is confirmed")
     if align == "MISMATCH":
         warnings.append("OKPD2_TEXT_MISMATCH: the supplied OKPD2 does not match the historical codes of similar products; "
                         "it is kept as supplied and analyzed below; see ranking_okpd2 and suggested_okpd2")
@@ -244,6 +258,8 @@ def supplier_search(conn: Connection, req: SupplierSearchRequest, catalog: Curat
                         okpd2=provided, region=req.region, limit=req.limit, as_of=as_of),
         classification=Classification(
             provided_okpd2=provided, category_state=resolution.state,
+            top_candidates=[CategoryCandidate(code=s.okpd2, official_name=s.official_name, score=s.confidence, basis=s.basis)
+                            for s in resolution.suggestions],
             suggested_okpd2=suggestions,
             history_status=hist.status if hist else "NONE",
             history=CodeHistoryResponse(**hist.__dict__) if hist else None,
