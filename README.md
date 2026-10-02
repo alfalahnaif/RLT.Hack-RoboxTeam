@@ -13,6 +13,7 @@ curl http://localhost:8000/api/v1/health      # api / postgres / semantic READY 
 - API base URL: `http://localhost:8000/api/v1` (port `API_PORT`, default 8000); OpenAPI docs at `http://localhost:8000/docs`.
 - Routes: `GET /health`, `GET /recommendations/{lot_id}`, `GET /procurements/{lot_id}/analysis`,
   `GET /market-intelligence/{okpd2}`.
+  Free-text discovery (P4-005A): `POST /supplier-search` and `GET /supplier-search/{search_id}/export?format=json|csv`.
 - Startup never builds embeddings. When the semantic index is READY the pinned model is loaded once at startup (~6 s);
   otherwise the API still starts and recommendations fall back to P2-003 with a `SEMANTIC_UNAVAILABLE` warning.
 - Frontend: the Next.js client calls `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000/api/v1`) from the browser with

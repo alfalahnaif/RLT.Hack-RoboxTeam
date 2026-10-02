@@ -76,6 +76,44 @@ def _candidate_response(candidate) -> ExternalCandidateResponse:
     )
 
 
+def _external_expansion(conn: Connection, catalog: CuratedEvidenceCatalog, code: str, as_of: date):
+    """Curated external evidence for one exact OKPD2 (independent of procurement history). Returns (response, seed or None)."""
+    seed = catalog.get(code)
+    external_candidates: list[ExternalCandidateResponse] = []
+    verified = ()
+    if seed is not None:
+        reconciled = reconcile_candidates(
+            conn,
+            [CandidateInput(candidate.supplier_inn, candidate.canonical_name) for candidate in seed.candidates],
+            code,
+            as_of,
+        )
+        try:
+            verified = evaluate_seed(seed, reconciled)
+        except ValueError as error:
+            raise EvidenceCatalogError(f"Curated evidence evaluation failed: {error}") from error
+        ordered = sorted(verified,
+                         key=lambda item: (STATUS_ORDER[item.verification_status.value],
+                                           STRENGTH_ORDER[item.verification_strength.value],
+                                           item.company_name.casefold(), item.supplier_inn))
+        external_candidates = [_candidate_response(candidate) for candidate in ordered]
+    return ExternalExpansionResponse(
+        available=seed is not None, evidence_checked_at=seed.checked_at if seed else None,
+        verified_count=sum(c.verification_status == VerificationStatus.VERIFIED for c in verified),
+        under_review_count=sum(c.verification_status == VerificationStatus.UNDER_REVIEW for c in verified),
+        candidates=external_candidates,
+    ), seed
+
+
+def build_external_expansion(conn: Connection, catalog: CuratedEvidenceCatalog, okpd2: str,
+                             as_of: date = DEFAULT_AS_OF) -> ExternalExpansionResponse:
+    """External expansion only — usable for a valid OKPD2 that has sparse or no procurement history."""
+    normalized = normalize_okpd2(okpd2)
+    if normalized.flags or normalized.okpd2_code is None:
+        raise InvalidCategory("OKPD2 must be a valid observed-code format")
+    return _external_expansion(conn, catalog, normalized.okpd2_code, as_of)[0]
+
+
 def build_market_intelligence(conn: Connection, catalog: CuratedEvidenceCatalog, okpd2: str,
                               as_of: date = DEFAULT_AS_OF,
                               recent_days: int = DEFAULT_RECENT_DAYS) -> MarketIntelligenceResponse:
@@ -97,25 +135,7 @@ def build_market_intelligence(conn: Connection, catalog: CuratedEvidenceCatalog,
     ) for item in sorted(pool.alternatives.suppliers,
                          key=lambda item: (-item["awards"], str(item["supplier_id"])))]
 
-    seed = catalog.get(code)
-    external_candidates: list[ExternalCandidateResponse] = []
-    verified = ()
-    if seed is not None:
-        reconciled = reconcile_candidates(
-            conn,
-            [CandidateInput(candidate.supplier_inn, candidate.canonical_name) for candidate in seed.candidates],
-            code,
-            as_of,
-        )
-        try:
-            verified = evaluate_seed(seed, reconciled)
-        except ValueError as error:
-            raise EvidenceCatalogError(f"Curated evidence evaluation failed: {error}") from error
-        ordered = sorted(verified,
-                         key=lambda item: (STATUS_ORDER[item.verification_status.value],
-                                           STRENGTH_ORDER[item.verification_strength.value],
-                                           item.company_name.casefold(), item.supplier_inn))
-        external_candidates = [_candidate_response(candidate) for candidate in ordered]
+    external_expansion, seed = _external_expansion(conn, catalog, code, as_of)
 
     return MarketIntelligenceResponse(
         category=CategoryResponse(okpd2=code, as_of=as_of),
@@ -130,12 +150,7 @@ def build_market_intelligence(conn: Connection, catalog: CuratedEvidenceCatalog,
         concentration=expansion_signal(pool.concentration.label, pool.concentration.top1_share,
                                        pool.suppliers.winning),
         historical_alternatives=historical_alternatives,
-        external_expansion=ExternalExpansionResponse(
-            available=seed is not None, evidence_checked_at=seed.checked_at if seed else None,
-            verified_count=sum(c.verification_status == VerificationStatus.VERIFIED for c in verified),
-            under_review_count=sum(c.verification_status == VerificationStatus.UNDER_REVIEW for c in verified),
-            candidates=external_candidates,
-        ),
+        external_expansion=external_expansion,
         provenance=ProvenanceResponse(
             historical_source="canonical procurement database",
             external_source="curated evidence seed" if seed else "none in current catalog",

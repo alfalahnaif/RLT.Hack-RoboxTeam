@@ -13,10 +13,16 @@ from app.search.scoring import rank_suppliers
 
 def prepare(conn, lot_id: str, cfg: SearchConfig, as_of: date | None = None, pool_lots: int | None = None):
     """Everything up to the supplier pool (weights-independent); reused by evaluation across configurations."""
-    t = {}
     t0 = time.perf_counter()
     q, idf = build_query(conn, lot_id, cfg, as_of)
-    t["query_ms"] = (time.perf_counter() - t0) * 1000
+    query_ms = (time.perf_counter() - t0) * 1000
+    ret, pool, t = prepare_query(conn, q, idf, cfg, pool_lots)
+    return q, ret, pool, {"query_ms": query_ms, **t}
+
+
+def prepare_query(conn, q, idf, cfg: SearchConfig, pool_lots: int | None = None):
+    """The shared pipeline after query construction (lot query or free-text query): retrieval -> lot aggregation -> pool."""
+    t = {}
     t1 = time.perf_counter()
     ret = retrieve(conn, q, cfg, idf)
     t["retrieval_ms"] = (time.perf_counter() - t1) * 1000
@@ -26,7 +32,7 @@ def prepare(conn, lot_id: str, cfg: SearchConfig, as_of: date | None = None, poo
     t3 = time.perf_counter()
     pool = build_pool(conn, q, lots, pool_lots or cfg.historical_lot_limit)
     t["candidates_ms"] = (time.perf_counter() - t3) * 1000
-    return q, ret, pool, t
+    return ret, pool, t
 
 
 def recommend(conn, lot_id: str, cfg: SearchConfig | None = None, as_of: date | None = None) -> dict:

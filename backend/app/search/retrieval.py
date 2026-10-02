@@ -65,6 +65,7 @@ class Retrieval:
     lexical_ids: set = field(default_factory=set)                      # items found by text / technical / OKPD2 branches
     semantic: dict = field(default_factory=dict)                       # (query item index, item_id) -> (cosine, text rank)
     warnings: list = field(default_factory=list)                       # degraded branches (BR-11)
+    text_ids: set = field(default_factory=set)                         # items found by the text / technical branches (not OKPD2)
 
 
 def okpd2_dict(code, cls, subclass, group, subgroup, kind) -> dict | None:
@@ -133,6 +134,8 @@ def _add(ret: Retrieval, rows, branch: str) -> None:
     for item_id, lot_id, name, code, cls, sc, grp, sg, kind, lex, pdate in rows:
         if not branch.startswith("semantic"):
             ret.lexical_ids.add(item_id)
+        if branch in ("text", "text_and", "technical"):
+            ret.text_ids.add(item_id)
         if item_id not in ret.items:
             ret.items[item_id] = HistItem(item_id, lot_id, name, okpd2_dict(code, cls, sc, grp, sg, kind), frozenset(lex), pdate)
 
@@ -247,4 +250,4 @@ def restrict_semantic(ret: Retrieval, k: int) -> Retrieval:
     return Retrieval(items=items, branch_hits=ret.branch_hits, branch_ms=ret.branch_ms,
                      lot_subject_lexemes={l: v for l, v in ret.lot_subject_lexemes.items() if l in lots},
                      lot_customer={l: v for l, v in ret.lot_customer.items() if l in lots},
-                     lexical_ids=ret.lexical_ids, semantic=sem, warnings=ret.warnings)
+                     lexical_ids=ret.lexical_ids, semantic=sem, warnings=ret.warnings, text_ids=ret.text_ids)

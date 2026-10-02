@@ -17,6 +17,10 @@ class CuratedEvidenceCatalog:
         self.directory = directory or repo_root() / "data" / "seed"
 
     def get(self, target_okpd2: str) -> EvidenceSeed | None:
+        return self.all().get(target_okpd2)
+
+    def all(self) -> dict[str, EvidenceSeed]:
+        """Every validated seed by target OKPD2 (small JSON files; loaded on each call, like `get`)."""
         if not self.directory.is_dir():
             raise EvidenceCatalogError("Curated evidence catalog directory is unavailable")
         indexed: dict[str, EvidenceSeed] = {}
@@ -28,4 +32,4 @@ class CuratedEvidenceCatalog:
             if seed.target_okpd2 in indexed:
                 raise EvidenceCatalogError(f"Duplicate curated category {seed.target_okpd2}")
             indexed[seed.target_okpd2] = seed
-        return indexed.get(target_okpd2)
+        return indexed
