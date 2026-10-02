@@ -22,9 +22,9 @@ from app.enrichment import freshness as F
 from app.enrichment import pipeline as P
 from app.enrichment import repository as R
 from app.enrichment.catalog import CuratedEvidenceCatalog
-from app.enrichment.providers import (CheckoRegistryMirror, FnsEgrulRegistry, HtmlContactExtractor, HttpFetcher,
-                                      HttpWebsiteVerifier, RegistryWebsiteDiscovery, SiteAndOkvedRoleEvidence, _fold,
-                                      host_of, normalize_phone)
+from app.enrichment.providers import (CheckoRegistryMirror, CircuitBreaker, FnsEgrulRegistry, GuardedRegistry,
+                                      HtmlContactExtractor, HttpFetcher, HttpWebsiteVerifier, RegistryWebsiteDiscovery,
+                                      SiteAndOkvedRoleEvidence, _fold, host_of, normalize_phone)
 from app.shared.ids import supplier_uuid
 
 ProvidersFactory = Callable[[Callable[[], datetime]], tuple[P.Providers, Callable[[], None]]]
@@ -45,11 +45,17 @@ def utcnow() -> datetime:
 
 
 MIRROR_HOST_INTERVALS = {"checko.ru": 3.0}   # the registry mirror rate-limits at ~1 req/s (pilot: HTTP 429)
+# checko.ru is an OPTIONAL secondary provider: after 2 consecutive rate-limited answers it is not called for 15 minutes in this
+# process (one batch run / one API worker); the official EGRUL path continues without it.
+MIRROR_BREAKER = CircuitBreaker(threshold=2, cooldown_s=900.0)
+USE_SECONDARY_REGISTRY = True   # CLI --no-secondary: official EGRUL only
 
 
 def default_providers(now: Callable[[], datetime]) -> tuple[P.Providers, Callable[[], None]]:
     fetcher = HttpFetcher(host_intervals=MIRROR_HOST_INTERVALS)
-    return P.Providers(registries=[FnsEgrulRegistry(fetcher, now), CheckoRegistryMirror(fetcher, now)],
+    mirror = GuardedRegistry(CheckoRegistryMirror(fetcher, now), MIRROR_BREAKER)
+    registries = [FnsEgrulRegistry(fetcher, now)] + ([mirror] if USE_SECONDARY_REGISTRY else [])
+    return P.Providers(registries=registries,
                        discovery=RegistryWebsiteDiscovery(), verifier=HttpWebsiteVerifier(fetcher, now),
                        extractor=HtmlContactExtractor(), roles=SiteAndOkvedRoleEvidence()), fetcher.close
 

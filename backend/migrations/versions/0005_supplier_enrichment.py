@@ -106,7 +106,7 @@ def upgrade() -> None:
             inn           {INN},
             run_started_at timestamptz NOT NULL,
             source        text NOT NULL,
-            outcome       text NOT NULL CHECK (outcome IN ('OK', 'NOT_FOUND', 'UNAVAILABLE', 'REJECTED', 'SKIPPED')),
+            outcome       text NOT NULL CHECK (outcome IN ('OK', 'NOT_FOUND', 'UNAVAILABLE', 'RATE_LIMITED', 'REJECTED', 'SKIPPED')),
             detail        text,
             duration_ms   integer NOT NULL DEFAULT 0
         );

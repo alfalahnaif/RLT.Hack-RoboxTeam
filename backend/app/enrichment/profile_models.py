@@ -64,12 +64,27 @@ class SourceOutcome(str, Enum):
     OK = "OK"
     NOT_FOUND = "NOT_FOUND"
     UNAVAILABLE = "UNAVAILABLE"
+    RATE_LIMITED = "RATE_LIMITED"   # HTTP 429 / 503 still refused after the single bounded backoff
     REJECTED = "REJECTED"
     SKIPPED = "SKIPPED"
 
 
 class SourceUnavailable(RuntimeError):
     """A source could not be queried (network, HTTP error, captcha, timeout) — retryable."""
+
+
+class SourceRateLimited(SourceUnavailable):
+    """The source refuses because of request volume (HTTP 429 / 503) — retryable, and a signal for the circuit breaker."""
+
+
+class SourceSkipped(SourceUnavailable):
+    """The source was deliberately not called (e.g. its circuit breaker is open after repeated rate limiting)."""
+
+
+def outcome_of(err: SourceUnavailable) -> "SourceOutcome":
+    if isinstance(err, SourceSkipped):
+        return SourceOutcome.SKIPPED
+    return SourceOutcome.RATE_LIMITED if isinstance(err, SourceRateLimited) else SourceOutcome.UNAVAILABLE
 
 
 @dataclass(frozen=True)
@@ -94,6 +109,7 @@ class RegistryIdentity:
     registered_address: Sourced | None = None
     primary_okved: Sourced | None = None  # "10.51.9 Производство прочей молочной продукции"
     website_hints: tuple[Sourced, ...] = ()  # website claimed by a registry mirror — a candidate, never official by itself
+    sub_attempts: tuple = ()                 # SourceAttempt of sub-steps (e.g. the official EGRUL extract) for the attempt log
 
 
 @dataclass(frozen=True)

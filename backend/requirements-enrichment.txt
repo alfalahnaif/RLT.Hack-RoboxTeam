@@ -1,0 +1,2 @@
+# P5-001A.1 enrichment: text of the official EGRUL/EGRIP extract (PDF) — registered address + primary OKVED
+pypdf==5.1.0

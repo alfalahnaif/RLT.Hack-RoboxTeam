@@ -87,13 +87,18 @@ def run_batch(conn: Connection, inns: list[str], enrich_one: Callable[[str], obj
 
 def metrics(conn: Connection, inns: list[str]) -> dict:
     rows = conn.execute("""SELECT inn, enrichment_status, legal_name IS NOT NULL, official_website IS NOT NULL, duration_ms,
-                                  status_reasons, website_confidence, entity_kind
+                                  status_reasons, website_confidence, entity_kind, identity_source_type
                            FROM supplier_enrichment_profile WHERE inn = ANY(%s)""", (inns,)).fetchall()
     by = {r[0]: r for r in rows}
     ctypes = {(i, t) for i, t in conn.execute("SELECT DISTINCT inn, contact_type FROM supplier_contact WHERE inn = ANY(%s)",
                                               (inns,)).fetchall()}
+    egrul_address = {i for (i,) in conn.execute("""SELECT DISTINCT inn FROM supplier_contact WHERE inn = ANY(%s)
+                                                   AND contact_type = 'ADDRESS' AND source_type = 'FNS_EGRUL'""", (inns,)).fetchall()}
+    egrul_okved = {i for (i,) in conn.execute("""SELECT DISTINCT inn FROM supplier_enrichment_evidence WHERE inn = ANY(%s)
+                                                 AND evidence_type = 'OKVED_PRIMARY' AND source_type = 'FNS_EGRUL'""",
+                                              (inns,)).fetchall()}
     roles = {i for (i,) in conn.execute("SELECT DISTINCT inn FROM supplier_role_evidence WHERE inn = ANY(%s)", (inns,)).fetchall()}
-    attempts = conn.execute("""SELECT a.source, a.outcome, count(*) FROM supplier_enrichment_attempt a
+    attempts = conn.execute("""SELECT a.source, a.outcome, count(DISTINCT a.inn) FROM supplier_enrichment_attempt a
                                JOIN (SELECT DISTINCT ON (inn) run_id FROM supplier_enrichment_attempt WHERE inn = ANY(%s)
                                      ORDER BY inn, seq DESC) l ON l.run_id = a.run_id
                                GROUP BY 1, 2 ORDER BY 1, 2""", (inns,)).fetchall()
@@ -110,6 +115,9 @@ def metrics(conn: Connection, inns: list[str]) -> dict:
         "suppliers_attempted": n,
         "status_counts": dict(sorted(status.items())),
         "coverage": {
+            "egrul_legal_identity": cov(lambda i: i in by and by[i][2] and by[i][8] == "FNS_EGRUL"),
+            "egrul_address": cov(lambda i: i in egrul_address),
+            "egrul_okved": cov(lambda i: i in egrul_okved),
             "legal_name": cov(lambda i: i in by and by[i][2]),
             "official_website": cov(lambda i: i in by and by[i][3]),
             "phone": cov(lambda i: (i, "PHONE") in ctypes),
@@ -123,7 +131,8 @@ def metrics(conn: Connection, inns: list[str]) -> dict:
         "p90_enrichment_ms": int(sorted(durs)[int(0.9 * (len(durs) - 1))]) if durs else None,
         "status_reason_counts": dict(sorted(reasons.items(), key=lambda kv: (-kv[1], kv[0]))),
         "source_outcomes_last_run": [{"source": s, "outcome": o, "count": c} for s, o, c in attempts],
-        "source_failure_counts": {s: c for s, o, c in attempts if o == "UNAVAILABLE"},
+        "source_failure_counts": {s: c for s, o, c in attempts if o in ("UNAVAILABLE", "RATE_LIMITED")},
+        "secondary_provider_availability": {o: c for s, o, c in attempts if s == "CHECKO_REGISTRY_MIRROR"},
         "computed_at": datetime.now().astimezone().isoformat(timespec="seconds"),
     }
 
@@ -137,7 +146,9 @@ def render_md(doc: dict) -> str:
              f"metrics computed {m['computed_at']}. Bounded pilot on real supplier INNs from the organizer data; HOLDOUT-labelled "
              "suppliers excluded; ranking, S3, verification decisions and embeddings untouched.", "",
              "## Architecture", "",
-             "INN → legal identity (`CompanyRegistryProvider`) → candidate website (`WebsiteDiscoveryProvider`) → website identity "
+             "INN → official EGRUL legal identity + extract (`FnsEgrulRegistry`: identity, status, OGRN/KPP, registered address, "
+             "primary OKVED) → optional secondary registry (`CheckoRegistryMirror` behind a per-batch circuit breaker: corroboration, "
+             "website hint; never required) → candidate website (`WebsiteDiscoveryProvider`) → website identity "
              "verification (`WebsiteVerifier`) → first-party contacts (`ContactExtractor`) → role evidence (`RoleEvidenceProvider`) → "
              "freshness (`app/enrichment/freshness.py`) → persistence (migration 0005: `supplier_enrichment_profile`, "
              "`supplier_contact`, `supplier_enrichment_evidence`, `supplier_role_evidence`, `supplier_enrichment_attempt`). "
@@ -145,10 +156,13 @@ def render_md(doc: dict) -> str:
              "(read-only, never live) and `POST /api/v1/suppliers/{inn}/enrich[?refresh=true]` (cache-first, bounded, synchronous).",
              "", "## Provider sources actually used", "",
              "| Provider | Source | Used for | Not used for |", "|---|---|---|---|",
-             "| FNS_EGRUL | egrul.nalog.ru (official FNS search) | legal name, short name, OGRN, KPP, region, registration date, "
-             "active/ceased | director names (ignored) |",
-             "| CHECKO_REGISTRY_MIRROR | checko.ru (FNS-derived registry mirror; accepted in P4-005C) | registered address, primary "
-             "OKVED, website hint; only when INN + OGRN match | its phones / e-mails (aggregated, possibly personal / stale) |",
+             "| FNS_EGRUL (primary, required) | egrul.nalog.ru official search | legal name, short name, OGRN, KPP, region, "
+             "registration date, active/ceased | director names (ignored) |",
+             "| FNS_EGRUL_EXTRACT (sub-step) | official EGRUL/EGRIP extract (PDF) from egrul.nalog.ru | registered address (legal "
+             "entities only), primary OKVED; only when the extract's INN matches | anything personal |",
+             "| CHECKO_REGISTRY_MIRROR (optional) | checko.ru (FNS-derived registry mirror) | website hint; fills address / OKVED gaps "
+             "only when the official extract failed and INN + OGRN match | its phones / e-mails; never required — rate limiting "
+             "opens a circuit breaker for the rest of the batch |",
              "| FIRST_PARTY_WEBSITE | the company's own site (≤ 6 same-host pages) | identity verification, general phone / e-mail, "
              "content currency, first-party role claims | anything when identity is not confirmed |", "",
              "Official website = INN or OGRN published on the site, or exact legal name + registered street address (street + house "
@@ -169,7 +183,14 @@ def render_md(doc: dict) -> str:
     lines += [f"| {k} | {v} |" for k, v in m["status_reason_counts"].items()]
     lines += ["", "## Source outcomes (last run per supplier)", "", "| Source | Outcome | Count |", "|---|---|---:|"]
     lines += [f"| {r['source']} | {r['outcome']} | {r['count']} |" for r in m["source_outcomes_last_run"]]
-    lines += ["", f"Source failure counts (UNAVAILABLE): {m['source_failure_counts'] or 'none'}", ""]
+    lines += ["", f"Source failure counts (UNAVAILABLE / RATE_LIMITED): {m['source_failure_counts'] or 'none'}", ""]
+    circ = doc.get("secondary_provider_circuit")
+    lines += ["## Secondary provider availability (checko.ru — optional, not an enrichment failure)", "",
+              f"- Outcomes (suppliers): {m.get('secondary_provider_availability') or 'not called'}"]
+    if circ:
+        lines.append(f"- Circuit breaker: threshold {circ['threshold']} consecutive rate-limited answers; opened: "
+                     f"{'yes' if circ['opened'] else 'no'}; calls skipped while open: {circ['calls_skipped']}")
+    lines.append("")
     for status in ("COMPLETE", "PARTIAL", "FAILED"):
         ex = [p for p in doc["profiles"] if p["enrichment"]["status"] == status][:2]
         if not ex:

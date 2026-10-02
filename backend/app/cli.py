@@ -253,17 +253,24 @@ def _cmd_enrichment(args) -> int:
     """P5-001A bounded batch enrichment (never the whole supplier universe: --limit is capped at 500)."""
     from app.api import supplier_profile as SP
     from app.enrichment import batch as B
-    out = repo_root() / "reports" / PILOT_FILE
+    out = repo_root() / "reports" / args.out
     with psycopg.connect(database_url()) as conn:
         if args.action == "run":
             limit = min(args.limit, 500)
             inns, dropped = B.select_inns(conn, limit, args.inn or [], args.okpd2_prefix or [], args.per_prefix)
             print(f"[enrich] selected {len(inns)} suppliers ({dropped} holdout suppliers skipped)", file=sys.stderr, flush=True)
+            SP.USE_SECONDARY_REGISTRY = not args.no_secondary
+            breaker = SP.MIRROR_BREAKER
+            breaker.reset()
+            breaker.cooldown_s = None       # batch: once checko.ru is rate-limiting, it stays off for the rest of this batch
             runs = B.run_batch(conn, inns, lambda inn: SP.enrich_supplier(conn, inn, refresh=args.refresh),
                                log=lambda m: print(f"[enrich] {m}", file=sys.stderr, flush=True))
             doc = {"task": "P5-001A", "selection": {"limit": limit, "explicit_inns": args.inn or [],
                                                      "okpd2_prefixes": args.okpd2_prefix or [], "per_prefix": args.per_prefix,
-                                                     "holdout_suppliers_skipped": dropped, "refresh": args.refresh},
+                                                     "holdout_suppliers_skipped": dropped, "refresh": args.refresh,
+                                                     "secondary_registry": not args.no_secondary},
+                   "secondary_provider_circuit": {"provider": "CHECKO_REGISTRY_MIRROR", "threshold": breaker.threshold,
+                                                  "opened": breaker.opened_at is not None, "calls_skipped": breaker.skipped},
                    "inns": inns, "runs": runs}
         else:
             doc = json.loads(out.read_text(encoding="utf-8"))
@@ -321,6 +328,8 @@ def main(argv=None) -> int:
     en.add_argument("--per-prefix", type=int, default=10)
     en.add_argument("--limit", type=int, default=100, help="maximum suppliers in this run (hard cap 500)")
     en.add_argument("--refresh", action="store_true", help="re-query sources even when a fresh stored profile exists")
+    en.add_argument("--no-secondary", action="store_true", help="official EGRUL only: do not call the optional checko.ru mirror")
+    en.add_argument("--out", default=PILOT_FILE, help="report file name under reports/ (JSON; the .md is written next to it)")
     en.set_defaults(func=_cmd_enrichment)
     args = ap.parse_args(argv)
     return args.func(args)

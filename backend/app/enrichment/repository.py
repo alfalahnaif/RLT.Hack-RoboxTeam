@@ -62,84 +62,129 @@ def save_attempts(conn: Connection, res: EnrichmentResult) -> None:
                          for a in res.attempts])
 
 
-def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_keys: set[tuple[str, str]] = frozenset(),
-         historical: bool = True) -> str:
-    """Persist one run. A FAILED refresh never overwrites a previously usable profile, and neither does a refresh degraded by a
-    source outage (retryable) that found fewer contacts than are stored: only the attempt log and a reason are added.
-    Contacts already present in the accepted P4-005C record (same type + normalized value) are not duplicated.
-    Returns the stored enrichment_status."""
-    existing = get_profile(conn, res.inn)
-    save_attempts(conn, res)
-    usable = existing is not None and existing["enrichment_status"] in ("COMPLETE", "PARTIAL")
-    keep = None
-    if usable and res.status == EnrichmentStatus.FAILED:
-        keep = "LAST_REFRESH_FAILED"
-    elif usable and res.retryable:
-        stored = conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (res.inn,)).fetchone()[0]
-        if len({(c.type.value, c.normalized) for c in res.contacts} - set(skip_contact_keys)) < stored:
-            keep = "LAST_REFRESH_DEGRADED"
-    if keep:
-        conn.execute("UPDATE supplier_enrichment_profile SET status_reasons = %s, updated_at = %s WHERE inn = %s",
-                     (sorted(set(existing["status_reasons"]) | {keep} | set(res.reasons)), now, res.inn))
-        conn.commit()
-        return existing["enrichment_status"]
+IDENTITY_COLUMNS = ("entity_kind", "legal_name", "short_name", "ogrn", "kpp", "legal_status", "registration_date",
+                    "registered_address", "primary_okved", "region", "identity_source_url", "identity_source_type",
+                    "identity_checked_at")
+WEBSITE_COLUMNS = ("official_website", "website_confidence", "website_candidate", "website_checked_at", "content_currency")
+_WEBSITE_GAP_REASONS = {"NO_WEBSITE_CANDIDATE", "WEBSITE_UNAVAILABLE", "NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE"}
+FIRST_PARTY = "FIRST_PARTY"
+
+
+def _profile_values(res: EnrichmentResult, historical: bool) -> dict:
     i, w = res.identity, res.website
 
     def v(x):
         return x.value if x else None
 
     ln = i.legal_name if i else None
-    conn.execute("""
-        INSERT INTO supplier_enrichment_profile (inn, supplier_id, entity_kind, legal_name, short_name, ogrn, kpp, legal_status,
-            registration_date, registered_address, primary_okved, region, identity_source_url, identity_source_type,
-            identity_checked_at, official_website, website_confidence, website_candidate, website_checked_at, content_currency,
-            enrichment_status, status_reasons, retryable, pipeline_version, duration_ms, last_enriched_at, created_at, updated_at)
-        VALUES (%(inn)s, %(sid)s, %(kind)s, %(ln)s, %(sn)s, %(ogrn)s, %(kpp)s, %(ls)s, %(rd)s, %(addr)s, %(okved)s, %(region)s,
-            %(isrc)s, %(itype)s, %(ichk)s, %(site)s, %(wconf)s, %(wcand)s, %(wchk)s, %(cur)s, %(st)s, %(reasons)s, %(retry)s,
-            %(pv)s, %(dur)s, %(last)s, %(now)s, %(now)s)
-        ON CONFLICT (inn) DO UPDATE SET supplier_id = EXCLUDED.supplier_id, entity_kind = EXCLUDED.entity_kind,
-            legal_name = EXCLUDED.legal_name, short_name = EXCLUDED.short_name, ogrn = EXCLUDED.ogrn, kpp = EXCLUDED.kpp,
-            legal_status = EXCLUDED.legal_status, registration_date = EXCLUDED.registration_date,
-            registered_address = EXCLUDED.registered_address, primary_okved = EXCLUDED.primary_okved, region = EXCLUDED.region,
-            identity_source_url = EXCLUDED.identity_source_url, identity_source_type = EXCLUDED.identity_source_type,
-            identity_checked_at = EXCLUDED.identity_checked_at, official_website = EXCLUDED.official_website,
-            website_confidence = EXCLUDED.website_confidence, website_candidate = EXCLUDED.website_candidate,
-            website_checked_at = EXCLUDED.website_checked_at, content_currency = EXCLUDED.content_currency,
-            enrichment_status = EXCLUDED.enrichment_status, status_reasons = EXCLUDED.status_reasons,
-            retryable = EXCLUDED.retryable, pipeline_version = EXCLUDED.pipeline_version, duration_ms = EXCLUDED.duration_ms,
-            last_enriched_at = EXCLUDED.last_enriched_at, updated_at = EXCLUDED.updated_at""",
-                 {"inn": res.inn, "sid": supplier_uuid(res.inn) if historical else None, "kind": i.entity_kind if i else None,
-                  "ln": v(ln), "sn": v(i.short_name) if i else None, "ogrn": v(i.ogrn) if i else None,
-                  "kpp": v(i.kpp) if i else None, "ls": v(i.legal_status) if i else None,
-                  "rd": i.registration_date if i else None, "addr": v(i.registered_address) if i else None,
-                  "okved": v(i.primary_okved) if i else None, "region": v(i.region) if i else None,
-                  "isrc": ln.source_url if ln else None, "itype": ln.source_type.value if ln else None,
-                  "ichk": ln.checked_at if ln else None, "site": w.official_url if w else None,
-                  "wconf": w.confidence.value if w else "NONE", "wcand": w.candidate_url if w else None,
-                  "wchk": w.checked_at if w else None, "cur": res.content_currency, "st": res.status.value,
-                  "reasons": sorted(set(res.reasons)), "retry": res.retryable, "pv": PIPELINE_VERSION, "dur": res.duration_ms,
-                  "last": res.finished_at if res.status != EnrichmentStatus.FAILED else None, "now": now})
-    for table in ("supplier_contact", "supplier_enrichment_evidence", "supplier_role_evidence"):
-        conn.execute(f"DELETE FROM {table} WHERE inn = %s", (res.inn,))   # one snapshot per INN; refresh replaces it
+    return {"entity_kind": i.entity_kind if i else None, "legal_name": v(ln), "short_name": v(i.short_name) if i else None,
+            "ogrn": v(i.ogrn) if i else None, "kpp": v(i.kpp) if i else None, "legal_status": v(i.legal_status) if i else None,
+            "registration_date": i.registration_date if i else None, "registered_address": v(i.registered_address) if i else None,
+            "primary_okved": v(i.primary_okved) if i else None, "region": v(i.region) if i else None,
+            "identity_source_url": ln.source_url if ln else None, "identity_source_type": ln.source_type.value if ln else None,
+            "identity_checked_at": ln.checked_at if ln else None,
+            "official_website": w.official_url if w else None, "website_confidence": w.confidence.value if w else "NONE",
+            "website_candidate": w.candidate_url if w else None, "website_checked_at": w.checked_at if w else None,
+            "content_currency": res.content_currency, "supplier_id": supplier_uuid(res.inn) if historical else None}
+
+
+def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_keys: set[tuple[str, str]] = frozenset(),
+         historical: bool = True) -> str:
+    """Persist one run with weak-refresh protection: a refresh never lowers the stored verified information.
+
+    - FAILED refresh over a usable profile: nothing but the attempt log and a LAST_REFRESH_FAILED reason is written.
+    - Legal identity: a new non-empty value updates the field; an empty one never erases a stored value.
+    - Official website + every first-party row (contacts, evidence, roles): kept when this run did not check a website
+      (mirror outage, site unreachable, no candidate); replaced when it did (a re-check that no longer confirms the site is
+      genuinely newer evidence).
+    - Registry rows (address contact, OKVED evidence / role): replaced per kind only when this run produced that kind.
+    Anything kept is reported as LAST_REFRESH_DEGRADED. Status is recomputed from the merged snapshot.
+    Contacts already present in the accepted P4-005C record (same type + normalized value) are not duplicated.
+    Returns the stored enrichment_status."""
+    existing = get_profile(conn, res.inn)
+    save_attempts(conn, res)
+    usable = existing is not None and existing["enrichment_status"] in ("COMPLETE", "PARTIAL")
+    if res.status == EnrichmentStatus.FAILED and usable:
+        conn.execute("UPDATE supplier_enrichment_profile SET status_reasons = %s, updated_at = %s WHERE inn = %s",
+                     (sorted(set(existing["status_reasons"]) | {"LAST_REFRESH_FAILED"} | set(res.reasons)), now, res.inn))
+        conn.commit()
+        return existing["enrichment_status"]
+
+    vals = _profile_values(res, historical)
+    reasons, degraded = set(res.reasons), False
+    old = children(conn, res.inn) if usable else {"contacts": [], "evidence": [], "roles": []}
+    if usable:
+        for col in IDENTITY_COLUMNS:
+            if vals[col] is None and existing[col] is not None:
+                vals[col], degraded = existing[col], True
+    keep_site = bool(usable and existing["official_website"] and res.website is None)
+    if keep_site:
+        vals.update({col: existing[col] for col in WEBSITE_COLUMNS})
+        reasons = (reasons - _WEBSITE_GAP_REASONS) | {"WEBSITE_KEPT_FROM_PREVIOUS_RUN"}
+        degraded = True
+
+    contacts, seen = [], set()
+    for c in res.contacts:
+        key = (c.type.value, c.normalized)
+        if key in skip_contact_keys or key in seen:
+            continue
+        seen.add(key)
+        contacts.append(c)
+    new_registry_contact_types = {c.type.value for c in contacts if c.source_type.value != FIRST_PARTY}
+    new_registry_evidence_types = {e.evidence_type for e in res.evidence if e.source_type.value != FIRST_PARTY}
+    has_okved = vals["primary_okved"] is not None and res.identity is not None and res.identity.primary_okved is not None
+
+    def kept(row: dict, kind: str) -> bool:
+        if row["source_type"] == FIRST_PARTY:
+            return keep_site
+        if kind == "contacts":
+            return row["contact_type"] not in new_registry_contact_types
+        if kind == "evidence":
+            return row["evidence_type"] not in new_registry_evidence_types
+        return row["basis"] == "OKVED_PRIMARY" and not has_okved          # roles
+
+    keep_ids = {kind: [r["id"] for r in rows if kept(r, kind)] for kind, rows in old.items()}
+    if any(keep_ids.values()):
+        degraded = True
+    for kind, table in (("contacts", "supplier_contact"), ("evidence", "supplier_enrichment_evidence"),
+                        ("roles", "supplier_role_evidence")):
+        conn.execute(f"DELETE FROM {table} WHERE inn = %s AND NOT (id = ANY(%s))", (res.inn, keep_ids[kind]))
     with conn.cursor() as cur:
-        rows, seen = [], set()
-        for c in res.contacts:
-            key = (c.type.value, c.normalized)
-            if key in skip_contact_keys or key in seen:
-                continue
-            seen.add(key)
-            rows.append((_id("contact", res.inn, *key), res.inn, c.type.value, c.value, c.normalized, c.label, c.source_url,
-                         c.source_type.value, c.checked_at, c.content_currency, c.verified))
         cur.executemany("""INSERT INTO supplier_contact (id, inn, contact_type, value, normalized_value, label, source_url, source_type,
-                               checked_at, content_currency, verified) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", rows)
+                               checked_at, content_currency, verified) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                           ON CONFLICT DO NOTHING""",
+                        [(_id("contact", res.inn, c.type.value, c.normalized), res.inn, c.type.value, c.value, c.normalized, c.label,
+                          c.source_url, c.source_type.value, c.checked_at, c.content_currency, c.verified) for c in contacts])
         cur.executemany("""INSERT INTO supplier_enrichment_evidence (id, inn, evidence_type, claim, value, source_url, source_type,
-                               checked_at, valid_until, strength) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                               checked_at, valid_until, strength) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                           ON CONFLICT DO NOTHING""",
                         [(_id("evidence", res.inn, str(k), e.evidence_type, e.claim), res.inn, e.evidence_type, e.claim, e.value,
                           e.source_url, e.source_type.value, e.checked_at, e.valid_until, e.strength.value)
                          for k, e in enumerate(res.evidence)])
         cur.executemany("""INSERT INTO supplier_role_evidence (id, inn, role, status, basis, claim, source_url, source_type,
-                               checked_at, strength) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                               checked_at, strength) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                           ON CONFLICT DO NOTHING""",
                         [(_id("role", res.inn, str(k), r.role.value, r.basis), res.inn, r.role.value, r.status.value, r.basis,
                           r.claim, r.source_url, r.source_type, r.checked_at, r.strength.value) for k, r in enumerate(res.roles)])
+
+    status = res.status.value
+    if res.status != EnrichmentStatus.FAILED:
+        # reach counts this run's contacts (incl. those not stored because the curated record already has them) + kept ones
+        kept_ids = set(keep_ids["contacts"])
+        reach = any(c.type.value in ("PHONE", "EMAIL") for c in res.contacts) or any(
+            r["contact_type"] in ("PHONE", "EMAIL") for r in old["contacts"] if r["id"] in kept_ids)
+        status = "COMPLETE" if vals["official_website"] and reach else "PARTIAL"
+        if vals["official_website"] and not reach:
+            reasons.add("NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE")
+    if degraded:
+        reasons.add("LAST_REFRESH_DEGRADED")
+    vals.update({"inn": res.inn, "enrichment_status": status, "status_reasons": sorted(reasons), "retryable": res.retryable,
+                 "pipeline_version": PIPELINE_VERSION, "duration_ms": res.duration_ms,
+                 "last_enriched_at": res.finished_at if res.status != EnrichmentStatus.FAILED else None,
+                 "created_at": now, "updated_at": now})
+    cols = list(vals)
+    conn.execute(f"""INSERT INTO supplier_enrichment_profile ({", ".join(cols)}) VALUES ({", ".join(f"%({c})s" for c in cols)})
+                     ON CONFLICT (inn) DO UPDATE SET {", ".join(f"{c} = EXCLUDED.{c}" for c in cols if c not in ("inn", "created_at"))}""",
+                 vals)
     conn.commit()
-    return res.status.value
+    return status

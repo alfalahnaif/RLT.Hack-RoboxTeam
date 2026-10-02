@@ -4,6 +4,7 @@ and that the accepted P4-005C contacts / P3-002B decisions are reused unchanged 
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import replace
 from datetime import date, timedelta
 
 import psycopg
@@ -144,6 +145,38 @@ def test_degraded_refresh_keeps_richer_snapshot(db):
         assert prof.enrichment.official_website == "https://moloko-test.ru/"
         assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 5
         assert any(a.outcome == "UNAVAILABLE" for a in prof.last_run_attempts)
+
+
+def test_refresh_without_address_and_okved_keeps_stored_registry_fields(db):
+    """Official extract failed on refresh (no address / OKVED): stored identity fields and their evidence are kept, the newer
+    values that did arrive are applied, and the stored official site is replaced by the re-verified one."""
+    with psycopg.connect(db) as conn:
+        SP.enrich_supplier(conn, HIST, Clock(), refresh=True, factory=factory(identity(HIST), site_pages(HIST)))
+        thin = replace(identity(HIST), registered_address=None, primary_okved=None,
+                       short_name=replace(identity(HIST).short_name, value='ООО "ТМЗ-НОВОЕ"'))
+        prof = SP.enrich_supplier(conn, HIST, Clock(), refresh=True, factory=factory(thin, site_pages(HIST)))
+        row = conn.execute("SELECT registered_address, primary_okved, short_name FROM supplier_enrichment_profile WHERE inn = %s",
+                           (HIST,)).fetchone()
+        assert row[0] and row[1] and row[2] == 'ООО "ТМЗ-НОВОЕ"'                     # kept, kept, updated
+        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s AND contact_type = 'ADDRESS'",
+                            (HIST,)).fetchone()[0] == 1
+        assert conn.execute("SELECT count(*) FROM supplier_role_evidence WHERE inn = %s AND basis = 'OKVED_PRIMARY'",
+                            (HIST,)).fetchone()[0] == 1
+    assert prof.enrichment.status == "COMPLETE" and "LAST_REFRESH_DEGRADED" in prof.enrichment.reasons
+    assert "WEBSITE_KEPT_FROM_PREVIOUS_RUN" not in prof.enrichment.reasons
+
+
+def test_rechecked_site_that_no_longer_verifies_replaces_the_stored_one(db):
+    """Genuinely newer evidence wins: the site was re-checked and no longer carries this company's requisites."""
+    with psycopg.connect(db) as conn:
+        SP.enrich_supplier(conn, HIST, Clock(), refresh=True, factory=factory(identity(HIST), site_pages(HIST)))
+        prof = SP.enrich_supplier(conn, HIST, Clock(), refresh=True,
+                                  factory=factory(identity(HIST), site_pages("7709999999", "1027709999999")))
+        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s AND source_type = 'FIRST_PARTY'",
+                            (HIST,)).fetchone()[0] == 0
+    assert prof.enrichment.status == "PARTIAL" and prof.enrichment.official_website is None
+    assert "LAST_REFRESH_DEGRADED" not in prof.enrichment.reasons
+
 
 def test_legal_identity_only_partial_and_missing_contacts_stay_absent(db):
     with psycopg.connect(db) as conn:

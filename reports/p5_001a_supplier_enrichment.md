@@ -111,3 +111,5 @@ Source failure counts (UNAVAILABLE): {'CHECKO_REGISTRY_MIRROR': 12, 'FIRST_PARTY
   for this mirror, or registered address / OKVED must come from an official FNS source (for example the EGRUL extract) instead. This is
   not implemented.
 - **Not yet done:** re-run of the pilot after the checko block lifts (same 30 INNs, deterministic selection, `--refresh`).
+- **Superseded by P5-001A.1** (`p5_001a1_pilot.md`, `p5_001a1_egrul_only_sample.md`): official EGRUL extract is the primary source of
+  address / OKVED; checko.ru is optional behind a circuit breaker; field-level weak-refresh protection.

@@ -25,14 +25,16 @@ import html as htmlmod
 import json
 import re
 import time
+from dataclasses import replace
 from datetime import date, datetime
 from typing import Callable, Protocol
 from urllib.parse import urljoin, urlsplit
 
 from app.enrichment import freshness as F
-from app.enrichment.profile_models import (ContactType, ContactValue, Page, RegistryIdentity, Role, RoleEvidenceItem,
-                                           RoleStatus, SourceType, SourceUnavailable, Sourced, Strength,
-                                           WebsiteCandidate, WebsiteConfidence, WebsiteVerification)
+from app.enrichment.profile_models import (ContactType, ContactValue, Page, RegistryIdentity, Role, RoleEvidenceItem, RoleStatus,
+                                           SourceAttempt, SourceOutcome, SourceRateLimited, SourceSkipped, SourceType,
+                                           SourceUnavailable, Sourced, Strength, WebsiteCandidate, WebsiteConfidence,
+                                           WebsiteVerification, outcome_of)
 
 USER_AGENT = "SupplierRadar-Enrichment/0.1 (RLT.Hack 2026 research prototype; public business data only)"
 MAX_BYTES = 1_500_000
@@ -110,7 +112,17 @@ class HttpFetcher:
         return wait if wait <= self.max_backoff else None
 
     def request(self, method: str, url: str, data: dict | None = None) -> tuple[str, str]:
-        """(final_url, decoded text). Raises SourceUnavailable on any transport / HTTP error."""
+        """(final_url, decoded text). Raises SourceUnavailable on any transport / HTTP error (SourceRateLimited on 429/503)."""
+        resp = self._send(method, url, data)
+        return str(resp.url), decode(resp.content[:MAX_BYTES], resp.headers.get("content-type", ""))
+
+    def get_bytes(self, url: str) -> bytes:
+        resp = self._send("GET", url, None)
+        if len(resp.content) > MAX_BYTES:
+            raise SourceUnavailable(f"response larger than {MAX_BYTES} bytes")
+        return resp.content
+
+    def _send(self, method: str, url: str, data: dict | None):
         self._wait(url)
         try:
             try:
@@ -131,7 +143,7 @@ class HttpFetcher:
         if resp.status_code in self.RATE_LIMITED:
             wait = self._backoff(resp)
             if wait is None:
-                raise SourceUnavailable(f"HTTP {resp.status_code} (Retry-After too long)")
+                raise SourceRateLimited(f"HTTP {resp.status_code} (Retry-After too long)")
             self._sleep(wait)
             self._last[urlsplit(url).hostname or ""] = self._clock()
             try:
@@ -139,10 +151,10 @@ class HttpFetcher:
             except self._httpx.HTTPError as e:
                 raise SourceUnavailable(f"{type(e).__name__}: {e}"[:200]) from e
             if resp.status_code in self.RATE_LIMITED:
-                raise SourceUnavailable(f"HTTP {resp.status_code} after one backoff")
+                raise SourceRateLimited(f"HTTP {resp.status_code} after one backoff")
         if resp.status_code >= 400:
             raise SourceUnavailable(f"HTTP {resp.status_code}")
-        return str(resp.url), decode(resp.content[:MAX_BYTES], resp.headers.get("content-type", ""))
+        return resp
 
     def get(self, url: str) -> tuple[str, str]:
         return self.request("GET", url)
@@ -216,30 +228,171 @@ def parse_egrul_rows(payload: dict, inn: str, checked_at: datetime) -> RegistryI
         legal_status=s("CEASED" if r.get("e") else "ACTIVE"), region=s(r.get("rn")), registration_date=reg)
 
 
+# Official EGRUL / EGRIP extract (выписка, PDF) — the FNS source of the registered address and the primary OKVED.
+_EXTRACT_FOOTER = re.compile(r"^(?:Страница \d+ из.*|Выписка из ЕГР(?:ЮЛ|ИП)|\d{2}\.\d{2}\.\d{4} \d{2}:\d{2} ОГРН(?:ИП)? \d+)\s*$")
+# Identity of the extract: the spaced-digit header (ИНН 7 8 0 4 …, ОГРН 1 0 2 7 …) or the "ИНН юридического лица" row.
+# Other "ИНН" rows belong to people (director, founders) and are never read.
+_EXTRACT_HEADER_INN = re.compile(r"^ИНН\s+((?:\d\s+){9,11}\d)\s*$", re.M)
+_EXTRACT_HEADER_OGRN = re.compile(r"^ОГРН(?:ИП)?\s+((?:\d\s+){12,14}\d)\s*$", re.M)
+_EXTRACT_ROW_INN = re.compile(r"ИНН юридического лица\s+(\d{10})")
+_EXTRACT_ADDRESS = re.compile(r"(?:^|\n)\d+\s+Адрес(?: \(место нахождения\))? юридического лица\s+(.*?)\n\d+\s+ГРН", re.S)
+_EXTRACT_OKVED = re.compile(r"Сведения об основном виде деятельности.*?Код и наименование вида деятельности\s+"
+                            r"(\d{2}(?:\.\d{1,2}){0,3})\s+(.*?)\n\d+\s+ГРН", re.S)
+
+
+class ExtractMismatch(ValueError):
+    """The extract does not belong to the requested INN (never used)."""
+
+
+def _digits(m: re.Match | None) -> str | None:
+    return re.sub(r"\s", "", m.group(1)) if m else None
+
+
+def parse_egrul_extract(text: str, inn: str, checked_at: datetime,
+                        ogrn: str | None = None) -> tuple[Sourced | None, Sourced | None]:
+    """Pure parser of the official extract text: (registered address, primary OKVED "code name"). Page headers/footers are
+    removed first so a field split across pages stays whole. Raises ExtractMismatch unless the extract is this company's: its
+    INN (header or legal-entity row) equals the INN, or — when it carries no company INN — its header OGRN equals the OGRN of
+    the registry search row. Any contradicting INN / OGRN rejects it."""
+    body = "\n".join(ln.rstrip() for ln in text.splitlines() if not _EXTRACT_FOOTER.match(ln.strip()))
+    inns = {v for v in (_digits(_EXTRACT_HEADER_INN.search(body)), _digits(_EXTRACT_ROW_INN.search(body))) if v}
+    h_ogrn = _digits(_EXTRACT_HEADER_OGRN.search(body))
+    if inns - {inn} or (ogrn and h_ogrn and h_ogrn != ogrn):
+        raise ExtractMismatch("extract INN / OGRN contradicts the registry record")
+    if inn not in inns and not (ogrn and h_ogrn == ogrn):
+        raise ExtractMismatch("extract identity not confirmed (no matching INN or OGRN)")
+
+    def s(v):
+        return Sourced(v, EGRUL_PUBLIC_URL, SourceType.FNS_EGRUL, checked_at) if v else None
+
+    a = _EXTRACT_ADDRESS.search(body)
+    o = _EXTRACT_OKVED.search(body)
+    address = _WS.sub(" ", a.group(1)).strip().rstrip(",") if a else None
+    okved = f"{o.group(1)} {_WS.sub(' ', o.group(2)).strip()}" if o else None
+    return s(address), s(okved)
+
+
+def pdf_text(data: bytes) -> str:
+    try:
+        from pypdf import PdfReader
+    except ImportError as e:  # deployment without the enrichment extra: identity still works, extract fields stay empty
+        raise SourceUnavailable("pypdf is not installed (requirements-enrichment.txt)") from e
+    import io
+    try:
+        return "\n".join((page.extract_text() or "") for page in PdfReader(io.BytesIO(data)).pages)
+    except Exception as e:  # malformed / truncated PDF
+        raise SourceUnavailable(f"unreadable extract PDF: {type(e).__name__}") from e
+
+
 class FnsEgrulRegistry:
+    """egrul.nalog.ru: the search result (name, OGRN, KPP, status, registration date, region) plus the official extract
+    (registered address, primary OKVED). The extract is a sub-step: when it fails, identity is still returned and the failure
+    is recorded as a FNS_EGRUL_EXTRACT sub-attempt."""
     name = "FNS_EGRUL"
+    EXTRACT = "FNS_EGRUL_EXTRACT"
 
-    def __init__(self, fetcher: HttpFetcher, now: Callable[[], datetime], polls: int = 4) -> None:
-        self.fetcher, self.now, self.polls = fetcher, now, polls
+    def __init__(self, fetcher: HttpFetcher, now: Callable[[], datetime], polls: int = 4, extract_polls: int = 8,
+                 with_extract: bool = True) -> None:
+        self.fetcher, self.now, self.polls, self.extract_polls, self.with_extract = fetcher, now, polls, extract_polls, with_extract
 
-    def lookup_by_inn(self, inn: str) -> RegistryIdentity | None:
-        _, body = self.fetcher.post(EGRUL_URL, {"query": inn})
+    @staticmethod
+    def _json(body: str, what: str) -> dict:
         try:
-            token = json.loads(body)
+            return json.loads(body)
         except ValueError as e:
-            raise SourceUnavailable("EGRUL: non-JSON token response") from e
+            raise SourceUnavailable(f"EGRUL: non-JSON {what}") from e
+
+    def _search(self, inn: str) -> dict:
+        _, body = self.fetcher.post(EGRUL_URL, {"query": inn})
+        token = self._json(body, "token response")
         if token.get("captchaRequired") or not token.get("t"):
             raise SourceUnavailable("EGRUL: captcha required / no token")
         for _ in range(self.polls):
             _, body = self.fetcher.get(f"{EGRUL_URL}search-result/{token['t']}")
-            try:
-                payload = json.loads(body)
-            except ValueError as e:
-                raise SourceUnavailable("EGRUL: non-JSON result") from e
-            if payload.get("status") == "wait":
-                continue
-            return parse_egrul_rows(payload, inn, self.now())
+            payload = self._json(body, "result")
+            if payload.get("status") != "wait":
+                return payload
         raise SourceUnavailable("EGRUL: result not ready")
+
+    def _extract_text(self, row_token: str) -> str:
+        req = self._json(self.fetcher.get(f"{EGRUL_URL}vyp-request/{row_token}")[1], "extract request")
+        if req.get("captchaRequired"):
+            raise SourceUnavailable("EGRUL extract: captcha required")
+        for _ in range(self.extract_polls):
+            st = self._json(self.fetcher.get(f"{EGRUL_URL}vyp-status/{row_token}")[1], "extract status")
+            if st.get("status") == "ready":
+                return pdf_text(self.fetcher.get_bytes(f"{EGRUL_URL}vyp-download/{row_token}"))
+        raise SourceUnavailable("EGRUL extract: not ready")
+
+    def lookup_by_inn(self, inn: str) -> RegistryIdentity | None:
+        payload = self._search(inn)
+        ident = parse_egrul_rows(payload, inn, self.now())
+        if ident is None or not self.with_extract:
+            return ident
+        rows = sorted((r for r in payload.get("rows", []) if r.get("i") == inn), key=lambda r: (bool(r.get("e")), r.get("o", "")))
+        token = rows[0].get("t") if rows else None
+        if not token:
+            return replace(ident, sub_attempts=(SourceAttempt(self.EXTRACT, SourceOutcome.NOT_FOUND, "no extract token"),))
+        t0 = time.perf_counter()
+        try:
+            address, okved = parse_egrul_extract(self._extract_text(token), inn, self.now(),
+                                                 ident.ogrn.value if ident.ogrn else None)
+        except (ExtractMismatch, SourceUnavailable) as e:
+            outcome = SourceOutcome.REJECTED if isinstance(e, ExtractMismatch) else outcome_of(e)
+            return replace(ident, sub_attempts=(SourceAttempt(self.EXTRACT, outcome, str(e)[:200],
+                                                              int((time.perf_counter() - t0) * 1000)),))
+        if ident.entity_kind != "LEGAL_ENTITY":
+            address = None     # an entrepreneur's residence address is personal data and is not published anyway
+        found = [k for k, v in (("address", address), ("okved", okved)) if v]
+        return replace(ident, registered_address=address, primary_okved=okved,
+                       sub_attempts=(SourceAttempt(self.EXTRACT, SourceOutcome.OK, "fields: " + (", ".join(found) or "none"),
+                                                   int((time.perf_counter() - t0) * 1000)),))
+
+
+# ------------------------------------------------------------------------------------------------------------ circuit breaker
+class CircuitBreaker:
+    """Per-process breaker for an optional provider: after `threshold` consecutive rate-limited answers the provider is not
+    called again until `cooldown_s` has passed (None = for the lifetime of the breaker, i.e. the rest of the batch)."""
+
+    def __init__(self, threshold: int = 2, cooldown_s: float | None = 900.0, clock: Callable[[], float] = time.monotonic) -> None:
+        self.threshold, self.cooldown_s, self._clock = threshold, cooldown_s, clock
+        self.reset()
+
+    def reset(self) -> None:
+        self.consecutive, self.opened_at, self.skipped = 0, None, 0
+
+    @property
+    def is_open(self) -> bool:
+        if self.opened_at is None:
+            return False
+        if self.cooldown_s is not None and self._clock() - self.opened_at >= self.cooldown_s:
+            self.consecutive, self.opened_at = 0, None     # half-open: the next call probes the source again
+            return False
+        return True
+
+    def record(self, rate_limited: bool) -> None:
+        self.consecutive = self.consecutive + 1 if rate_limited else 0
+        if self.consecutive >= self.threshold and self.opened_at is None:
+            self.opened_at = self._clock()
+
+
+class GuardedRegistry:
+    """Wraps an optional registry provider with a CircuitBreaker (same name, so attempts stay attributable)."""
+
+    def __init__(self, inner, breaker: CircuitBreaker) -> None:
+        self.inner, self.breaker, self.name = inner, breaker, inner.name
+
+    def lookup_by_inn(self, inn: str) -> RegistryIdentity | None:
+        if self.breaker.is_open:
+            self.breaker.skipped += 1
+            raise SourceSkipped(f"circuit open after {self.breaker.threshold} consecutive rate-limited responses")
+        try:
+            out = self.inner.lookup_by_inn(inn)
+        except SourceUnavailable as e:
+            self.breaker.record(isinstance(e, SourceRateLimited))
+            raise
+        self.breaker.record(False)
+        return out
 
 
 CHECKO_SEARCH = "https://checko.ru/search?query={inn}"

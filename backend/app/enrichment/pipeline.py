@@ -1,11 +1,14 @@
 """P5-001A identity-first enrichment of ONE supplier INN (pure orchestration over injected providers; no DB, no globals).
 
-INN -> legal identity -> candidate website -> website identity verification -> contacts -> role evidence -> freshness.
+INN -> official EGRUL (identity, status, OGRN/KPP, address, primary OKVED) -> optional secondary registries (corroboration,
+website hints) -> candidate website -> website identity verification -> contacts -> role evidence -> freshness.
 Contacts are never collected before the company identity is established and the site is proven to be the company's own.
 
 Status: identity + official website + phone or e-mail -> COMPLETE; identity with gaps -> PARTIAL;
-registry unreachable -> FAILED (retryable); INN unknown to the registry -> FAILED (not retryable);
-mirror or website unreachable -> PARTIAL with retryable=True (re-attempted after the retry delay, not kept for the TTL).
+official registry unreachable and no mirror answer -> FAILED (retryable); INN unknown to the registry -> FAILED (not retryable).
+A secondary registry (checko.ru) is OPTIONAL: its rate limiting / outage / open circuit never fails a supplier; it only adds a
+reason and makes the profile retryable (the website hint it would have given is missing). Same for an unreachable website or a
+failed official extract: PARTIAL, retryable=True (re-attempted after the retry delay, not kept for the TTL).
 """
 from __future__ import annotations
 
@@ -17,17 +20,17 @@ from typing import Callable
 from app.enrichment import freshness as F
 from app.enrichment.profile_models import (ContactType, EnrichmentResult, EnrichmentStatus, EvidenceItem, RegistryIdentity,
                                            SourceAttempt, SourceOutcome, SourceType, SourceUnavailable, Strength,
-                                           WebsiteConfidence, WebsiteVerification)
+                                           WebsiteConfidence, WebsiteVerification, outcome_of)
 from app.enrichment.providers import (CompanyRegistryProvider, ContactExtractor, RoleEvidenceProvider, WebsiteDiscoveryProvider,
                                       WebsiteVerifier, merge_identities, registry_contacts)
 
-PIPELINE_VERSION = "p5-001a-v1"
+PIPELINE_VERSION = "p5-001a-v2"   # v2: official EGRUL extract primary, checko optional
 MAX_WEBSITE_CANDIDATES = 2
 
 
 @dataclass
 class Providers:
-    registries: list[CompanyRegistryProvider]   # ordered by authority: official first, mirrors after
+    registries: list[CompanyRegistryProvider]   # [0] = official (required); [1:] = optional secondary mirrors
     discovery: WebsiteDiscoveryProvider
     verifier: WebsiteVerifier
     extractor: ContactExtractor
@@ -73,18 +76,21 @@ def _website_evidence(v: WebsiteVerification, discovered_via) -> EvidenceItem:
 def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> EnrichmentResult:
     res = EnrichmentResult(inn=inn, status=EnrichmentStatus.IN_PROGRESS, started_at=now())
 
-    # 1. legal identity (official registry first; mirrors fill gaps only when their OGRN agrees)
-    found, answered = [], 0
+    # 1. legal identity: the official registry first; optional mirrors only corroborate / fill gaps when their OGRN agrees
+    ANSWERED = (SourceOutcome.OK, SourceOutcome.NOT_FOUND)
+    found, outcomes = [], []
     for reg in providers.registries:
         ident, err, ms = _timed(lambda r=reg: r.lookup_by_inn(inn))
         if err:
-            res.attempts.append(SourceAttempt(reg.name, SourceOutcome.UNAVAILABLE, str(err)[:200], ms))
-            found.append(None)
-            continue
-        answered += 1
-        res.attempts.append(SourceAttempt(reg.name, SourceOutcome.OK if ident else SourceOutcome.NOT_FOUND, None, ms))
+            outcome = outcome_of(err)
+            res.attempts.append(SourceAttempt(reg.name, outcome, str(err)[:200], ms))
+        else:
+            outcome = SourceOutcome.OK if ident else SourceOutcome.NOT_FOUND
+            res.attempts.append(SourceAttempt(reg.name, outcome, None, ms))
+            res.attempts.extend(ident.sub_attempts if ident else ())
         found.append(ident)
-    primary_answered = bool(res.attempts) and res.attempts[0].outcome != SourceOutcome.UNAVAILABLE
+        outcomes.append(outcome)
+    primary = outcomes[0] if outcomes else None
     identity = found[0] if found else None
     for extra in found[1:]:
         identity, conflict = merge_identities(identity, extra)
@@ -92,22 +98,29 @@ def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> Enric
             res.reasons.append(conflict)
     if identity is None or identity.legal_name is None:
         res.finished_at = now()
-        if answered == 0:
+        if not any(o in ANSWERED for o in outcomes):
             res.status, res.retryable = EnrichmentStatus.FAILED, True
             res.reasons.append("SOURCE_UNAVAILABLE")
-        elif primary_answered and res.attempts[0].outcome == SourceOutcome.NOT_FOUND:
+        elif primary == SourceOutcome.NOT_FOUND:
             res.status = EnrichmentStatus.FAILED
             res.reasons.append("REGISTRY_NOT_FOUND")
         else:
             res.status, res.retryable = EnrichmentStatus.FAILED, True
             res.reasons.append("PRIMARY_REGISTRY_UNAVAILABLE")
         return res
-    if not primary_answered:
+    if primary not in ANSWERED:
         res.reasons.append("PRIMARY_REGISTRY_UNAVAILABLE_MIRROR_USED")
         res.retryable = True
-    if any(a.outcome == SourceOutcome.UNAVAILABLE for a in res.attempts[1:len(providers.registries)]):
-        res.reasons.append("REGISTRY_MIRROR_UNAVAILABLE")   # address / OKVED / website hint missing because of an outage
-        res.retryable = True
+    for o in outcomes[1:]:      # optional secondary registries: never a failure, only a (retryable) gap
+        if o not in ANSWERED:
+            res.reasons.append(f"REGISTRY_MIRROR_{'SKIPPED' if o == SourceOutcome.SKIPPED else o.value}")
+            res.retryable = True
+    for a in (found[0].sub_attempts if found and found[0] else ()):
+        if a.outcome in (SourceOutcome.UNAVAILABLE, SourceOutcome.RATE_LIMITED):
+            res.reasons.append("EGRUL_EXTRACT_UNAVAILABLE")
+            res.retryable = True
+        elif a.outcome == SourceOutcome.REJECTED:
+            res.reasons.append("EGRUL_EXTRACT_REJECTED")
     res.identity = identity
     res.evidence += _identity_evidence(identity)
     if identity.legal_status and identity.legal_status.value == "CEASED":
@@ -125,7 +138,7 @@ def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> Enric
         for cand in candidates:
             v, err, ms = _timed(lambda c=cand: providers.verifier.verify_company_site(identity, c))
             if err:
-                res.attempts.append(SourceAttempt(providers.verifier.name, SourceOutcome.UNAVAILABLE, f"{cand.url}: {err}"[:200], ms))
+                res.attempts.append(SourceAttempt(providers.verifier.name, outcome_of(err), f"{cand.url}: {err}"[:200], ms))
                 continue
             res.attempts.append(SourceAttempt(providers.verifier.name,
                                               SourceOutcome.OK if v.confidence == WebsiteConfidence.HIGH else SourceOutcome.REJECTED,
