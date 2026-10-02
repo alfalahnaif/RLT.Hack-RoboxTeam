@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody } from "@/components/ui/card";
 import { ScoreStat } from "@/components/ui/score";
-import type { SupplierContact, SupplierFreshness, SupplierSearchResponse, SupplierSearchResult } from "@/lib/api/types";
+import type { ContactSource, SupplierContact, SupplierFreshness, SupplierSearchResponse, SupplierSearchResult } from "@/lib/api/types";
 
 type ExternalResult = SupplierSearchResponse["external_expansion"][number]["candidates"][number];
 
@@ -20,8 +20,9 @@ function httpUrl(value: string | null): string | null {
   }
 }
 
-function roleKey(value: string | null): "manufacturer" | "distributor" | "supplier" {
+function roleKey(value: string | null): "manufacturer" | "manufacturerDeclared" | "distributor" | "supplier" {
   const upper = value?.toUpperCase() ?? "";
+  if (upper.includes("MANUFACTURER") && upper.includes("ASSERTED")) return "manufacturerDeclared";   // declaration only, keep the nuance
   if (upper.includes("MANUFACTURER")) return "manufacturer";
   if (upper.includes("DISTRIBUTOR")) return "distributor";
   return "supplier";
@@ -45,6 +46,75 @@ export function FreshnessLabel({ freshness }: { freshness: SupplierFreshness | n
       {freshness.status === "STALE" ? t("freshStale") : checked ?? t("freshUnknown")}
       {freshness.status === "STALE" && checked ? ` · ${checked}` : null}
     </span>
+  );
+}
+
+const CONTACT_FIELDS = ["phone", "email", "website", "address"] as const;
+
+function fmtDate(iso: string | null | undefined, locale: string) {
+  const d = iso ? new Date(iso) : null;
+  return d && !Number.isNaN(d.getTime()) ? new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).format(d) : null;
+}
+
+/** Source label: first-party sites are "official company website"; checko.ru & co. are registry-derived, not the official registry. */
+function sourceLabel(src: ContactSource, t: ReturnType<typeof useTranslations<"marketProduct">>) {
+  if (src.source_authority === "FIRST_PARTY") return t("sourceFirstParty");
+  if (src.source_authority === "REGULATORY_REGISTRY") return t("sourceRegulatory");
+  return t("sourceRegistryDerived");
+}
+
+/** Freshness of the contact data (P4-005C): STALE / UNKNOWN stay visible even though the page was checked recently. */
+export function ContactFreshness({ contact }: { contact: SupplierContact | null }) {
+  const t = useTranslations("marketProduct");
+  const locale = useLocale();
+  const f = contact?.freshness;
+  if (!f) return null;
+  const date = fmtDate(f.last_checked_at, locale);
+  const tone = f.status === "STALE" ? "warning" : f.status === "UNKNOWN" ? "gray" : "success";
+  return (
+    <span className="flex flex-wrap items-center gap-2 text-xs text-muted">
+      <Badge size="sm" color={tone}>{t(`contactFreshness.${f.status}`)}</Badge>
+      {date ? <span>{t("contactChecked", { date })}</span> : null}
+    </span>
+  );
+}
+
+/** Only sourced values are rendered; each with a compact source + check date. Missing fields are simply absent. */
+export function ContactDetails({ contact }: { contact: SupplierContact | null }) {
+  const t = useTranslations("marketProduct");
+  const locale = useLocale();
+  if (!contact) return null;
+  const rows = CONTACT_FIELDS.filter((k) => contact[k]);
+  if (!rows.length) return null;
+  return (
+    <div className="flex flex-col gap-2 rounded-md border border-line-subtle p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="text-xs font-medium text-heading">{t("contactTitle")}</span>
+        <ContactFreshness contact={contact} />
+      </div>
+      <dl className="grid gap-1.5 text-sm">
+        {rows.map((k) => {
+          const value = contact[k]!;
+          const src = contact.sources?.[k];
+          const url = k === "website" ? httpUrl(value) : null;
+          return (
+            <div key={k} className="grid grid-cols-[88px_minmax(0,1fr)] gap-2">
+              <dt className="text-xs text-muted">{t(`contactField.${k}${k === "address" && src?.address_type === "REGISTERED_LEGAL_ADDRESS" ? "Legal" : ""}`)}</dt>
+              <dd className="min-w-0 break-words text-body">
+                {url ? <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary-700 underline" dir="ltr">{value}</a>
+                  : <span dir={k === "address" ? undefined : "ltr"}>{value}</span>}
+                {src ? (
+                  <span className="block text-2xs text-muted">
+                    {httpUrl(src.source_url) ? <a href={httpUrl(src.source_url)!} target="_blank" rel="noopener noreferrer" className="underline">{sourceLabel(src, t)}</a> : sourceLabel(src, t)}
+                    {fmtDate(src.checked_at, locale) ? ` · ${t("contactChecked", { date: fmtDate(src.checked_at, locale)! })}` : null}
+                  </span>
+                ) : null}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </div>
   );
 }
 
@@ -75,9 +145,27 @@ export function ContactActions({ contact }: { contact: SupplierContact | null })
   );
 }
 
-export function HistoricalSupplierCard({ supplier }: { supplier: SupplierSearchResult }) {
+/**
+ * Visible "why" lines in the UI language, built from the structured historical evidence (the engine's English template
+ * strings stay available under "Evidence details"). "Exact OKPD2" only when the supplier's code is the code used for ranking.
+ */
+function whyLines(s: SupplierSearchResult, rankingCode: string | null, tr: ReturnType<typeof useTranslations<"analysis.suppliers.reasons">>) {
+  const h = s.historical_evidence;
+  const out: string[] = [];
+  if (h.best_products[0]) out.push(tr("product", { name: h.best_products[0] }));
+  if (h.best_okpd2 && rankingCode && h.best_okpd2 === rankingCode) out.push(tr("okpd2Exact", { code: h.best_okpd2 }));
+  else if (h.best_okpd2 && (h.components.okpd2 ?? 0) > 0) out.push(tr("okpd2Related", { code: h.best_okpd2 }));
+  out.push(h.relevant_ais_awards && h.relevant_awards ? tr("awardsAis", { count: h.relevant_awards, ais: h.relevant_ais_awards })
+    : tr("awards", { count: h.relevant_awards }));
+  out.push(tr("lots", { count: h.relevant_lots }));
+  return out;
+}
+
+export function HistoricalSupplierCard({ supplier, rankingCode = null }: { supplier: SupplierSearchResult; rankingCode?: string | null }) {
   const t = useTranslations("marketProduct");
+  const tr = useTranslations("analysis.suppliers.reasons");
   const name = supplier.company_name || t("companyUnavailable");
+  const why = whyLines(supplier, rankingCode, tr);
   return (
     <Card>
       <CardBody className="flex flex-col gap-4">
@@ -99,16 +187,18 @@ export function HistoricalSupplierCard({ supplier }: { supplier: SupplierSearchR
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-xs font-medium text-heading">{t("why")}</span>
-          <p className="text-sm text-body">{supplier.reasons[0] ?? t("noEvidenceDetail")}</p>
+          {why.length ? <ul className="flex flex-col gap-1 text-sm text-body">{why.map((line, i) => <li key={i}>{line}</li>)}</ul>
+            : <p className="text-sm text-body">{t("noEvidenceDetail")}</p>}
         </div>
         <FreshnessLabel freshness={supplier.freshness} />
         <ContactActions contact={supplier.contact} />
+        <ContactDetails contact={supplier.contact} />
         <details className="rounded-md border border-line-subtle bg-surface-subtle p-3 text-sm">
           <summary className="cursor-pointer font-medium text-primary-700">{t("evidence")}</summary>
           <div className="mt-3 flex flex-col gap-2 text-sm text-subtle">
             <p>{t("historicalLots", { count: supplier.historical_evidence.relevant_lots })} · {t("historicalAwards", { count: supplier.historical_evidence.relevant_awards })}</p>
             <p>{t("recentEvidence", { date: supplier.historical_evidence.most_recent_relevant })}</p>
-            {supplier.reasons.length > 1 ? <ul className="list-inside list-disc">{supplier.reasons.slice(1).map((reason, index) => <li key={index}>{reason}</li>)}</ul> : null}
+            {supplier.reasons.length ? <ul className="list-inside list-disc">{supplier.reasons.map((reason, index) => <li key={index}>{reason}</li>)}</ul> : null}
             {supplier.historical_evidence.evidence_lot_ids.length ? <p>Lot IDs: <span dir="ltr">{supplier.historical_evidence.evidence_lot_ids.join(", ")}</span></p> : null}
             {supplier.semantic_evidence.length ? <p>{t("evidence")}: {supplier.semantic_evidence.length}</p> : null}
           </div>
@@ -136,6 +226,7 @@ export function ExternalSupplierCard({ candidate }: { candidate: ExternalResult 
         <p className="text-sm text-body"><span className="font-medium">{t("whyExternal")}:</span> {candidate.why_candidate}</p>
         <FreshnessLabel freshness={candidate.freshness} />
         <ContactActions contact={candidate.contact} />
+        <ContactDetails contact={candidate.contact} />
         <details className="rounded-md border border-line-subtle bg-surface-subtle p-3 text-sm">
           <summary className="cursor-pointer font-medium text-primary-700">{t("evidence")}</summary>
           <ul className="mt-3 flex flex-col gap-3">

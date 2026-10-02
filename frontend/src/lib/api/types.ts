@@ -433,8 +433,26 @@ export type SupplierSearchRequest = {
   limit: number;
 };
 
-export type SupplierContact = { phone: string | null; email: string | null; website: string | null; address: string | null };
 export type SupplierFreshness = { last_checked_at: string | null; source_url: string | null; status: "FRESH" | "STALE" | "UNKNOWN" };
+/** P4-005C: provenance of one populated contact field. */
+export type ContactSource = {
+  value: string;
+  source_url: string;
+  source_authority: "FIRST_PARTY" | "FNS_EGRUL_DERIVED_REGISTRY" | "REGULATORY_REGISTRY";
+  checked_at: string;
+  address_type?: "PUBLISHED_COMPANY_ADDRESS" | "REGISTERED_LEGAL_ADDRESS" | null;
+};
+export type SupplierContact = {
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  address: string | null;
+  /** P4-005C additions (optional for backward safety). */
+  sources?: Partial<Record<"phone" | "email" | "website" | "address", ContactSource>>;
+  identity_basis?: string | null;
+  /** Freshness of the contact information itself (an outdated page is STALE even if checked today). */
+  freshness?: SupplierFreshness | null;
+};
 
 export type SupplierSearchResult = {
   rank: number;

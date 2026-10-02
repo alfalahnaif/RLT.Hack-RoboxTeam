@@ -43,10 +43,14 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
           {data.query.normalized_text && data.query.normalized_text !== data.query.text ? <p className="text-xs text-muted">{t("interpretedAs")}: {data.query.normalized_text}</p> : null}
           <div className="flex flex-wrap gap-2">
             {classification.provided_okpd2 ? <Badge color="primary">{t("providedCode")}: <span dir="ltr">{classification.provided_okpd2}</span></Badge> : null}
-            {classification.suggested_okpd2[0] ? <Badge color="info">{t("suggestedCode")}: <span dir="ltr">{classification.suggested_okpd2[0].okpd2}</span></Badge> : <Badge color="gray">{t("noCode")}</Badge>}
+            {classification.suggested_okpd2.length ? classification.suggested_okpd2.map((s, i) => (
+              <Badge key={s.okpd2} color="info">{i === 0 ? `${t("suggestedCode")}: ` : ""}<span dir="ltr">{s.okpd2}</span> · {Math.round(s.share * 100)}%</Badge>
+            )) : <Badge color="gray">{t("noCode")}</Badge>}
             <Badge color={classification.history_status === "SUFFICIENT" ? "success" : "warning"}>{t(`historyStatus.${classification.history_status}`)}</Badge>
           </div>
-          {classification.ranking_okpd2 ? <p className="text-xs text-muted">{t("rankingCode")}: <span dir="ltr">{classification.ranking_okpd2}</span></p> : null}
+          {classification.text_okpd2_alignment ? <p className="text-xs text-muted">{t("alignmentLabel")}: <span className="font-medium text-heading">{t(`alignment.${classification.text_okpd2_alignment}`)}</span></p> : null}
+          {classification.ranking_okpd2 ? <p className="text-xs text-muted">{t("rankingCode")}: <span dir="ltr">{classification.ranking_okpd2}</span></p>
+            : <p className="text-xs text-muted">{t("rankingTextOnly")}</p>}
         </CardBody></Card>
 
         {classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
@@ -56,12 +60,13 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
 
         <section aria-labelledby="historical-title" className="flex flex-col gap-3">
           <div><h2 id="historical-title" className="text-lg font-semibold text-heading">{t("historicalTitle")}</h2><p className="text-sm text-muted">{t("historicalSubtitle")}</p></div>
-          {data.suppliers.length ? <ol className="grid gap-3 lg:grid-cols-2">{data.suppliers.map((supplier) => <li key={supplier.supplier_id}><HistoricalSupplierCard supplier={supplier} /></li>)}</ol>
+          {data.suppliers.length ? <ol className="grid gap-3 lg:grid-cols-2">{data.suppliers.map((supplier) => <li key={supplier.supplier_id}><HistoricalSupplierCard supplier={supplier} rankingCode={classification.ranking_okpd2} /></li>)}</ol>
             : <Alert tone="info" appearance="inline" description={t("noHistorical")} />}
         </section>
 
         <section aria-labelledby="external-title" className="flex flex-col gap-3">
-          <div><h2 id="external-title" className="text-lg font-semibold text-heading">{t("externalTitle")}</h2><p className="text-sm text-muted">{t("externalSubtitle")}</p></div>
+          <div><h2 id="external-title" className="text-lg font-semibold text-heading">{t("externalTitle")}</h2><p className="text-sm text-muted">{t("externalSubtitle")}</p>
+            <p className="mt-1 text-xs text-muted">{t("verifiedNotApproval")}</p></div>
           {externalGroups.length ? externalGroups.map((group) => (
             <div key={group.okpd2} className="flex flex-col gap-3">
               <Badge color="primary" className="self-start"><span dir="ltr">{group.okpd2}</span></Badge>
@@ -79,6 +84,7 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
 
 function PoolHealthPanel({ entry }: { entry: SupplierSearchResponse["pool_health"][number] | undefined }) {
   const t = useTranslations("marketProduct");
+  const tm = useTranslations("analysis.market");
   if (!entry || entry.status !== "OK" || !entry.pool_health || !entry.concentration) return <Alert tone="info" appearance="inline" description={t("poolUnavailable")} />;
   const pool = entry.pool_health;
   const signal = entry.concentration.signal;
@@ -88,9 +94,17 @@ function PoolHealthPanel({ entry }: { entry: SupplierSearchResponse["pool_health
     <Card><CardBody className="flex flex-col gap-3">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div><h2 className="text-base font-semibold text-heading">{t("poolTitle")}</h2><p className="mt-1 text-sm text-body">{headline}</p></div>
-        {high ? <Badge color="warning">{t("poolExpand")}</Badge> : null}
+        <div className="flex flex-wrap gap-2">
+          <Badge color={pool.status === "VERY_HIGH" ? "danger" : pool.status === "HIGH" ? "warning" : "gray"}>{tm(`status.${pool.status}`)}</Badge>
+          {high ? <Badge color="warning">{t("poolExpand")}</Badge> : null}
+        </div>
       </div>
-      <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted"><span>{t("poolObserved", { count: pool.observed_supplier_count })}</span><span>{t("poolWinners", { count: pool.winning_supplier_count })}</span></div>
+      <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
+        <span dir="ltr">OKPD2 {entry.okpd2}</span>
+        <span>{t("poolObserved", { count: pool.observed_supplier_count })}</span><span>{t("poolWinners", { count: pool.winning_supplier_count })}</span>
+        {pool.top1_share !== null ? <span>{t("poolTop1", { share: Math.round(pool.top1_share * 100) })}</span> : null}
+        {pool.hhi !== null ? <span>HHI {pool.hhi.toFixed(2)}</span> : null}
+      </div>
     </CardBody></Card>
   );
 }

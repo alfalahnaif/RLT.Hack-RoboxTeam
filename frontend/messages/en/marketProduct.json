@@ -3,8 +3,8 @@
   "subtitle": "Describe what you need. Review the evidence, supplier role, and available contacts before reaching out.",
   "queryLabel": "What do you need to procure?",
   "queryPlaceholder": "For example: Ultra-pasteurized milk 3.2%",
-  "example": "Try: Ultra-pasteurized milk 3.2%",
-  "sampleQuery": "Ultra-pasteurized milk 3.2%",
+  "example": "Try: Молоко ультрапастеризованное 3.2%",
+  "sampleQuery": "Молоко ультрапастеризованное 3.2%",
   "okpd2Label": "OKPD2 code (optional)",
   "okpd2Hint": "Provide a code if you know it. The system will also suggest codes from historical matches.",
   "regionLabel": "Registration region code (optional)",
@@ -25,7 +25,11 @@
   "noCode": "No OKPD2 suggestion available",
   "rankingCode": "Ranking category",
   "history": "History status",
-  "historyStatus": { "SUFFICIENT": "Sufficient history", "SPARSE": "Sparse history", "NONE": "No category history" },
+  "historyStatus": {
+    "SUFFICIENT": "Sufficient history",
+    "SPARSE": "Sparse history",
+    "NONE": "No category history"
+  },
   "sparseWarning": "Historical evidence for this category is sparse. Review supplier evidence carefully.",
   "mismatchWarning": "The query text and provided OKPD2 appear mismatched. Check the category before contacting suppliers.",
   "historicalTitle": "Historical suppliers",
@@ -38,8 +42,18 @@
   "inn": "INN",
   "companyUnavailable": "Company name unavailable",
   "score": "Match score",
-  "role": { "manufacturer": "Manufacturer", "distributor": "Distributor", "supplier": "Supplier" },
-  "verification": { "VERIFIED": "Verified", "UNDER_REVIEW": "Under review", "UNVERIFIED": "Unverified", "NO_EVIDENCE": "No role evidence" },
+  "role": {
+    "manufacturer": "Manufacturer",
+    "distributor": "Distributor",
+    "supplier": "Supplier",
+    "manufacturerDeclared": "Manufacturer (per declaration)"
+  },
+  "verification": {
+    "VERIFIED": "Verified",
+    "UNDER_REVIEW": "Under review",
+    "UNVERIFIED": "Unverified",
+    "NO_EVIDENCE": "No role evidence"
+  },
   "why": "Why recommended",
   "whyExternal": "Why this candidate appears",
   "evidence": "Evidence details",
@@ -55,7 +69,7 @@
   "email": "Email",
   "website": "Website",
   "noContact": "Contact data not available",
-  "freshChecked": "Checked {date}",
+  "freshChecked": "Evidence checked {date}",
   "freshStale": "Evidence may be outdated",
   "freshUnknown": "Freshness unknown",
   "poolTitle": "Supplier pool health",
@@ -74,5 +88,31 @@
   "exportCsv": "Export CSV",
   "loading": "Finding suppliers…",
   "error": "Could not load supplier results. Try again.",
-  "retry": "Retry"
+  "retry": "Retry",
+  "sourceFirstParty": "Official company website",
+  "sourceRegistryDerived": "Registry-derived company data",
+  "sourceRegulatory": "Official registry",
+  "contactTitle": "Contacts (with sources)",
+  "contactChecked": "checked {date}",
+  "contactFreshness": {
+    "FRESH": "Contact data current",
+    "STALE": "Contact data may be outdated",
+    "UNKNOWN": "Contact data currency unknown"
+  },
+  "contactField": {
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "address": "Address",
+    "addressLegal": "Legal address"
+  },
+  "alignmentLabel": "OKPD2 vs. query text",
+  "alignment": {
+    "ALIGNED": "aligned",
+    "UNCERTAIN": "uncertain",
+    "MISMATCH": "mismatch"
+  },
+  "rankingTextOnly": "Ranked by text and semantic evidence (no OKPD2 code)",
+  "poolTop1": "Top supplier share: {share}%",
+  "verifiedNotApproval": "“Verified” means the evidence was confirmed — it is not vendor approval or a guarantee of award suitability."
 }
