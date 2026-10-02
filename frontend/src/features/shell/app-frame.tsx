@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { ClipboardListIcon, HistoryIcon, InfoCircleSmIcon, ListTreeIcon, ScalesIcon, SearchIcon } from "@/components/icons";
+import { ClipboardListIcon, HistoryIcon, ListTreeIcon, ScalesIcon, SearchIcon } from "@/components/icons";
 import { LocaleSwitch } from "@/components/layout/locale-switch";
 import { TopBar } from "@/components/layout/top-bar";
 import type { NavItem } from "@/components/layout/types";
@@ -12,7 +12,7 @@ import { API_MODE } from "@/lib/api/client";
 import { SessionProvider, useSession } from "./session-store";
 import { SystemStatus } from "./system-status";
 
-/** S-00 global shell: top navigation, system status, language, demo-data notice (BR-20). */
+/** Global shell: top navigation, system status, and language. */
 export function AppFrame({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
@@ -25,10 +25,11 @@ export function AppFrame({ children }: { children: ReactNode }) {
 
 function Frame({ children }: { children: ReactNode }) {
   const t = useTranslations("shell");
+  const market = useTranslations("marketProduct");
   const { tray, lastRequestId } = useSession();
 
   const analysis: NavItem = { key: "analysis", label: t("nav.analysis"), icon: ClipboardListIcon, href: "/analysis" };
-  // Live mode: only screens backed by the real API (P4-001). The mock search/compare/history screens stay available in mock mode.
+  // Live mode starts with free-text discovery. The Lot ID analysis remains the secondary path.
   const mockNav: NavItem[] = [
     { key: "search", label: t("nav.search"), icon: SearchIcon, href: "/search" },
     { key: "results", label: t("nav.results"), icon: ListTreeIcon, href: lastRequestId ? `/results/${lastRequestId}` : "/results" },
@@ -41,7 +42,10 @@ function Frame({ children }: { children: ReactNode }) {
     },
     { key: "history", label: t("nav.history"), icon: HistoryIcon, href: "/history" },
   ];
-  const nav = API_MODE === "live" ? [analysis] : [analysis, ...mockNav];
+  const nav = API_MODE === "live" ? [
+    { key: "search", label: market("textOption"), icon: SearchIcon, href: "/search" },
+    analysis,
+  ] : [analysis, ...mockNav];
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -50,7 +54,7 @@ function Frame({ children }: { children: ReactNode }) {
       </a>
       <TopBar
         items={nav}
-        homeHref={API_MODE === "live" ? "/analysis" : "/search"}
+        homeHref="/search"
         menuLabel={t("menu")}
         actions={
           <>
@@ -65,25 +69,10 @@ function Frame({ children }: { children: ReactNode }) {
             <LocaleSwitch className="text-white/80 hover:text-white" />
           </>
         }
-        // notice={API_MODE === "mock" ? <DemoNotice /> : null}
       />
       <main id="main" className="mx-auto w-full max-w-[1224px] flex-1 px-4 pb-28 lg:px-6 2xl:px-0">
         {children}
       </main>
-    </div>
-  );
-}
-
-function DemoNotice() {
-  const t = useTranslations("shell");
-  return (
-    <div role="note" className="border-b border-warning-300 bg-warning-100 px-4 py-2 text-xs text-warning-950 lg:px-6">
-      <div className="mx-auto flex max-w-[1224px] items-center gap-2">
-        <InfoCircleSmIcon className="size-4 shrink-0 text-warning-800" aria-hidden />
-        <span>
-          <span className="font-medium">{t("demo.title")}</span> {t("demo.text")}
-        </span>
-      </div>
     </div>
   );
 }

@@ -424,3 +424,88 @@ export type BackendHealth = {
   semantic: { status: "ready" | "unavailable"; reason: string | null; pinned_revision: string | null; hnsw_ready: boolean; model_loaded: boolean };
   curated_evidence_catalog: { status: "ready" | "unavailable"; seed_files: number; reason: string | null };
 };
+
+/** P4-005 fixed free-text discovery contract (`POST /supplier-search`). */
+export type SupplierSearchRequest = {
+  query: string;
+  okpd2: string | null;
+  region: string | null;
+  limit: number;
+};
+
+export type SupplierContact = { phone: string | null; email: string | null; website: string | null; address: string | null };
+export type SupplierFreshness = { last_checked_at: string | null; source_url: string | null; status: "FRESH" | "STALE" | "UNKNOWN" };
+
+export type SupplierSearchResult = {
+  rank: number;
+  supplier_id: string;
+  inn: string;
+  company_name: string | null;
+  registration_region: string | null;
+  score: number;
+  role: string | null;
+  role_evidence_status: VerificationStatus | "NO_EVIDENCE";
+  reasons: string[];
+  historical_evidence: {
+    relevant_lots: number;
+    relevant_awards: number;
+    relevant_ais_awards: number;
+    relevant_em_participations: number;
+    most_recent_relevant: string;
+    best_products: string[];
+    best_okpd2: string | null;
+    evidence_lot_ids: string[];
+    components: Record<string, number>;
+    contributions: Record<string, number>;
+  };
+  semantic_evidence: SemanticEvidence[];
+  contact: SupplierContact | null;
+  freshness: SupplierFreshness | null;
+};
+
+export type SupplierSearchResponse = {
+  search_id: string;
+  query: {
+    text: string;
+    normalized_text: string;
+    technical_tokens: string[];
+    okpd2: string | null;
+    region: string | null;
+    limit: number;
+    as_of: string;
+  };
+  classification: {
+    provided_okpd2: string | null;
+    suggested_okpd2: { okpd2: string; share: number; supporting_items: number; supporting_lots: number; example_products: string[] }[];
+    history_status: "SUFFICIENT" | "SPARSE" | "NONE";
+    history: { okpd2: string; lots: number; awards: number; status: "SUFFICIENT" | "SPARSE" | "NONE" } | null;
+    text_okpd2_alignment: "ALIGNED" | "UNCERTAIN" | "MISMATCH" | null;
+    ranking_okpd2: string | null;
+    warnings: string[];
+  };
+  candidate_count: number;
+  suppliers: SupplierSearchResult[];
+  pool_health: {
+    okpd2: string;
+    source: "PROVIDED" | "SUGGESTED";
+    status: SectionStatus;
+    error: SectionError | null;
+    pool_health: PoolHealth | null;
+    concentration: { signal: ExpansionSignal; reason_codes: string[] } | null;
+    historical_alternatives: HistoricalAlternative[];
+  }[];
+  external_expansion: {
+    okpd2: string;
+    source: "PROVIDED" | "SUGGESTED";
+    available: boolean;
+    evidence_checked_at: string | null;
+    verified_count: number;
+    under_review_count: number;
+    candidates: (ExternalCandidate & { contact: SupplierContact; freshness: SupplierFreshness })[];
+  }[];
+  price_intelligence: { available: boolean; reason: string };
+  integration: { export_available: boolean; export_formats: ("json" | "csv")[]; export_url: string };
+  semantic_enabled: boolean;
+  warnings: string[];
+  timings_ms: Record<string, number>;
+};
