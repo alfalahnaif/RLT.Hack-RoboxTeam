@@ -1,0 +1,78 @@
+{
+  "mode": "live_model",
+  "candidate_source": "temporary_resolver_contract_fixtures",
+  "provider": "openai-compatible",
+  "model_id": "qwen/qwen3.8-27b",
+  "reported_model_id": "qwen/qwen3.8-27b",
+  "response_format": "json_schema_strict",
+  "provider_connection_successful": true,
+  "valid_structured_output_responses": 3,
+  "timeout_rate": 0.0,
+  "invalid_response_rate": 0.0,
+  "provider_error_rate": 0.25,
+  "http_429_rate": 0.25,
+  "resolver_v4_alone": {
+    "cases": 4,
+    "ambiguous_top1_accuracy": 0.0,
+    "correct_ambiguity_detection": 1.0,
+    "wrong_confident_selection_rate": 0.0,
+    "abstention_rate": 1.0,
+    "p50_latency_ms": 0.0,
+    "p95_latency_ms": 0.0
+  },
+  "resolver_v4_plus_llm": {
+    "cases": 4,
+    "ambiguous_top1_accuracy": 0.5,
+    "correct_ambiguity_detection": 1.0,
+    "wrong_confident_selection_rate": 0.0,
+    "abstention_rate": 0.75,
+    "p50_latency_ms": 1705.8468499999435,
+    "p95_latency_ms": 2216.0817700003463
+  },
+  "cases": [
+    {
+      "id": "medical-table-context",
+      "expected_code": "32.50.30.111",
+      "resolver_code": null,
+      "verified_code": null,
+      "verification_status": "AMBIGUOUS",
+      "reason": "Недостаточно информации для однозначного выбора: код 32.50.30.111 соответствует назначению (смотровой стол), но не подтверждает наличие регулировки высоты; код 31.01.12.110 не соответствует медицинскому назначению. Требуется уточнение типа стола (медицинский/офисный) и наличия функции регулировки.",
+      "latency_ms": 2025.1,
+      "failure_code": null,
+      "fallback_used": false
+    },
+    {
+      "id": "office-desk-context",
+      "expected_code": "31.01.12.110",
+      "resolver_code": null,
+      "verified_code": "31.01.12.110",
+      "verification_status": "RESOLVED",
+      "reason": "Категория 31.01.12.110 точно соответствует запросу, так как включает письменные столы для административных помещений, в отличие от медицинских столов.",
+      "latency_ms": 1386.6,
+      "failure_code": null,
+      "fallback_used": false
+    },
+    {
+      "id": "generic-table",
+      "expected_code": null,
+      "resolver_code": null,
+      "verified_code": null,
+      "verification_status": "AMBIGUOUS",
+      "reason": "Запрос «Стол» слишком общий. Невозможно определить, является ли предметом закупки офисный письменный стол или медицинский смотровой стол, так как отсутствуют детали о назначении или месте использования.",
+      "latency_ms": 2249.8,
+      "failure_code": null,
+      "fallback_used": false
+    },
+    {
+      "id": "mineral-water-context",
+      "expected_code": null,
+      "resolver_code": null,
+      "verified_code": null,
+      "verification_status": "PROVIDER_ERROR",
+      "reason": null,
+      "latency_ms": 1051.2,
+      "failure_code": "HTTP_429",
+      "fallback_used": true
+    }
+  ]
+}
