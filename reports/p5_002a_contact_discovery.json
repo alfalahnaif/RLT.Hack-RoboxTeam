@@ -1,0 +1,1716 @@
+{
+ "task": "P5-002A",
+ "golden_file": "benchmark/enrichment/p5_002a_contact_golden.json",
+ "configuration": {
+  "secondary_registry_checko": false,
+  "refresh": true,
+  "brave_search_api_key": false,
+  "yandex_search_api_key": false,
+  "providers": [
+   "EGRUL_EMAIL_DOMAIN",
+   "WIKIDATA_OGRN",
+   "LEGAL_NAME_DOMAIN"
+  ]
+ },
+ "golden": {
+  "runs": [
+   {
+    "inn": "7804054351",
+    "status": "PARTIAL",
+    "wall_seconds": 26.7
+   },
+   {
+    "inn": "7810687137",
+    "status": "COMPLETE",
+    "wall_seconds": 16.25
+   },
+   {
+    "inn": "7605016030",
+    "status": "PARTIAL",
+    "wall_seconds": 16.53
+   },
+   {
+    "inn": "7838005183",
+    "status": "PARTIAL",
+    "wall_seconds": 30.84
+   },
+   {
+    "inn": "9719079775",
+    "status": "COMPLETE",
+    "wall_seconds": 32.9
+   },
+   {
+    "inn": "7816721987",
+    "status": "PARTIAL",
+    "wall_seconds": 30.81
+   },
+   {
+    "inn": "7802433724",
+    "status": "COMPLETE",
+    "wall_seconds": 16.96
+   },
+   {
+    "inn": "7813474659",
+    "status": "PARTIAL",
+    "wall_seconds": 69.3
+   },
+   {
+    "inn": "7814580307",
+    "status": "PARTIAL",
+    "wall_seconds": 56.36
+   },
+   {
+    "inn": "7804484876",
+    "status": "PARTIAL",
+    "wall_seconds": 29.74
+   },
+   {
+    "inn": "7826679163",
+    "status": "PARTIAL",
+    "wall_seconds": 31.06
+   },
+   {
+    "inn": "7805074390",
+    "status": "PARTIAL",
+    "wall_seconds": 32.61
+   },
+   {
+    "inn": "4719016624",
+    "status": "PARTIAL",
+    "wall_seconds": 65.26
+   },
+   {
+    "inn": "7842184231",
+    "status": "PARTIAL",
+    "wall_seconds": 62.33
+   },
+   {
+    "inn": "7805396573",
+    "status": "PARTIAL",
+    "wall_seconds": 31.75
+   },
+   {
+    "inn": "7817306535",
+    "status": "PARTIAL",
+    "wall_seconds": 30.47
+   },
+   {
+    "inn": "4705055285",
+    "status": "PARTIAL",
+    "wall_seconds": 64.18
+   },
+   {
+    "inn": "782006150006",
+    "status": "PARTIAL",
+    "wall_seconds": 5.57
+   }
+  ],
+  "rows": [
+   {
+    "inn": "7804054351",
+    "name": "АО \"АРТИС-ДЕТСКОЕ ПИТАНИЕ\"",
+    "tags": [
+     "obvious_official_site",
+     "inn_on_site",
+     "phone_and_email",
+     "similar_names_exist"
+    ],
+    "expected_domains": [
+     "artiskids.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7810687137",
+    "name": "ООО \"БСС\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "personal_emails_on_site",
+     "egrul_email_domain_differs"
+    ],
+    "expected_domains": [
+     "bsscosmetics.ru",
+     "bsspharm.ru"
+    ],
+    "found_website": "https://bsspharm.ru/",
+    "website_verdict": "CORRECT",
+    "website_status": "VERIFIED_COMPOSITE",
+    "website_signals": [
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY",
+     "REGISTERED_STREET_ADDRESS"
+    ],
+    "discovered_via": "STORED_OFFICIAL_SITE",
+    "legal_identity_ok": true,
+    "enrichment_status": "COMPLETE",
+    "phones": {
+     "returned": [
+      "74832367604",
+      "74993009908",
+      "78123273747"
+     ],
+     "correct": [
+      "74832367604",
+      "74993009908",
+      "78123273747"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "74832367604": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://bsspharm.ru/contacts/",
+       "basis": "OFFICIAL_SITE_VERIFIED_COMPOSITE:EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      },
+      "74993009908": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://bsspharm.ru/contacts/",
+       "basis": "OFFICIAL_SITE_VERIFIED_COMPOSITE:EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      },
+      "78123273747": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://bsspharm.ru/contacts/",
+       "basis": "OFFICIAL_SITE_VERIFIED_COMPOSITE:EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      }
+     }
+    },
+    "emails": {
+     "returned": [
+      "info@bsspharm.ru"
+     ],
+     "correct": [
+      "info@bsspharm.ru"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "info@bsspharm.ru": {
+       "source_type": "FNS_EGRUL",
+       "source_url": "https://egrul.nalog.ru/index.html",
+       "basis": "FNS_EGRUL_REGISTERED_EMAIL"
+      }
+     }
+    }
+   },
+   {
+    "inn": "7605016030",
+    "name": "ООО \"КОМПАНИЯ \"ТЕНЗОР\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "js_rendered_home",
+     "similar_names_exist"
+    ],
+    "expected_domains": [
+     "tensor.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7838005183",
+    "name": "АО \"ЦЕНТР КОМПЬЮТЕРНЫХ РАЗРАБОТОК\"",
+    "tags": [
+     "inn_on_site",
+     "phone_and_email",
+     "email_on_group_domain"
+    ],
+    "expected_domains": [
+     "kodeksdoc.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "9719079775",
+    "name": "АО \"РОССИЙСКИЕ СЕТИ ВЕЩАНИЯ И ОПОВЕЩЕНИЯ\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "second_inn_on_page"
+    ],
+    "expected_domains": [
+     "rsvo.ru"
+    ],
+    "found_website": "https://rsvo.ru/",
+    "website_verdict": "CORRECT",
+    "website_status": "VERIFIED_STRONG",
+    "website_signals": [
+     "INN_ON_SITE",
+     "OGRN_ON_SITE",
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY",
+     "REGISTERED_STREET_ADDRESS"
+    ],
+    "discovered_via": "STORED_OFFICIAL_SITE",
+    "legal_identity_ok": true,
+    "enrichment_status": "COMPLETE",
+    "phones": {
+     "returned": [
+      "74957888999",
+      "78002505995",
+      "78126792222"
+     ],
+     "correct": [
+      "74957888999",
+      "78002505995",
+      "78126792222"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "74957888999": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://rsvo.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      },
+      "78002505995": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://rsvo.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      },
+      "78126792222": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://rsvo.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS"
+      }
+     }
+    },
+    "emails": {
+     "returned": [
+      "info@rsvo.ru",
+      "info@spb.rsvo.ru",
+      "info@svl.rsvo.ru"
+     ],
+     "correct": [
+      "info@rsvo.ru",
+      "info@spb.rsvo.ru",
+      "info@svl.rsvo.ru"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "info@rsvo.ru": {
+       "source_type": "FNS_EGRUL",
+       "source_url": "https://egrul.nalog.ru/index.html",
+       "basis": "FNS_EGRUL_REGISTERED_EMAIL"
+      },
+      "info@spb.rsvo.ru": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://rsvo.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS|COMPANY_DOMAIN"
+      },
+      "info@svl.rsvo.ru": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://rsvo.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS|COMPANY_DOMAIN"
+      }
+     }
+    }
+   },
+   {
+    "inn": "7816721987",
+    "name": "АО \"ПЕРВЫЙ СПЕЦТРАНС\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "fax_on_site",
+     "personal_emails_on_site",
+     "email_domain_differs"
+    ],
+    "expected_domains": [
+     "multioperator.ru",
+     "spest1.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7802433724",
+    "name": "ООО \"ВИЖЕН-СОФТ\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "brand_domain"
+    ],
+    "expected_domains": [
+     "pitaniesoft.ru"
+    ],
+    "found_website": "https://pitaniesoft.ru/",
+    "website_verdict": "CORRECT",
+    "website_status": "VERIFIED_STRONG",
+    "website_signals": [
+     "INN_ON_SITE",
+     "OGRN_ON_SITE",
+     "KPP_ON_SITE",
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY"
+    ],
+    "discovered_via": "STORED_OFFICIAL_SITE",
+    "legal_identity_ok": true,
+    "enrichment_status": "COMPLETE",
+    "phones": {
+     "returned": [
+      "78001003151"
+     ],
+     "correct": [
+      "78001003151"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "78001003151": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://pitaniesoft.ru/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+KPP_ON_SITE+EXACT_LEGAL_NAME"
+      }
+     }
+    },
+    "emails": {
+     "returned": [
+      "info@pitaniesoft.ru",
+      "support@pitaniesoft.ru"
+     ],
+     "correct": [
+      "info@pitaniesoft.ru",
+      "support@pitaniesoft.ru"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "info@pitaniesoft.ru": {
+       "source_type": "FNS_EGRUL",
+       "source_url": "https://egrul.nalog.ru/index.html",
+       "basis": "FNS_EGRUL_REGISTERED_EMAIL"
+      },
+      "support@pitaniesoft.ru": {
+       "source_type": "FIRST_PARTY",
+       "source_url": "https://pitaniesoft.ru/contacts/",
+       "basis": "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE+KPP_ON_SITE+EXACT_LEGAL_NAME|COMPANY_DOMAIN"
+      }
+     }
+    }
+   },
+   {
+    "inn": "7813474659",
+    "name": "ООО \"ОХРАНА ТЕЛЕКОМ\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "phone_and_email",
+     "fax_on_site"
+    ],
+    "expected_domains": [
+     "ohranatelecom.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": "REJECTED",
+    "website_signals": [],
+    "discovered_via": "EGRUL_EMAIL_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [
+      "in@rosohrana.ru"
+     ],
+     "correct": [
+      "in@rosohrana.ru"
+     ],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {
+      "in@rosohrana.ru": {
+       "source_type": "FNS_EGRUL",
+       "source_url": "https://egrul.nalog.ru/index.html",
+       "basis": "FNS_EGRUL_REGISTERED_EMAIL"
+      }
+     }
+    }
+   },
+   {
+    "inn": "7814580307",
+    "name": "ООО \"КАРДАН\"",
+    "tags": [
+     "composite_identity",
+     "no_inn_on_site",
+     "phone_only_business",
+     "free_mail_email",
+     "similar_names_exist"
+    ],
+    "expected_domains": [
+     "kardan-fix.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": "REJECTED",
+    "website_signals": [
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY"
+    ],
+    "discovered_via": "LEGAL_NAME_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7804484876",
+    "name": "ООО \"АЛЬТАИР\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "no_business_contacts",
+     "phone_next_to_person",
+     "similar_names_exist"
+    ],
+    "expected_domains": [
+     "altair-pit.ru"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": "REJECTED",
+    "website_signals": [
+     "EXACT_LEGAL_NAME"
+    ],
+    "discovered_via": "LEGAL_NAME_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7826679163",
+    "name": "ООО \"ЦЕНТРАЛЬНАЯ МЕДИЦИНСКАЯ БАЗА\"",
+    "tags": [
+     "no_verifiable_official_site",
+     "brand_site_without_own_inn",
+     "related_company_requisites"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7805074390",
+    "name": "ООО \"СЕВЕРО-ЗАПАДНОЕ УПРАВЛЕНИЕ ОПТОВОЙ МЕДИЦИНСКОЙ ТОРГОВЛИ\"",
+    "tags": [
+     "no_verifiable_official_site",
+     "inn_on_other_company_site",
+     "wrong_company_trap"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "4719016624",
+    "name": "ООО \"ПРОМЕТЕЙ\"",
+    "tags": [
+     "inn_on_site",
+     "ogrn_on_site",
+     "requisites_on_inner_page",
+     "similar_names_exist",
+     "phone_and_email",
+     "combined_phone_fax_line"
+    ],
+    "expected_domains": [
+     "prometeyspb.com"
+    ],
+    "found_website": null,
+    "website_verdict": "MISSED",
+    "website_status": "REJECTED",
+    "website_signals": [
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY"
+    ],
+    "discovered_via": "LEGAL_NAME_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": true,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7842184231",
+    "name": "ООО \"ЭДЕЛЬВЕЙС\"",
+    "tags": [
+     "no_discoverable_site",
+     "similar_names_exist"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": "REJECTED",
+    "website_signals": [],
+    "discovered_via": "LEGAL_NAME_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7805396573",
+    "name": "АО \"КОМБИНАТ ПИТАНИЯ \"КИРОВСКИЙ\"",
+    "tags": [
+     "no_discoverable_site"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "7817306535",
+    "name": "АО \"КОМБИНАТ СОЦИАЛЬНОГО ПИТАНИЯ КОЛПИНСКОГО РАЙОНА\"",
+    "tags": [
+     "no_discoverable_site",
+     "portal_listing_only"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "4705055285",
+    "name": "ООО \"ТОРГОВЫЙ ДОМ \"ЛЕНИНГРАДСКИЙ\"",
+    "tags": [
+     "no_discoverable_site",
+     "similar_names_exist"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": "REJECTED",
+    "website_signals": [],
+    "discovered_via": "LEGAL_NAME_DOMAIN",
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   },
+   {
+    "inn": "782006150006",
+    "name": "individual entrepreneur (name withheld)",
+    "tags": [
+     "individual_entrepreneur"
+    ],
+    "expected_domains": [],
+    "found_website": null,
+    "website_verdict": "CORRECT_NONE",
+    "website_status": null,
+    "website_signals": [],
+    "discovered_via": null,
+    "legal_identity_ok": true,
+    "enrichment_status": "PARTIAL",
+    "phones": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    },
+    "emails": {
+     "returned": [],
+     "correct": [],
+     "violations": [],
+     "unlisted": [],
+     "eligible": false,
+     "sources": {}
+    }
+   }
+  ],
+  "invented_check": [
+   {
+    "inn": "7810687137",
+    "value": "74832367604",
+    "source_url": "https://bsspharm.ru/contacts/",
+    "present": true
+   },
+   {
+    "inn": "7810687137",
+    "value": "74993009908",
+    "source_url": "https://bsspharm.ru/contacts/",
+    "present": true
+   },
+   {
+    "inn": "7810687137",
+    "value": "78123273747",
+    "source_url": "https://bsspharm.ru/contacts/",
+    "present": true
+   },
+   {
+    "inn": "9719079775",
+    "value": "74957888999",
+    "source_url": "https://rsvo.ru/",
+    "present": true
+   },
+   {
+    "inn": "9719079775",
+    "value": "78002505995",
+    "source_url": "https://rsvo.ru/",
+    "present": true
+   },
+   {
+    "inn": "9719079775",
+    "value": "78126792222",
+    "source_url": "https://rsvo.ru/",
+    "present": true
+   },
+   {
+    "inn": "9719079775",
+    "value": "info@spb.rsvo.ru",
+    "source_url": "https://rsvo.ru/",
+    "present": true
+   },
+   {
+    "inn": "9719079775",
+    "value": "info@svl.rsvo.ru",
+    "source_url": "https://rsvo.ru/",
+    "present": true
+   },
+   {
+    "inn": "7802433724",
+    "value": "78001003151",
+    "source_url": "https://pitaniesoft.ru/",
+    "present": true
+   },
+   {
+    "inn": "7802433724",
+    "value": "support@pitaniesoft.ru",
+    "source_url": "https://pitaniesoft.ru/contacts/",
+    "present": true
+   }
+  ],
+  "adversarial": [
+   {
+    "inn": "7805074390",
+    "url": "https://tsmb.ru/contacts/",
+    "why": "this INN/OGRN appear on another group company's site only inside an impostor warning",
+    "status": "REJECTED",
+    "signals": [
+     "ID_ONLY_IN_WARNING_CONTEXT",
+     "KPP_ON_SITE",
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY",
+     "REGISTERED_STREET_ADDRESS"
+    ]
+   },
+   {
+    "inn": "7826679163",
+    "url": "https://tsmb.ru/",
+    "why": "same-brand site that publishes another company's requisites, not this INN",
+    "status": "REJECTED",
+    "signals": [
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY"
+    ]
+   },
+   {
+    "inn": "7804054351",
+    "url": "https://artis21.ru/",
+    "why": "similar name (Артис), different company",
+    "status": "REJECTED",
+    "signals": [
+     "REGISTERED_LOCALITY"
+    ]
+   },
+   {
+    "inn": "7804484876",
+    "url": "https://altairalco.ru/",
+    "why": "similar name (Альтаир), different company",
+    "status": "REJECTED",
+    "signals": [
+     "EXACT_LEGAL_NAME"
+    ]
+   },
+   {
+    "inn": "7810687137",
+    "url": "https://bssys.com/",
+    "why": "similar name (BSS), different company",
+    "status": "REJECTED",
+    "signals": [
+     "EXACT_LEGAL_NAME",
+     "REGISTERED_LOCALITY"
+    ]
+   },
+   {
+    "inn": "7842184231",
+    "url": "https://www.edelweiss.ru/",
+    "why": "similar name (Эдельвейс), guessable domain",
+    "status": "UNKNOWN",
+    "signals": [],
+    "note": "ConnectTimeout: _ssl.c:999: The handshake operation timed out"
+   }
+  ],
+  "metrics": {
+   "suppliers": 18,
+   "legal_identity_accuracy": {
+    "count": 18,
+    "of": 18,
+    "pct": 100.0
+   },
+   "official_website": {
+    "eligible": 11,
+    "found": 3,
+    "correct": 3,
+    "coverage": {
+     "count": 3,
+     "of": 11,
+     "pct": 27.3
+    },
+    "precision": {
+     "count": 3,
+     "of": 3,
+     "pct": 100.0
+    },
+    "wrong_company_matches": 0,
+    "same_company_unverifiable": 0,
+    "by_status": {
+     "VERIFIED_STRONG": 2,
+     "VERIFIED_COMPOSITE": 1
+    }
+   },
+   "phones": {
+    "eligible": 10,
+    "suppliers_found": 3,
+    "coverage": {
+     "count": 3,
+     "of": 10,
+     "pct": 30.0
+    },
+    "values_returned": 7,
+    "values_correct": 7,
+    "precision": {
+     "count": 7,
+     "of": 7,
+     "pct": 100.0
+    },
+    "violations": 0,
+    "unlisted": []
+   },
+   "emails": {
+    "eligible": 10,
+    "suppliers_found": 4,
+    "coverage": {
+     "count": 4,
+     "of": 10,
+     "pct": 40.0
+    },
+    "values_returned": 7,
+    "values_correct": 7,
+    "precision": {
+     "count": 7,
+     "of": 7,
+     "pct": 100.0
+    },
+    "violations": 0,
+    "unlisted": []
+   },
+   "invented_contacts": 0,
+   "invented_check_unverifiable": 0,
+   "wrong_identity_matches": 0,
+   "adversarial_checks": {
+    "total": 6,
+    "rejected_or_unknown": 6
+   },
+   "discovery_time_ms": {
+    "median": 30747,
+    "p95": 65148,
+    "max": 69210
+   },
+   "provider_failures": {
+    "FIRST_PARTY_WEBSITE": 5
+   }
+  },
+  "computed_at": "2026-10-02T09:57:00+00:00"
+ },
+ "pilot": {
+  "source_file": "reports/p5_002a_pilot.json",
+  "selection": {
+   "explicit_inns": [],
+   "holdout_suppliers_skipped": 52,
+   "limit": 40,
+   "okpd2_prefixes": [
+    "10.51",
+    "26.20"
+   ],
+   "per_prefix": 10,
+   "refresh": true,
+   "secondary_registry": false
+  },
+  "metrics": {
+   "computed_at": "2026-10-02T10:20:55+00:00",
+   "coverage": {
+    "address": {
+     "count": 29,
+     "pct": 72.5
+    },
+    "egrul_address": {
+     "count": 29,
+     "pct": 72.5
+    },
+    "egrul_legal_identity": {
+     "count": 34,
+     "pct": 85.0
+    },
+    "egrul_okved": {
+     "count": 34,
+     "pct": 85.0
+    },
+    "email": {
+     "count": 4,
+     "pct": 10.0
+    },
+    "legal_name": {
+     "count": 34,
+     "pct": 85.0
+    },
+    "official_website": {
+     "count": 3,
+     "pct": 7.5
+    },
+    "phone": {
+     "count": 3,
+     "pct": 7.5
+    },
+    "role_evidence": {
+     "count": 18,
+     "pct": 45.0
+    }
+   },
+   "entity_kind_counts": {
+    "INDIVIDUAL_ENTREPRENEUR": 5,
+    "LEGAL_ENTITY": 29,
+    "UNKNOWN": 6
+   },
+   "median_enrichment_ms": 19090,
+   "official_website_discovered_via": {
+    "STORED_OFFICIAL_SITE": 3
+   },
+   "p90_enrichment_ms": 53880,
+   "secondary_provider_availability": {},
+   "source_failure_counts": {
+    "FIRST_PARTY_WEBSITE": 7,
+    "FNS_EGRUL": 13,
+    "WIKIDATA_OGRN": 1
+   },
+   "source_outcomes_last_run": [
+    {
+     "count": 19,
+     "outcome": "NOT_FOUND",
+     "source": "EGRUL_EMAIL_DOMAIN"
+    },
+    {
+     "count": 3,
+     "outcome": "OK",
+     "source": "EGRUL_EMAIL_DOMAIN"
+    },
+    {
+     "count": 2,
+     "outcome": "OK",
+     "source": "FIRST_PARTY_WEBSITE"
+    },
+    {
+     "count": 10,
+     "outcome": "REJECTED",
+     "source": "FIRST_PARTY_WEBSITE"
+    },
+    {
+     "count": 9,
+     "outcome": "SKIPPED",
+     "source": "FIRST_PARTY_WEBSITE"
+    },
+    {
+     "count": 7,
+     "outcome": "UNAVAILABLE",
+     "source": "FIRST_PARTY_WEBSITE"
+    },
+    {
+     "count": 27,
+     "outcome": "OK",
+     "source": "FNS_EGRUL"
+    },
+    {
+     "count": 13,
+     "outcome": "UNAVAILABLE",
+     "source": "FNS_EGRUL"
+    },
+    {
+     "count": 27,
+     "outcome": "OK",
+     "source": "FNS_EGRUL_EXTRACT"
+    },
+    {
+     "count": 9,
+     "outcome": "NOT_FOUND",
+     "source": "LEGAL_NAME_DOMAIN"
+    },
+    {
+     "count": 13,
+     "outcome": "OK",
+     "source": "LEGAL_NAME_DOMAIN"
+    },
+    {
+     "count": 21,
+     "outcome": "NOT_FOUND",
+     "source": "WIKIDATA_OGRN"
+    },
+    {
+     "count": 1,
+     "outcome": "UNAVAILABLE",
+     "source": "WIKIDATA_OGRN"
+    }
+   ],
+   "status_counts": {
+    "COMPLETE": 3,
+    "FAILED": 6,
+    "PARTIAL": 31
+   },
+   "status_reason_counts": {
+    "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED": 5,
+    "LAST_REFRESH_FAILED": 7,
+    "NO_WEBSITE_CANDIDATE": 12,
+    "REGISTRY_MIRROR_SKIPPED": 3,
+    "SOURCE_UNAVAILABLE": 13,
+    "WEBSITE_IDENTITY_NOT_CONFIRMED": 11,
+    "WEBSITE_UNAVAILABLE": 3
+   },
+   "suppliers_attempted": 40,
+   "website_confidence_counts": {
+    "HIGH": 3,
+    "LOW": 9,
+    "MEDIUM": 2,
+    "NONE": 26
+   },
+   "website_verification_status_counts": {
+    "NOT_CHECKED": 26,
+    "REJECTED": 11,
+    "VERIFIED_COMPOSITE": 1,
+    "VERIFIED_STRONG": 2
+   }
+  },
+  "note": "Coverage only (no truth labels). Checko disabled. 15 s pause between suppliers; egrul.nalog.ru still refused 13/40 (HTTP 400)."
+ },
+ "browser_acceptance": {
+  "live": [
+   {
+    "id": "FLOW",
+    "title": "Search → Supplier 360: identity, official website, phone/email, source, freshness",
+    "checks": {
+     "first_card_is_rsvo": true,
+     "legal_identity": true,
+     "official_website": true,
+     "found_via": true,
+     "phone": true,
+     "email": true,
+     "basis_shown": true,
+     "freshness": true,
+     "sources": true
+    },
+    "latency_ms": {
+     "results": 1015,
+     "open_profile": 233
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "first_profile_href": "/ru/supplier-360/9719079775?back=%2Fresults%3Fq%3D%25D0%25A3%25D1%2581%25D0%25BB%25D1%2583%25D0%25B3%25D0%25B8%2B%25D1%2581%25D0%25B2%25D1%258F%25D0%25B7%25D0%25B8%2B%25D0%25BF%25D1%2580%25D0%25BE%25D0%25B2%25D0%25BE%25D0%25B4%25D0%25BD%25D0%25BE%25D0%25B3%25D0%25BE%2B%25D1%2580%25D0%25B0%25D0%25B4%25D0%25B8%25D0%25BE%25D0%25B2%25D0%25B5%25D1%2589%25D0%25B0%25D0%25BD%25D0%25B8%25D1%258F",
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "A",
+    "title": "Website + phone + email (Вижен-Софт)",
+    "checks": {
+     "site": true,
+     "phone": true,
+     "emails": true,
+     "basis": true,
+     "source_class": true
+    },
+    "latency_ms": {
+     "load": 305
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "COMPOSITE",
+    "title": "Composite-verified site (БСС: name + registered address), personal e-mails excluded",
+    "checks": {
+     "site": true,
+     "phone": true,
+     "egrul_email": true,
+     "personal": true
+    },
+    "latency_ms": {
+     "load": 573
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "D",
+    "title": "No official website found (КП «Кировский»)",
+    "checks": {
+     "none": true,
+     "address": true,
+     "site": true
+    },
+    "latency_ms": {
+     "load": 377
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "E",
+    "title": "Individual entrepreneur",
+    "checks": {
+     "ip": true,
+     "site": true
+    },
+    "latency_ms": {
+     "load": 262
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "F",
+    "title": "Stale contact freshness (curated ЗАО «Можайский»)",
+    "checks": {
+     "stale": true
+    },
+    "latency_ms": {
+     "load": 247
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "G",
+    "title": "Wrong similar-name websites rejected (Альтаир: altair.ru, altair.com, альтаир.рф)",
+    "checks": {
+     "checks": true,
+     "none": true,
+     "site": true
+    },
+    "latency_ms": {
+     "load": 247
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "EGRUL_EMAIL",
+    "title": "EGRUL-registered e-mail shown; its domain rejected as a site (Охрана Телеком)",
+    "checks": {
+     "email": true,
+     "rejected": true,
+     "site": true
+    },
+    "latency_ms": {
+     "load": 266
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "EN",
+    "title": "English route, discovered contacts",
+    "checks": {
+     "site": true,
+     "basis": true,
+     "checks": true
+    },
+    "latency_ms": {
+     "load": 290
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R1",
+    "title": "Free-text search (ru)",
+    "checks": {
+     "interpreted": true,
+     "historical": true
+    },
+    "latency_ms": {
+     "load": 766
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 20,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R2",
+    "title": "Explicit OKPD2 10.51.11.141",
+    "checks": {
+     "aligned": true,
+     "external": true
+    },
+    "latency_ms": {
+     "load": 1174
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 26,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R3",
+    "title": "Mismatch 26.20.11.110",
+    "checks": {
+     "mismatch": true
+    },
+    "latency_ms": {
+     "load": 1119
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 20,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R4",
+    "title": "Unknown OKPD2 10.51.11.999",
+    "checks": {
+     "none": true
+    },
+    "latency_ms": {
+     "load": 832
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 20,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R5",
+    "title": "Acer technical query",
+    "checks": {
+     "code": true,
+     "model": true
+    },
+    "latency_ms": {
+     "load": 1027
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 20,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R6",
+    "title": "English results route",
+    "checks": {
+     "interpreted": true,
+     "profile": true
+    },
+    "latency_ms": {
+     "load": 719
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 20,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R7",
+    "title": "Lot-ID 5956101",
+    "checks": {
+     "suppliers": true,
+     "profile": true
+    },
+    "latency_ms": {
+     "load": 5846
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 16,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R8",
+    "title": "Lot-ID 5718896",
+    "checks": {
+     "suppliers": true
+    },
+    "latency_ms": {
+     "load": 680
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "profile_links": 15,
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "R9",
+    "title": "CSV/JSON export from the results page",
+    "checks": {
+     "two_links": true,
+     "export_json": true,
+     "export_csv": true
+    },
+    "latency_ms": {},
+    "overflow": {},
+    "links": [
+     "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=json",
+     "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=csv"
+    ],
+    "export_json": {
+     "status": 200,
+     "type": "application/json",
+     "bytes": 19140
+    },
+    "export_csv": {
+     "status": 200,
+     "type": "text/csv; charset=utf-8",
+     "bytes": 10829
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   }
+  ],
+  "synthetic_mock": [
+   {
+    "id": "B",
+    "title": "[synthetic mock] Website + phone only",
+    "checks": {
+     "site": true,
+     "phone": true,
+     "synthetic": true,
+     "email": true
+    },
+    "latency_ms": {
+     "load": 921
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   },
+   {
+    "id": "C",
+    "title": "[synthetic mock] Verified website, no contacts",
+    "checks": {
+     "site": true,
+     "none": true,
+     "unknown": true,
+     "reason": true
+    },
+    "latency_ms": {
+     "load": 618
+    },
+    "overflow": {
+     "d": 0,
+     "m": 0
+    },
+    "network": {
+     "failed": [],
+     "http4xx5xx": [],
+     "external": [],
+     "console": []
+    }
+   }
+  ]
+ }
+}
