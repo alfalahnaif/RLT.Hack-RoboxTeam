@@ -1,4 +1,4 @@
-"""P5-001A persistence of Supplier 360 enrichment (psycopg, plain SQL; tables from migration 0005)."""
+"""P5-001A/P5-002A persistence of Supplier 360 enrichment (psycopg, plain SQL; tables from migrations 0005 + 0006)."""
 from __future__ import annotations
 
 import hashlib
@@ -65,7 +65,8 @@ def save_attempts(conn: Connection, res: EnrichmentResult) -> None:
 IDENTITY_COLUMNS = ("entity_kind", "legal_name", "short_name", "ogrn", "kpp", "legal_status", "registration_date",
                     "registered_address", "primary_okved", "region", "identity_source_url", "identity_source_type",
                     "identity_checked_at")
-WEBSITE_COLUMNS = ("official_website", "website_confidence", "website_candidate", "website_checked_at", "content_currency")
+WEBSITE_COLUMNS = ("official_website", "website_confidence", "website_candidate", "website_checked_at", "content_currency",
+                   "website_verification_status", "website_signals", "website_discovered_via")
 _WEBSITE_GAP_REASONS = {"NO_WEBSITE_CANDIDATE", "WEBSITE_UNAVAILABLE", "NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE"}
 FIRST_PARTY = "FIRST_PARTY"
 
@@ -85,7 +86,24 @@ def _profile_values(res: EnrichmentResult, historical: bool) -> dict:
             "identity_checked_at": ln.checked_at if ln else None,
             "official_website": w.official_url if w else None, "website_confidence": w.confidence.value if w else "NONE",
             "website_candidate": w.candidate_url if w else None, "website_checked_at": w.checked_at if w else None,
-            "content_currency": res.content_currency, "supplier_id": supplier_uuid(res.inn) if historical else None}
+            "content_currency": res.content_currency, "supplier_id": supplier_uuid(res.inn) if historical else None,
+            "website_verification_status": w.verification_status.value if w else None,
+            "website_signals": list(w.signals) if w else [], "website_discovered_via": w.provider if w else None}
+
+
+def last_website_checks(conn: Connection, inn: str, limit: int = 10) -> list[dict]:
+    with conn.cursor(row_factory=dict_row) as cur:
+        return cur.execute("""SELECT checked_at, candidate_url, official_url, discovered_via, verification_status, signals, reason
+                              FROM supplier_website_check WHERE inn = %s ORDER BY seq DESC LIMIT %s""", (inn, limit)).fetchall()
+
+
+def save_website_checks(conn: Connection, res: EnrichmentResult) -> None:
+    """Append every candidate checked in this run (evidence history; never updated, never deleted by a refresh)."""
+    with conn.cursor() as cur:
+        cur.executemany("""INSERT INTO supplier_website_check (id, inn, checked_at, candidate_url, official_url, discovered_via,
+                               verification_status, signals, reason, pipeline_version) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                        [(uuid.uuid4(), res.inn, v.checked_at or res.started_at, v.candidate_url, v.official_url, v.provider,
+                          v.verification_status.value, list(v.signals), v.reason, PIPELINE_VERSION) for v in res.website_checks])
 
 
 def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_keys: set[tuple[str, str]] = frozenset(),
@@ -103,6 +121,7 @@ def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_ke
     Returns the stored enrichment_status."""
     existing = get_profile(conn, res.inn)
     save_attempts(conn, res)
+    save_website_checks(conn, res)
     usable = existing is not None and existing["enrichment_status"] in ("COMPLETE", "PARTIAL")
     if res.status == EnrichmentStatus.FAILED and usable:
         conn.execute("UPDATE supplier_enrichment_profile SET status_reasons = %s, updated_at = %s WHERE inn = %s",
@@ -117,7 +136,10 @@ def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_ke
         for col in IDENTITY_COLUMNS:
             if vals[col] is None and existing[col] is not None:
                 vals[col], degraded = existing[col], True
-    keep_site = bool(usable and existing["official_website"] and res.website is None)
+    # P5-002A website change protection: a verified official site is replaced only when it was re-checked this run and failed
+    # (or re-verified, which refreshes it); a run that did not re-check it never lowers it.
+    keep_site = bool(usable and existing["official_website"]
+                     and (res.website is None or (res.website.official_url is None and not res.prior_site_rechecked)))
     if keep_site:
         vals.update({col: existing[col] for col in WEBSITE_COLUMNS})
         reasons = (reasons - _WEBSITE_GAP_REASONS) | {"WEBSITE_KEPT_FROM_PREVIOUS_RUN"}
@@ -151,10 +173,12 @@ def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_ke
         conn.execute(f"DELETE FROM {table} WHERE inn = %s AND NOT (id = ANY(%s))", (res.inn, keep_ids[kind]))
     with conn.cursor() as cur:
         cur.executemany("""INSERT INTO supplier_contact (id, inn, contact_type, value, normalized_value, label, source_url, source_type,
-                               checked_at, content_currency, verified) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                               checked_at, content_currency, verified, verification_basis)
+                           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                            ON CONFLICT DO NOTHING""",
                         [(_id("contact", res.inn, c.type.value, c.normalized), res.inn, c.type.value, c.value, c.normalized, c.label,
-                          c.source_url, c.source_type.value, c.checked_at, c.content_currency, c.verified) for c in contacts])
+                          c.source_url, c.source_type.value, c.checked_at, c.content_currency, c.verified, c.verification_basis)
+                         for c in contacts])
         cur.executemany("""INSERT INTO supplier_enrichment_evidence (id, inn, evidence_type, claim, value, source_url, source_type,
                                checked_at, valid_until, strength) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                            ON CONFLICT DO NOTHING""",

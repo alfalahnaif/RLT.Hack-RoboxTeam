@@ -93,12 +93,13 @@ const complete: SupplierProfile360 = {
     official_website: "https://dairy-demo.example.com/",
     website_confidence: "HIGH",
     website_candidate: null,
+    website_verification: { status: "VERIFIED_STRONG", signals: ["INN_ON_SITE", "OGRN_ON_SITE"], discovered_via: "EGRUL_EMAIL_DOMAIN", checked_at: CHECKED },
     pipeline_version: "p5-001a.1",
     cache: "HIT",
   },
   contacts: [
-    { type: "PHONE", value: "+7 (000) 000-00-01", label: "Отдел продаж", source_url: "https://dairy-demo.example.com/contacts", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE" },
-    { type: "EMAIL", value: "sales@dairy-demo.example.com", label: null, source_url: "https://dairy-demo.example.com/contacts", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE" },
+    { type: "PHONE", value: "+7 (000) 000-00-01", label: "Отдел продаж", source_url: "https://dairy-demo.example.com/contacts", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE", verification_basis: "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE" },
+    { type: "EMAIL", value: "sales@dairy-demo.example.com", label: null, source_url: "https://dairy-demo.example.com/contacts", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE", verification_basis: "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE|COMPANY_DOMAIN" },
     { type: "WEBSITE", value: "https://dairy-demo.example.com/", label: null, source_url: "https://dairy-demo.example.com/", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE" },
     { type: "ADDRESS", value: "190000, г. Санкт-Петербург, ул. Демонстрационная, д. 1, лит. А", label: "registered legal address", source_url: `${EGRUL}0000000001`, source_type: "FNS_EGRUL", checked_at: CHECKED, freshness_status: "FRESH", verified: true, origin: "ENRICHMENT_PIPELINE" },
   ],
@@ -153,6 +154,9 @@ const complete: SupplierProfile360 = {
     { source_url: "https://registry.example.org/declarations/RU-D-DEMO-0001", source_type: "REGULATORY_REGISTRY", last_checked_at: CHECKED, used_for: ["ROLE_MANUFACTURER"] },
   ],
   last_run_attempts: [],
+  website_checks: [
+    { candidate_url: "https://dairy-demo.example.com/", official_url: "https://dairy-demo.example.com/", status: "VERIFIED_STRONG", signals: ["INN_ON_SITE", "OGRN_ON_SITE", "EXACT_LEGAL_NAME"], discovered_via: "EGRUL_EMAIL_DOMAIN", reason: null, checked_at: CHECKED },
+  ],
 };
 
 /** 2. PARTIAL: website not confirmed, stale registry-mirror contacts, inferred distributor + manufacturer under review. */
@@ -223,6 +227,10 @@ const partial: SupplierProfile360 = {
   last_run_attempts: [
     { source: "FNS_EGRUL", outcome: "UNAVAILABLE", detail: "timeout", duration_ms: 8000 },
     { source: "CHECKO_REGISTRY_MIRROR", outcome: "OK", detail: null, duration_ms: 1200 },
+  ],
+  // a similar-name site that was checked and rejected (shape of the P5-002A history)
+  website_checks: [
+    { candidate_url: "https://td-severo-zapad-demo.example.net/", official_url: null, status: "REJECTED", signals: ["EXACT_LEGAL_NAME", "REGISTERED_LOCALITY"], discovered_via: "LEGAL_NAME_DOMAIN", reason: "IDENTITY_NOT_CONFIRMED_ON_SITE", checked_at: OLD },
   ],
 };
 
@@ -351,7 +359,30 @@ const enrichError: SupplierProfile360 = { ...innOnly, supplier: emptyIdentity("0
 /** 8. Enrichment already running elsewhere (IN_PROGRESS): no second trigger. */
 const inProgress: SupplierProfile360 = { ...innOnly, supplier: emptyIdentity("0000000008", true), enrichment: { ...notEnriched, status: "IN_PROGRESS" } };
 
-export type Supplier360FixtureKey = "complete" | "partial" | "innOnly" | "noContacts" | "failed" | "external" | "enrichError" | "inProgress";
+/** 9. P5-002A: verified official website with a phone but no e-mail (COMPLETE). */
+const sitePhoneOnly: SupplierProfile360 = {
+  ...complete,
+  supplier: { ...complete.supplier, inn: "0000000009", display_name: "ООО «Демо Хлеб»", legal_name: "ООО «ДЕМО ХЛЕБ»", short_name: null },
+  contacts: complete.contacts.filter((c) => c.type !== "EMAIL").map((c) => ({ ...c, value: c.value.replace("dairy-demo", "bread-demo") })),
+  enrichment: { ...complete.enrichment, official_website: "https://bread-demo.example.com/" },
+  website_checks: [{ candidate_url: "https://bread-demo.example.com/", official_url: "https://bread-demo.example.com/", status: "VERIFIED_STRONG", signals: ["INN_ON_SITE"], discovered_via: "EGRUL_EMAIL_DOMAIN", reason: null, checked_at: CHECKED }],
+};
+
+/** 10. P5-002A: verified official website (composite) that publishes no phone / e-mail (PARTIAL). */
+const siteNoContacts: SupplierProfile360 = {
+  ...complete,
+  supplier: { ...complete.supplier, inn: "0000000010", display_name: "ООО «Демо Овощи»", legal_name: "ООО «ДЕМО ОВОЩИ»", short_name: null },
+  enrichment: { ...complete.enrichment, status: "PARTIAL", reasons: ["NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE"], official_website: "https://veg-demo.example.com/",
+    website_verification: { status: "VERIFIED_COMPOSITE", signals: ["EXACT_LEGAL_NAME", "REGISTERED_STREET_ADDRESS"], discovered_via: "BRAVE_SEARCH_API", checked_at: CHECKED } },
+  contacts: [
+    { type: "WEBSITE", value: "https://veg-demo.example.com/", label: null, source_url: "https://veg-demo.example.com/", source_type: "FIRST_PARTY", checked_at: CHECKED, freshness_status: "UNKNOWN", verified: true, origin: "ENRICHMENT_PIPELINE", verification_basis: "OFFICIAL_SITE_VERIFIED_COMPOSITE:EXACT_LEGAL_NAME+REGISTERED_STREET_ADDRESS" },
+    complete.contacts[3],
+  ],
+  freshness: { ...complete.freshness, contacts: "UNKNOWN", content_currency: "UNDATED" },
+  website_checks: [{ candidate_url: "https://veg-demo.example.com/", official_url: "https://veg-demo.example.com/", status: "VERIFIED_COMPOSITE", signals: ["EXACT_LEGAL_NAME", "REGISTERED_STREET_ADDRESS"], discovered_via: "BRAVE_SEARCH_API", reason: null, checked_at: CHECKED }],
+};
+
+export type Supplier360FixtureKey = "complete" | "partial" | "innOnly" | "noContacts" | "failed" | "external" | "enrichError" | "inProgress" | "sitePhoneOnly" | "siteNoContacts";
 
 export const SUPPLIER_360_FIXTURES: Record<Supplier360FixtureKey, SupplierProfile360> = {
   complete,
@@ -362,6 +393,8 @@ export const SUPPLIER_360_FIXTURES: Record<Supplier360FixtureKey, SupplierProfil
   external,
   enrichError,
   inProgress,
+  sitePhoneOnly,
+  siteNoContacts,
 };
 
 /** What a successful mock enrichment returns, per INN (the backend would re-query sources; here a fixed synthetic result). */

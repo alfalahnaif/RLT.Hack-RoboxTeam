@@ -563,6 +563,29 @@ export type SupplierIdentity = {
   historically_known: boolean;
 };
 
+export type WebsiteVerificationStatus = "VERIFIED_STRONG" | "VERIFIED_COMPOSITE" | "REJECTED" | "UNKNOWN";
+
+/** P5-002A: how the official website (or the best rejected candidate) was checked against the EGRUL identity. */
+export type WebsiteVerification = {
+  status: WebsiteVerificationStatus;
+  /** INN_ON_SITE, OGRN_ON_SITE, KPP_ON_SITE, EXACT_LEGAL_NAME, REGISTERED_STREET_ADDRESS, … */
+  signals: string[];
+  /** EGRUL_EMAIL_DOMAIN, BRAVE_SEARCH_API, YANDEX_SEARCH_API, WIKIDATA_OGRN, LEGAL_NAME_DOMAIN, REGISTRY_MIRROR_HINT, STORED_OFFICIAL_SITE */
+  discovered_via: string | null;
+  checked_at: string | null;
+};
+
+/** P5-002A: one candidate website checked in an enrichment run (append-only history, accepted and rejected). */
+export type WebsiteCheck = {
+  candidate_url: string;
+  official_url: string | null;
+  status: WebsiteVerificationStatus;
+  signals: string[];
+  discovered_via: string | null;
+  reason: string | null;
+  checked_at: string;
+};
+
 export type EnrichmentState = {
   status: EnrichmentStatus;
   reasons: string[];
@@ -572,6 +595,8 @@ export type EnrichmentState = {
   website_confidence: "HIGH" | "MEDIUM" | "LOW" | "NONE";
   /** Website considered but not proven official (MEDIUM/LOW). */
   website_candidate: string | null;
+  /** P5-002A (optional for older responses). */
+  website_verification?: WebsiteVerification | null;
   pipeline_version: string | null;
   cache: "HIT" | "MISS" | "REFRESHED" | "NONE";
 };
@@ -586,6 +611,8 @@ export type ProfileContact = {
   freshness_status: FreshnessStatus;
   verified: boolean;
   origin: "ENRICHMENT_PIPELINE" | "CURATED_P4_005C";
+  /** P5-002A why the value is trusted, e.g. "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE", "FNS_EGRUL_EXTRACT". */
+  verification_basis?: string | null;
 };
 
 export type ProfileRoleItem = {
@@ -646,4 +673,6 @@ export type SupplierProfile360 = {
   procurement_history_summary: ProcurementHistorySummary | null;
   sources: ProfileSource[];
   last_run_attempts: { source: string; outcome: string; detail: string | null; duration_ms: number }[];
+  /** P5-002A latest website identity checks (optional for older responses). */
+  website_checks?: WebsiteCheck[];
 };

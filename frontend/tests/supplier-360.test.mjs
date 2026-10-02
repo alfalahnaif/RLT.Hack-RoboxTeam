@@ -13,6 +13,7 @@ import {
   isInnOnly,
   mailHref,
   orderedContacts,
+  parseBasis,
   primaryContactHref,
   profileName,
   roleGroups,
@@ -165,4 +166,17 @@ test("real H: curated external candidate — curated contacts, verified manufact
   assert.equal(hasReachableContact(p.contacts), true);
   const address = p.contacts.find((c) => c.type === "ADDRESS");
   assert.equal(sourceClass(address.source_type), "SECONDARY_PROVIDER");
+});
+
+test("P5-002A verification basis is parsed for display only", () => {
+  assert.deepEqual(parseBasis("OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE|COMPANY_DOMAIN"),
+    { kind: "OFFICIAL_SITE_VERIFIED_STRONG", signals: ["INN_ON_SITE", "OGRN_ON_SITE"], qualifier: "COMPANY_DOMAIN" });
+  assert.deepEqual(parseBasis("FNS_EGRUL_EXTRACT"), { kind: "FNS_EGRUL_EXTRACT", signals: [], qualifier: null });
+  assert.equal(parseBasis(null), null);
+  assert.equal(F.partial.website_checks[0].status, "REJECTED");
+});
+
+test("P5-002A a verified website without phone / e-mail still reads as 'contacts not discovered'", () => {
+  assert.equal(hasReachableContact(F.siteNoContacts.contacts), false);
+  assert.equal(hasReachableContact(F.sitePhoneOnly.contacts), true);
 });

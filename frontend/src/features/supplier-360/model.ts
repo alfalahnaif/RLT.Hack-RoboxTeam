@@ -187,7 +187,19 @@ export function hasMarketRoleEvidence(roles: ProfileRoleItem[]): boolean {
   return roles.some((r) => MARKET_ROLES.includes(r.role) && r.status !== "UNKNOWN");
 }
 
-/** Phone / email / website values — the address alone is not a way to reach the company. */
+/** A phone or e-mail value. A website or an address alone does not let a buyer reach a person at the company. */
 export function hasReachableContact(contacts: ProfileContact[]): boolean {
-  return orderedContacts(contacts).some((c) => c.type !== "ADDRESS");
+  return orderedContacts(contacts).some((c) => c.type === "PHONE" || c.type === "EMAIL");
+}
+
+/**
+ * Parsed verification basis of a contact value: "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE+OGRN_ON_SITE|COMPANY_DOMAIN"
+ * -> { kind: "OFFICIAL_SITE_VERIFIED_STRONG", signals: ["INN_ON_SITE", "OGRN_ON_SITE"], qualifier: "COMPANY_DOMAIN" }.
+ * Display only — the UI never re-decides trust.
+ */
+export function parseBasis(basis: string | null | undefined): { kind: string; signals: string[]; qualifier: string | null } | null {
+  if (!basis) return null;
+  const [head, qualifier = null] = basis.split("|");
+  const [kind, sig = ""] = head.split(":");
+  return { kind, signals: sig ? sig.split("+").filter(Boolean) : [], qualifier };
 }

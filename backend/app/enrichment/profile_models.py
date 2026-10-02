@@ -32,6 +32,14 @@ class SourceType(str, Enum):
     CURATED_P4_005C = "CURATED_P4_005C"                      # accepted P4-005C contact record (read-only)
 
 
+class WebsiteVerificationStatus(str, Enum):
+    """P5-002A outcome of checking one candidate site against the official EGRUL identity."""
+    VERIFIED_STRONG = "VERIFIED_STRONG"        # this company's INN or OGRN published on the site (self-identification)
+    VERIFIED_COMPOSITE = "VERIFIED_COMPOSITE"  # exact legal-name core + (registered street & house, or KPP) on the site
+    REJECTED = "REJECTED"                      # reachable, identity not proven / another company's site / directory-like
+    UNKNOWN = "UNKNOWN"                        # not checked (unreachable, robots.txt disallow, not attempted)
+
+
 class WebsiteConfidence(str, Enum):
     HIGH = "HIGH"      # INN/OGRN on the site, or exact legal name + registered street address -> official
     MEDIUM = "MEDIUM"  # exact legal name + registered locality on the site, no requisites -> NOT marked official
@@ -109,6 +117,7 @@ class RegistryIdentity:
     registered_address: Sourced | None = None
     primary_okved: Sourced | None = None  # "10.51.9 Производство прочей молочной продукции"
     website_hints: tuple[Sourced, ...] = ()  # website claimed by a registry mirror — a candidate, never official by itself
+    registered_email: Sourced | None = None  # e-mail registered in EGRUL (official extract) — discovery hint + business contact
     sub_attempts: tuple = ()                 # SourceAttempt of sub-steps (e.g. the official EGRUL extract) for the attempt log
 
 
@@ -116,6 +125,9 @@ class RegistryIdentity:
 class WebsiteCandidate:
     url: str
     discovered_via: Sourced
+    provider: str | None = None       # P5-002A WebsiteSearchProvider that proposed it (EGRUL_EMAIL_DOMAIN, BRAVE_SEARCH_API, ...)
+    rank: int = 0                     # bounded ranked list position (0 = best)
+    hint: str | None = None           # query / snippet that produced the candidate (provenance only, never a fact)
 
 
 @dataclass(frozen=True)
@@ -135,6 +147,17 @@ class WebsiteVerification:
     latest_year: int | None = None    # latest copyright / dated-content year seen on the pages
     checked_at: datetime | None = None
     reason: str | None = None
+    status: WebsiteVerificationStatus | None = None   # P5-002A; derived from confidence when not set
+    provider: str | None = None                       # discovery provider of the candidate
+
+    @property
+    def verification_status(self) -> WebsiteVerificationStatus:
+        if self.status is not None:
+            return self.status
+        if self.confidence == WebsiteConfidence.HIGH:
+            return (WebsiteVerificationStatus.VERIFIED_STRONG if {"INN_ON_SITE", "OGRN_ON_SITE"} & set(self.signals)
+                    else WebsiteVerificationStatus.VERIFIED_COMPOSITE)
+        return WebsiteVerificationStatus.UNKNOWN if self.confidence == WebsiteConfidence.NONE else WebsiteVerificationStatus.REJECTED
 
 
 @dataclass(frozen=True)
@@ -148,6 +171,7 @@ class ContactValue:
     checked_at: datetime
     content_currency: str | None      # CURRENT | UNDATED | OUTDATED of the source page (None for registry values)
     verified: bool                    # True = from the registry or an identity-verified first-party page
+    verification_basis: str | None = None   # P5-002A why this value is trusted, e.g. OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE
 
 
 @dataclass(frozen=True)
@@ -197,6 +221,8 @@ class EnrichmentResult:
     started_at: datetime | None = None
     finished_at: datetime | None = None
     content_currency: str | None = None
+    website_checks: list[WebsiteVerification] = field(default_factory=list)   # P5-002A every candidate checked this run
+    prior_site_rechecked: bool = False   # the stored official site was re-verified this run (protection rule)
 
     @property
     def duration_ms(self) -> int:

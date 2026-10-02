@@ -13,10 +13,14 @@ MVP implementations:
   CheckoRegistryMirror  checko.ru (FNS-derived mirror, used in P4-005C for legal address): registered address, primary OKVED,
                         website hint. Accepted only when its INN and OGRN match. Its phones/e-mails are NOT used
                         (aggregated, possibly personal or outdated).
-  RegistryWebsiteDiscovery  website hints from the registry mirror (candidates only).
-  HttpWebsiteVerifier   fetches the candidate home page + up to 5 same-host requisites/contact/policy pages; official only if
-                        the company's INN or OGRN is published there, or its exact legal name + registered street address.
-  HtmlContactExtractor  general phones / e-mails from verified first-party pages; personal-context values are dropped.
+  RegistryWebsiteDiscovery  website hints from the registry mirror (candidates only; OPTIONAL_SECONDARY_HINT).
+  P5-002A website search providers (EGRUL e-mail domain, search APIs, Wikidata, legal-name domains): app/enrichment/discovery.py
+  HttpWebsiteVerifier   fetches the candidate's site root + a bounded set of same-host high-value pages (requisites, contacts,
+                        about, policy, catalog); robots.txt respected. Official only if this company's INN or OGRN is published
+                        there as self-identification (not inside a warning notice; not on a directory-like page listing many
+                        companies) = VERIFIED_STRONG, or its exact legal name + registered street address / KPP = VERIFIED_COMPOSITE.
+  HtmlContactExtractor  general phones / e-mails from verified first-party pages; personal-context values, fax lines and
+                        unrelated third-party e-mail domains are dropped; every value carries its verification basis.
   SiteAndOkvedRoleEvidence  OKVED -> INFERRED only; first-party production/distribution claims -> UNDER_REVIEW only.
 """
 from __future__ import annotations
@@ -34,9 +38,10 @@ from app.enrichment import freshness as F
 from app.enrichment.profile_models import (ContactType, ContactValue, Page, RegistryIdentity, Role, RoleEvidenceItem, RoleStatus,
                                            SourceAttempt, SourceOutcome, SourceRateLimited, SourceSkipped, SourceType,
                                            SourceUnavailable, Sourced, Strength, WebsiteCandidate, WebsiteConfidence,
-                                           WebsiteVerification, outcome_of)
+                                           WebsiteVerification, WebsiteVerificationStatus, outcome_of)
 
-USER_AGENT = "SupplierRadar-Enrichment/0.1 (RLT.Hack 2026 research prototype; public business data only)"
+USER_AGENT = "SupplierRadar-Enrichment/0.2 (RLT.Hack 2026 research prototype; public business data only)"
+ROBOTS_AGENT = "SupplierRadar-Enrichment"
 MAX_BYTES = 1_500_000
 
 
@@ -86,6 +91,7 @@ class HttpFetcher:
         self.timeout, self.min_interval, self._clock, self._sleep = timeout, min_interval, clock, sleep
         self.host_intervals, self.max_backoff, self.default_backoff = host_intervals or {}, max_backoff, default_backoff
         self._last: dict[str, float] = {}
+        self._robots: dict[str, object] = {}     # host -> RobotFileParser | None (None = no usable robots.txt -> allowed)
         self._client = httpx.Client(follow_redirects=True, timeout=httpx.Timeout(timeout), transport=transport,
                                     headers={"User-Agent": USER_AGENT, "Accept-Language": "ru,en;q=0.5"})
         self._insecure = None
@@ -111,10 +117,21 @@ class HttpFetcher:
         wait = float(ra) if ra.isdigit() else self.default_backoff
         return wait if wait <= self.max_backoff else None
 
-    def request(self, method: str, url: str, data: dict | None = None) -> tuple[str, str]:
+    def request(self, method: str, url: str, data: dict | None = None, headers: dict | None = None) -> tuple[str, str]:
         """(final_url, decoded text). Raises SourceUnavailable on any transport / HTTP error (SourceRateLimited on 429/503)."""
-        resp = self._send(method, url, data)
+        resp = self._send(method, url, data, headers)
         return str(resp.url), decode(resp.content[:MAX_BYTES], resp.headers.get("content-type", ""))
+
+    def request_json(self, url: str, headers: dict | None = None) -> dict:
+        """GET a JSON API (search APIs, Wikidata). Non-JSON answers are a source failure, never parsed loosely."""
+        _, body = self.request("GET", url, None, headers)
+        try:
+            out = json.loads(body)
+        except ValueError as e:
+            raise SourceUnavailable(f"non-JSON answer from {urlsplit(url).hostname}") from e
+        if not isinstance(out, dict):
+            raise SourceUnavailable(f"unexpected JSON from {urlsplit(url).hostname}")
+        return out
 
     def get_bytes(self, url: str) -> bytes:
         resp = self._send("GET", url, None)
@@ -122,14 +139,14 @@ class HttpFetcher:
             raise SourceUnavailable(f"response larger than {MAX_BYTES} bytes")
         return resp.content
 
-    def _send(self, method: str, url: str, data: dict | None):
+    def _send(self, method: str, url: str, data: dict | None, headers: dict | None = None):
         self._wait(url)
         try:
             try:
                 try:
-                    resp = self._client.request(method, url, data=data)
+                    resp = self._client.request(method, url, data=data, headers=headers)
                 except self._httpx.TimeoutException:   # one retry: small sites are often slow on the first byte
-                    resp = self._client.request(method, url, data=data)
+                    resp = self._client.request(method, url, data=data, headers=headers)
             except self._httpx.ConnectError as e:  # e.g. Russian-CA certificates: retry once without TLS verification
                 if "CERTIFICATE" not in str(e).upper():
                     raise
@@ -147,7 +164,7 @@ class HttpFetcher:
             self._sleep(wait)
             self._last[urlsplit(url).hostname or ""] = self._clock()
             try:
-                resp = self._client.request(method, url, data=data)
+                resp = self._client.request(method, url, data=data, headers=headers)
             except self._httpx.HTTPError as e:
                 raise SourceUnavailable(f"{type(e).__name__}: {e}"[:200]) from e
             if resp.status_code in self.RATE_LIMITED:
@@ -156,8 +173,29 @@ class HttpFetcher:
             raise SourceUnavailable(f"HTTP {resp.status_code}")
         return resp
 
-    def get(self, url: str) -> tuple[str, str]:
+    def get(self, url: str, robots: bool = False) -> tuple[str, str]:
+        """robots=True (first-party company sites): refuse URLs the site's robots.txt disallows for our agent."""
+        if robots and not self.allowed(url):
+            raise SourceSkipped(f"robots.txt disallows {urlsplit(url).path or '/'}")
         return self.request("GET", url)
+
+    def allowed(self, url: str) -> bool:
+        """robots.txt check, cached per host. An unreachable / missing / unparsable robots.txt allows (RFC 9309 §2.3.1.3)."""
+        parts = urlsplit(url)
+        host = f"{parts.scheme}://{parts.netloc}"
+        if host not in self._robots:
+            from urllib.robotparser import RobotFileParser
+            rp = None
+            try:
+                resp = self._send("GET", host + "/robots.txt", None)
+                if resp.status_code == 200 and "html" not in resp.headers.get("content-type", "").lower():
+                    rp = RobotFileParser()
+                    rp.parse(decode(resp.content[:65536], resp.headers.get("content-type", "")).splitlines())
+            except SourceUnavailable:
+                rp = None
+            self._robots[host] = rp
+        rp = self._robots[host]
+        return True if rp is None else rp.can_fetch(ROBOTS_AGENT, url)
 
     def post(self, url: str, data: dict) -> tuple[str, str]:
         return self.request("POST", url, data)
@@ -238,6 +276,17 @@ _EXTRACT_ROW_INN = re.compile(r"ИНН юридического лица\s+(\d{1
 _EXTRACT_ADDRESS = re.compile(r"(?:^|\n)\d+\s+Адрес(?: \(место нахождения\))? юридического лица\s+(.*?)\n\d+\s+ГРН", re.S)
 _EXTRACT_OKVED = re.compile(r"Сведения об основном виде деятельности.*?Код и наименование вида деятельности\s+"
                             r"(\d{2}(?:\.\d{1,2}){0,3})\s+(.*?)\n\d+\s+ГРН", re.S)
+
+
+_EXTRACT_EMAIL = re.compile(r"(?:^|\n)\d+\s+E-?mail\s+([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,24})", re.I)
+
+
+def parse_egrul_email(text: str, checked_at: datetime) -> Sourced | None:
+    """E-mail registered in EGRUL («Адрес электронной почты … E-mail X»). Called only after parse_egrul_extract accepted the
+    extract's identity. Lower-cased; never inferred."""
+    body = "\n".join(ln.rstrip() for ln in text.splitlines() if not _EXTRACT_FOOTER.match(ln.strip()))
+    m = _EXTRACT_EMAIL.search(body)
+    return Sourced(m.group(1).lower(), EGRUL_PUBLIC_URL, SourceType.FNS_EGRUL, checked_at) if m else None
 
 
 class ExtractMismatch(ValueError):
@@ -335,16 +384,17 @@ class FnsEgrulRegistry:
             return replace(ident, sub_attempts=(SourceAttempt(self.EXTRACT, SourceOutcome.NOT_FOUND, "no extract token"),))
         t0 = time.perf_counter()
         try:
-            address, okved = parse_egrul_extract(self._extract_text(token), inn, self.now(),
-                                                 ident.ogrn.value if ident.ogrn else None)
+            text = self._extract_text(token)
+            address, okved = parse_egrul_extract(text, inn, self.now(), ident.ogrn.value if ident.ogrn else None)
         except (ExtractMismatch, SourceUnavailable) as e:
             outcome = SourceOutcome.REJECTED if isinstance(e, ExtractMismatch) else outcome_of(e)
             return replace(ident, sub_attempts=(SourceAttempt(self.EXTRACT, outcome, str(e)[:200],
                                                               int((time.perf_counter() - t0) * 1000)),))
+        email = parse_egrul_email(text, self.now())
         if ident.entity_kind != "LEGAL_ENTITY":
-            address = None     # an entrepreneur's residence address is personal data and is not published anyway
-        found = [k for k, v in (("address", address), ("okved", okved)) if v]
-        return replace(ident, registered_address=address, primary_okved=okved,
+            address = email = None   # an entrepreneur's residence address / e-mail are personal data
+        found = [k for k, v in (("address", address), ("okved", okved), ("email", email)) if v]
+        return replace(ident, registered_address=address, primary_okved=okved, registered_email=email,
                        sub_attempts=(SourceAttempt(self.EXTRACT, SourceOutcome.OK, "fields: " + (", ".join(found) or "none"),
                                                    int((time.perf_counter() - t0) * 1000)),))
 
@@ -464,7 +514,8 @@ def merge_identities(primary: RegistryIdentity | None, mirror: RegistryIdentity 
     for name in ("short_name", "ogrn", "kpp", "legal_status", "region", "registered_address", "primary_okved"):
         fields[name] = getattr(primary, name) or getattr(mirror, name)
     return RegistryIdentity(inn=primary.inn, entity_kind=primary.entity_kind, legal_name=primary.legal_name,
-                            registration_date=primary.registration_date, website_hints=mirror.website_hints, **fields), None
+                            registration_date=primary.registration_date, website_hints=mirror.website_hints,
+                            registered_email=primary.registered_email, sub_attempts=primary.sub_attempts, **fields), None
 
 
 # ------------------------------------------------------------------------------------------------------------ website
@@ -497,14 +548,26 @@ _LINK_HINTS = (
     re.compile(r"rekvizit|requisit|реквизит|svedeniya|сведения о", re.I),
     re.compile(r"kontakt|contact|контакт", re.I),
     re.compile(r"politik|privacy|konfidenc|personal|политик|конфиденц|персональн", re.I),
-    re.compile(r"about|o-kompanii|o_kompanii|o-nas|company|о компании|о нас|documents|dokument|документ", re.I),
+    re.compile(r"about|o-kompanii|o_kompanii|o-nas|company|о компании|о нас|documents|dokument|документ|/doc\b", re.I),
+    re.compile(r"catalog|katalog|products|produkci|каталог|продукци", re.I),   # P5-002A: role/product evidence, lowest priority
 )
 _COPYRIGHT = re.compile(r"(?:©|&copy;|copyright|\(c\))\s*(?:(?:19|20)\d{2}\s*(?:[-–—]|&ndash;|&mdash;)\s*)?((?:19|20)\d{2})", re.I)
-_LOCALITY = re.compile(r"(?:^|[\s,])(?:г|город|д|с|пос|пгт|рп|п|ст-ца|х)\.?\s+([А-ЯЁ][А-Яа-яЁё-]{2,})")
-_STREET = re.compile(r"(?:ул|улица|пр-кт|проспект|пр|пер|переулок|ш|шоссе|наб|набережная|б-р|бульвар|пл|площадь|проезд|тракт|мкр)"
-                     r"\.?\s+([А-ЯЁ0-9][А-Яа-яЁё0-9-]{2,})")
-_HOUSE = re.compile(r"(?:д|дом|зд|здание|влд|владение)\.?\s*(\d+)")
+_LOCALITY = re.compile(r"(?:^|[\s,])(?:г|город|д|с|пос|пгт|рп|п|ст-ца|х)(?:\.\s*|\s+)([А-ЯЁ][А-Яа-яЁё-]{2,})", re.I)
+_STREET = re.compile(r"(?:^|(?<=[\s,.]))(?:ул|улица|пр-кт|проспект|пр|пер|переулок|ш|шоссе|наб|набережная|б-р|бульвар|пл|площадь|проезд|тракт|мкр)"
+                     r"\.?\s+([А-ЯЁ0-9][А-Яа-яЁё0-9-]{2,})", re.I)
+_HOUSE = re.compile(r"(?:^|[\s,])(?:д|дом|зд|здание|влд|владение)\.?\s*(\d+)", re.I)
 _NAME_CORE = re.compile(r'"([^"]{3,})"')
+_LEGAL_FORMS = re.compile(
+    r"^(?:общество с ограниченной ответственностью|акционерное общество|публичное акционерное общество|закрытое акционерное "
+    r"общество|открытое акционерное общество|непубличное акционерное общество|федеральное государственное (?:казенное|бюджетное|"
+    r"унитарное)? ?(?:учреждение|предприятие)|государственное (?:бюджетное|казенное|автономное)? ?учреждение|"
+    r"индивидуальный предприниматель|ооо|ао|пао|зао|оао|нао|фгку|фгуп|гбу|гку|ип)\s+", re.I)
+_QUOTES = re.compile(r"[\"«»“”„'`]")
+# a requisites block that warns about impostors: an INN inside it identifies someone the site is NOT
+_WARNING = re.compile(r"мошенни|злоумышленн|от имени[^.]{0,80}(?:не является|не являются|не имеет|не связан)|не является[^.]{0,60}"
+                      r"(?:сотрудник|представител|сайт|организатор)|не имеет отношения|не принадлеж|поддельн|фальшив|фейков|"
+                      r"остерегайтесь|осторожно|убедительно просим|с особым вниманием", re.I)
+_INN_LABEL = re.compile(r"ИНН\D{0,12}?(\d{10}|\d{12})(?!\d)")
 
 
 def contact_links(base_url: str, page_html: str, limit: int = 3) -> list[str]:
@@ -524,8 +587,16 @@ def contact_links(base_url: str, page_html: str, limit: int = 3) -> list[str]:
     return [u for u, _ in sorted(ranked.items(), key=lambda kv: kv[1])][:limit]
 
 
+_META_DATE = re.compile(r"""(?:article:modified_time|og:updated_time|dateModified|datePublished|last-modified)["']?\s*"""
+                        r"""(?:content=|:)\s*["']((?:19|20)\d{2})-\d{2}""", re.I)
+_TIME_TAG = re.compile(r"""<time[^>]+datetime=["']((?:19|20)\d{2})-\d{2}""", re.I)
+
+
 def latest_year(pages: list[Page], today: date) -> int | None:
-    years = [int(y) for p in pages for y in _COPYRIGHT.findall(p.html) + _COPYRIGHT.findall(p.text)]
+    """Latest content year: copyright notice, page metadata (modified / published time) or <time datetime>. Never the HTTP
+    retrieval date. None -> freshness stays UNKNOWN."""
+    years = [int(y) for p in pages for y in _COPYRIGHT.findall(p.html) + _COPYRIGHT.findall(p.text)
+             + _META_DATE.findall(p.html) + _TIME_TAG.findall(p.html)]
     years = [y for y in years if 1990 <= y <= today.year]
     return max(years) if years else None
 
@@ -540,22 +611,58 @@ def _street_signal(address: str, folded: str) -> bool:
                for m in re.finditer(re.escape(name), folded))
 
 
+def name_cores(identity: RegistryIdentity) -> list[str]:
+    """Folded legal-name cores without the legal form and quotes: «ООО "КОМПАНИЯ "ТЕНЗОР"» -> 'компания тензор'."""
+    out = []
+    for src in (identity.legal_name, identity.short_name):
+        if not src:
+            continue
+        core = _WS.sub(" ", _QUOTES.sub(" ", _LEGAL_FORMS.sub("", _fold(src.value)))).strip(" -")
+        if len(core) >= 3 and core not in out:
+            out.append(core)
+    return out
+
+
+def _unquoted(folded: str) -> str:
+    return _WS.sub(" ", _QUOTES.sub(" ", folded))
+
+
+def _self_identified(number: str, texts: list[str]) -> tuple[bool, bool]:
+    """(found as self-identification, found only inside a warning context) for an INN / OGRN on the pages."""
+    seen = warned = False
+    for t in texts:
+        for m in re.finditer(rf"(?<!\d){number}(?!\d)", t):
+            window = t[max(0, m.start() - 300):m.end() + 500]
+            if _WARNING.search(window):
+                warned = True
+            else:
+                seen = True
+    return seen, warned and not seen
+
+
 def assess_identity(identity: RegistryIdentity, pages: list[Page]) -> tuple[WebsiteConfidence, tuple[str, ...]]:
     """Identity-first grading of a candidate site (a similar-looking name alone is never enough):
-      HIGH   INN or OGRN of this company published on the site, or
-             exact legal-name core + registered street address (street + house number) on the site
+      HIGH   STRONG: this company's INN or OGRN published on the site as self-identification, or
+             COMPOSITE: exact legal-name core + registered street address (street + house), or + this company's KPP
       MEDIUM exact legal-name core + registered locality only  -> NOT official
-      LOW    anything else                                      -> rejected"""
+      LOW    anything else, an INN/OGRN only inside an impostor-warning notice, or a directory-like page set
+             (three or more different companies' INNs)            -> rejected"""
     text = " ".join(p.text for p in pages)
-    digits = " ".join(p.text + " " + p.html for p in pages)
+    texts = [p.text for p in pages] + [p.html for p in pages]
     signals = []
-    if re.search(rf"(?<!\d){identity.inn}(?!\d)", digits):
+    inn_ok, inn_warn = _self_identified(identity.inn, texts)
+    ogrn_ok, ogrn_warn = _self_identified(identity.ogrn.value, texts) if identity.ogrn else (False, False)
+    if inn_ok:
         signals.append("INN_ON_SITE")
-    if identity.ogrn and re.search(rf"(?<!\d){identity.ogrn.value}(?!\d)", digits):
+    if ogrn_ok:
         signals.append("OGRN_ON_SITE")
+    if (inn_warn or ogrn_warn) and not (inn_ok or ogrn_ok):
+        signals.append("ID_ONLY_IN_WARNING_CONTEXT")
+    if identity.kpp and re.search(rf"(?<![\dA-Z]){identity.kpp.value}(?![\dA-Z])", text):
+        signals.append("KPP_ON_SITE")
     folded = _fold(text)
-    core = _NAME_CORE.search(_fold(identity.legal_name.value)) if identity.legal_name else None
-    if core and core.group(1).strip() in folded:
+    plain = _unquoted(folded)
+    if any(re.search(rf"(?<![\w-]){re.escape(c)}(?![\w])", plain) for c in name_cores(identity)):
         signals.append("EXACT_LEGAL_NAME")
     addr = identity.registered_address.value if identity.registered_address else ""
     loc = _LOCALITY.search(addr)
@@ -563,30 +670,63 @@ def assess_identity(identity: RegistryIdentity, pages: list[Page]) -> tuple[Webs
         signals.append("REGISTERED_LOCALITY")
     if addr and _street_signal(addr, folded):
         signals.append("REGISTERED_STREET_ADDRESS")
+    other_inns = {m.group(1) for m in _INN_LABEL.finditer(text)} - {identity.inn}
+    if len(other_inns) >= 3:
+        signals.append("DIRECTORY_LIKE")
     sig = set(signals)
-    if {"INN_ON_SITE", "OGRN_ON_SITE"} & sig or {"EXACT_LEGAL_NAME", "REGISTERED_STREET_ADDRESS"} <= sig:
+    # the company's INN/OGRN appear only inside an impostor warning: the site belongs to someone else, and the name /
+    # address / KPP found there come from that same warning -> never a composite match
+    if "DIRECTORY_LIKE" in sig or "ID_ONLY_IN_WARNING_CONTEXT" in sig:
+        return WebsiteConfidence.LOW, tuple(signals)
+    if {"INN_ON_SITE", "OGRN_ON_SITE"} & sig:
+        return WebsiteConfidence.HIGH, tuple(signals)
+    if "EXACT_LEGAL_NAME" in sig and {"REGISTERED_STREET_ADDRESS", "KPP_ON_SITE"} & sig:
         return WebsiteConfidence.HIGH, tuple(signals)
     if {"EXACT_LEGAL_NAME", "REGISTERED_LOCALITY"} <= sig:
         return WebsiteConfidence.MEDIUM, tuple(signals)
     return WebsiteConfidence.LOW, tuple(signals)
 
 
-FALLBACK_CONTACT_PATHS = ("/contacts/", "/kontakty/")   # tried only when the home page links to no contact/requisites page
+def verification_status(confidence: WebsiteConfidence, signals: tuple[str, ...]) -> WebsiteVerificationStatus:
+    if confidence == WebsiteConfidence.HIGH:
+        return (WebsiteVerificationStatus.VERIFIED_STRONG if {"INN_ON_SITE", "OGRN_ON_SITE"} & set(signals)
+                else WebsiteVerificationStatus.VERIFIED_COMPOSITE)
+    return WebsiteVerificationStatus.REJECTED
+
+
+# tried only when the start page links to no requisites / contact page (bounded high-value paths, P5-002A)
+FALLBACK_CONTACT_PATHS = ("/contacts/", "/kontakty/", "/requisites/", "/rekvizity/", "/about/", "/o-kompanii/")
+
+
+def site_root(url: str) -> str:
+    p = urlsplit(url)
+    return f"{p.scheme or 'https'}://{p.netloc}/"
 
 
 class HttpWebsiteVerifier:
+    """Bounded first-party check: site root + at most `extra_pages` same-host high-value pages (requisites, contacts, policy,
+    about, catalog), robots.txt respected, per-host delay / timeout / size cap from the fetcher. A search hit's own page is
+    read first (it is often the requisites page that matched the INN query)."""
     name = "FIRST_PARTY_WEBSITE"
 
-    def __init__(self, fetcher: HttpFetcher, now: Callable[[], datetime], extra_pages: int = 5) -> None:
+    def __init__(self, fetcher: HttpFetcher, now: Callable[[], datetime], extra_pages: int = 6) -> None:
         self.fetcher, self.now, self.extra_pages = fetcher, now, extra_pages
+
+    def _get(self, url: str) -> tuple[str, str]:
+        if hasattr(self.fetcher, "allowed"):      # HttpFetcher: robots.txt respected on company sites
+            return self.fetcher.get(url, robots=True)
+        return self.fetcher.get(url)              # test fetchers
 
     def verify_company_site(self, identity: RegistryIdentity, candidate: WebsiteCandidate) -> WebsiteVerification:
         checked = self.now()
+        root = site_root(candidate.url)
         # SourceUnavailable propagates (recorded by the pipeline). A redirect to another domain is assessed on the landing page.
-        final_url, body = self.fetcher.get(candidate.url)
+        final_url, body = self._get(root)
         pages = [Page(final_url, body, html_to_text(body))]
         queue = contact_links(final_url, body, self.extra_pages) or [urljoin(final_url, p) for p in FALLBACK_CONTACT_PATHS]
-        seen = {final_url.rstrip("/")}
+        if candidate.url.rstrip("/") != root.rstrip("/") and host_of(candidate.url) == host_of(final_url):
+            queue.insert(0, candidate.url)
+        seen = {final_url.rstrip("/"), root.rstrip("/")}
         conf, signals = assess_identity(identity, pages)
         # breadth-first over likely requisites/contact pages (same host, bounded); stop once identity is proven
         while queue and len(pages) <= self.extra_pages and conf != WebsiteConfidence.HIGH:
@@ -595,41 +735,56 @@ class HttpWebsiteVerifier:
                 continue
             seen.add(url.rstrip("/"))
             try:
-                u, b = self.fetcher.get(url)
+                u, b = self._get(url)
             except SourceUnavailable:
                 continue
+            if host_of(u) != host_of(final_url):
+                continue                       # never follow a page onto another domain
             seen.add(u.rstrip("/"))
             pages.append(Page(u, b, html_to_text(b)))
             queue += [x for x in contact_links(u, b, self.extra_pages) if x.rstrip("/") not in seen and x not in queue]
             conf, signals = assess_identity(identity, pages)
-        if conf == WebsiteConfidence.HIGH:     # contacts: make sure the contacts page itself was read when it exists
+        if conf == WebsiteConfidence.HIGH:     # contacts: make sure the contacts / requisites pages themselves were read
             for url in contact_links(final_url, body, self.extra_pages):
-                if url.rstrip("/") not in seen and _LINK_HINTS[1].search(url) and len(pages) <= self.extra_pages + 1:
+                if (url.rstrip("/") not in seen and (_LINK_HINTS[0].search(url) or _LINK_HINTS[1].search(url))
+                        and len(pages) <= self.extra_pages + 1):
                     seen.add(url.rstrip("/"))
                     try:
-                        u, b = self.fetcher.get(url)
-                        pages.append(Page(u, b, html_to_text(b)))
+                        u, b = self._get(url)
+                        if host_of(u) == host_of(final_url):
+                            pages.append(Page(u, b, html_to_text(b)))
                     except SourceUnavailable:
                         pass
         pages = list({p.url.rstrip("/"): p for p in reversed(pages)}.values())[::-1]   # one page per final URL, order kept
+        official = final_url if conf == WebsiteConfidence.HIGH else None
         return WebsiteVerification(candidate_url=candidate.url, confidence=conf, signals=signals,
-                                   official_url=final_url if conf == WebsiteConfidence.HIGH else None, pages=tuple(pages),
+                                   official_url=site_root(official) if official else None, pages=tuple(pages),
                                    latest_year=latest_year(pages, checked.date()), checked_at=checked,
-                                   reason=None if conf == WebsiteConfidence.HIGH else "IDENTITY_NOT_CONFIRMED_ON_SITE")
+                                   reason=None if conf == WebsiteConfidence.HIGH else "IDENTITY_NOT_CONFIRMED_ON_SITE",
+                                   status=verification_status(conf, signals), provider=candidate.provider)
 
 
 # ------------------------------------------------------------------------------------------------------------ contacts
 _TEL_LINK = re.compile(r"""href=["']tel:([^"']+)["'][^>]*>(.*?)</a>""", re.S | re.I)
 _MAILTO = re.compile(r"""href=["']mailto:([^"'?]+)""", re.I)
-_PHONE_TXT = re.compile(r"(?<![\d+])(?:\+7|8)[\s \-–(]*\d{3,5}[\s \-–)]*\d{1,3}[\s \-–]*\d{2}[\s \-–]*\d{2}(?!\d)")
+_PHONE_TXT = re.compile(r"(?<![\d+])(?:\+7|8)[\s \-–(]*\d{3,5}[\s \-–)]*\d{1,3}[\s \-–]*\d{2}[\s \-–]*\d{2}(?!\d)")
 _EMAIL_TXT = re.compile(r"(?<![\w.+-])[A-Za-z0-9][A-Za-z0-9._%+-]{0,63}@[A-Za-z0-9.-]+\.[A-Za-z]{2,24}(?![\w-])")
 _PATRONYMIC = re.compile(r"\b[А-ЯЁ][а-яё]+(?:ович|евич|ьич|овна|евна|ична|инична)\b")
-_PERSON_ROLE = re.compile(r"директор|бухгалтер|руководител|менеджер\s+[А-ЯЁ]|специалист\s+[А-ЯЁ]", re.I)
+_PERSON_ROLE = re.compile(r"директор|бухгалтер|руководител|заместител|менеджер\s+[А-ЯЁ]|специалист\s+[А-ЯЁ]", re.I)
 _GENERIC_LOCAL = re.compile(r"^(info|sales|office|zakaz|order|orders|mail|secretary|priem|priemnaya|opt|market|marketing|"
                             r"client|clients|hello|contact|contacts|post|sale|torg|snab|tender|tenders|general|company|"
-                            r"reception|kanc|kancelyariya|support|service|shop|manager|otdel)\d*$", re.I)
+                            r"reception|kanc|kancelyariya|support|service|shop|manager|otdel|help|zakupki|purchase|"
+                            r"procurement|commerce|kommerc|dir|director|buh|hr|personal|pr|press|yur|legal)\d*$", re.I)
+# person-like mailbox: initial + surname (a.bondar), surname + initial (kamenev.m), name.surname (nikiforova.kseniya),
+# name_surname, or a bare transliterated Russian surname (ivanov, petrova, kovalenko, sokolsky)
+_PERSON_LOCAL = re.compile(r"^(?:[a-z]{1,2}[._-][a-z]{3,}|[a-z]{3,}[._-][a-z]{1,2}|[a-z]{3,}[._][a-z]{3,}|"
+                           r"[a-z]{2,}(?:ov|ev|ova|eva|in|ina|yn|yna|sky|skiy|skaya|skii|enko|chuk|yuk|uk|ich))\d*$", re.I)
 _FILE_TLD = re.compile(r"\.(png|jpe?g|gif|svg|webp|css|js)$", re.I)
 _BAD_EMAIL_DOMAINS = ("example.com", "sentry.io", "wixpress.com", "domain.ru", "site.ru", "mail.example")
+FREE_MAIL = ("mail.ru", "bk.ru", "list.ru", "inbox.ru", "internet.ru", "yandex.ru", "ya.ru", "yandex.com", "gmail.com",
+             "rambler.ru", "lenta.ru", "ro.ru", "outlook.com", "hotmail.com", "icloud.com")
+_FAX_BEFORE = re.compile(r"(факс|fax|ф\.)\s*[:.]?\s*$", re.I)
+_PHONE_BEFORE = re.compile(r"тел\w*\.?\s*/\s*(?:факс|fax)\s*[:.]?\s*$", re.I)
 
 
 def normalize_phone(raw: str) -> str | None:
@@ -641,15 +796,48 @@ def normalize_phone(raw: str) -> str | None:
     return None
 
 
+def registrable_domain(host: str) -> str:
+    """Naive registrable domain: last two labels (three for regional second-level zones such as spb.ru, msk.ru, com.ru)."""
+    parts = host.lower().strip(".").split(".")
+    if len(parts) >= 3 and ".".join(parts[-2:]) in ("spb.ru", "msk.ru", "com.ru", "net.ru", "org.ru", "pp.ru", "co.uk"):
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:])
+
+
 def _personal_context(text: str, pos: int) -> bool:
     window = text[max(0, pos - 90):pos + 40]
     return bool(_PATRONYMIC.search(window) or _PERSON_ROLE.search(window))
 
 
+def _fax_only(text: str, raw: str) -> bool:
+    """Every visible occurrence of this number is labelled «Факс» (a combined «тел./факс» line is a phone)."""
+    occ = [m.start() for m in re.finditer(re.escape(raw), text)]
+    if not occ:
+        return False
+    return all(_FAX_BEFORE.search(text[max(0, p - 25):p]) and not _PHONE_BEFORE.search(text[max(0, p - 25):p]) for p in occ)
+
+
+def email_accepted(email: str, site_domain: str, company_domains: set[str], site_label: str) -> str | None:
+    """Basis label for a public business e-mail, or None. Company domain (the verified site's or the EGRUL-registered
+    e-mail domain): any non-person mailbox. Public free-mail: only role mailboxes or ones named after the company site.
+    Any other third-party domain: rejected (not explained by the official site)."""
+    local, _, dom = email.partition("@")
+    if not dom or _PERSON_LOCAL.match(local):
+        return None
+    reg = registrable_domain(dom)
+    if reg == site_domain or reg in company_domains:
+        return "COMPANY_DOMAIN"
+    if reg in FREE_MAIL or dom in FREE_MAIL:
+        if _GENERIC_LOCAL.match(local) or (len(site_label) >= 4 and site_label in local):
+            return "PUBLIC_MAILBOX_ON_OFFICIAL_SITE"
+        return None
+    return None
+
+
 class HtmlContactExtractor:
     name = "FIRST_PARTY_CONTACT_EXTRACTOR"
 
-    def __init__(self, max_per_type: int = 2) -> None:
+    def __init__(self, max_per_type: int = 3) -> None:
         self.max_per_type = max_per_type
 
     def extract(self, identity: RegistryIdentity, verification: WebsiteVerification) -> list[ContactValue]:
@@ -658,25 +846,37 @@ class HtmlContactExtractor:
         today = (verification.checked_at or datetime.now()).date()
         currency = F.content_currency(verification.latest_year, today)
         checked = verification.checked_at
+        status = verification.verification_status.value
+        key = [x for x in verification.signals if x in ("INN_ON_SITE", "OGRN_ON_SITE", "KPP_ON_SITE", "EXACT_LEGAL_NAME",
+                                                         "REGISTERED_STREET_ADDRESS")]
+        basis = f"OFFICIAL_SITE_{status}:{'+'.join(key)}"
+        site_host = host_of(verification.official_url)
+        site_domain = registrable_domain(site_host)
+        company_domains = {site_domain}
+        if identity.registered_email:
+            company_domains.add(registrable_domain(identity.registered_email.value.partition("@")[2]))
+        company_domains -= set(FREE_MAIL)
+        label = site_domain.split(".")[0]
         phones: dict[str, tuple[int, ContactValue]] = {}
         emails: dict[str, tuple[int, ContactValue]] = {}
         order = 0
-        site_host = host_of(verification.official_url)
         for page in verification.pages:
+            if host_of(page.url) != site_host:
+                continue       # contact data only from the verified domain
             text = page.text
             found_p = []
-            for href, label in _TEL_LINK.findall(page.html):
-                shown = html_to_text(label)
+            for href, label_html in _TEL_LINK.findall(page.html):
+                shown = html_to_text(label_html)
                 found_p.append(shown if normalize_phone(shown) else htmlmod.unescape(href).strip())
             found_p += [m.group(0) for m in _PHONE_TXT.finditer(text)]
             for raw in found_p:
                 norm = normalize_phone(raw)
                 pos = text.find(raw)
-                if not norm or norm in phones or (pos >= 0 and _personal_context(text, pos)):
+                if (not norm or norm in phones or (pos >= 0 and _personal_context(text, pos)) or _fax_only(text, raw)):
                     continue
                 order += 1
                 phones[norm] = (order, ContactValue(ContactType.PHONE, raw.strip(), norm, "general phone (published on the official website)",
-                                                    page.url, SourceType.FIRST_PARTY, checked, currency, True))
+                                                    page.url, SourceType.FIRST_PARTY, checked, currency, True, basis))
             found_e = [htmlmod.unescape(m).strip() for m in _MAILTO.findall(page.html)] + _EMAIL_TXT.findall(text)
             for raw in found_e:
                 norm = raw.lower()
@@ -685,33 +885,41 @@ class HtmlContactExtractor:
                 if (not dom or norm in emails or _FILE_TLD.search(norm) or any(dom.endswith(b) for b in _BAD_EMAIL_DOMAINS)
                         or (pos >= 0 and _personal_context(text, pos))):
                     continue
-                generic = bool(_GENERIC_LOCAL.match(local))
+                how = email_accepted(norm, site_domain, company_domains, label)
+                if how is None:
+                    continue
                 order += 1
-                emails[norm] = (order, ContactValue(ContactType.EMAIL, raw.strip(), norm,
-                                                    "general e-mail" if generic else "company e-mail (named after the company domain)",
-                                                   page.url, SourceType.FIRST_PARTY, checked, currency, True))
+                emails[norm] = (order, ContactValue(ContactType.EMAIL, norm, norm,
+                                                    "general e-mail" if _GENERIC_LOCAL.match(local) else "company e-mail",
+                                                    page.url, SourceType.FIRST_PARTY, checked, currency, True, f"{basis}|{how}"))
         # landlines before mobile numbers (a mobile may be an employee's), then page order
         out = [v for _, v in sorted(phones.values(), key=lambda t: (t[1].normalized[1] == "9", t[0]))[:self.max_per_type]]
-        # e-mails: generic role mailboxes, or a mailbox named after the company domain (bormoloko@…); a person-like
-        # mailbox (ivanov.p@…) is never stored, even on the company domain
-        label = site_host.split(".")[0]
-        ems = [v for _, v in sorted(emails.values(), key=lambda t: t[0])
-               if _GENERIC_LOCAL.match(v.normalized.split("@")[0]) or (len(label) >= 4 and label in v.normalized.split("@")[0])]
-        out += ems[:self.max_per_type]
-        how = "requisites (INN/OGRN)" if {"INN_ON_SITE", "OGRN_ON_SITE"} & set(verification.signals) else             "exact legal name + registered street address"
-        out.append(ContactValue(ContactType.WEBSITE, verification.official_url, host_of(verification.official_url),
+        out += [v for _, v in sorted(emails.values(), key=lambda t: (not _GENERIC_LOCAL.match(t[1].normalized.split("@")[0]), t[0]))
+                ][:self.max_per_type]
+        how = ("requisites (INN/OGRN)" if {"INN_ON_SITE", "OGRN_ON_SITE"} & set(verification.signals)
+               else "exact legal name + registered address / KPP")
+        out.append(ContactValue(ContactType.WEBSITE, verification.official_url, site_host,
                                 f"official website (identity confirmed on the site by {how})", verification.official_url,
-                                SourceType.FIRST_PARTY, checked, currency, True))
+                                SourceType.FIRST_PARTY, checked, currency, True, basis))
         return out
 
 
 def registry_contacts(identity: RegistryIdentity) -> list[ContactValue]:
-    """Registered legal address from the registry (a current registry record -> CURRENT)."""
+    """Registered legal address and the business e-mail registered in EGRUL (official registry record -> CURRENT). A
+    person-like registered mailbox (name.surname@…, initial.surname@…) is not shown."""
+    out = []
     a = identity.registered_address
-    if not a:
-        return []
-    return [ContactValue(ContactType.ADDRESS, a.value, _fold(a.value), "registered legal address", a.source_url, a.source_type,
-                         a.checked_at, F.CURRENT, True)]
+    if a:
+        out.append(ContactValue(ContactType.ADDRESS, a.value, _fold(a.value), "registered legal address", a.source_url, a.source_type,
+                                a.checked_at, F.CURRENT, True, "FNS_EGRUL_EXTRACT"))
+    e = identity.registered_email
+    if e and identity.entity_kind == "LEGAL_ENTITY":
+        local, _, dom = e.value.partition("@")
+        public = dom in FREE_MAIL or registrable_domain(dom) in FREE_MAIL
+        if not _PERSON_LOCAL.match(local) and (not public or _GENERIC_LOCAL.match(local)):
+            out.append(ContactValue(ContactType.EMAIL, e.value, e.value, "e-mail registered in EGRUL", e.source_url, e.source_type,
+                                    e.checked_at, F.CURRENT, True, "FNS_EGRUL_REGISTERED_EMAIL"))
+    return out
 
 
 # ------------------------------------------------------------------------------------------------------------ roles

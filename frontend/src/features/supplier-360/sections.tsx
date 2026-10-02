@@ -27,7 +27,7 @@ import { useToast } from "@/components/ui/toast";
 import type { FreshnessStatus, ProfileContact, ProfileContactType, ProfileRoleStatus, SupplierProfile360 } from "@/lib/api/types";
 import { fmtDate, fmtNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { evidenceCheckedAt, hasMarketRoleEvidence, hasReachableContact, humanizeCode, mailHref, orderedContacts, profileName, roleGroups, safeHttpUrl, sourceClass, telHref, type RoleGroup, type SourceClass } from "./model";
+import { evidenceCheckedAt, hasMarketRoleEvidence, hasReachableContact, humanizeCode, mailHref, orderedContacts, parseBasis, profileName, roleGroups, safeHttpUrl, sourceClass, telHref, type RoleGroup, type SourceClass } from "./model";
 
 /** Vocabulary label with a readable fallback for codes the copy does not know yet (never hides the API value). */
 export function useLabel() {
@@ -200,7 +200,7 @@ function ContactRow({ c }: { c: ProfileContact }) {
   const t = useTranslations("supplier360.contacts");
   const label = useLabel();
   // P4-005C address labels arrive as "registered legal address" / "published company address"; other labels are shown as given.
-  const key = `label.${c.label?.trim().toUpperCase().replaceAll(" ", "_")}`;
+  const key = `label.${(c.label ?? "").trim().toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, "")}`;
   const contactLabel = (raw: string) => (t.has(key) ? t(key) : raw);
   const isUrl = c.type === "WEBSITE" || c.type === "EMAIL";
   return (
@@ -222,6 +222,7 @@ function ContactRow({ c }: { c: ProfileContact }) {
             <WrapLink href={safeHttpUrl(c.source_url)} className="text-2xs">{label("sourceType", c.source_type)}</WrapLink>
             <span>{t("checked", { date: fmtDate(c.checked_at) })}</span>
           </span>
+          <BasisLine basis={c.verification_basis} />
         </div>
       </div>
       <div className="flex flex-wrap gap-2 ps-7">
@@ -238,7 +239,7 @@ export function ContactsSection({ profile }: { profile: SupplierProfile360 }) {
   const candidate = !e.official_website ? safeHttpUrl(e.website_candidate, true) : null;
   return (
     <SectionCard id="s360-contacts" icon={<TelephoneIcon />} title={t("title")}
-      extra={e.official_website && e.website_confidence === "HIGH" ? <Badge size="sm" color="success"><VerifiedIcon aria-hidden />{t("officialWebsite")}</Badge> : null}>
+      extra={e.official_website && e.website_confidence === "HIGH" ? <WebsiteVerifiedBadge profile={profile} /> : null}>
       {contacts.length ? <ul className="flex flex-col">{contacts.map((c, i) => <ContactRow key={`${c.type}-${c.value}-${i}`} c={c} />)}</ul> : null}
       {!hasReachableContact(profile.contacts) ? (
         <div className="flex items-start gap-2 rounded-md border border-line-subtle bg-surface-subtle p-3">
@@ -257,6 +258,32 @@ export function ContactsSection({ profile }: { profile: SupplierProfile360 }) {
       ) : null}
     </SectionCard>
   );
+}
+
+/** "Official website — INN on site · found via EGRUL e-mail domain" (STRONG) or "… name + registered address" (COMPOSITE). */
+function WebsiteVerifiedBadge({ profile }: { profile: SupplierProfile360 }) {
+  const t = useTranslations("supplier360.contacts");
+  const label = useLabel();
+  const wv = profile.enrichment.website_verification;
+  return (
+    <span className="flex flex-col items-end gap-1">
+      <Badge size="sm" color="success" className="h-auto min-h-[22px] whitespace-normal text-start">
+        <VerifiedIcon aria-hidden />
+        {wv ? label("websiteStatus", wv.status) : t("officialWebsite")}
+      </Badge>
+      {wv?.discovered_via ? <span className="text-2xs text-muted">{t("foundVia", { via: label("provider", wv.discovered_via) })}</span> : null}
+    </span>
+  );
+}
+
+/** Why a value is trusted, in words: "Basis: official site — INN on site, OGRN on site" / "Basis: official EGRUL extract". */
+function BasisLine({ basis }: { basis?: string | null }) {
+  const t = useTranslations("supplier360.contacts");
+  const label = useLabel();
+  const b = parseBasis(basis);
+  if (!b) return null;
+  const parts = [label("basisKind", b.kind), ...b.signals.map((s) => label("signal", s)), ...(b.qualifier ? [label("basisKind", b.qualifier)] : [])];
+  return <span className="text-2xs text-muted">{t("basis")}: {parts.join(" · ")}</span>;
 }
 
 /* ------------------------------------------------------------------ freshness */
@@ -512,6 +539,32 @@ export function SourcesSection({ profile }: { profile: SupplierProfile360 }) {
                     </li>
                   ) : null}
                 </ul>
+              </div>
+            ) : null}
+            {profile.website_checks?.length ? (
+              <div className="flex flex-col gap-2">
+                <h3 className="text-sm font-medium text-heading">{t("sources.websiteChecksTitle")}</h3>
+                <ul className="flex flex-col gap-2">
+                  {profile.website_checks.map((w, i) => (
+                    <li key={`${w.candidate_url}-${i}`} className="flex flex-col gap-1 rounded-md border border-line p-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge size="sm" color={w.status.startsWith("VERIFIED") ? "success" : w.status === "REJECTED" ? "danger" : "gray"}
+                          className="h-auto min-h-[22px] whitespace-normal text-start">
+                          {label("websiteStatus", w.status)}
+                        </Badge>
+                        <span className="text-xs text-muted">{t("sources.checked", { date: fmtDate(w.checked_at) })}</span>
+                        {w.discovered_via ? <span className="text-xs text-muted">· {t("contacts.foundVia", { via: label("provider", w.discovered_via) })}</span> : null}
+                      </div>
+                      <WrapLink href={safeHttpUrl(w.candidate_url)} className="text-xs">{w.candidate_url}</WrapLink>
+                      {w.signals.length ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {w.signals.map((s) => <Badge key={s} size="sm" color="gray" className="h-auto min-h-[22px] whitespace-normal text-start">{label("signal", s)}</Badge>)}
+                        </div>
+                      ) : <span className="text-2xs text-muted">{t("sources.noSignals")}</span>}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-2xs text-muted">{t("sources.websiteChecksNote")}</p>
               </div>
             ) : null}
             {attempts.length ? (

@@ -93,7 +93,11 @@
     "WEBSITE_UNAVAILABLE": "Сайт компании недоступен",
     "WEBSITE_IDENTITY_NOT_CONFIRMED": "Принадлежность сайта компании не подтверждена",
     "NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE": "На официальном сайте нет телефона или e-mail",
-    "PIPELINE_ERROR": "Внутренняя ошибка обогащения"
+    "PIPELINE_ERROR": "Внутренняя ошибка обогащения",
+    "STORED_WEBSITE_NOT_RECHECKED": "Ранее подтверждённый сайт недоступен — сохранён без изменений",
+    "STORED_WEBSITE_FAILED_RECHECK": "Ранее подтверждённый сайт больше не подтверждается",
+    "WEBSITE_KEPT_FROM_PREVIOUS_RUN": "Сайт сохранён из предыдущей проверки",
+    "LAST_REFRESH_DEGRADED": "Последнее обновление было неполным — сохранены ранее подтверждённые данные"
   },
   "identity": {
     "title": "Юридические сведения",
@@ -133,10 +137,18 @@
     "websiteCandidate": "Возможный сайт (не подтверждён как официальный)",
     "label": {
       "REGISTERED_LEGAL_ADDRESS": "юридический адрес",
-      "PUBLISHED_COMPANY_ADDRESS": "адрес, опубликованный компанией"
+      "PUBLISHED_COMPANY_ADDRESS": "адрес, опубликованный компанией",
+      "GENERAL_PHONE_PUBLISHED_ON_THE_OFFICIAL_WEBSITE": "общий телефон (опубликован на официальном сайте)",
+      "GENERAL_E_MAIL": "общий e-mail",
+      "COMPANY_E_MAIL": "e-mail компании",
+      "E_MAIL_REGISTERED_IN_EGRUL": "e-mail, указанный в ЕГРЮЛ",
+      "OFFICIAL_WEBSITE_IDENTITY_CONFIRMED_ON_THE_SITE_BY_REQUISITES_INN_OGRN": "официальный сайт (ИНН/ОГРН опубликованы на сайте)",
+      "OFFICIAL_WEBSITE_IDENTITY_CONFIRMED_ON_THE_SITE_BY_EXACT_LEGAL_NAME_REGISTERED_ADDRESS_KPP": "официальный сайт (наименование и юридический адрес / КПП на сайте)"
     },
     "noneHint": "Телефон, e-mail и сайт показываются только после того, как подтверждён собственный сайт компании. Юридический адрес из ЕГРЮЛ показывается, если он есть.",
-    "noneEntrepreneur": "Контакты индивидуальных предпринимателей не собираются (персональные данные)."
+    "noneEntrepreneur": "Контакты индивидуальных предпринимателей не собираются (персональные данные).",
+    "basis": "Основание",
+    "foundVia": "найден через: {via}"
   },
   "freshness": {
     "title": "Актуальность данных",
@@ -227,7 +239,10 @@
     "none": "Источники пока не зафиксированы.",
     "historyRow": "Наблюдаемых связей с закупками: {relations} · {from} — {to}",
     "attemptsTitle": "Последний запуск обогащения",
-    "attemptsNote": "Дополнительный провайдер не обязателен: если он ограничил запросы или пропущен, официальные данные ЕГРЮЛ остаются в силе."
+    "attemptsNote": "Дополнительный провайдер не обязателен: если он ограничил запросы или пропущен, официальные данные ЕГРЮЛ остаются в силе.",
+    "websiteChecksTitle": "Проверенные сайты",
+    "noSignals": "Признаков компании на сайте не найдено",
+    "websiteChecksNote": "Сайт считается официальным только если на нём опубликованы ИНН или ОГРН компании (или точное наименование вместе с юридическим адресом / КПП). Похожее название не считается подтверждением."
   },
   "sourceType": {
     "FNS_EGRUL": "ФНС — ЕГРЮЛ (egrul.nalog.ru)",
@@ -275,7 +290,9 @@
     "failed": "Ошибка обогащения · можно повторить",
     "external": "Внешний кандидат · проверенные контакты",
     "enrichError": "Не обогащён · ошибка при запуске обогащения",
-    "inProgress": "Обогащение выполняется"
+    "inProgress": "Обогащение выполняется",
+    "sitePhoneOnly": "Официальный сайт · только телефон",
+    "siteNoContacts": "Официальный сайт без контактов"
   },
   "sourceClass": {
     "OFFICIAL_REGISTRY": "Официальный реестр ФНС",
@@ -298,6 +315,48 @@
     "FNS_EGRUL_EXTRACT": "ФНС — выписка ЕГРЮЛ / ЕГРИП",
     "CHECKO_REGISTRY_MIRROR": "Дополнительный провайдер (checko.ru)",
     "FIRST_PARTY_WEBSITE": "Сайт компании",
-    "PIPELINE": "Конвейер обогащения"
+    "PIPELINE": "Конвейер обогащения",
+    "EGRUL_EMAIL_DOMAIN": "Домен e-mail из ЕГРЮЛ",
+    "BRAVE_SEARCH_API": "Поиск Brave (API)",
+    "YANDEX_SEARCH_API": "Поиск Яндекса (API)",
+    "WIKIDATA_OGRN": "Wikidata по ОГРН",
+    "LEGAL_NAME_DOMAIN": "Домены по наименованию",
+    "REGISTRY_MIRROR_HINT": "Подсказка зеркала реестра",
+    "DISCOVERY_FILTER": "Отсеянные каталоги и порталы"
+  },
+  "websiteStatus": {
+    "VERIFIED_STRONG": "Официальный сайт подтверждён реквизитами",
+    "VERIFIED_COMPOSITE": "Официальный сайт подтверждён наименованием и адресом",
+    "REJECTED": "Отклонён — принадлежность не подтверждена",
+    "UNKNOWN": "Не проверен"
+  },
+  "signal": {
+    "INN_ON_SITE": "ИНН на сайте",
+    "OGRN_ON_SITE": "ОГРН на сайте",
+    "KPP_ON_SITE": "КПП на сайте",
+    "EXACT_LEGAL_NAME": "точное наименование",
+    "REGISTERED_STREET_ADDRESS": "юридический адрес",
+    "REGISTERED_LOCALITY": "город регистрации",
+    "ID_ONLY_IN_WARNING_CONTEXT": "ИНН только в предупреждении о мошенниках",
+    "DIRECTORY_LIKE": "каталог многих компаний"
+  },
+  "provider": {
+    "EGRUL_EMAIL_DOMAIN": "домен e-mail из ЕГРЮЛ",
+    "BRAVE_SEARCH_API": "поиск Brave (API)",
+    "YANDEX_SEARCH_API": "поиск Яндекса (API)",
+    "WIKIDATA_OGRN": "Wikidata по ОГРН",
+    "LEGAL_NAME_DOMAIN": "домен по наименованию",
+    "REGISTRY_MIRROR_HINT": "подсказка зеркала реестра (необязательно)",
+    "STORED_OFFICIAL_SITE": "ранее подтверждённый сайт",
+    "ADVERSARIAL": "контрольная проверка"
+  },
+  "basisKind": {
+    "OFFICIAL_SITE_VERIFIED_STRONG": "официальный сайт (реквизиты)",
+    "OFFICIAL_SITE_VERIFIED_COMPOSITE": "официальный сайт (наименование + адрес)",
+    "FNS_EGRUL_EXTRACT": "выписка ЕГРЮЛ (ФНС)",
+    "FNS_EGRUL_REGISTERED_EMAIL": "e-mail из ЕГРЮЛ (ФНС)",
+    "CURATED_P4_005C": "проверенная карточка контактов",
+    "COMPANY_DOMAIN": "домен компании",
+    "PUBLIC_MAILBOX_ON_OFFICIAL_SITE": "почтовый ящик, опубликованный на официальном сайте"
   }
 }

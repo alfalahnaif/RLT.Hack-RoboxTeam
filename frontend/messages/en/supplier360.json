@@ -93,7 +93,11 @@
     "WEBSITE_UNAVAILABLE": "Company website unavailable",
     "WEBSITE_IDENTITY_NOT_CONFIRMED": "Website ownership not confirmed",
     "NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE": "No phone or email on the official website",
-    "PIPELINE_ERROR": "Internal enrichment error"
+    "PIPELINE_ERROR": "Internal enrichment error",
+    "STORED_WEBSITE_NOT_RECHECKED": "Previously verified website unreachable — kept unchanged",
+    "STORED_WEBSITE_FAILED_RECHECK": "Previously verified website no longer verifies",
+    "WEBSITE_KEPT_FROM_PREVIOUS_RUN": "Website kept from the previous check",
+    "LAST_REFRESH_DEGRADED": "The last refresh was incomplete — previously verified data kept"
   },
   "identity": {
     "title": "Legal identity",
@@ -133,10 +137,18 @@
     "websiteCandidate": "Possible website (not confirmed as official)",
     "label": {
       "REGISTERED_LEGAL_ADDRESS": "registered legal address",
-      "PUBLISHED_COMPANY_ADDRESS": "address published by the company"
+      "PUBLISHED_COMPANY_ADDRESS": "address published by the company",
+      "GENERAL_PHONE_PUBLISHED_ON_THE_OFFICIAL_WEBSITE": "general phone (published on the official website)",
+      "GENERAL_E_MAIL": "general e-mail",
+      "COMPANY_E_MAIL": "company e-mail",
+      "E_MAIL_REGISTERED_IN_EGRUL": "e-mail registered in EGRUL",
+      "OFFICIAL_WEBSITE_IDENTITY_CONFIRMED_ON_THE_SITE_BY_REQUISITES_INN_OGRN": "official website (INN/OGRN published on the site)",
+      "OFFICIAL_WEBSITE_IDENTITY_CONFIRMED_ON_THE_SITE_BY_EXACT_LEGAL_NAME_REGISTERED_ADDRESS_KPP": "official website (legal name and registered address / KPP on the site)"
     },
     "noneHint": "Phone, email and website are shown only once the company's own website is identified and confirmed. The official EGRUL legal address is shown when available.",
-    "noneEntrepreneur": "Contacts of individual entrepreneurs are not collected (personal data)."
+    "noneEntrepreneur": "Contacts of individual entrepreneurs are not collected (personal data).",
+    "basis": "Basis",
+    "foundVia": "found via: {via}"
   },
   "freshness": {
     "title": "Data freshness",
@@ -227,7 +239,10 @@
     "none": "No sources recorded yet.",
     "historyRow": "{relations} observed procurement relations · {from} — {to}",
     "attemptsTitle": "Last enrichment run",
-    "attemptsNote": "The secondary provider is optional: when it is rate-limited or skipped, the official EGRUL data still applies."
+    "attemptsNote": "The secondary provider is optional: when it is rate-limited or skipped, the official EGRUL data still applies.",
+    "websiteChecksTitle": "Websites checked",
+    "noSignals": "No company identity found on the site",
+    "websiteChecksNote": "A site counts as official only when it publishes the company's INN or OGRN (or the exact legal name together with the registered address / KPP). A similar name is never enough."
   },
   "sourceType": {
     "FNS_EGRUL": "FNS — EGRUL (egrul.nalog.ru)",
@@ -275,7 +290,9 @@
     "failed": "Enrichment failed · retryable",
     "external": "External candidate · curated contacts",
     "enrichError": "Not enriched · enrichment call fails",
-    "inProgress": "Enrichment in progress"
+    "inProgress": "Enrichment in progress",
+    "sitePhoneOnly": "Official website · phone only",
+    "siteNoContacts": "Official website without contacts"
   },
   "sourceClass": {
     "OFFICIAL_REGISTRY": "Official FNS registry",
@@ -298,6 +315,48 @@
     "FNS_EGRUL_EXTRACT": "FNS — EGRUL / EGRIP extract",
     "CHECKO_REGISTRY_MIRROR": "Optional secondary provider (checko.ru)",
     "FIRST_PARTY_WEBSITE": "Company website",
-    "PIPELINE": "Enrichment pipeline"
+    "PIPELINE": "Enrichment pipeline",
+    "EGRUL_EMAIL_DOMAIN": "EGRUL e-mail domain",
+    "BRAVE_SEARCH_API": "Brave search (API)",
+    "YANDEX_SEARCH_API": "Yandex search (API)",
+    "WIKIDATA_OGRN": "Wikidata by OGRN",
+    "LEGAL_NAME_DOMAIN": "Legal-name domains",
+    "REGISTRY_MIRROR_HINT": "Registry mirror hint",
+    "DISCOVERY_FILTER": "Filtered directories and portals"
+  },
+  "websiteStatus": {
+    "VERIFIED_STRONG": "Official website verified by requisites",
+    "VERIFIED_COMPOSITE": "Official website verified by name and address",
+    "REJECTED": "Rejected — ownership not proven",
+    "UNKNOWN": "Not checked"
+  },
+  "signal": {
+    "INN_ON_SITE": "INN on site",
+    "OGRN_ON_SITE": "OGRN on site",
+    "KPP_ON_SITE": "KPP on site",
+    "EXACT_LEGAL_NAME": "exact legal name",
+    "REGISTERED_STREET_ADDRESS": "registered address",
+    "REGISTERED_LOCALITY": "registered city",
+    "ID_ONLY_IN_WARNING_CONTEXT": "INN only inside a fraud warning",
+    "DIRECTORY_LIKE": "directory of many companies"
+  },
+  "provider": {
+    "EGRUL_EMAIL_DOMAIN": "EGRUL e-mail domain",
+    "BRAVE_SEARCH_API": "Brave search (API)",
+    "YANDEX_SEARCH_API": "Yandex search (API)",
+    "WIKIDATA_OGRN": "Wikidata by OGRN",
+    "LEGAL_NAME_DOMAIN": "legal-name domain",
+    "REGISTRY_MIRROR_HINT": "registry mirror hint (optional)",
+    "STORED_OFFICIAL_SITE": "previously verified site",
+    "ADVERSARIAL": "control check"
+  },
+  "basisKind": {
+    "OFFICIAL_SITE_VERIFIED_STRONG": "official website (requisites)",
+    "OFFICIAL_SITE_VERIFIED_COMPOSITE": "official website (name + address)",
+    "FNS_EGRUL_EXTRACT": "EGRUL extract (FNS)",
+    "FNS_EGRUL_REGISTERED_EMAIL": "EGRUL-registered e-mail (FNS)",
+    "CURATED_P4_005C": "curated contact record",
+    "COMPANY_DOMAIN": "company domain",
+    "PUBLIC_MAILBOX_ON_OFFICIAL_SITE": "mailbox published on the official site"
   }
 }

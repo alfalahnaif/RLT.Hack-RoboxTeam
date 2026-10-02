@@ -4,6 +4,11 @@ INN -> official EGRUL (identity, status, OGRN/KPP, address, primary OKVED) -> op
 website hints) -> candidate website -> website identity verification -> contacts -> role evidence -> freshness.
 Contacts are never collected before the company identity is established and the site is proven to be the company's own.
 
+P5-002A: candidate websites come from WebsiteDiscovery (EGRUL e-mail domain, search APIs when configured, Wikidata, legal-name
+domains; checko only as an optional hint). A stored official website is re-verified FIRST: still verified -> kept (new
+candidates are not considered); unreachable -> kept, nothing else is tried; rechecked and rejected -> the other candidates are
+checked. Every checked candidate is returned in `website_checks` (persisted as history).
+
 Status: identity + official website + phone or e-mail -> COMPLETE; identity with gaps -> PARTIAL;
 official registry unreachable and no mirror answer -> FAILED (retryable); INN unknown to the registry -> FAILED (not retryable).
 A secondary registry (checko.ru) is OPTIONAL: its rate limiting / outage / open circuit never fails a supplier; it only adds a
@@ -19,13 +24,14 @@ from typing import Callable
 
 from app.enrichment import freshness as F
 from app.enrichment.profile_models import (ContactType, EnrichmentResult, EnrichmentStatus, EvidenceItem, RegistryIdentity,
-                                           SourceAttempt, SourceOutcome, SourceType, SourceUnavailable, Strength,
-                                           WebsiteConfidence, WebsiteVerification, outcome_of)
+                                           SourceAttempt, SourceOutcome, SourceType, SourceUnavailable, Sourced, Strength,
+                                           WebsiteCandidate, WebsiteConfidence, WebsiteVerification, outcome_of)
 from app.enrichment.providers import (CompanyRegistryProvider, ContactExtractor, RoleEvidenceProvider, WebsiteDiscoveryProvider,
-                                      WebsiteVerifier, merge_identities, registry_contacts)
+                                      WebsiteVerifier, host_of, merge_identities, registry_contacts)
 
-PIPELINE_VERSION = "p5-001a-v2"   # v2: official EGRUL extract primary, checko optional
-MAX_WEBSITE_CANDIDATES = 2
+PIPELINE_VERSION = "p5-002a-v1"   # p5-001a-v2 + P5-002A website discovery / verification statuses / verification basis
+MAX_WEBSITE_CANDIDATES = 4
+STORED_SITE = "STORED_OFFICIAL_SITE"
 
 
 @dataclass
@@ -62,18 +68,20 @@ def _identity_evidence(identity: RegistryIdentity) -> list[EvidenceItem]:
     return out
 
 
-def _website_evidence(v: WebsiteVerification, discovered_via) -> EvidenceItem:
+def _website_evidence(v: WebsiteVerification, discovered_via, provider: str | None = None) -> EvidenceItem:
+    via = provider or discovered_via.source_type.value
     if v.confidence == WebsiteConfidence.HIGH:
-        return EvidenceItem("WEBSITE_IDENTITY", f"Official website: the company's requisites are published on the site "
-                            f"({', '.join(v.signals)})", v.official_url, v.official_url, SourceType.FIRST_PARTY, v.checked_at,
-                            Strength.STRONG)
-    return EvidenceItem("WEBSITE_CANDIDATE", f"Candidate website {v.candidate_url} (found via {discovered_via.source_type.value}) "
-                        f"NOT marked official: confidence {v.confidence.value}, signals {list(v.signals) or 'none'}",
+        return EvidenceItem("WEBSITE_IDENTITY", f"Official website ({v.verification_status.value}, found via {via}): identity "
+                            f"confirmed on the site ({', '.join(v.signals)})", v.official_url, v.official_url,
+                            SourceType.FIRST_PARTY, v.checked_at,
+                            Strength.STRONG if v.verification_status.value == "VERIFIED_STRONG" else Strength.MODERATE)
+    return EvidenceItem("WEBSITE_CANDIDATE", f"Candidate website {v.candidate_url} (found via {via}) "
+                        f"NOT marked official: {v.verification_status.value}, signals {list(v.signals) or 'none'}",
                         v.candidate_url, v.pages[0].url if v.pages else v.candidate_url, SourceType.FIRST_PARTY, v.checked_at,
                         Strength.WEAK)
 
 
-def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> EnrichmentResult:
+def enrich(inn: str, providers: Providers, now: Callable[[], datetime], prior_website: str | None = None) -> EnrichmentResult:
     res = EnrichmentResult(inn=inn, status=EnrichmentStatus.IN_PROGRESS, started_at=now())
 
     # 1. legal identity: the official registry first; optional mirrors only corroborate / fill gaps when their OGRN agrees
@@ -132,27 +140,50 @@ def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> Enric
         res.reasons.append("INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED")
         res.attempts.append(SourceAttempt(providers.verifier.name, SourceOutcome.SKIPPED, "individual entrepreneur"))
     else:
-        candidates = providers.discovery.discover(identity)[:MAX_WEBSITE_CANDIDATES]
+        candidates = list(providers.discovery.discover(identity))
+        log = getattr(providers.discovery, "last_log", None)
+        if log is not None:
+            res.attempts.extend(log.attempts)
+            if log.rejected:
+                res.attempts.append(SourceAttempt("DISCOVERY_FILTER", SourceOutcome.REJECTED,
+                                                  "; ".join(f"{host_of(u)}={c}" for u, c, _ in log.rejected[:8])[:200]))
+        if prior_website:
+            stored = WebsiteCandidate(prior_website, Sourced(prior_website, prior_website, SourceType.FIRST_PARTY, now()),
+                                      provider=STORED_SITE)
+            candidates = [stored] + [c for c in candidates if host_of(c.url) != host_of(prior_website)]
+        candidates = candidates[:MAX_WEBSITE_CANDIDATES]
         if not candidates:
             res.reasons.append("NO_WEBSITE_CANDIDATE")
         for cand in candidates:
+            is_stored = cand.provider == STORED_SITE
             v, err, ms = _timed(lambda c=cand: providers.verifier.verify_company_site(identity, c))
             if err:
                 res.attempts.append(SourceAttempt(providers.verifier.name, outcome_of(err), f"{cand.url}: {err}"[:200], ms))
+                if is_stored:          # the stored official site could not be re-checked: keep it, do not replace it
+                    res.reasons.append("STORED_WEBSITE_NOT_RECHECKED")
+                    res.retryable = True
+                    break
                 continue
+            res.website_checks.append(v)
+            if is_stored:
+                res.prior_site_rechecked = True
             res.attempts.append(SourceAttempt(providers.verifier.name,
                                               SourceOutcome.OK if v.confidence == WebsiteConfidence.HIGH else SourceOutcome.REJECTED,
-                                              f"{cand.url}: {v.confidence.value} {list(v.signals)}"[:200], ms))
-            res.evidence.append(_website_evidence(v, cand.discovered_via))
+                                              f"{cand.url}: {v.verification_status.value} {list(v.signals)}"[:200], ms))
+            res.evidence.append(_website_evidence(v, cand.discovered_via, cand.provider))
             if verification is None or v.confidence == WebsiteConfidence.HIGH:
                 verification = v
             if v.confidence == WebsiteConfidence.HIGH:
                 break
-        if candidates and verification is None:
+            if is_stored:
+                res.reasons.append("STORED_WEBSITE_FAILED_RECHECK")
+        if candidates and not res.website_checks and "STORED_WEBSITE_NOT_RECHECKED" not in res.reasons:
             res.reasons.append("WEBSITE_UNAVAILABLE")
             res.retryable = True
         elif verification is not None and verification.confidence != WebsiteConfidence.HIGH:
             res.reasons.append("WEBSITE_IDENTITY_NOT_CONFIRMED")
+        if "STORED_WEBSITE_NOT_RECHECKED" in res.reasons:
+            verification = None        # nothing checked this run may replace the stored site
     res.website = verification
 
     # 3. contacts (registry address + first-party contacts from the verified site only)

@@ -10,7 +10,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sys
+import time
 from pathlib import Path
 
 import psycopg
@@ -249,10 +251,92 @@ def _cmd_semantic(args) -> int:
 PILOT_FILE = "p5_001a_supplier_enrichment.json"
 
 
+GOLDEN_FILE = "benchmark/enrichment/p5_002a_contact_golden.json"
+GOLDEN_OUT = "p5_002a_contact_discovery.json"
+
+
+def _identity_from_profile(row: dict):
+    """RegistryIdentity rebuilt from a stored (official EGRUL) profile row; used only for the forced adversarial checks."""
+    from app.enrichment.profile_models import RegistryIdentity, SourceType, Sourced
+
+    def s(col):
+        if not row.get(col):
+            return None
+        return Sourced(row[col], row.get("identity_source_url") or "https://egrul.nalog.ru/index.html", SourceType.FNS_EGRUL,
+                       row.get("identity_checked_at"))
+    return RegistryIdentity(inn=row["inn"], entity_kind=row["entity_kind"], legal_name=s("legal_name"), short_name=s("short_name"),
+                            ogrn=s("ogrn"), kpp=s("kpp"), legal_status=s("legal_status"), region=s("region"),
+                            registered_address=s("registered_address"), primary_okved=s("primary_okved"))
+
+
+def _enrichment_golden(args) -> int:
+    """P5-002A: re-enrich the golden suppliers (refresh), score them against the hand-built truth, re-check every returned
+    first-party value on its source page, and run the forced adversarial candidates through the website verifier."""
+    from app.api import supplier_profile as SP
+    from app.enrichment import golden as G
+    from app.enrichment import repository as R
+    from app.enrichment.profile_models import SourceType, SourceUnavailable, Sourced, WebsiteCandidate
+    from app.enrichment.providers import HttpFetcher, HttpWebsiteVerifier
+    gold = G.load(repo_root() / GOLDEN_FILE)
+    SP.USE_SECONDARY_REGISTRY = not args.no_secondary
+    out = repo_root() / "reports" / GOLDEN_OUT
+    inns = [g["inn"] for g in gold["suppliers"]]
+    with psycopg.connect(database_url()) as conn:
+        runs = []
+        for n, inn in enumerate(inns, 1):
+            if n > 1 and args.pause:
+                time.sleep(args.pause)      # be polite to egrul.nalog.ru (it answers HTTP 400 after a burst)
+            t0 = time.perf_counter()
+            try:
+                st = SP.enrich_supplier(conn, inn, refresh=not args.no_refresh).enrichment.status
+            except Exception as e:  # one supplier never stops the evaluation
+                st = "ERROR:" + type(e).__name__
+            runs.append({"inn": inn, "status": st, "wall_seconds": round(time.perf_counter() - t0, 2)})
+            print(f"[golden] {n}/{len(inns)} {inn} {st} {runs[-1]['wall_seconds']}s", file=sys.stderr, flush=True)
+        profiles = {inn: SP.build_profile(conn, inn, SP.utcnow()).model_dump(mode="json") for inn in inns}
+        stored = {inn: R.get_profile(conn, inn) or {} for inn in inns}
+        attempts = [a for inn in inns for a in R.last_attempts(conn, inn)]
+    rows = [G.score_supplier(g, profiles.get(g["inn"])) for g in gold["suppliers"]]
+    fetcher = HttpFetcher()
+    try:
+        invented = G.invented_check(rows, lambda u: fetcher.get(u)[1])
+        verifier = HttpWebsiteVerifier(fetcher, SP.utcnow)
+        adversarial = []
+        for a in gold.get("adversarial_checks", []):
+            ident = _identity_from_profile(stored[a["inn"]])
+            cand = WebsiteCandidate(a["url"], Sourced(a["url"], a["url"], SourceType.FIRST_PARTY, SP.utcnow()), provider="ADVERSARIAL")
+            try:
+                v = verifier.verify_company_site(ident, cand)
+                adversarial.append({**a, "status": v.verification_status.value, "signals": list(v.signals)})
+            except SourceUnavailable as e:
+                adversarial.append({**a, "status": "UNKNOWN", "signals": [], "note": str(e)[:120]})
+    finally:
+        fetcher.close()
+    failures = {}
+    for a in attempts:
+        if a["outcome"] in ("UNAVAILABLE", "RATE_LIMITED"):
+            failures[a["source"]] = failures.get(a["source"], 0) + 1
+    durations = {inn: stored[inn].get("duration_ms") or 0 for inn in inns if stored[inn]}
+    doc = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {}
+    doc.update({"task": "P5-002A", "golden_file": GOLDEN_FILE,
+                "configuration": {"secondary_registry_checko": not args.no_secondary, "refresh": not args.no_refresh,
+                                  "brave_search_api_key": bool(os.environ.get("BRAVE_SEARCH_API_KEY")),
+                                  "yandex_search_api_key": bool(os.environ.get("YANDEX_SEARCH_API_KEY")),
+                                  "providers": SP.discovery_provider_names()},
+                "golden": {"runs": runs, "rows": rows, "invented_check": invented, "adversarial": adversarial,
+                           "metrics": G.metrics(rows, durations, invented, adversarial, failures),
+                           "computed_at": SP.utcnow().isoformat(timespec="seconds")}})
+    out.write_text(json.dumps(doc, ensure_ascii=False, indent=1, default=str) + "\n", encoding="utf-8")
+    print(json.dumps(doc["golden"]["metrics"], indent=1, ensure_ascii=False))
+    return 0
+
+
 def _cmd_enrichment(args) -> int:
     """P5-001A bounded batch enrichment (never the whole supplier universe: --limit is capped at 500)."""
     from app.api import supplier_profile as SP
     from app.enrichment import batch as B
+    if args.action == "golden":
+        return _enrichment_golden(args)
     out = repo_root() / "reports" / args.out
     with psycopg.connect(database_url()) as conn:
         if args.action == "run":
@@ -264,7 +348,7 @@ def _cmd_enrichment(args) -> int:
             breaker.reset()
             breaker.cooldown_s = None       # batch: once checko.ru is rate-limiting, it stays off for the rest of this batch
             runs = B.run_batch(conn, inns, lambda inn: SP.enrich_supplier(conn, inn, refresh=args.refresh),
-                               log=lambda m: print(f"[enrich] {m}", file=sys.stderr, flush=True))
+                               log=lambda m: print(f"[enrich] {m}", file=sys.stderr, flush=True), pause=args.pause)
             doc = {"task": "P5-001A", "selection": {"limit": limit, "explicit_inns": args.inn or [],
                                                      "okpd2_prefixes": args.okpd2_prefix or [], "per_prefix": args.per_prefix,
                                                      "holdout_suppliers_skipped": dropped, "refresh": args.refresh,
@@ -322,13 +406,15 @@ def main(argv=None) -> int:
     sm.add_argument("--reembed", action="store_true", help="build: clear ALL embeddings and re-embed with the pinned revision")
     sm.set_defaults(func=_cmd_semantic)
     en = sub.add_parser("enrichment", help="P5-001A Supplier 360 enrichment (bounded batch; holdout suppliers excluded)")
-    en.add_argument("action", choices=["run", "report"])
+    en.add_argument("action", choices=["run", "report", "golden"])
     en.add_argument("--inn", action="append", help="explicit supplier INN (repeatable; selected first)")
     en.add_argument("--okpd2-prefix", action="append", help="add the top awarded suppliers of this OKPD2 prefix (repeatable)")
     en.add_argument("--per-prefix", type=int, default=10)
     en.add_argument("--limit", type=int, default=100, help="maximum suppliers in this run (hard cap 500)")
     en.add_argument("--refresh", action="store_true", help="re-query sources even when a fresh stored profile exists")
     en.add_argument("--no-secondary", action="store_true", help="official EGRUL only: do not call the optional checko.ru mirror")
+    en.add_argument("--no-refresh", action="store_true", help="golden: score the stored profiles without re-enriching")
+    en.add_argument("--pause", type=float, default=0.0, help="golden: seconds to wait between suppliers (registry politeness)")
     en.add_argument("--out", default=PILOT_FILE, help="report file name under reports/ (JSON; the .md is written next to it)")
     en.set_defaults(func=_cmd_enrichment)
     args = ap.parse_args(argv)

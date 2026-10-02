@@ -27,6 +27,25 @@ class SupplierIdentity(BaseModel):
     historically_known: bool = Field(description="INN appears in the organizer procurement data")
 
 
+class WebsiteVerificationOut(BaseModel):
+    """P5-002A: how the official website (or the best rejected candidate) was checked against the EGRUL identity."""
+    status: Literal["VERIFIED_STRONG", "VERIFIED_COMPOSITE", "REJECTED", "UNKNOWN"]
+    signals: list[str] = Field([], description="e.g. INN_ON_SITE, OGRN_ON_SITE, KPP_ON_SITE, EXACT_LEGAL_NAME, REGISTERED_STREET_ADDRESS")
+    discovered_via: str | None = Field(None, description="Discovery provider, e.g. EGRUL_EMAIL_DOMAIN, BRAVE_SEARCH_API, LEGAL_NAME_DOMAIN")
+    checked_at: datetime | None = None
+
+
+class WebsiteCheckOut(BaseModel):
+    """One candidate website checked in an enrichment run (append-only history)."""
+    candidate_url: str
+    official_url: str | None = None
+    status: Literal["VERIFIED_STRONG", "VERIFIED_COMPOSITE", "REJECTED", "UNKNOWN"]
+    signals: list[str] = []
+    discovered_via: str | None = None
+    reason: str | None = None
+    checked_at: datetime
+
+
 class EnrichmentState(BaseModel):
     status: Literal["NOT_ENRICHED", "IN_PROGRESS", "COMPLETE", "PARTIAL", "FAILED"]
     reasons: list[str] = []
@@ -35,6 +54,7 @@ class EnrichmentState(BaseModel):
     official_website: str | None = None
     website_confidence: Literal["HIGH", "MEDIUM", "LOW", "NONE"] = "NONE"
     website_candidate: str | None = Field(None, description="Website considered but not proven official (MEDIUM/LOW)")
+    website_verification: WebsiteVerificationOut | None = Field(None, description="P5-002A; null before any website check")
     pipeline_version: str | None = None
     cache: Literal["HIT", "MISS", "REFRESHED", "NONE"] = "NONE"
 
@@ -49,6 +69,8 @@ class ContactItem(BaseModel):
     freshness_status: FreshnessStatus
     verified: bool
     origin: Literal["ENRICHMENT_PIPELINE", "CURATED_P4_005C"]
+    verification_basis: str | None = Field(None, description="P5-002A why the value is trusted, e.g. "
+                                                              "OFFICIAL_SITE_VERIFIED_STRONG:INN_ON_SITE, FNS_EGRUL_EXTRACT")
 
 
 class RoleItem(BaseModel):
@@ -125,3 +147,4 @@ class SupplierProfileResponse(BaseModel):
     procurement_history_summary: HistorySummary | None
     sources: list[SourceRef]
     last_run_attempts: list[AttemptOut] = []
+    website_checks: list[WebsiteCheckOut] = Field([], description="P5-002A latest website identity checks (accepted and rejected)")

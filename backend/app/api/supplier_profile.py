@@ -8,6 +8,7 @@ files at response time and never rewritten; pipeline contacts that duplicate a c
 """
 from __future__ import annotations
 
+import os
 from datetime import datetime, timedelta, timezone
 from typing import Callable
 
@@ -15,15 +16,17 @@ from psycopg import Connection
 
 from app.api.market_service import build_external_expansion
 from app.api.supplier_profile_models import (AttemptOut, ContactItem, EnrichmentState, EvidenceItemOut, FreshnessBlock,
+                                             WebsiteCheckOut, WebsiteVerificationOut,
                                              HistorySummary, OkpdCount, RoleItem, SourceRef, SupplierIdentity,
                                              SupplierProfileResponse)
 from app.enrichment import contacts as CE
 from app.enrichment import freshness as F
 from app.enrichment import pipeline as P
+from app.enrichment.discovery import build_discovery
 from app.enrichment import repository as R
 from app.enrichment.catalog import CuratedEvidenceCatalog
 from app.enrichment.providers import (CheckoRegistryMirror, CircuitBreaker, FnsEgrulRegistry, GuardedRegistry,
-                                      HtmlContactExtractor, HttpFetcher, HttpWebsiteVerifier, RegistryWebsiteDiscovery,
+                                      HtmlContactExtractor, HttpFetcher, HttpWebsiteVerifier,
                                       SiteAndOkvedRoleEvidence, _fold, host_of, normalize_phone)
 from app.shared.ids import supplier_uuid
 
@@ -56,8 +59,19 @@ def default_providers(now: Callable[[], datetime]) -> tuple[P.Providers, Callabl
     mirror = GuardedRegistry(CheckoRegistryMirror(fetcher, now), MIRROR_BREAKER)
     registries = [FnsEgrulRegistry(fetcher, now)] + ([mirror] if USE_SECONDARY_REGISTRY else [])
     return P.Providers(registries=registries,
-                       discovery=RegistryWebsiteDiscovery(), verifier=HttpWebsiteVerifier(fetcher, now),
+                       discovery=build_discovery(fetcher, now, dict(os.environ), use_secondary_hint=USE_SECONDARY_REGISTRY),
+                       verifier=HttpWebsiteVerifier(fetcher, now),
                        extractor=HtmlContactExtractor(), roles=SiteAndOkvedRoleEvidence()), fetcher.close
+
+
+def discovery_provider_names() -> list[str]:
+    """Website discovery providers active under the current configuration (for reports)."""
+    from app.enrichment.discovery import provider_names
+    f = HttpFetcher()
+    try:
+        return provider_names(build_discovery(f, utcnow, dict(os.environ), use_secondary_hint=USE_SECONDARY_REGISTRY))
+    finally:
+        f.close()
 
 
 def validate_inn(inn: str) -> str:
@@ -148,7 +162,8 @@ def build_profile(conn: Connection, inn: str, now: datetime, cache: str = "NONE"
                 contacts.append(ContactItem(type=_CURATED_TYPES[k], value=f.value,
                                             label=(f.address_type or "").replace("_", " ").lower() or None,
                                             source_url=f.source_url, source_type=f.source_authority, checked_at=f.checked_at,
-                                            freshness_status=cur_status, verified=True, origin="CURATED_P4_005C"))
+                                            freshness_status=cur_status, verified=True, origin="CURATED_P4_005C",
+                                            verification_basis="CURATED_P4_005C"))
     seen = curated_contact_keys(record)
     for c in kids["contacts"]:
         if (c["contact_type"], c["normalized_value"]) in seen:
@@ -156,7 +171,8 @@ def build_profile(conn: Connection, inn: str, now: datetime, cache: str = "NONE"
         contacts.append(ContactItem(type=c["contact_type"], value=c["value"], label=c["label"], source_url=c["source_url"],
                                     source_type=c["source_type"], checked_at=c["checked_at"],
                                     freshness_status=F.contact_freshness(c["checked_at"], c["content_currency"], today),
-                                    verified=c["verified"], origin="ENRICHMENT_PIPELINE"))
+                                    verified=c["verified"], origin="ENRICHMENT_PIPELINE",
+                                    verification_basis=c.get("verification_basis")))
 
     roles = roles_cur + [RoleItem(role=r["role"], status=r["status"], basis=r["basis"], claim=r["claim"], strength=r["strength"],
                                   source_url=r["source_url"], source_type=r["source_type"], checked_at=r["checked_at"],
@@ -216,6 +232,10 @@ def build_profile(conn: Connection, inn: str, now: datetime, cache: str = "NONE"
                                    last_enriched_at=last, official_website=p.get("official_website"),
                                    website_confidence=p.get("website_confidence") or "NONE",
                                    website_candidate=p.get("website_candidate") if not p.get("official_website") else None,
+                                   website_verification=WebsiteVerificationOut(
+                                       status=p["website_verification_status"], signals=list(p.get("website_signals") or []),
+                                       discovered_via=p.get("website_discovered_via"), checked_at=p.get("website_checked_at"))
+                                   if p.get("website_verification_status") else None,
                                    pipeline_version=p.get("pipeline_version"), cache=cache),
         contacts=contacts, roles=roles,
         evidence=[EvidenceItemOut(**{k: e[k] for k in ("evidence_type", "claim", "value", "source_url", "source_type", "checked_at",
@@ -226,7 +246,11 @@ def build_profile(conn: Connection, inn: str, now: datetime, cache: str = "NONE"
                                  profile_cache_valid_until=last + timedelta(days=F.POLICY.profile_ttl_days) if last else None),
         procurement_history_summary=hist, sources=sorted(sources.values(), key=lambda s: (s.source_type, s.source_url)),
         last_run_attempts=[AttemptOut(source=a["source"], outcome=a["outcome"], detail=a["detail"], duration_ms=a["duration_ms"])
-                           for a in (R.last_attempts(conn, inn) if prof else [])])
+                           for a in (R.last_attempts(conn, inn) if prof else [])],
+        website_checks=[WebsiteCheckOut(candidate_url=w["candidate_url"], official_url=w["official_url"],
+                                        status=w["verification_status"], signals=list(w["signals"] or []),
+                                        discovered_via=w["discovered_via"], reason=w["reason"], checked_at=w["checked_at"])
+                        for w in (R.last_website_checks(conn, inn, 6) if prof else [])])
 
 
 def enrich_supplier(conn: Connection, inn: str, now: Callable[[], datetime] = utcnow, refresh: bool = False,
@@ -249,7 +273,7 @@ def enrich_supplier(conn: Connection, inn: str, now: Callable[[], datetime] = ut
     R.mark_in_progress(conn, inn, t)
     providers, close = (factory or default_providers)(now)
     try:
-        res = P.enrich(inn, providers, now)
+        res = P.enrich(inn, providers, now, prior_website=(prof or {}).get("official_website"))
     except Exception as e:  # a parser/provider bug must not leave the profile IN_PROGRESS
         res = P.EnrichmentResult(inn=inn, status=P.EnrichmentStatus.FAILED, reasons=["PIPELINE_ERROR"], retryable=True,
                                  started_at=t, finished_at=now(),

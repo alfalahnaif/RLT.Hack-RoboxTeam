@@ -1,0 +1,740 @@
+{
+  "task": "P5-002A",
+  "description": "Manually verified acceptance set for official website and public business-contact discovery. Identity = official FNS EGRUL (supplier_radar_p5 pilot rows, P5-001A.1). Expected values were established by hand BEFORE the discovery code was written: candidate sites came from manual web search (directory pages were only leads), then the company's own pages were fetched raw and inspected for the INN / OGRN and for the contacts printed on them. Nothing here was produced by the enrichment pipeline.",
+  "inspected_at": "2026-10-02",
+  "inspected_by": "Claude (manual inspection, stdlib fetch of the raw pages; search summaries from directories were never used as truth)",
+  "rules": {
+    "official_website": "Registrable domain. 'expected_official_domains' empty = no official website could be verified manually (none found, unreachable, or identity not published).",
+    "phones": "Normalized 7XXXXXXXXXX. 'acceptable' = public business numbers printed on the official site (or the EGRUL record). 'forbidden' = numbers that must never be returned (fax, person-associated, wrong company).",
+    "emails": "Lower-case. 'acceptable' = business mailboxes printed on the official site or registered in EGRUL. 'forbidden' = personal / wrong-company mailboxes.",
+    "forbidden_domains": "Sites that must never be returned as this supplier's official website (directories, portals, other companies, similar names).",
+    "same_company_domains": "Domains of the same company / group whose pages do not prove this INN: returning one is not a wrong-company match, but not a correct verified website either.",
+    "adversarial_checks": "Forced candidates fed directly to the website verifier; each must NOT end VERIFIED_* (REJECTED or UNKNOWN when unreachable)."
+  },
+  "suppliers": [
+    {
+      "inn": "7804054351",
+      "ogrn": "1027802487294",
+      "name": "АО \"АРТИС-ДЕТСКОЕ ПИТАНИЕ\"",
+      "tags": [
+        "obvious_official_site",
+        "inn_on_site",
+        "phone_and_email",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [
+        "artiskids.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://artiskids.ru/ and /contact print ИНН 7804054351",
+      "phones": {
+        "acceptable": [
+          "78126607253"
+        ],
+        "forbidden": [
+          "78126146501"
+        ]
+      },
+      "emails": {
+        "acceptable": [
+          "adp@artiskids.ru"
+        ],
+        "forbidden": [
+          "sales@artiskids.ru"
+        ]
+      },
+      "forbidden_domains": [
+        "artis21.ru",
+        "artismebel.ru",
+        "newartis.ru",
+        "artishoreca.ru",
+        "rusprofile.ru",
+        "checko.ru"
+      ],
+      "notes": "Directories list sales@artiskids.ru / +7 812 614-65-01 — not on the official site (stale directory data). artishoreca.ru is a HoReCa brand page without the INN.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7810687137",
+      "ogrn": "1027804911012",
+      "name": "ООО \"БСС\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "personal_emails_on_site",
+        "egrul_email_domain_differs"
+      ],
+      "expected_official_domains": [
+        "bsscosmetics.ru",
+        "bsspharm.ru"
+      ],
+      "expected_basis": "STRONG|COMPOSITE",
+      "evidence": "https://bsscosmetics.ru/ footer: «ООО «БСС» ИНН: 7810687137, ОГРН: 1027804911012». EGRUL e-mail INFO@BSSPHARM.RU; bsspharm.ru itself does not publish the INN. | https://bsspharm.ru/contacts/ (non-www host): «Центральный офис … ул. Маршала Новикова, д.28, к.2. Телефон: +7 (812) 327-37-47 E-mail: info@bsspharm.ru», branches БСС-Москва, Брянск, … (brand «БСС» + registered street address = composite identity)",
+      "phones": {
+        "acceptable": [
+          "78127791177",
+          "74951047704",
+          "78123273747",
+          "74993009908",
+          "74832367604"
+        ],
+        "forbidden": [
+          "79213973098",
+          "79250363742"
+        ]
+      },
+      "emails": {
+        "acceptable": [
+          "cosmetics@bsspharm.ru",
+          "info@bsspharm.ru"
+        ],
+        "forbidden": [
+          "nikiforova.kseniya@bsspharm.ru",
+          "m.shirkina@msk.bsspharm.ru",
+          "a.bondar@vld.bsspharm.ru",
+          "a.krylova@msk.bsspharm.ru",
+          "info@dzenit.ru"
+        ]
+      },
+      "forbidden_domains": [
+        "bssys.com",
+        "bss.ru",
+        "rusprofile.ru"
+      ],
+      "notes": "The contacts page lists dozens of named regional managers with personal e-mails and mobiles — all must be rejected. bsspharm.ru is a same-company domain whose pages do not show the INN (not verifiable, but not a wrong company). Corrected 2026-10-02: bsspharm.ru (non-www) is BSS's own site with the registered address; the earlier check read the www host, which serves different content.",
+      "same_company_domains": [],
+      "original": {
+        "expected_official_domains": [
+          "bsscosmetics.ru"
+        ],
+        "phones": {
+          "acceptable": [
+            "78127791177",
+            "74951047704"
+          ],
+          "forbidden": [
+            "79213973098",
+            "79250363742"
+          ]
+        }
+      }
+    },
+    {
+      "inn": "7605016030",
+      "ogrn": "1027600787994",
+      "name": "ООО \"КОМПАНИЯ \"ТЕНЗОР\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "js_rendered_home",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [
+        "tensor.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://tensor.ru/doc prints ИНН and ОГРН (home and /contacts are JS-rendered, no requisites in HTML)",
+      "phones": {
+        "acceptable": [
+          "74852262000"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "tensor@tensor.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "rusprofile.ru",
+        "sbis.ru"
+      ],
+      "notes": "saby.ru / sbis.ru are the company's product brands; only tensor.ru is checked here. Phone printed as '+7 4852 262-000' (tel:+74852262000).",
+      "same_company_domains": [
+        "saby.ru",
+        "sbis.ru"
+      ]
+    },
+    {
+      "inn": "7838005183",
+      "ogrn": "1037861010241",
+      "name": "АО \"ЦЕНТР КОМПЬЮТЕРНЫХ РАЗРАБОТОК\"",
+      "tags": [
+        "inn_on_site",
+        "phone_and_email",
+        "email_on_group_domain"
+      ],
+      "expected_official_domains": [
+        "kodeksdoc.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://kodeksdoc.ru/about/: «АО «Центр компьютерных разработок» официальный сайт … ИНН 7838005183»",
+      "phones": {
+        "acceptable": [
+          "78127407871",
+          "78123478430"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "ckr@kodeks.ru",
+          "personal@kodeks.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "itconst.ru",
+        "fintech.hse.ru"
+      ],
+      "notes": "E-mail on the group domain kodeks.ru (explained by the official site). itconst.ru (directory claim) returns 502. personal@ is the HR mailbox, not a person.",
+      "same_company_domains": [
+        "kodeks.ru"
+      ]
+    },
+    {
+      "inn": "9719079775",
+      "ogrn": "1257700236793",
+      "name": "АО \"РОССИЙСКИЕ СЕТИ ВЕЩАНИЯ И ОПОВЕЩЕНИЯ\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "second_inn_on_page"
+      ],
+      "expected_official_domains": [
+        "rsvo.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://rsvo.ru/ prints ИНН 9719079775 and ОГРН 1257700236793 (and a branch-company INN 9200015508)",
+      "phones": {
+        "acceptable": [
+          "74957888999",
+          "78002505995",
+          "78126792222"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "info@rsvo.ru",
+          "pr@rsvo.ru",
+          "info@spb.rsvo.ru",
+          "info@svl.rsvo.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "rusprofile.ru",
+        "zachestnyibiznes.ru"
+      ],
+      "notes": "Sevastopol numbers (8692) belong to a branch legal entity; neither required nor wrong.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7816721987",
+      "ogrn": "1217800142108",
+      "name": "АО \"ПЕРВЫЙ СПЕЦТРАНС\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "fax_on_site",
+        "personal_emails_on_site",
+        "email_domain_differs"
+      ],
+      "expected_official_domains": [
+        "multioperator.ru",
+        "spest1.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://multioperator.ru/kontakty prints ИНН and ОГРН; spest1.ru is the company's e-mail domain / previous site",
+      "phones": {
+        "acceptable": [
+          "78123883131",
+          "78123881755",
+          "78123883664",
+          "78125048444",
+          "78123204325",
+          "78123219958",
+          "78123692187",
+          "78123718583",
+          "78124114107"
+        ],
+        "forbidden": [
+          "78123886780"
+        ]
+      },
+      "emails": {
+        "acceptable": [
+          "sales@spest1.ru",
+          "dir@spest1.ru",
+          "eco@spest1.ru",
+          "agkir@spest1.ru",
+          "agmosk@spest1.ru",
+          "7164742@spest1.ru",
+          "7648279@spest1.ru",
+          "9252524@spest1.ru",
+          "9726761@spest1.ru"
+        ],
+        "forbidden": [
+          "a.afonina@spest1.ru"
+        ]
+      },
+      "forbidden_domains": [
+        "spetstrans.com",
+        "spetstrans.ru",
+        "spt.moscow",
+        "rusprofile.ru"
+      ],
+      "notes": "+7 (812) 388-67-80 is labelled «Факс». atp1-kolpino@yandex.ru (a depot mailbox on free mail) is neither required nor wrong.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7802433724",
+      "ogrn": "1089847187022",
+      "name": "ООО \"ВИЖЕН-СОФТ\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "brand_domain"
+      ],
+      "expected_official_domains": [
+        "pitaniesoft.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://pitaniesoft.ru/contacts/ prints ИНН and ОГРН",
+      "phones": {
+        "acceptable": [
+          "78001003151"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "info@pitaniesoft.ru",
+          "support@pitaniesoft.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "rusprofile.ru",
+        "checko.ru"
+      ],
+      "notes": "Brand domain unrelated to the legal name — not guessable from the name.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7813474659",
+      "ogrn": "1107847192133",
+      "name": "ООО \"ОХРАНА ТЕЛЕКОМ\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "phone_and_email",
+        "fax_on_site"
+      ],
+      "expected_official_domains": [
+        "ohranatelecom.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "https://www.ohranatelecom.ru/company/requisites/ prints ИНН and ОГРН; rosohranatelecom.ru redirects there",
+      "phones": {
+        "acceptable": [
+          "78123261720",
+          "78123261721",
+          "78123261715",
+          "78123261716"
+        ],
+        "forbidden": [
+          "78123256517"
+        ]
+      },
+      "emails": {
+        "acceptable": [
+          "info@ohranatelecom.ru",
+          "help@ohranatelecom.ru",
+          "support@ohranatelecom.ru",
+          "yur@ohranatelecom.ru",
+          "help@rosohrana.ru",
+          "support@rosohrana.ru",
+          "yur@rosohrana.ru",
+          "in@rosohrana.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "rusprofile.ru",
+        "sbis.ru"
+      ],
+      "notes": "+7(812) 325-65-17 is labelled «Факс» on the requisites page.",
+      "same_company_domains": [
+        "rosohranatelecom.ru",
+        "rosohrana.ru"
+      ]
+    },
+    {
+      "inn": "7814580307",
+      "ogrn": "1137847290790",
+      "name": "ООО \"КАРДАН\"",
+      "tags": [
+        "composite_identity",
+        "no_inn_on_site",
+        "phone_only_business",
+        "free_mail_email",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [
+        "kardan-fix.ru"
+      ],
+      "expected_basis": "COMPOSITE",
+      "evidence": "https://kardan-fix.ru/kontakty.html: brand «Кардан-Фикс», address «Санкт-Петербург, Автобусная ул, д.5» = registered street + house; no INN/OGRN printed",
+      "phones": {
+        "acceptable": [
+          "78124149441",
+          "78129847674",
+          "79626847674"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "kval78@yandex.ru"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "kardan-balans.ru",
+        "rusprofile.ru",
+        "yp.ru"
+      ],
+      "notes": "Only a composite match (name + registered street address) is possible. kval78@yandex.ru is the only e-mail shown; a person-like free-mail mailbox, so returning nothing is also acceptable.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7804484876",
+      "ogrn": "1127847248561",
+      "name": "ООО \"АЛЬТАИР\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "no_business_contacts",
+        "phone_next_to_person",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [
+        "altair-pit.ru"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "http://www.altair-pit.ru/Home/_Contacts prints ИНН and ОГРН",
+      "phones": {
+        "acceptable": [],
+        "forbidden": [
+          "78125311631"
+        ]
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "altair.ru",
+        "altairalco.ru",
+        "altair-alt.com",
+        "rusprofile.ru"
+      ],
+      "notes": "Verified site without business contacts: the only number («531 16 31», no area code) is printed directly under the director's name.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7826679163",
+      "ogrn": "1027810273260",
+      "name": "ООО \"ЦЕНТРАЛЬНАЯ МЕДИЦИНСКАЯ БАЗА\"",
+      "tags": [
+        "no_verifiable_official_site",
+        "brand_site_without_own_inn",
+        "related_company_requisites"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "tsmb.ru is the «Центральная медицинская база» brand site, but it publishes no INN/OGRN of this company and its address (Б. Зеленина 24) differs from the registered one (Псковская 10-12)",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "xn--80aajbe5ajcy1b.xn--p1ai",
+        "yell.ru"
+      ],
+      "notes": "Returning tsmb.ru would be same-brand, not provable by identity rules; it is not counted as wrong-company but the expected result is no verified website.",
+      "same_company_domains": [
+        "tsmb.ru",
+        "cmb.su"
+      ]
+    },
+    {
+      "inn": "7805074390",
+      "ogrn": "1027802756882",
+      "name": "ООО \"СЕВЕРО-ЗАПАДНОЕ УПРАВЛЕНИЕ ОПТОВОЙ МЕДИЦИНСКОЙ ТОРГОВЛИ\"",
+      "tags": [
+        "no_verifiable_official_site",
+        "inn_on_other_company_site",
+        "wrong_company_trap"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Its INN/OGRN appear on tsmb.ru/contacts ONLY inside a fraud warning («От имени ООО «СЗУ ОМТ» … официальный адрес szuomt@mail.ru и … @medpribor.ru»); medpribor.ru timed out on every attempt",
+      "phones": {
+        "acceptable": [],
+        "forbidden": [
+          "78123259520",
+          "78123275544",
+          "78123275566"
+        ]
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": [
+          "info@tsmb.ru",
+          "sales@tsmb.ru"
+        ]
+      },
+      "forbidden_domains": [
+        "tsmb.ru"
+      ],
+      "notes": "Adversarial case: a naive 'INN on site' rule would assign tsmb.ru (another company's site) to this supplier.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "4719016624",
+      "ogrn": "1024702089741",
+      "name": "ООО \"ПРОМЕТЕЙ\"",
+      "tags": [
+        "inn_on_site",
+        "ogrn_on_site",
+        "requisites_on_inner_page",
+        "similar_names_exist",
+        "phone_and_email",
+        "combined_phone_fax_line"
+      ],
+      "expected_official_domains": [
+        "prometeyspb.com"
+      ],
+      "expected_basis": "STRONG",
+      "evidence": "http://prometeyspb.com/ooo_prometei/ prints «ИНН 4719016624 КПП 780601001 … ОГРН 1024702089741» and the registered address (пр. Маршала Блюхера, д. 78)",
+      "phones": {
+        "acceptable": [
+          "78126050007"
+        ],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [
+          "contact@prometeyspb.com"
+        ],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "prometey-ufa.ru",
+        "prometey.ru"
+      ],
+      "notes": "Corrected 2026-10-02: the first manual check read only the home page. The requisites page /ooo_prometei/ was found after the pipeline verified the site; re-inspected by hand before accepting. «Тел/факс» is a combined line (a phone).",
+      "same_company_domains": [],
+      "original": {
+        "expected_official_domains": [],
+        "tags": [
+          "no_verifiable_official_site",
+          "similar_names_exist"
+        ]
+      }
+    },
+    {
+      "inn": "7842184231",
+      "ogrn": "1207800115577",
+      "name": "ООО \"ЭДЕЛЬВЕЙС\"",
+      "tags": [
+        "no_discoverable_site",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Manual search: only directories; directories state no website",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "edelweiss.ru",
+        "edelveis.ru",
+        "bbnt.ru"
+      ],
+      "notes": "Very common name: any name-based guess is a different company.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7805396573",
+      "ogrn": "1069847167334",
+      "name": "АО \"КОМБИНАТ ПИТАНИЯ \"КИРОВСКИЙ\"",
+      "tags": [
+        "no_discoverable_site"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Manual search: directories only, no company site",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "rusprofile.ru",
+        "companies.rbc.ru"
+      ],
+      "notes": "",
+      "same_company_domains": []
+    },
+    {
+      "inn": "7817306535",
+      "ogrn": "5067847052334",
+      "name": "АО \"КОМБИНАТ СОЦИАЛЬНОГО ПИТАНИЯ КОЛПИНСКОГО РАЙОНА\"",
+      "tags": [
+        "no_discoverable_site",
+        "portal_listing_only"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Only listed on the city portal socpitanie.spb.ru (many combines; no INN) and 2GIS/zoon",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "socpitanie.spb.ru",
+        "2gis.ru",
+        "zoon.ru"
+      ],
+      "notes": "A portal listing must never become the official website.",
+      "same_company_domains": []
+    },
+    {
+      "inn": "4705055285",
+      "ogrn": "1114705007867",
+      "name": "ООО \"ТОРГОВЫЙ ДОМ \"ЛЕНИНГРАДСКИЙ\"",
+      "tags": [
+        "no_discoverable_site",
+        "similar_names_exist"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Manual search: directories only (fishnet.ru, sbis, list-org)",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [
+        "fishnet.ru",
+        "sbis.ru"
+      ],
+      "notes": "",
+      "same_company_domains": []
+    },
+    {
+      "inn": "782006150006",
+      "ogrn": null,
+      "name": "individual entrepreneur (name withheld)",
+      "tags": [
+        "individual_entrepreneur"
+      ],
+      "expected_official_domains": [],
+      "expected_basis": null,
+      "evidence": "Individual entrepreneur: contacts are personal data and are never collected",
+      "phones": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "emails": {
+        "acceptable": [],
+        "forbidden": []
+      },
+      "forbidden_domains": [],
+      "notes": "Expected: no website, phone or e-mail; no discovery requests.",
+      "same_company_domains": []
+    }
+  ],
+  "adversarial_checks": [
+    {
+      "inn": "7805074390",
+      "url": "https://tsmb.ru/contacts/",
+      "why": "this INN/OGRN appear on another group company's site only inside an impostor warning"
+    },
+    {
+      "inn": "7826679163",
+      "url": "https://tsmb.ru/",
+      "why": "same-brand site that publishes another company's requisites, not this INN"
+    },
+    {
+      "inn": "7804054351",
+      "url": "https://artis21.ru/",
+      "why": "similar name (Артис), different company"
+    },
+    {
+      "inn": "7804484876",
+      "url": "https://altairalco.ru/",
+      "why": "similar name (Альтаир), different company"
+    },
+    {
+      "inn": "7810687137",
+      "url": "https://bssys.com/",
+      "why": "similar name (BSS), different company"
+    },
+    {
+      "inn": "7842184231",
+      "url": "https://www.edelweiss.ru/",
+      "why": "similar name (Эдельвейс), guessable domain"
+    }
+  ],
+  "corrections": [
+    {
+      "inn": "4719016624",
+      "change": "expected website: none -> prometeyspb.com",
+      "why": "requisites page /ooo_prometei/ publishes INN/KPP/OGRN + registered address; the initial manual check inspected the home page only",
+      "found_by": "pipeline result, then manual re-inspection"
+    },
+    {
+      "inn": "7810687137",
+      "change": "expected websites += bsspharm.ru; phones += central office 327-37-47 and the Moscow / Bryansk branch numbers",
+      "why": "non-www bsspharm.ru/contacts/ shows «БСС», the registered street address and these numbers; the first check read www.bsspharm.ru",
+      "found_by": "pipeline result, then manual re-inspection"
+    },
+    {
+      "inn": "7813474659",
+      "change": "emails += in@rosohrana.ru",
+      "why": "it is the e-mail registered in EGRUL (official extract, 'E-mail' row); the golden rules accept EGRUL-registered business e-mails",
+      "found_by": "pipeline result, then EGRUL extract"
+    }
+  ],
+  "corrections_note": "Three truth corrections were made AFTER the first pipeline run (listed here with evidence). They were accepted only after manual re-inspection of the company pages / EGRUL. The report gives metrics against both the original and the corrected truth."
+}

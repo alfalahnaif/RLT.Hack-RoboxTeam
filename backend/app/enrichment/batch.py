@@ -70,9 +70,12 @@ def select_inns(conn: Connection, limit: int, inns: list[str] = (), prefixes: li
     return picked, dropped
 
 
-def run_batch(conn: Connection, inns: list[str], enrich_one: Callable[[str], object], log=print) -> list[dict]:
+def run_batch(conn: Connection, inns: list[str], enrich_one: Callable[[str], object], log=print, pause: float = 0.0,
+              sleep: Callable[[float], None] = time.sleep) -> list[dict]:
     out = []
     for n, inn in enumerate(inns, 1):
+        if n > 1 and pause:
+            sleep(pause)        # registry politeness between suppliers (egrul.nalog.ru refuses bursts with HTTP 400)
         t0 = time.perf_counter()
         try:
             prof = enrich_one(inn)
@@ -87,7 +90,8 @@ def run_batch(conn: Connection, inns: list[str], enrich_one: Callable[[str], obj
 
 def metrics(conn: Connection, inns: list[str]) -> dict:
     rows = conn.execute("""SELECT inn, enrichment_status, legal_name IS NOT NULL, official_website IS NOT NULL, duration_ms,
-                                  status_reasons, website_confidence, entity_kind, identity_source_type
+                                  status_reasons, website_confidence, entity_kind, identity_source_type,
+                                  website_verification_status, website_discovered_via
                            FROM supplier_enrichment_profile WHERE inn = ANY(%s)""", (inns,)).fetchall()
     by = {r[0]: r for r in rows}
     ctypes = {(i, t) for i, t in conn.execute("SELECT DISTINCT inn, contact_type FROM supplier_contact WHERE inn = ANY(%s)",
@@ -126,6 +130,8 @@ def metrics(conn: Connection, inns: list[str]) -> dict:
             "role_evidence": cov(lambda i: i in roles),
         },
         "website_confidence_counts": dict(sorted(Counter(by[i][6] for i in inns if i in by).items())),
+        "website_verification_status_counts": dict(sorted(Counter(by[i][9] or "NOT_CHECKED" for i in inns if i in by).items())),
+        "official_website_discovered_via": dict(sorted(Counter(by[i][10] for i in inns if i in by and by[i][3]).items())),
         "entity_kind_counts": dict(sorted(Counter(by[i][7] or "UNKNOWN" for i in inns if i in by).items())),
         "median_enrichment_ms": int(statistics.median(durs)) if durs else None,
         "p90_enrichment_ms": int(sorted(durs)[int(0.9 * (len(durs) - 1))]) if durs else None,
