@@ -6,7 +6,7 @@ import { routing } from "./routing";
  * Messages = core file (`messages/{locale}.json`) + one file per feature (`messages/{locale}/{ns}.json`).
  * Add feature namespaces to FEATURE_NAMESPACES as screens are built.
  */
-const FEATURE_NAMESPACES: readonly string[] = ["shell", "vocab", "feedback", "search", "results", "supplier", "compare", "history", "analysis"];
+const FEATURE_NAMESPACES: readonly string[] = ["shell", "vocab", "feedback", "search", "results", "supplier", "compare", "history", "analysis", "marketProduct"];
 
 export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;

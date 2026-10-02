@@ -16,11 +16,27 @@ import type {
   SearchRequest,
   SearchResponse,
   SearchRunSummary,
+  SupplierSearchRequest,
+  SupplierSearchResponse,
   SupplierProfile,
 } from "./types";
 
 export const API_MODE: "live" | "mock" = process.env.NEXT_PUBLIC_API_MODE === "live" ? "live" : "mock";
 const BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+
+/** Export links come from the API; keep downloads on the configured API origin. */
+export function supplierExportUrl(path: string, format: "json" | "csv"): string | null {
+  if (!path.trim()) return null;
+  try {
+    const base = new URL(BASE);
+    const url = new URL(path, `${BASE.replace(/\/$/, "")}/`);
+    if (url.origin !== base.origin || !["http:", "https:"].includes(url.protocol)) return null;
+    url.searchParams.set("format", format);
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
 
 export class ApiError extends Error {
   constructor(
@@ -88,6 +104,7 @@ const analysisOnce = (lotId: string) => {
 const analysisUnavailable = () => Promise.reject(new ApiError(503, "SEARCH_UNAVAILABLE", "analysis requires NEXT_PUBLIC_API_MODE=live"));
 
 export const api = {
+  supplierSearch: (req: SupplierSearchRequest) => http<SupplierSearchResponse>("/supplier-search", { method: "POST", body: JSON.stringify(req) }),
   search: (req: SearchRequest) => (live ? http<SearchResponse>("/search", { method: "POST", body: JSON.stringify(req) }) : viaMock(() => mock.search(req))),
   getSearch: (requestId: string) => (live ? http<SearchResponse>(`/searches/${encodeURIComponent(requestId)}`) : viaMock(() => mock.getSearch(requestId))),
   listSearches: () => (live ? http<SearchRunSummary[]>("/searches") : viaMock(() => mock.listSearches())),
