@@ -21,6 +21,7 @@ import type {
 } from "@/lib/api/types";
 import { fmtDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { SupplierProfileLink } from "../supplier-360/profile-link";
 
 const STATUS_TONE: Record<PoolStatus, "danger" | "warning" | "primary" | "success" | "gray"> = {
   VERY_HIGH: "danger",
@@ -217,6 +218,7 @@ function AlternativesPanel({ alternatives, total }: { alternatives: HistoricalAl
                     {t("awards", { count: a.historical_award_count })} · {t("relations", { count: a.observed_relation_count })} ·{" "}
                     {a.is_winner_in_category ? t("winner") : t("participant")}
                   </span>
+                  {a.supplier_inn ? <SupplierProfileLink inn={a.supplier_inn} variant="text" className="mt-1" /> : null}
                 </li>
               ))}
             </ul>
@@ -326,7 +328,10 @@ function CandidateCard({ c }: { c: ExternalCandidate }) {
           </ul>
         </div>
       ) : null}
-      <p className="text-xs text-muted">{c.exact_okpd2_asserted_by_source ? t("exactOkpd2Yes") : t("exactOkpd2No")}</p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs text-muted">{c.exact_okpd2_asserted_by_source ? t("exactOkpd2Yes") : t("exactOkpd2No")}</p>
+        <SupplierProfileLink inn={c.supplier_inn} />
+      </div>
       <Accordion type="single" collapsible variant="flush" className="-mx-3 border-t border-line-subtle pt-3">
         <AccordionItem value="evidence">
           <AccordionTrigger>{t("evidence", { count: c.evidence_count })}</AccordionTrigger>

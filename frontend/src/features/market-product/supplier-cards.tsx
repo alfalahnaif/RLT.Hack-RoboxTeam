@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody } from "@/components/ui/card";
 import { ScoreStat } from "@/components/ui/score";
+import { SupplierProfileLink } from "../supplier-360/profile-link";
 import type { ContactSource, SupplierContact, SupplierFreshness, SupplierSearchResponse, SupplierSearchResult } from "@/lib/api/types";
 
 type ExternalResult = SupplierSearchResponse["external_expansion"][number]["candidates"][number];
@@ -191,7 +192,10 @@ export function HistoricalSupplierCard({ supplier, rankingCode = null }: { suppl
             : <p className="text-sm text-body">{t("noEvidenceDetail")}</p>}
         </div>
         <FreshnessLabel freshness={supplier.freshness} />
-        <ContactActions contact={supplier.contact} />
+        <div className="flex flex-wrap items-center gap-2">
+          <ContactActions contact={supplier.contact} />
+          <SupplierProfileLink inn={supplier.inn} />
+        </div>
         <ContactDetails contact={supplier.contact} />
         <details className="rounded-md border border-line-subtle bg-surface-subtle p-3 text-sm">
           <summary className="cursor-pointer font-medium text-primary-700">{t("evidence")}</summary>
@@ -225,7 +229,10 @@ export function ExternalSupplierCard({ candidate }: { candidate: ExternalResult 
         </div>
         <p className="text-sm text-body"><span className="font-medium">{t("whyExternal")}:</span> {candidate.why_candidate}</p>
         <FreshnessLabel freshness={candidate.freshness} />
-        <ContactActions contact={candidate.contact} />
+        <div className="flex flex-wrap items-center gap-2">
+          <ContactActions contact={candidate.contact} />
+          <SupplierProfileLink inn={candidate.supplier_inn} />
+        </div>
         <ContactDetails contact={candidate.contact} />
         <details className="rounded-md border border-line-subtle bg-surface-subtle p-3 text-sm">
           <summary className="cursor-pointer font-medium text-primary-700">{t("evidence")}</summary>
