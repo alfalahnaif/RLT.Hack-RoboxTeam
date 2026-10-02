@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ip="http://zakupki.gov.ru/fz44/get-docs-ip/ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://zakupki.gov.ru/oos/base/1" targetNamespace="http://zakupki.gov.ru/fz44/get-docs-ip/ws">
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://zakupki.gov.ru/fz44/get-docs-ip/ws" schemaLocation="https://int.zakupki.gov.ru/eis-integration/services/getDocsIP?xsd=getDocsIP-ws-api.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="getDocsByReestrNumberRequest">
+		<wsdl:part name="getDocsByReestrNumberRequest" element="ip:getDocsByReestrNumberRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getDocsByReestrNumberResponse">
+		<wsdl:part name="getDocsByReestrNumberResponse" element="ip:getDocsByReestrNumberResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getDocsByOrgRegionRequest">
+		<wsdl:part name="getDocsByOrgRegionRequest" element="ip:getDocsByOrgRegionRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getDocsByOrgRegionResponse">
+		<wsdl:part name="getDocsByOrgRegionResponse" element="ip:getDocsByOrgRegionResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getDocSignaturesByUrlRequest">
+		<wsdl:part name="getDocSignaturesByUrlRequest" element="ip:getDocSignaturesByUrlRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getDocSignaturesByUrlResponse">
+		<wsdl:part name="getDocSignaturesByUrlResponse" element="ip:getDocSignaturesByUrlResponse"/>
+	</wsdl:message>
+	
+		<wsdl:message name="getPreparedPartRequest">
+		<wsdl:part name="getPreparedPartRequest" element="ip:getPreparedPartRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getPreparedPartResponse">
+		<wsdl:part name="getPreparedPartResponse" element="ip:getPreparedPartResponse"/>
+	</wsdl:message>
+	
+	
+	
+	
+	<wsdl:message name="getNsiRequest">
+		<wsdl:part name="getNsiOrgRequest" element="ip:getNsiRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getNsiResponse">
+		<wsdl:part name="getNsiResponse" element="ip:getNsiResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="GetDocsIPFacade">
+		<wsdl:operation name="getDocsByReestrNumber">
+			<wsdl:input name="getDocsByReestrNumberRequest" message="ip:getDocsByReestrNumberRequest"/>
+			<wsdl:output name="getDocsByReestrNumberResponse" message="ip:getDocsByReestrNumberResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocsByOrgRegion">
+			<wsdl:input name="getDocsByOrgRegionRequest" message="ip:getDocsByOrgRegionRequest"/>
+			<wsdl:output name="getDocsByOrgRegionResponse" message="ip:getDocsByOrgRegionResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocSignaturesByUrl">
+			<wsdl:input name="getDocSignaturesByUrlRequest" message="ip:getDocSignaturesByUrlRequest"/>
+			<wsdl:output name="getDocSignaturesByUrlResponse" message="ip:getDocSignaturesByUrlResponse"/>
+		</wsdl:operation>
+		
+		
+		
+		
+				<wsdl:operation name="getPreparedPart">
+			<wsdl:input name="getPreparedPartRequest" message="ip:getPreparedPartRequest"/>
+			<wsdl:output name="getPreparedPartResponse" message="ip:getPreparedPartResponse"/>
+		</wsdl:operation>
+		
+		
+		
+		<wsdl:operation name="getNsi">
+			<wsdl:input name="getNsiRequest" message="ip:getNsiRequest"/>
+			<wsdl:output name="getNsiResponse" message="ip:getNsiResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="GetDocsIPFacadeBinding" type="ip:GetDocsIPFacade">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getDocsByReestrNumber">
+			<soap:operation soapAction="http://zakupki.gov.ru/fz44/queue/ws/get-docs-ip"/>
+			<wsdl:input name="getDocsByReestrNumberRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getDocsByReestrNumberResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDocsByOrgRegion">
+			<soap:operation soapAction="http://zakupki.gov.ru/fz44/queue/ws/get-docs-ip"/>
+			<wsdl:input name="getDocsByOrgRegionRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getDocsByOrgRegionResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDocSignaturesByUrl">
+			<soap:operation soapAction="http://zakupki.gov.ru/fz44/queue/ws/get-docs-ip"/>
+			<wsdl:input name="getDocSignaturesByUrlRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getDocSignaturesByUrlResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		
+				<wsdl:operation name="getPreparedPart">
+			<soap:operation soapAction="http://zakupki.gov.ru/fz44/queue/ws/get-docs-ip"/>
+			<wsdl:input name="getPreparedPartRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getPreparedPartResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		
+		
+		<wsdl:operation name="getNsi">
+			<soap:operation soapAction="http://zakupki.gov.ru/fz44/queue/ws/get-docs-ip"/>
+			<wsdl:input name="getNsiRequest">
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="getNsiResponse">
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="GetDocsIPFacadeService">
+		<wsdl:port name="GetDocIPFacadePort" binding="ip:GetDocsIPFacadeBinding">
+			<soap:address location="https://int.zakupki.gov.ru/eis-integration/services/getDocsIP"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

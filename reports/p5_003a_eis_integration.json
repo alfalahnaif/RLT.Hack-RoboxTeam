@@ -1,0 +1,27 @@
+{
+  "feature_status": "integration-ready, credentials required for live ingestion",
+  "official_endpoint": "https://int.zakupki.gov.ru/eis-integration/services/getDocsIP",
+  "official_wsdl": "https://int.zakupki.gov.ru/eis-integration/services/getDocsIP?wsdl",
+  "official_xsd": "https://int.zakupki.gov.ru/eis-integration/services/getDocsIP?xsd=getDocsIP-ws-api.xsd",
+  "authentication": {
+    "required": true,
+    "type": "authorized СОИ token",
+    "observed_unauthenticated_error_code": 5,
+    "observed_unauthenticated_error": "Токены для сервисов отдачи отсутствуют в ЕИС",
+    "token_available": false
+  },
+  "implemented": ["registry-number SOAP request/response", "HTTP transport boundary", "offline 44-ФЗ contract XML parser", "source provenance and raw hash in parsed result"],
+  "fixtures": {
+    "official_wsdl_sha256": "f23d73e52e57e68c2d55fbe47db4418c860084d17bcc9de3586761d604891f64",
+    "official_xsd_sha256": "69bd68fcb345b9b3bec753e743578f020ce152e098c9d102403ce6a1b19a5341",
+    "soap_responses": "schema-based illustrative fixtures",
+    "contract": "reduced illustrative fixture based on public 13.0 export template; not live ЕИС output"
+  },
+  "tests": {"eis_adapter_passed": 9, "eis_and_shared_passed": 230, "wider_unit_passed": 357, "wider_unit_failed_without_database_url": 33, "wider_unit_errors_without_database_url": 14},
+  "live_procurements_ingested": 0,
+  "real_pilot_cases": 0,
+  "organizer_overlap_checked": false,
+  "database_writes": 0,
+  "activation": "Supply EIS_SOI_TOKEN locally; pass it to EisProcurementProvider(HttpSoapTransport(), token); verify authorized SOAP header and archive delivery before enabling ingestion.",
+  "remaining_blocker": "No authorized СОИ token or official procurement XML/ZIP files are available."
+}

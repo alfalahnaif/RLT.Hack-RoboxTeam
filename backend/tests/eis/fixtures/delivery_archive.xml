@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Schema-based positive fixture; not a live response and not proof of authorized access. -->
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://zakupki.gov.ru/fz44/get-docs-ip/ws">
+  <s:Body>
+    <e:getDocsByReestrNumberResponse>
+      <index><id>12345678-1234-1234-1234-123456789012</id><refId>12345678-1234-1234-1234-123456789013</refId><createDateTime>2026-10-02T00:00:00Z</createDateTime><mode>PROD</mode></index>
+      <dataInfo><archiveUrl>https://int.zakupki.gov.ru/example.zip</archiveUrl></dataInfo>
+    </e:getDocsByReestrNumberResponse>
+  </s:Body>
+</s:Envelope>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Schema-based fixture. Mirrors the observed unauthenticated code=5 response; identifiers are illustrative. -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ip="http://zakupki.gov.ru/fz44/get-docs-ip/ws">
+  <soap:Body>
+    <ip:getDocsByReestrNumberResponse>
+      <index><id>12345678-1234-1234-1234-123456789012</id><refId>12345678-1234-1234-1234-123456789013</refId><createDateTime>2026-10-02T00:00:00Z</createDateTime><mode>PROD</mode></index>
+      <dataInfo><errorInfo><code>5</code><message>Токены для сервисов отдачи отсутствуют в ЕИС: </message></errorInfo></dataInfo>
+    </ip:getDocsByReestrNumberResponse>
+  </soap:Body>
+</soap:Envelope>

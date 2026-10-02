@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Reduced illustrative fixture based on publicly posted 13.0 contract export template, not live EIS output. -->
+<e:export xmlns:e="http://zakupki.gov.ru/oos/export/1" xmlns:c="http://zakupki.gov.ru/oos/types/1">
+  <e:contract schemeVersion="13.0">
+    <c:id>41221151</c:id><c:publishDate>2023-02-28T16:26:42+03:00</c:publishDate>
+    <c:foundation><c:fcsOrder><c:order><c:notificationNumber>0372200000923001155</c:notificationNumber></c:order></c:fcsOrder></c:foundation>
+    <c:customer><c:fullName>Customer example</c:fullName><c:inn>7813045709</c:inn></c:customer>
+    <c:regNum>2780804311155801217</c:regNum>
+    <c:priceInfo><c:price>10000.00</c:price></c:priceInfo>
+    <c:products>
+      <c:product><c:externalSid>10851681</c:externalSid><c:OKPD2><c:code>21.20.10.221</c:code><c:name>Example A</c:name></c:OKPD2><c:name>Product A</c:name><c:OKEI><c:code>796</c:code></c:OKEI><c:price>7000.00</c:price><c:quantity>1</c:quantity></c:product>
+      <c:product><c:externalSid>10851682</c:externalSid><c:OKPD2><c:code>21.20.10.222</c:code><c:name>Example B</c:name></c:OKPD2><c:name>Product B</c:name><c:price>3000.00</c:price></c:product>
+    </c:products>
+    <c:suppliers><c:supplier><c:legalEntityRF><c:fullName>Supplier example</c:fullName><c:INN>7727809340</c:INN></c:legalEntityRF></c:supplier></c:suppliers>
+  </e:contract>
+</e:export>
