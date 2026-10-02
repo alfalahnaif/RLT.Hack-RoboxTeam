@@ -208,6 +208,18 @@ name).
 | Browser: free-text search, explicit OKPD2 10.51.11.141, mismatch 26.20.11.110, unknown OKPD2 10.51.11.999, Acer query, English results, Lot-ID 5956101 / 5718896, CSV / JSON export | all pass, no 390 px overflow |
 | HOLDOUT | not re-run |
 
+**Verification scope.** During this task the shared working tree also held another session's uncommitted OKPD2 work:
+`app/search/category_*`, `supplier_search*.py`, `market-product/results-screen.tsx` and marketProduct copy. None of it is in
+the P5-002A commits.
+
+The browser regression and the main-tree builds ran with those changes present. On a clean checkout of the P5-002A commit
+`5b1de53`:
+- backend: **475 passed** (same count, so none of it came from the other work);
+- frontend: tests (18), typecheck and lint pass;
+- production build: could not run there (Turbopack rejects a symlinked `node_modules`).
+
+P5-002A does not change any search code; it is identical to the P5-001C baseline.
+
 ## 8. Known limitations
 
 - **No search-engine provider active.** Without a Brave or Yandex Search API key, discovery relies on the EGRUL e-mail domain,
