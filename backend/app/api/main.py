@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.market_intelligence import router as market_intelligence_router
 from app.api.product import router as product_router
 from app.api.readiness import warm_semantic_model
+from app.api.supplier_profile_routes import router as supplier_profile_router
 from app.api.supplier_search_routes import router as supplier_search_router
 
 # Local frontend origins only (Next.js dev server); never "*". Override with a comma-separated CORS_ORIGINS.
@@ -27,3 +28,4 @@ app.add_middleware(CORSMiddleware, allow_origins=[o.strip() for o in os.environ.
 app.include_router(market_intelligence_router)
 app.include_router(product_router)
 app.include_router(supplier_search_router)
+app.include_router(supplier_profile_router)

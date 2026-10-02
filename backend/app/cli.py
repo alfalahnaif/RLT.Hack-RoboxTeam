@@ -2,6 +2,8 @@
 
   python -m app.cli ingest organizer /data/raw [--dry-run] [--force] [--reset-organizer-data]
   python -m app.cli ingest-status
+  python -m app.cli enrichment run [--inn INN ...] [--okpd2-prefix 10.51 ...] [--limit 100] [--refresh]
+  python -m app.cli enrichment report
 """
 from __future__ import annotations
 
@@ -244,6 +246,38 @@ def _cmd_semantic(args) -> int:
     return 0
 
 
+PILOT_FILE = "p5_001a_supplier_enrichment.json"
+
+
+def _cmd_enrichment(args) -> int:
+    """P5-001A bounded batch enrichment (never the whole supplier universe: --limit is capped at 500)."""
+    from app.api import supplier_profile as SP
+    from app.enrichment import batch as B
+    out = repo_root() / "reports" / PILOT_FILE
+    with psycopg.connect(database_url()) as conn:
+        if args.action == "run":
+            limit = min(args.limit, 500)
+            inns, dropped = B.select_inns(conn, limit, args.inn or [], args.okpd2_prefix or [], args.per_prefix)
+            print(f"[enrich] selected {len(inns)} suppliers ({dropped} holdout suppliers skipped)", file=sys.stderr, flush=True)
+            runs = B.run_batch(conn, inns, lambda inn: SP.enrich_supplier(conn, inn, refresh=args.refresh),
+                               log=lambda m: print(f"[enrich] {m}", file=sys.stderr, flush=True))
+            doc = {"task": "P5-001A", "selection": {"limit": limit, "explicit_inns": args.inn or [],
+                                                     "okpd2_prefixes": args.okpd2_prefix or [], "per_prefix": args.per_prefix,
+                                                     "holdout_suppliers_skipped": dropped, "refresh": args.refresh},
+                   "inns": inns, "runs": runs}
+        else:
+            doc = json.loads(out.read_text(encoding="utf-8"))
+            inns = doc["inns"]
+        doc["metrics"] = B.metrics(conn, inns)
+        doc["profiles"] = [SP.build_profile(conn, inn, SP.utcnow()).model_dump(mode="json",
+                                                                                exclude={"evidence", "last_run_attempts"})
+                           for inn in inns]
+    out.write_text(json.dumps(doc, ensure_ascii=False, indent=1, sort_keys=True, default=str) + chr(10), encoding="utf-8")
+    out.with_suffix(".md").write_text(B.render_md(json.loads(out.read_text(encoding="utf-8"))), encoding="utf-8")
+    print(json.dumps(doc["metrics"], indent=1, ensure_ascii=False))
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="python -m app.cli")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -280,6 +314,14 @@ def main(argv=None) -> int:
                     help="maintenance only: resolve the latest model revision and REWRITE the lock (then build --reembed)")
     sm.add_argument("--reembed", action="store_true", help="build: clear ALL embeddings and re-embed with the pinned revision")
     sm.set_defaults(func=_cmd_semantic)
+    en = sub.add_parser("enrichment", help="P5-001A Supplier 360 enrichment (bounded batch; holdout suppliers excluded)")
+    en.add_argument("action", choices=["run", "report"])
+    en.add_argument("--inn", action="append", help="explicit supplier INN (repeatable; selected first)")
+    en.add_argument("--okpd2-prefix", action="append", help="add the top awarded suppliers of this OKPD2 prefix (repeatable)")
+    en.add_argument("--per-prefix", type=int, default=10)
+    en.add_argument("--limit", type=int, default=100, help="maximum suppliers in this run (hard cap 500)")
+    en.add_argument("--refresh", action="store_true", help="re-query sources even when a fresh stored profile exists")
+    en.set_defaults(func=_cmd_enrichment)
     args = ap.parse_args(argv)
     return args.func(args)
 
