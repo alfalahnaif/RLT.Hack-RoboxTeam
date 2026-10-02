@@ -15,6 +15,7 @@ import { ChevronDownIcon } from "@/components/ui/_glyphs";
 import type { RankedSupplier, Recommendations } from "@/lib/api/types";
 import { fmtDate, toPct } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { SupplierProfileLink } from "../supplier-360/profile-link";
 
 const INITIAL_VISIBLE = 5;
 
@@ -161,11 +162,12 @@ function SupplierCard({ supplier: s, top, procurementCodes }: { supplier: Ranked
           </div>
         ) : null}
 
-        <div className="border-t border-line-subtle pt-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line-subtle pt-3">
           <Button variant="link" className="text-primary-700 hover:text-primary-800" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen((o) => !o)}>
             {open ? t("hideWhy") : t("why")}
             <ChevronDownIcon className={cn("transition-transform", open && "rotate-180")} />
           </Button>
+          <SupplierProfileLink inn={s.supplier_inn} />
         </div>
       </CardBody>
     </Card>

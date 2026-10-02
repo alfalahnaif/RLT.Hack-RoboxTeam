@@ -5,6 +5,7 @@
  * P6-004 replaces the hand-written DTOs with generated types; the function signatures stay.
  */
 import * as mock from "@/mocks/server";
+import * as mock360 from "@/mocks/supplier-360";
 import type {
   ApiErrorEnvelope,
   BackendHealth,
@@ -19,6 +20,7 @@ import type {
   SupplierSearchRequest,
   SupplierSearchResponse,
   SupplierProfile,
+  SupplierProfile360,
 } from "./types";
 
 export const API_MODE: "live" | "mock" = process.env.NEXT_PUBLIC_API_MODE === "live" ? "live" : "mock";
@@ -117,6 +119,17 @@ export const api = {
   /** P4-002 main page request: procurement + recommendations + market intelligence in one response. */
   analysis: (lotId: string) => (live ? analysisOnce(lotId) : analysisUnavailable()),
   filterMeta: () => (live ? http<FilterMeta>("/meta/filters") : viaMock(() => mock.filterMeta())),
+  /** P5-001A Supplier 360: stored profile, read-only (never queries external sources). */
+  supplierProfile: (inn: string) =>
+    live ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/profile`) : viaMock(() => mock360.getProfile(inn)),
+  /** P5-001A on-demand enrichment: synchronous and cache-first; `refresh` forces re-querying the sources. */
+  enrichSupplier: (inn: string, refresh = false) =>
+    live
+      ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/enrich${refresh ? "?refresh=true" : ""}`, { method: "POST" })
+      : viaMock(() => mock360.enrich(inn, refresh)),
 };
+
+/** P5-001A exposes `POST /suppliers/{inn}/enrich`; `NEXT_PUBLIC_SUPPLIER_ENRICH=off` hides the trigger for a deployment without it. */
+export const SUPPLIER_ENRICH_AVAILABLE = process.env.NEXT_PUBLIC_SUPPLIER_ENRICH !== "off";
 
 export const isApiError = (e: unknown): e is ApiError => e instanceof ApiError;

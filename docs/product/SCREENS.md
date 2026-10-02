@@ -141,6 +141,27 @@ external market expansion (Verified / Under review badges, evidence basis, revie
 `exact_okpd2_asserted_by_source` wording). States: initial, staged loading, not found, PARTIAL, semantic unavailable,
 section unavailable, items without OKPD2.
 
+## S-07 Supplier 360 profile (P5-001B, UI for the P5-001A contract)
+
+Drill-down from every supplier card (live market-product historical + external cards, S-06 ranked suppliers, historical
+alternatives and external candidates) via "View supplier profile"; the back button returns to the originating list (`?back=`,
+relative paths only). One screen for historical suppliers and curated external candidates, keyed by INN.
+`GET /suppliers/{inn}/profile` renders: header (name — or the INN when unknown, never an invented name; INN copy; OGRN/KPP;
+region; legal status; role badges; history vs. external badge; actions area Contact · Export JSON — a future "Request
+quotation" is one more entry in `ProfileActions`, no placeholder button) · contacts (only returned values; per-value source,
+check date, freshness and verified badges; call / copy phone / email / open website / copy address; "Contact data not available
+from current verified sources" when empty; unconfirmed website candidate labelled separately) · company role (grouped per role,
+strongest API status shown; VERIFIED solid green, UNDER_REVIEW amber, INFERRED dashed gray; every evidence item inspectable) ·
+data freshness (last profile update, identity, contacts incl. source-page currency, last evidence check date; STALE/UNKNOWN never
+hidden) · legal identity (registry fields + source) · observed procurement history (relations, awards, lots, last activity,
+top OKPD2; worded as observed organizer data, not total market activity) · collapsed "Sources & evidence" (source type, URL,
+check date, claims supported; evidence items with strength / valid-until; no raw payloads).
+Enrichment states: NOT_ENRICHED (notice + "Enrich supplier profile" → `POST /suppliers/{inn}/enrich`), IN_PROGRESS (no second
+trigger), PARTIAL (available data + reasons; retry when `retryable`), FAILED (reasons; retry with `refresh=true` when
+`retryable`), call error (stored data kept, error + retry). `NEXT_PUBLIC_SUPPLIER_ENRICH=off` hides the trigger.
+Mock mode: synthetic fixtures (`src/mocks/supplier-360-fixtures.ts`, INNs `0000…`) listed at `/[locale]/supplier-360`;
+view-model tests `npm test` (`frontend/tests/supplier-360.test.mjs`).
+
 ---
 
 ## S-00 Global shell
@@ -191,7 +212,8 @@ Demo queries that reach every state: panels (normal, region, attributes) · lapt
 | S-04 | `/[locale]/compare` | `features/compare/*` |
 | S-05 | `/[locale]/history` | `features/history/*` |
 | S-06 | `/[locale]/analysis?lot=<lot_id>` | `features/analysis/*` |
-Copy: `messages/{ru,en}/{shell,vocab,feedback,search,results,supplier,compare,history,analysis}.json` (Russian first, keys in sync).
+| S-07 | `/[locale]/supplier-360/<inn>?back=<path>` (mock-only fixture index: `/supplier-360`) | `features/supplier-360/*` |
+Copy: `messages/{ru,en}/{shell,vocab,feedback,search,results,supplier,compare,history,analysis,marketProduct,supplier360}.json` (Russian first, keys in sync).
 
 ### S-00 Global shell
 | Region / state | DS pattern |

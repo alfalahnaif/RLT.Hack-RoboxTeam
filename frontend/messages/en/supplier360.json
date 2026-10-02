@@ -1,0 +1,262 @@
+{
+  "title": "Supplier profile",
+  "viewProfile": "View supplier profile",
+  "back": "Back",
+  "loading": "Loading the supplier profile…",
+  "syntheticNotice": "Demo mode: this profile is built from synthetic data and does not describe a real company.",
+  "error": {
+    "notFoundTitle": "Supplier not found",
+    "notFound": "INN {inn} is neither in the procurement data nor among the curated external candidates.",
+    "invalidInn": "An INN has 10 digits (legal entity) or 12 digits (individual entrepreneur).",
+    "unavailableTitle": "Profile temporarily unavailable",
+    "unavailable": "The profile could not be loaded. Try again later.",
+    "retry": "Retry"
+  },
+  "header": {
+    "inn": "INN",
+    "ogrn": "OGRN",
+    "kpp": "KPP",
+    "nameUnknown": "Company name not established — profile not enriched yet",
+    "copyInn": "Copy INN",
+    "copied": "Copied",
+    "historical": "In procurement history",
+    "external": "External candidate",
+    "roleUnknown": "Role unknown",
+    "statusUnknown": "Status unknown"
+  },
+  "legalStatus": {
+    "ACTIVE": "Active",
+    "CEASED": "Ceased operations",
+    "LIQUIDATED": "Liquidated",
+    "LIQUIDATING": "Being liquidated",
+    "REORGANIZING": "Being reorganized"
+  },
+  "entityKind": {
+    "LEGAL_ENTITY": "Legal entity",
+    "INDIVIDUAL_ENTREPRENEUR": "Individual entrepreneur"
+  },
+  "role": {
+    "MANUFACTURER": "Manufacturer",
+    "OFFICIAL_DISTRIBUTOR": "Official distributor",
+    "DISTRIBUTOR": "Distributor",
+    "SUPPLIER": "Supplier",
+    "UNKNOWN": "Role unknown"
+  },
+  "roleStatus": {
+    "VERIFIED": "Verified",
+    "INFERRED": "Inferred",
+    "UNDER_REVIEW": "Under review",
+    "UNKNOWN": "Unknown"
+  },
+  "actions": {
+    "label": "Profile actions",
+    "contact": "Contact",
+    "export": "Export JSON",
+    "enrich": "Enrich supplier profile",
+    "retry": "Retry enrichment",
+    "enriching": "Enriching profile…",
+    "enrichingHint": "Checking the FNS registry, the company website and contacts. This can take up to a minute.",
+    "enrichDone": "Profile updated",
+    "enrichCached": "The stored profile is still current — sources were not queried again",
+    "enrichFailed": "Profile enrichment failed",
+    "enrichFailedHint": "Sources were unavailable or did not respond. Previously stored data is shown."
+  },
+  "enrichment": {
+    "notEnrichedTitle": "Supplier profile has not been enriched yet.",
+    "notEnriched": "Only procurement data and curated facts (if any) are shown. Legal details and contacts appear after enrichment.",
+    "notEnrichedNoAction": "Only procurement data and curated facts (if any) are shown.",
+    "inProgressTitle": "Enrichment in progress",
+    "inProgress": "The profile is being updated. Reload the page in a minute.",
+    "partialTitle": "Profile partially complete",
+    "partial": "Available data is shown. Some information is not available from verified sources.",
+    "failedTitle": "Enrichment failed",
+    "failed": "Sources did not respond. Data already in the system is shown.",
+    "failedFinal": "Sources did not confirm details for this INN. Retrying will not help.",
+    "reasons": "Reasons"
+  },
+  "reason": {
+    "SOURCE_UNAVAILABLE": "Source unavailable",
+    "REGISTRY_NOT_FOUND": "INN not found in the registry",
+    "PRIMARY_REGISTRY_UNAVAILABLE": "FNS registry unavailable",
+    "PRIMARY_REGISTRY_UNAVAILABLE_MIRROR_USED": "FNS registry unavailable — registry mirror used",
+    "REGISTRY_MIRROR_RATE_LIMITED": "Registry mirror rate-limited the requests",
+    "REGISTRY_MIRROR_SKIPPED": "Registry mirror skipped",
+    "REGISTRY_MIRROR_UNAVAILABLE": "Registry mirror unavailable",
+    "EGRUL_EXTRACT_UNAVAILABLE": "EGRUL extract unavailable",
+    "EGRUL_EXTRACT_REJECTED": "EGRUL extract failed verification",
+    "LEGAL_ENTITY_CEASED": "The legal entity has ceased operations",
+    "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED": "Contacts of individual entrepreneurs are not collected",
+    "NO_WEBSITE_CANDIDATE": "No company website found",
+    "WEBSITE_UNAVAILABLE": "Company website unavailable",
+    "WEBSITE_IDENTITY_NOT_CONFIRMED": "Website ownership not confirmed",
+    "NO_PUBLIC_PHONE_OR_EMAIL_ON_OFFICIAL_SITE": "No phone or email on the official website",
+    "PIPELINE_ERROR": "Internal enrichment error"
+  },
+  "identity": {
+    "title": "Legal identity",
+    "subtitle": "From the registry. The company role is shown separately.",
+    "legalName": "Full legal name",
+    "shortName": "Short name",
+    "entityKind": "Entity type",
+    "status": "Status",
+    "region": "Registration region",
+    "address": "Registered address",
+    "registrationDate": "Registration date",
+    "okved": "Primary OKVED",
+    "source": "Source",
+    "unavailable": "Legal details have not been retrieved from the registry yet."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "none": "Contact data not available from current verified sources",
+    "type": {
+      "PHONE": "Phone",
+      "EMAIL": "Email",
+      "WEBSITE": "Website",
+      "ADDRESS": "Address"
+    },
+    "copyPhone": "Copy phone",
+    "copyAddress": "Copy address",
+    "copied": "Copied",
+    "copyFailed": "Could not copy",
+    "call": "Call",
+    "email": "Email",
+    "openWebsite": "Open website",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "checked": "checked {date}",
+    "officialWebsite": "Official website confirmed",
+    "websiteCandidate": "Possible website (not confirmed as official)",
+    "label": {
+      "REGISTERED_LEGAL_ADDRESS": "registered legal address",
+      "PUBLISHED_COMPANY_ADDRESS": "address published by the company"
+    }
+  },
+  "freshness": {
+    "title": "Data freshness",
+    "lastUpdate": "Last profile update",
+    "never": "Profile not updated yet",
+    "identity": "Legal identity",
+    "contacts": "Contacts",
+    "evidence": "Role and fact evidence",
+    "evidenceChecked": "Sources last checked: {date}",
+    "noDate": "Check date unknown",
+    "checkedOn": "Checked {date}",
+    "status": {
+      "FRESH": "Recently verified",
+      "STALE": "Evidence may be outdated",
+      "UNKNOWN": "Freshness unknown"
+    },
+    "currency": {
+      "CURRENT": "Source page is current",
+      "UNDATED": "Source page has no date",
+      "OUTDATED": "Source page is outdated"
+    },
+    "note": "Checked recently is not the same as fresh: an outdated page stays stale and an undated page stays unknown."
+  },
+  "roles": {
+    "title": "Company role",
+    "subtitle": "Roles need evidence and do not follow from the legal identity.",
+    "statusHint": {
+      "VERIFIED": "Confirmed by a source",
+      "INFERRED": "Inferred from indirect signals — not confirmed",
+      "UNDER_REVIEW": "Claimed; needs review",
+      "UNKNOWN": "No role evidence"
+    },
+    "unknownDescription": "Checked sources contain no evidence of a role (manufacturer, distributor).",
+    "evidence": "Evidence ({count})",
+    "basis": "Basis",
+    "strength": "Evidence strength",
+    "noSourceLink": "no link",
+    "origin": {
+      "ENRICHMENT_PIPELINE": "automated enrichment",
+      "CURATED_P3_002B": "curated evidence catalog",
+      "PROCUREMENT_HISTORY": "procurement history"
+    }
+  },
+  "basis": {
+    "PROCUREMENT_HISTORY_AWARDS": "Procurement awards (organizer data)",
+    "OKVED_PRIMARY": "Primary OKVED",
+    "FIRST_PARTY_PRODUCTION_CLAIM": "Production claim on the company website",
+    "FIRST_PARTY_DISTRIBUTION_CLAIM": "Distribution claim on the company website",
+    "CURATED_EVIDENCE_POLICY": "Curated evidence catalog, OKPD2 {code}",
+    "NO_ROLE_EVIDENCE": "No evidence found"
+  },
+  "strength": {
+    "STRONG": "strong",
+    "MODERATE": "moderate",
+    "WEAK": "weak"
+  },
+  "history": {
+    "title": "Observed procurement history",
+    "disclaimer": "History observed in the organizer procurement data (2024–2025) — not the company's total market activity.",
+    "observedRelations": "Observed procurement relations",
+    "relevantAwards": "Relevant awards",
+    "distinctLots": "Lots",
+    "lastActivity": "Last observed procurement activity",
+    "period": "Observed: {from} — {to}",
+    "topOkpd2": "Top OKPD2 categories",
+    "lots": "{count, plural, one {# lot} other {# lots}}",
+    "platforms": "Platforms",
+    "noAwardsOkpd2": "No awarded items with an OKPD2 code.",
+    "none": "The organizer procurement data has no records for this INN.",
+    "external": "This company does not appear in the organizer procurement data — it is an external candidate. No history does not mean no experience."
+  },
+  "sources": {
+    "title": "Sources & evidence",
+    "summary": "{sources, plural, one {# source} other {# sources}} · {evidence, plural, one {# evidence item} other {# evidence items}}",
+    "sourcesTitle": "Sources",
+    "evidenceTitle": "Supported claims",
+    "supports": "Supports",
+    "checked": "Checked {date}",
+    "validUntil": "valid until {date}",
+    "strength": "strength: {value}",
+    "none": "No sources recorded yet."
+  },
+  "sourceType": {
+    "FNS_EGRUL": "FNS — EGRUL",
+    "FNS_EGRUL_DERIVED_REGISTRY": "Registry built from FNS data",
+    "CHECKO_REGISTRY_MIRROR": "Registry mirror",
+    "FIRST_PARTY": "Company website",
+    "CURATED_P4_005C": "Curated contact record",
+    "REGULATORY_REGISTRY": "Regulatory registry",
+    "REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE": "Declaration registry (source: FGIS Rosaccreditation)",
+    "ORGANIZER_PROCUREMENT_DATA": "Organizer procurement data",
+    "CURATED_EVIDENCE_SEED": "Curated evidence catalog",
+    "RETAIL_SECONDARY": "Retail listing",
+    "SECONDARY_BUSINESS_PROFILE": "Business directory"
+  },
+  "claim": {
+    "LEGAL_IDENTITY": "Legal identity",
+    "LEGAL_STATUS": "Registry status",
+    "OKVED_PRIMARY": "Primary OKVED",
+    "WEBSITE_IDENTITY": "Official website",
+    "WEBSITE_CANDIDATE": "Possible website",
+    "CONTACT_PHONE": "Phone",
+    "CONTACT_EMAIL": "Email",
+    "CONTACT_WEBSITE": "Website",
+    "CONTACT_ADDRESS": "Address",
+    "CURATED_IDENTITY_BASIS": "Candidate identification",
+    "ROLE_MANUFACTURER": "Role: manufacturer",
+    "ROLE_OFFICIAL_DISTRIBUTOR": "Role: official distributor",
+    "ROLE_DISTRIBUTOR": "Role: distributor",
+    "ROLE_SUPPLIER": "Role: supplier",
+    "ROLE_UNKNOWN": "Role unknown",
+    "CONFORMITY_DECLARATION": "Conformity declaration",
+    "FIRST_PARTY_WEBSITE": "Company website",
+    "CURRENT_PRODUCT_LISTING": "Product listing",
+    "BUSINESS_PROFILE": "Business profile"
+  },
+  "fixtures": {
+    "title": "Supplier 360 — demo states",
+    "description": "Synthetic profiles for checking the screen in mock mode. In live mode the profile opens from a supplier card.",
+    "complete": "Complete profile · verified manufacturer",
+    "partial": "Partial profile · stale contacts · inferred distributor",
+    "innOnly": "INN only · not enriched",
+    "noContacts": "Individual entrepreneur · no contacts · unknown freshness",
+    "failed": "Enrichment failed · retryable",
+    "external": "External candidate · curated contacts",
+    "enrichError": "Not enriched · enrichment call fails",
+    "inProgress": "Enrichment in progress"
+  }
+}

@@ -59,7 +59,10 @@ export type ErrorCode =
   | "REQUEST_NOT_FOUND"
   | "NETWORK_ERROR"
   | "LOT_NOT_FOUND"
-  | "HISTORICAL_DATA_UNAVAILABLE";
+  | "HISTORICAL_DATA_UNAVAILABLE"
+  | "INVALID_INN"
+  | "CURATED_DATA_UNAVAILABLE"
+  | "DATA_UNAVAILABLE";
 
 /** Match Score features (SEARCH_AND_RANKING §3). */
 export type RankingFeature = "semantic" | "lexical" | "category" | "attributes" | "experience" | "geography" | "supplier_type" | "delivery";
@@ -526,4 +529,121 @@ export type SupplierSearchResponse = {
   semantic_enabled: boolean;
   warnings: string[];
   timings_ms: Record<string, number>;
+};
+
+/* ------------------------------------------------------------------------------------------------
+ * P5-001A — Supplier 360 profile (`GET /suppliers/{inn}/profile`, `POST /suppliers/{inn}/enrich?refresh=`).
+ * Mirrors backend/app/api/supplier_profile_models.py. Dates are ISO strings; datetimes carry a timezone.
+ * ---------------------------------------------------------------------------------------------- */
+
+export type FreshnessStatus = "FRESH" | "STALE" | "UNKNOWN";
+export type EnrichmentStatus = "NOT_ENRICHED" | "IN_PROGRESS" | "COMPLETE" | "PARTIAL" | "FAILED";
+export type ProfileRole = "MANUFACTURER" | "OFFICIAL_DISTRIBUTOR" | "DISTRIBUTOR" | "SUPPLIER" | "UNKNOWN";
+export type ProfileRoleStatus = "VERIFIED" | "INFERRED" | "UNDER_REVIEW" | "UNKNOWN";
+export type ProfileContactType = "PHONE" | "EMAIL" | "WEBSITE" | "ADDRESS";
+
+export type SupplierIdentity = {
+  inn: string;
+  entity_kind: string | null;
+  /** Registry legal name, else the accepted curated name, else null (never invented). */
+  display_name: string | null;
+  legal_name: string | null;
+  short_name: string | null;
+  /** ACTIVE / CEASED as published by the registry; null when not enriched. */
+  legal_status: string | null;
+  ogrn: string | null;
+  kpp: string | null;
+  region: string | null;
+  registered_address: string | null;
+  registration_date: string | null;
+  primary_okved: string | null;
+  identity_source_url: string | null;
+  identity_source_type: string | null;
+  /** INN appears in the organizer procurement data. */
+  historically_known: boolean;
+};
+
+export type EnrichmentState = {
+  status: EnrichmentStatus;
+  reasons: string[];
+  retryable: boolean;
+  last_enriched_at: string | null;
+  official_website: string | null;
+  website_confidence: "HIGH" | "MEDIUM" | "LOW" | "NONE";
+  /** Website considered but not proven official (MEDIUM/LOW). */
+  website_candidate: string | null;
+  pipeline_version: string | null;
+  cache: "HIT" | "MISS" | "REFRESHED" | "NONE";
+};
+
+export type ProfileContact = {
+  type: ProfileContactType;
+  value: string;
+  label: string | null;
+  source_url: string;
+  source_type: string;
+  checked_at: string;
+  freshness_status: FreshnessStatus;
+  verified: boolean;
+  origin: "ENRICHMENT_PIPELINE" | "CURATED_P4_005C";
+};
+
+export type ProfileRoleItem = {
+  role: ProfileRole;
+  status: ProfileRoleStatus;
+  basis: string;
+  claim: string;
+  strength: string;
+  source_url: string | null;
+  source_type: string;
+  checked_at: string | null;
+  origin: "ENRICHMENT_PIPELINE" | "CURATED_P3_002B" | "PROCUREMENT_HISTORY";
+};
+
+export type ProfileEvidence = {
+  evidence_type: string;
+  claim: string;
+  value: string | null;
+  source_url: string;
+  source_type: string;
+  checked_at: string;
+  valid_until: string | null;
+  strength: string;
+};
+
+export type ProfileFreshness = {
+  policy_version: string;
+  identity: FreshnessStatus;
+  identity_checked_at: string | null;
+  contacts: FreshnessStatus;
+  contacts_last_checked_at: string | null;
+  /** CURRENT / UNDATED / OUTDATED of the contact source page. */
+  content_currency: string | null;
+  profile_cache_valid_until: string | null;
+  note: string;
+};
+
+export type ProcurementHistorySummary = {
+  observed_relations: number;
+  relevant_awards: number;
+  distinct_lots: number;
+  first_observed_activity: string | null;
+  last_observed_activity: string | null;
+  platforms: Record<string, number>;
+  top_okpd2: { okpd2: string; awarded_lots: number }[];
+  note: string;
+};
+
+export type ProfileSource = { source_url: string; source_type: string; last_checked_at: string | null; used_for: string[] };
+
+export type SupplierProfile360 = {
+  supplier: SupplierIdentity;
+  enrichment: EnrichmentState;
+  contacts: ProfileContact[];
+  roles: ProfileRoleItem[];
+  evidence: ProfileEvidence[];
+  freshness: ProfileFreshness;
+  procurement_history_summary: ProcurementHistorySummary | null;
+  sources: ProfileSource[];
+  last_run_attempts: { source: string; outcome: string; detail: string | null; duration_ms: number }[];
 };
