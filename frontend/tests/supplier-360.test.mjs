@@ -2,8 +2,12 @@
 // Run: npm test  (node --test; Node >= 23.6 strips the TypeScript types of the imported modules — no extra dependencies).
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { readFileSync } from "node:fs";
 import {
   enrichmentView,
+  hasMarketRoleEvidence,
+  hasReachableContact,
+  sourceClass,
   evidenceCheckedAt,
   headerRoles,
   isInnOnly,
@@ -31,9 +35,9 @@ test("complete profile: name, verified manufacturer first, no enrichment notice"
   assert.equal(primaryContactHref(p.contacts), "mailto:sales@dairy-demo.example.com");
 });
 
-test("partial profile: retry allowed, stale contacts kept visible, inferred distributor stays weaker than verified", () => {
+test("partial profile: cache-first refresh allowed, stale contacts kept visible, inferred distributor stays weaker than verified", () => {
   const p = F.partial;
-  assert.deepEqual(enrichmentView(p.enrichment, true), { notice: "partial", action: { kind: "retry", refresh: true } });
+  assert.deepEqual(enrichmentView(p.enrichment, true), { notice: "partial", action: { kind: "refresh", refresh: false } });
   assert.ok(p.contacts.every((c) => c.freshness_status === "STALE"));
   assert.equal(orderedContacts(p.contacts).length, p.contacts.length, "stale contacts are not filtered out");
   const groups = roleGroups(p.roles);
@@ -110,4 +114,55 @@ test("every fixture INN is unique and synthetic (0000… prefix)", () => {
   const inns = Object.values(F).map((p) => p.supplier.inn);
   assert.equal(new Set(inns).size, inns.length);
   assert.ok(inns.every((i) => /^0{6}/.test(i)));
+});
+
+test("source classes keep official, website, secondary, history and curated sources apart", () => {
+  assert.equal(sourceClass("FNS_EGRUL"), "OFFICIAL_REGISTRY");
+  assert.equal(sourceClass("FNS_EGRUL_EXTRACT"), "OFFICIAL_REGISTRY");
+  assert.equal(sourceClass("FIRST_PARTY"), "COMPANY_WEBSITE");
+  assert.equal(sourceClass("FNS_EGRUL_DERIVED_REGISTRY"), "SECONDARY_PROVIDER", "checko-derived data is never the official registry");
+  assert.equal(sourceClass("CHECKO_REGISTRY_MIRROR"), "SECONDARY_PROVIDER");
+  assert.equal(sourceClass("ORGANIZER_PROCUREMENT_DATA"), "PROCUREMENT_HISTORY");
+  assert.equal(sourceClass("REGULATORY_REGISTRY_MIRROR_WITH_FGIS_ROSACCREDITATION_SOURCE"), "CURATED_REGULATORY");
+});
+
+/* Real P5-001A responses captured from GET /api/v1/suppliers/{inn}/profile on supplier_radar_p5 (2026-10-02). */
+const real = (inn) => JSON.parse(readFileSync(new URL(`./fixtures/p5_profile_${inn}.json`, import.meta.url), "utf-8"));
+const KEYS = ["supplier", "enrichment", "contacts", "roles", "evidence", "freshness", "procurement_history_summary", "sources", "last_run_attempts"];
+
+test("real contract: top-level keys match the frontend type", () => {
+  for (const inn of ["7804054351", "7810687137", "7622012124", "7814580307"]) assert.deepEqual(Object.keys(real(inn)).sort(), [...KEYS].sort(), inn);
+});
+
+test("real A: EGRUL legal entity — identity, address, OKVED; address only → no reachable contact; no market role", () => {
+  const p = real("7804054351");
+  assert.ok(profileName(p.supplier) && p.supplier.registered_address && p.supplier.primary_okved);
+  assert.deepEqual(orderedContacts(p.contacts).map((c) => [c.type, sourceClass(c.source_type)]), [["ADDRESS", "OFFICIAL_REGISTRY"]]);
+  assert.equal(hasReachableContact(p.contacts), false);
+  assert.equal(hasMarketRoleEvidence(p.roles), false, "supplier from procurement history only");
+  assert.deepEqual(enrichmentView(p.enrichment, true), { notice: "partial", action: { kind: "refresh", refresh: false } });
+  assert.ok(Object.keys(p.procurement_history_summary.platforms).every((k) => k === "AIS_GZ" || k === "EM"));
+});
+
+test("real C: distributor INFERRED from OKVED, never manufacturer", () => {
+  const p = real("7810687137");
+  const groups = roleGroups(p.roles).map((g) => [g.role, g.status]);
+  assert.deepEqual(groups, [["SUPPLIER", "VERIFIED"], ["DISTRIBUTOR", "INFERRED"]]);
+  assert.ok(!p.roles.some((r) => r.role === "MANUFACTURER"));
+});
+
+test("real E (before): NOT_ENRICHED historical supplier → INN only + enrich action", () => {
+  const p = real("7814580307");
+  assert.equal(profileName(p.supplier), null);
+  assert.deepEqual(enrichmentView(p.enrichment, true), { notice: "notEnriched", action: { kind: "enrich", refresh: false } });
+});
+
+test("real H: curated external candidate — curated contacts, verified manufacturer, secondary-provider address labelled as such", () => {
+  const p = real("7622012124");
+  assert.equal(p.supplier.historically_known, false);
+  assert.equal(p.procurement_history_summary, null);
+  assert.deepEqual(headerRoles(p.roles), [{ role: "MANUFACTURER", status: "VERIFIED" }]);
+  assert.equal(hasReachableContact(p.contacts), true);
+  const address = p.contacts.find((c) => c.type === "ADDRESS");
+  assert.equal(sourceClass(address.source_type), "SECONDARY_PROVIDER");
 });

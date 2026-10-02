@@ -227,7 +227,8 @@ export function ExternalSupplierCard({ candidate }: { candidate: ExternalResult 
             <VerificationBadge status={candidate.verification_status} />
           </div>
         </div>
-        <p className="text-sm text-body"><span className="font-medium">{t("whyExternal")}:</span> {candidate.why_candidate}</p>
+        {/* API reason text can contain long unbroken codes (e.g. MAIN_OKVED_IS_…): let them wrap on 390 px screens. */}
+        <p className="text-sm text-body [overflow-wrap:anywhere]"><span className="font-medium">{t("whyExternal")}:</span> {candidate.why_candidate}</p>
         <FreshnessLabel freshness={candidate.freshness} />
         <div className="flex flex-wrap items-center gap-2">
           <ContactActions contact={candidate.contact} />

@@ -22,7 +22,8 @@
     "historical": "In procurement history",
     "external": "External candidate",
     "roleUnknown": "Role unknown",
-    "statusUnknown": "Status unknown"
+    "statusUnknown": "Status unknown",
+    "marketRoleUnknown": "Manufacturer / distributor role unknown"
   },
   "legalStatus": {
     "ACTIVE": "Active",
@@ -46,7 +47,8 @@
     "VERIFIED": "Verified",
     "INFERRED": "Inferred",
     "UNDER_REVIEW": "Under review",
-    "UNKNOWN": "Unknown"
+    "UNKNOWN": "Unknown",
+    "HISTORY": "from procurement history"
   },
   "actions": {
     "label": "Profile actions",
@@ -59,7 +61,8 @@
     "enrichDone": "Profile updated",
     "enrichCached": "The stored profile is still current — sources were not queried again",
     "enrichFailed": "Profile enrichment failed",
-    "enrichFailedHint": "Sources were unavailable or did not respond. Previously stored data is shown."
+    "enrichFailedHint": "Sources were unavailable or did not respond. Previously stored data is shown.",
+    "refresh": "Refresh profile"
   },
   "enrichment": {
     "notEnrichedTitle": "Supplier profile has not been enriched yet.",
@@ -68,7 +71,7 @@
     "inProgressTitle": "Enrichment in progress",
     "inProgress": "The profile is being updated. Reload the page in a minute.",
     "partialTitle": "Profile partially complete",
-    "partial": "Available data is shown. Some information is not available from verified sources.",
+    "partial": "Legal details come from the official EGRUL. Some information (website, contacts) is not available yet — this is an expected result, not an error.",
     "failedTitle": "Enrichment failed",
     "failed": "Sources did not respond. Data already in the system is shown.",
     "failedFinal": "Sources did not confirm details for this INN. Retrying will not help.",
@@ -78,10 +81,10 @@
     "SOURCE_UNAVAILABLE": "Source unavailable",
     "REGISTRY_NOT_FOUND": "INN not found in the registry",
     "PRIMARY_REGISTRY_UNAVAILABLE": "FNS registry unavailable",
-    "PRIMARY_REGISTRY_UNAVAILABLE_MIRROR_USED": "FNS registry unavailable — registry mirror used",
-    "REGISTRY_MIRROR_RATE_LIMITED": "Registry mirror rate-limited the requests",
-    "REGISTRY_MIRROR_SKIPPED": "Registry mirror skipped",
-    "REGISTRY_MIRROR_UNAVAILABLE": "Registry mirror unavailable",
+    "PRIMARY_REGISTRY_UNAVAILABLE_MIRROR_USED": "Official EGRUL unavailable — optional secondary provider used",
+    "REGISTRY_MIRROR_RATE_LIMITED": "Optional secondary provider rate-limited (not required)",
+    "REGISTRY_MIRROR_SKIPPED": "Optional secondary provider skipped (not required)",
+    "REGISTRY_MIRROR_UNAVAILABLE": "Optional secondary provider unavailable (not required)",
     "EGRUL_EXTRACT_UNAVAILABLE": "EGRUL extract unavailable",
     "EGRUL_EXTRACT_REJECTED": "EGRUL extract failed verification",
     "LEGAL_ENTITY_CEASED": "The legal entity has ceased operations",
@@ -104,11 +107,12 @@
     "registrationDate": "Registration date",
     "okved": "Primary OKVED",
     "source": "Source",
-    "unavailable": "Legal details have not been retrieved from the registry yet."
+    "unavailable": "Legal details have not been retrieved from the registry yet.",
+    "addressEntrepreneur": "Not published for individual entrepreneurs"
   },
   "contacts": {
     "title": "Contacts",
-    "none": "Contact data not available from current verified sources",
+    "none": "Verified contact information has not yet been discovered.",
     "type": {
       "PHONE": "Phone",
       "EMAIL": "Email",
@@ -130,7 +134,9 @@
     "label": {
       "REGISTERED_LEGAL_ADDRESS": "registered legal address",
       "PUBLISHED_COMPANY_ADDRESS": "address published by the company"
-    }
+    },
+    "noneHint": "Phone, email and website are shown only once the company's own website is identified and confirmed. The official EGRUL legal address is shown when available.",
+    "noneEntrepreneur": "Contacts of individual entrepreneurs are not collected (personal data)."
   },
   "freshness": {
     "title": "Data freshness",
@@ -161,7 +167,8 @@
       "VERIFIED": "Confirmed by a source",
       "INFERRED": "Inferred from indirect signals — not confirmed",
       "UNDER_REVIEW": "Claimed; needs review",
-      "UNKNOWN": "No role evidence"
+      "UNKNOWN": "No role evidence",
+      "HISTORY": "Supplies observed in the organizer procurement data. This is not manufacturer or distributor evidence."
     },
     "unknownDescription": "Checked sources contain no evidence of a role (manufacturer, distributor).",
     "evidence": "Evidence ({count})",
@@ -172,7 +179,9 @@
       "ENRICHMENT_PIPELINE": "automated enrichment",
       "CURATED_P3_002B": "curated evidence catalog",
       "PROCUREMENT_HISTORY": "procurement history"
-    }
+    },
+    "marketUnknown": "Manufacturer or distributor role unknown",
+    "marketUnknownDescription": "Checked sources contain no manufacturing or distribution evidence. OKVED alone never makes a company a manufacturer."
   },
   "basis": {
     "PROCUREMENT_HISTORY_AWARDS": "Procurement awards (organizer data)",
@@ -200,7 +209,11 @@
     "platforms": "Platforms",
     "noAwardsOkpd2": "No awarded items with an OKPD2 code.",
     "none": "The organizer procurement data has no records for this INN.",
-    "external": "This company does not appear in the organizer procurement data — it is an external candidate. No history does not mean no experience."
+    "external": "This company does not appear in the organizer procurement data — it is an external candidate. No history does not mean no experience.",
+    "platform": {
+      "AIS_GZ": "AIS GZ",
+      "EM": "e-shop (EM)"
+    }
   },
   "sources": {
     "title": "Sources & evidence",
@@ -211,12 +224,15 @@
     "checked": "Checked {date}",
     "validUntil": "valid until {date}",
     "strength": "strength: {value}",
-    "none": "No sources recorded yet."
+    "none": "No sources recorded yet.",
+    "historyRow": "{relations} observed procurement relations · {from} — {to}",
+    "attemptsTitle": "Last enrichment run",
+    "attemptsNote": "The secondary provider is optional: when it is rate-limited or skipped, the official EGRUL data still applies."
   },
   "sourceType": {
-    "FNS_EGRUL": "FNS — EGRUL",
-    "FNS_EGRUL_DERIVED_REGISTRY": "Registry built from FNS data",
-    "CHECKO_REGISTRY_MIRROR": "Registry mirror",
+    "FNS_EGRUL": "FNS — EGRUL (egrul.nalog.ru)",
+    "FNS_EGRUL_DERIVED_REGISTRY": "Registry mirror (checko.ru)",
+    "CHECKO_REGISTRY_MIRROR": "Registry mirror (checko.ru)",
     "FIRST_PARTY": "Company website",
     "CURATED_P4_005C": "Curated contact record",
     "REGULATORY_REGISTRY": "Regulatory registry",
@@ -224,7 +240,9 @@
     "ORGANIZER_PROCUREMENT_DATA": "Organizer procurement data",
     "CURATED_EVIDENCE_SEED": "Curated evidence catalog",
     "RETAIL_SECONDARY": "Retail listing",
-    "SECONDARY_BUSINESS_PROFILE": "Business directory"
+    "SECONDARY_BUSINESS_PROFILE": "Business directory",
+    "FNS_EGRUL_EXTRACT": "FNS — EGRUL / EGRIP extract",
+    "FIRST_PARTY_WEBSITE": "Company website"
   },
   "claim": {
     "LEGAL_IDENTITY": "Legal identity",
@@ -258,5 +276,28 @@
     "external": "External candidate · curated contacts",
     "enrichError": "Not enriched · enrichment call fails",
     "inProgress": "Enrichment in progress"
+  },
+  "sourceClass": {
+    "OFFICIAL_REGISTRY": "Official FNS registry",
+    "COMPANY_WEBSITE": "Company website",
+    "SECONDARY_PROVIDER": "Optional secondary provider — not an official registry",
+    "PROCUREMENT_HISTORY": "Historical procurement evidence",
+    "CURATED_REGULATORY": "Curated regulatory evidence",
+    "OTHER": "Other source"
+  },
+  "outcome": {
+    "OK": "OK",
+    "NOT_FOUND": "Not found",
+    "UNAVAILABLE": "Unavailable",
+    "RATE_LIMITED": "Rate-limited",
+    "REJECTED": "Rejected",
+    "SKIPPED": "Skipped"
+  },
+  "attemptSource": {
+    "FNS_EGRUL": "FNS — EGRUL (search)",
+    "FNS_EGRUL_EXTRACT": "FNS — EGRUL / EGRIP extract",
+    "CHECKO_REGISTRY_MIRROR": "Optional secondary provider (checko.ru)",
+    "FIRST_PARTY_WEBSITE": "Company website",
+    "PIPELINE": "Enrichment pipeline"
   }
 }

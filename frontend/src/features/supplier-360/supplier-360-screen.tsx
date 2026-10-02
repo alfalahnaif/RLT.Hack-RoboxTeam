@@ -14,8 +14,8 @@ import { API_MODE, SUPPLIER_ENRICH_AVAILABLE, api, isApiError } from "@/lib/api/
 import type { SupplierProfile360 } from "@/lib/api/types";
 import { useAsync } from "@/lib/use-async";
 import { PageSkeleton } from "../shared/skeletons";
-import { enrichmentView, headerRoles, legalStatusTone, primaryContactHref, profileName, secondaryName, type EnrichmentAction } from "./model";
-import { ContactsSection, FreshnessSection, HistorySection, IdentitySection, RoleBadge, RolesSection, SourcesSection, useCopy, useLabel } from "./sections";
+import { enrichmentView, hasMarketRoleEvidence, headerRoles, legalStatusTone, primaryContactHref, profileName, secondaryName, type EnrichmentAction } from "./model";
+import { ContactsSection, FreshnessSection, HistorySection, IdentitySection, RoleBadge, RolesSection, SourcesSection, isHistoryOnly, useCopy, useLabel } from "./sections";
 
 /**
  * P5-001B Supplier 360 — one profile experience for every supplier (historical and curated external), keyed by INN.
@@ -63,8 +63,10 @@ export function Supplier360Screen({ inn, backHref }: { inn: string; backHref: st
   const runEnrichment = async (action: NonNullable<EnrichmentAction>) => {
     setEnrich({ inn, status: "running" });
     try {
-      const next = await api.enrichSupplier(inn, action.refresh);
-      setUpdated(next);
+      const enriched = await api.enrichSupplier(inn, action.refresh);
+      // Re-read the stored profile (the GET view is the source of truth); fall back to the POST body if that read fails.
+      const next = await api.supplierProfile(inn).catch(() => enriched);
+      setUpdated({ ...next, enrichment: { ...next.enrichment, cache: enriched.enrichment.cache } });
       setEnrich(null);
       toast(next.enrichment.cache === "HIT" ? { tone: "info", title: t("actions.enrichCached") } : { tone: "success", title: t("actions.enrichDone") });
     } catch {
@@ -141,7 +143,10 @@ function ProfileHeader({ profile }: { profile: SupplierProfile360 }) {
           ) : (
             <Badge color="gray">{t("header.statusUnknown")}</Badge>
           )}
-          {roles.length ? roles.map((r) => <RoleBadge key={r.role} label={t(`role.${r.role}`)} status={r.status} />) : <Badge color="gray" className="border border-dashed border-gray-400">{t("header.roleUnknown")}</Badge>}
+          {roles.map((r) => (
+            <RoleBadge key={r.role} label={t(`role.${r.role}`)} status={r.status} historyOnly={isHistoryOnly({ role: r.role, items: profile.roles.filter((x) => x.role === r.role) })} />
+          ))}
+          {!hasMarketRoleEvidence(profile.roles) ? <Badge color="gray" className="border border-dashed border-gray-400">{t("header.marketRoleUnknown")}</Badge> : null}
           <Badge color={s.historically_known ? "primary" : "purple"}>{s.historically_known ? t("header.historical") : t("header.external")}</Badge>
         </div>
       </CardBody>
@@ -214,7 +219,7 @@ function EnrichmentPanel({ profile, status, onRun }: { profile: SupplierProfile3
   const button = action ? (
     <Button variant={action.kind === "enrich" ? "primary" : "secondary"} size="sm" onClick={() => onRun(action)}>
       <BoltIcon aria-hidden />
-      {action.kind === "enrich" ? t("actions.enrich") : t("actions.retry")}
+      {t(`actions.${action.kind}`)}
     </Button>
   ) : null;
   const reasons = e.reasons.length ? (
@@ -232,7 +237,7 @@ function EnrichmentPanel({ profile, status, onRun }: { profile: SupplierProfile3
   const content = {
     notEnriched: { tone: "info" as const, title: t("enrichment.notEnrichedTitle"), text: button ? t("enrichment.notEnriched") : t("enrichment.notEnrichedNoAction") },
     inProgress: { tone: "info" as const, title: t("enrichment.inProgressTitle"), text: t("enrichment.inProgress") },
-    partial: { tone: "warning" as const, title: t("enrichment.partialTitle"), text: t("enrichment.partial") },
+    partial: { tone: "info" as const, title: t("enrichment.partialTitle"), text: t("enrichment.partial") },
     failed: { tone: "danger" as const, title: t("enrichment.failedTitle"), text: e.retryable ? t("enrichment.failed") : t("enrichment.failedFinal") },
   }[notice];
 

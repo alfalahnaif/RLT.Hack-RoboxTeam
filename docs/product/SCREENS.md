@@ -159,6 +159,14 @@ check date, claims supported; evidence items with strength / valid-until; no raw
 Enrichment states: NOT_ENRICHED (notice + "Enrich supplier profile" → `POST /suppliers/{inn}/enrich`), IN_PROGRESS (no second
 trigger), PARTIAL (available data + reasons; retry when `retryable`), FAILED (reasons; retry with `refresh=true` when
 `retryable`), call error (stored data kept, error + retry). `NEXT_PUBLIC_SUPPLIER_ENRICH=off` hides the trigger.
+P5-001C (integration with the real P5-001A API): PARTIAL is presented as a valid result (info tone, "Refresh profile" is
+cache-first); after a successful POST the screen re-reads `GET …/profile`. Contact absence reads "Verified contact information
+has not yet been discovered." (EGRUL legal address still shown). Every source carries a provenance class: official FNS registry ·
+company website · optional secondary provider (checko.ru — never labelled official) · historical procurement evidence · curated
+regulatory evidence; the last enrichment run's per-source outcomes are listed. "Supplier" backed only by procurement awards is
+shown as "Supplier — from procurement history", and a missing manufacturer/distributor role is stated explicitly.
+`NEXT_PUBLIC_SUPPLIER_PROFILE_API_BASE_URL` (optional, defaults to `NEXT_PUBLIC_API_BASE_URL`) points the profile calls at the
+API serving the enrichment database while it is separate from the search database (`supplier_radar_p5`).
 Mock mode: synthetic fixtures (`src/mocks/supplier-360-fixtures.ts`, INNs `0000…`) listed at `/[locale]/supplier-360`;
 view-model tests `npm test` (`frontend/tests/supplier-360.test.mjs`).
 

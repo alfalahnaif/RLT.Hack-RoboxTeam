@@ -37,7 +37,7 @@ export function EvidenceItem({
         <Badge size="sm" color={typeColor}>
           {type}
         </Badge>
-        <p className="min-w-0 flex-1 text-sm text-heading">{claim}</p>
+        <p className="min-w-0 flex-1 text-sm text-heading [overflow-wrap:anywhere]">{claim}</p>
       </div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
         {sourceUrl ? (

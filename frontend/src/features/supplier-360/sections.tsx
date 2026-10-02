@@ -27,7 +27,7 @@ import { useToast } from "@/components/ui/toast";
 import type { FreshnessStatus, ProfileContact, ProfileContactType, ProfileRoleStatus, SupplierProfile360 } from "@/lib/api/types";
 import { fmtDate, fmtNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { evidenceCheckedAt, humanizeCode, mailHref, orderedContacts, profileName, roleGroups, safeHttpUrl, telHref } from "./model";
+import { evidenceCheckedAt, hasMarketRoleEvidence, hasReachableContact, humanizeCode, mailHref, orderedContacts, profileName, roleGroups, safeHttpUrl, sourceClass, telHref, type RoleGroup, type SourceClass } from "./model";
 
 /** Vocabulary label with a readable fallback for codes the copy does not know yet (never hides the API value). */
 export function useLabel() {
@@ -109,8 +109,15 @@ export function FreshnessBadge({ status, size = "sm" }: { status: FreshnessStatu
  * Role status badge. VERIFIED is solid success with a check; UNDER_REVIEW soft warning; INFERRED stays visibly weaker
  * (soft gray, dashed outline) so it never reads as equivalent to VERIFIED.
  */
-export function RoleBadge({ label, status, size = "default" }: { label: ReactNode; status: ProfileRoleStatus; size?: "sm" | "default" }) {
+export function RoleBadge({ label, status, size = "default", historyOnly = false }: { label: ReactNode; status: ProfileRoleStatus; size?: "sm" | "default"; historyOnly?: boolean }) {
   const t = useTranslations("supplier360.roleStatus");
+  // "Supplier" backed only by procurement awards: a fact about observed history, not manufacturer/distributor evidence.
+  if (historyOnly)
+    return (
+      <Badge size={size} color="primary">
+        {label} — {t("HISTORY")}
+      </Badge>
+    );
   if (status === "VERIFIED")
     return (
       <Badge size={size} appearance="solid" color="success">
@@ -129,6 +136,28 @@ export function RoleBadge({ label, status, size = "default" }: { label: ReactNod
     <Badge size={size} color="gray" className="border border-dashed border-gray-400">
       <InfoCircleSmIcon aria-hidden />
       {label} — {t(status)}
+    </Badge>
+  );
+}
+
+/** A role group supported only by organizer procurement awards (the backend's SUPPLIER / PROCUREMENT_HISTORY item). */
+export const isHistoryOnly = (g: Pick<RoleGroup, "role" | "items">) => g.role === "SUPPLIER" && g.items.every((r) => r.origin === "PROCUREMENT_HISTORY");
+
+const CLASS_TONE: Record<SourceClass, "success" | "info" | "gray" | "primary" | "purple"> = {
+  OFFICIAL_REGISTRY: "success",
+  COMPANY_WEBSITE: "info",
+  SECONDARY_PROVIDER: "gray",
+  PROCUREMENT_HISTORY: "primary",
+  CURATED_REGULATORY: "purple",
+  OTHER: "gray",
+};
+
+export function SourceClassBadge({ sourceType }: { sourceType: string }) {
+  const t = useTranslations("supplier360.sourceClass");
+  const c = sourceClass(sourceType);
+  return (
+    <Badge size="sm" color={CLASS_TONE[c]} className="h-auto min-h-[22px] whitespace-normal text-start">
+      {t(c)}
     </Badge>
   );
 }
@@ -189,6 +218,7 @@ function ContactRow({ c }: { c: ProfileContact }) {
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-2xs text-muted">
             <FreshnessBadge status={c.freshness_status} />
             <Badge size="sm" color={c.verified ? "success" : "gray"}>{c.verified ? t("verified") : t("unverified")}</Badge>
+            <SourceClassBadge sourceType={c.source_type} />
             <WrapLink href={safeHttpUrl(c.source_url)} className="text-2xs">{label("sourceType", c.source_type)}</WrapLink>
             <span>{t("checked", { date: fmtDate(c.checked_at) })}</span>
           </span>
@@ -209,11 +239,16 @@ export function ContactsSection({ profile }: { profile: SupplierProfile360 }) {
   return (
     <SectionCard id="s360-contacts" icon={<TelephoneIcon />} title={t("title")}
       extra={e.official_website && e.website_confidence === "HIGH" ? <Badge size="sm" color="success"><VerifiedIcon aria-hidden />{t("officialWebsite")}</Badge> : null}>
-      {contacts.length ? (
-        <ul className="flex flex-col">{contacts.map((c, i) => <ContactRow key={`${c.type}-${c.value}-${i}`} c={c} />)}</ul>
-      ) : (
-        <p className="rounded-md border border-line-subtle bg-surface-subtle p-3 text-sm text-subtle">{t("none")}</p>
-      )}
+      {contacts.length ? <ul className="flex flex-col">{contacts.map((c, i) => <ContactRow key={`${c.type}-${c.value}-${i}`} c={c} />)}</ul> : null}
+      {!hasReachableContact(profile.contacts) ? (
+        <div className="flex items-start gap-2 rounded-md border border-line-subtle bg-surface-subtle p-3">
+          <InfoCircleSmIcon className="mt-0.5 size-4 shrink-0 text-muted" aria-hidden />
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm text-heading">{t("none")}</p>
+            <p className="text-xs text-muted">{profile.supplier.entity_kind === "INDIVIDUAL_ENTREPRENEUR" ? t("noneEntrepreneur") : t("noneHint")}</p>
+          </div>
+        </div>
+      ) : null}
       {candidate ? (
         <p className="flex flex-col gap-0.5 rounded-md border border-dashed border-line p-3 text-xs text-muted">
           <span>{t("websiteCandidate")}</span>
@@ -271,15 +306,22 @@ export function RolesSection({ profile }: { profile: SupplierProfile360 }) {
   const t = useTranslations("supplier360");
   const label = useLabel();
   const groups = roleGroups(profile.roles).filter((g) => g.role !== "UNKNOWN");
+  const marketKnown = hasMarketRoleEvidence(profile.roles);
   return (
     <SectionCard id="s360-roles" icon={<UsersIcon />} title={t("roles.title")} subtitle={t("roles.subtitle")}>
+      {groups.length && !marketKnown ? (
+        <div className="flex flex-col gap-1 rounded-md border border-dashed border-line p-3">
+          <span className="text-sm font-medium text-heading">{t("roles.marketUnknown")}</span>
+          <span className="text-xs text-muted">{t("roles.marketUnknownDescription")}</span>
+        </div>
+      ) : null}
       {groups.length ? (
         <ul className="flex flex-col gap-3">
           {groups.map((g) => (
-            <li key={g.role} className={cn("flex flex-col gap-2 rounded-md border p-3", g.status === "VERIFIED" ? "border-success-300" : g.status === "UNDER_REVIEW" ? "border-warning-300" : "border-dashed border-line")}>
+            <li key={g.role} className={cn("flex flex-col gap-2 rounded-md border p-3", isHistoryOnly(g) ? "border-primary-200" : g.status === "VERIFIED" ? "border-success-300" : g.status === "UNDER_REVIEW" ? "border-warning-300" : "border-dashed border-line")}>
               <div className="flex flex-wrap items-center gap-2">
-                <RoleBadge label={t(`role.${g.role}`)} status={g.status} />
-                <span className="text-xs text-muted">{t(`roles.statusHint.${g.status}`)}</span>
+                <RoleBadge label={t(`role.${g.role}`)} status={g.status} historyOnly={isHistoryOnly(g)} />
+                <span className="text-xs text-muted">{isHistoryOnly(g) ? t("roles.statusHint.HISTORY") : t(`roles.statusHint.${g.status}`)}</span>
               </div>
               <Accordion type="single" collapsible variant="flush">
                 <AccordionItem value="evidence">
@@ -342,7 +384,7 @@ export function HistorySection({ profile }: { profile: SupplierProfile360 }) {
           </dl>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
             {h.first_observed_activity && h.last_observed_activity ? <span>{t("period", { from: fmtDate(h.first_observed_activity), to: fmtDate(h.last_observed_activity) })}</span> : null}
-            {platforms.length ? <span>{t("platforms")}: {platforms.map(([p, n]) => `${p} ${fmtNumber(n, locale)}`).join(" · ")}</span> : null}
+            {platforms.length ? <span>{t("platforms")}: {platforms.map(([p, n]) => `${t.has(`platform.${p}`) ? t(`platform.${p}`) : p} ${fmtNumber(n, locale)}`).join(" · ")}</span> : null}
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-xs font-medium text-heading">{t("topOkpd2")}</span>
@@ -388,9 +430,24 @@ export function IdentitySection({ profile }: { profile: SupplierProfile360 }) {
             { label: t("identity.region"), value: s.region },
             { label: t("identity.registrationDate"), value: s.registration_date ? <span dir="ltr">{fmtDate(s.registration_date)}</span> : null },
             { label: t("identity.okved"), value: s.primary_okved, wide: true },
-            { label: t("identity.address"), value: s.registered_address, wide: true },
+            {
+              label: t("identity.address"),
+              value: s.registered_address ?? (s.entity_kind === "INDIVIDUAL_ENTREPRENEUR" ? <span className="text-muted">{t("identity.addressEntrepreneur")}</span> : null),
+              wide: true,
+            },
             ...(s.identity_source_type
-              ? [{ label: t("identity.source"), value: <WrapLink href={safeHttpUrl(s.identity_source_url)}>{label("sourceType", s.identity_source_type)}</WrapLink>, wide: true }]
+              ? [
+                  {
+                    label: t("identity.source"),
+                    value: (
+                      <span className="flex flex-wrap items-center gap-2">
+                        <SourceClassBadge sourceType={s.identity_source_type} />
+                        <WrapLink href={safeHttpUrl(s.identity_source_url)}>{label("sourceType", s.identity_source_type)}</WrapLink>
+                      </span>
+                    ),
+                    wide: true,
+                  },
+                ]
               : []),
           ]}
         />
@@ -409,7 +466,8 @@ export function IdentitySection({ profile }: { profile: SupplierProfile360 }) {
 export function SourcesSection({ profile }: { profile: SupplierProfile360 }) {
   const t = useTranslations("supplier360");
   const label = useLabel();
-  const { sources, evidence } = profile;
+  const { sources, evidence, last_run_attempts: attempts } = profile;
+  const history = profile.procurement_history_summary;
   return (
     <Card>
       <Accordion type="single" collapsible variant="flush">
@@ -417,19 +475,20 @@ export function SourcesSection({ profile }: { profile: SupplierProfile360 }) {
           <AccordionTrigger className="px-5 py-4" icon={<ShieldInfoIcon />}>
             <span className="flex flex-col gap-0.5">
               <span className="text-base font-semibold text-heading">{t("sources.title")}</span>
-              <span className="text-xs font-normal text-muted">{t("sources.summary", { sources: sources.length, evidence: evidence.length })}</span>
+              <span className="text-xs font-normal text-muted">{t("sources.summary", { sources: sources.length + (history ? 1 : 0), evidence: evidence.length })}</span>
             </span>
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-5 px-5 pb-5">
-            {!sources.length && !evidence.length ? <p className="text-sm text-muted">{t("sources.none")}</p> : null}
-            {sources.length ? (
+            {!sources.length && !evidence.length && !history ? <p className="text-sm text-muted">{t("sources.none")}</p> : null}
+            {sources.length || history ? (
               <div className="flex flex-col gap-2">
                 <h3 className="text-sm font-medium text-heading">{t("sources.sourcesTitle")}</h3>
                 <ul className="flex flex-col gap-2">
                   {sources.map((s) => (
                     <li key={`${s.source_type}-${s.source_url}`} className="flex flex-col gap-1.5 rounded-md border border-line p-3">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge size="sm" color="info">{label("sourceType", s.source_type)}</Badge>
+                        <SourceClassBadge sourceType={s.source_type} />
+                        <span className="text-xs font-medium text-heading">{label("sourceType", s.source_type)}</span>
                         <span className="text-xs text-muted">{s.last_checked_at ? t("sources.checked", { date: fmtDate(s.last_checked_at) }) : t("freshness.noDate")}</span>
                       </div>
                       <WrapLink href={safeHttpUrl(s.source_url)} className="text-xs">{s.source_url}</WrapLink>
@@ -441,7 +500,34 @@ export function SourcesSection({ profile }: { profile: SupplierProfile360 }) {
                       ) : null}
                     </li>
                   ))}
+                  {history ? (
+                    <li className="flex flex-col gap-1.5 rounded-md border border-line p-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <SourceClassBadge sourceType="ORGANIZER_PROCUREMENT_DATA" />
+                        <span className="text-xs font-medium text-heading">{label("sourceType", "ORGANIZER_PROCUREMENT_DATA")}</span>
+                      </div>
+                      <span className="text-xs text-muted">
+                        {t("sources.historyRow", { relations: history.observed_relations, from: fmtDate(history.first_observed_activity), to: fmtDate(history.last_observed_activity) })}
+                      </span>
+                    </li>
+                  ) : null}
                 </ul>
+              </div>
+            ) : null}
+            {attempts.length ? (
+              <div className="flex flex-col gap-2">
+                <h3 className="text-sm font-medium text-heading">{t("sources.attemptsTitle")}</h3>
+                <ul className="flex flex-col gap-1">
+                  {attempts.map((a, i) => (
+                    <li key={`${a.source}-${i}`} className="flex flex-wrap items-center gap-2 text-xs text-muted">
+                      <Badge size="sm" color={a.outcome === "OK" ? "success" : a.outcome === "SKIPPED" || a.outcome === "NOT_FOUND" ? "gray" : "warning"}>
+                        {label("outcome", a.outcome)}
+                      </Badge>
+                      <span className="text-heading">{label("attemptSource", a.source)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-2xs text-muted">{t("sources.attemptsNote")}</p>
               </div>
             ) : null}
             {evidence.length ? (

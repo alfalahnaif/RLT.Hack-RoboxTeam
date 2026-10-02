@@ -106,18 +106,20 @@ export function primaryContactHref(contacts: ProfileContact[]): string | null {
 }
 
 export type EnrichmentNotice = "notEnriched" | "inProgress" | "partial" | "failed" | null;
-export type EnrichmentAction = { kind: "enrich" | "retry"; refresh: boolean } | null;
+export type EnrichmentAction = { kind: "enrich" | "retry" | "refresh"; refresh: boolean } | null;
 
 /**
- * Which notice and which action the enrichment state allows. NOT_ENRICHED → "Enrich" (cache-first); FAILED / PARTIAL →
- * "Retry" only when the API marks the run retryable (forces a re-query); IN_PROGRESS → no second trigger.
+ * Which notice and which action the enrichment state allows. NOT_ENRICHED → "Enrich" (cache-first); FAILED + retryable →
+ * "Retry" (forces a re-query); PARTIAL + retryable → "Refresh" (cache-first: the backend re-queries only once its retry
+ * window has passed, so the optional secondary provider is not hammered); IN_PROGRESS → no second trigger.
  */
 export function enrichmentView(e: EnrichmentState, enrichAvailable: boolean): { notice: EnrichmentNotice; action: EnrichmentAction } {
   const notice: EnrichmentNotice =
     e.status === "NOT_ENRICHED" ? "notEnriched" : e.status === "IN_PROGRESS" ? "inProgress" : e.status === "PARTIAL" ? "partial" : e.status === "FAILED" ? "failed" : null;
   if (!enrichAvailable) return { notice, action: null };
   if (e.status === "NOT_ENRICHED") return { notice, action: { kind: "enrich", refresh: false } };
-  if ((e.status === "FAILED" || e.status === "PARTIAL") && e.retryable) return { notice, action: { kind: "retry", refresh: true } };
+  if (e.status === "FAILED" && e.retryable) return { notice, action: { kind: "retry", refresh: true } };
+  if (e.status === "PARTIAL" && e.retryable) return { notice, action: { kind: "refresh", refresh: false } };
   return { notice, action: null };
 }
 
@@ -159,4 +161,33 @@ export function humanizeCode(code: string): string {
 export function supplierProfileHref(inn: string, back?: string | null): string {
   const safe = safeBackHref(back);
   return `/supplier-360/${encodeURIComponent(inn)}${safe ? `?back=${encodeURIComponent(safe)}` : ""}`;
+}
+
+/**
+ * Provenance class of a source type, so official and secondary sources never look alike:
+ * the official FNS EGRUL service, the company's own website, an optional secondary provider (FNS-derived registry mirror —
+ * not an official registry), organizer procurement data, and curated regulatory evidence.
+ */
+export type SourceClass = "OFFICIAL_REGISTRY" | "COMPANY_WEBSITE" | "SECONDARY_PROVIDER" | "PROCUREMENT_HISTORY" | "CURATED_REGULATORY" | "OTHER";
+export function sourceClass(sourceType: string): SourceClass {
+  const s = sourceType.toUpperCase();
+  if (s === "FNS_EGRUL" || s === "FNS_EGRUL_EXTRACT") return "OFFICIAL_REGISTRY";
+  if (s === "FIRST_PARTY" || s === "FIRST_PARTY_WEBSITE") return "COMPANY_WEBSITE";
+  if (s === "ORGANIZER_PROCUREMENT_DATA") return "PROCUREMENT_HISTORY";
+  if (s.includes("MIRROR") && !s.startsWith("REGULATORY")) return "SECONDARY_PROVIDER";
+  if (s === "FNS_EGRUL_DERIVED_REGISTRY" || s === "FNS_EGRUL_DERIVED" || s === "SECONDARY_BUSINESS_PROFILE" || s === "RETAIL_SECONDARY") return "SECONDARY_PROVIDER";
+  if (s.startsWith("REGULATORY") || s.startsWith("CURATED")) return "CURATED_REGULATORY";
+  return "OTHER";
+}
+
+export const MARKET_ROLES: readonly ProfileRole[] = ["MANUFACTURER", "OFFICIAL_DISTRIBUTOR", "DISTRIBUTOR"];
+
+/** True when the API returned any manufacturer / distributor evidence (any status). "Supplier" alone is not a market role. */
+export function hasMarketRoleEvidence(roles: ProfileRoleItem[]): boolean {
+  return roles.some((r) => MARKET_ROLES.includes(r.role) && r.status !== "UNKNOWN");
+}
+
+/** Phone / email / website values — the address alone is not a way to reach the company. */
+export function hasReachableContact(contacts: ProfileContact[]): boolean {
+  return orderedContacts(contacts).some((c) => c.type !== "ADDRESS");
 }

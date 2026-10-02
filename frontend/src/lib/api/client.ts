@@ -25,6 +25,11 @@ import type {
 
 export const API_MODE: "live" | "mock" = process.env.NEXT_PUBLIC_API_MODE === "live" ? "live" : "mock";
 const BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+/**
+ * Supplier 360 (P5-001A) normally lives on the same API. While the enrichment tables exist only in the pilot database
+ * (`supplier_radar_p5`), a deployment can point the profile calls at a separate API instance; defaults to BASE.
+ */
+const PROFILE_BASE = process.env.NEXT_PUBLIC_SUPPLIER_PROFILE_API_BASE_URL ?? BASE;
 
 /** Export links come from the API; keep downloads on the configured API origin. */
 export function supplierExportUrl(path: string, format: "json" | "csv"): string | null {
@@ -51,10 +56,10 @@ export class ApiError extends Error {
   }
 }
 
-async function http<T>(path: string, init?: RequestInit): Promise<T> {
+async function http<T>(path: string, init?: RequestInit, base = BASE): Promise<T> {
   let res: Response;
   try {
-    res = await fetch(`${BASE}${path}`, { ...init, headers: { "Content-Type": "application/json", ...init?.headers } });
+    res = await fetch(`${base}${path}`, { ...init, headers: { "Content-Type": "application/json", ...init?.headers } });
   } catch {
     throw new ApiError(0, "NETWORK_ERROR", "network error");
   }
@@ -121,11 +126,11 @@ export const api = {
   filterMeta: () => (live ? http<FilterMeta>("/meta/filters") : viaMock(() => mock.filterMeta())),
   /** P5-001A Supplier 360: stored profile, read-only (never queries external sources). */
   supplierProfile: (inn: string) =>
-    live ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/profile`) : viaMock(() => mock360.getProfile(inn)),
+    live ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/profile`, undefined, PROFILE_BASE) : viaMock(() => mock360.getProfile(inn)),
   /** P5-001A on-demand enrichment: synchronous and cache-first; `refresh` forces re-querying the sources. */
   enrichSupplier: (inn: string, refresh = false) =>
     live
-      ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/enrich${refresh ? "?refresh=true" : ""}`, { method: "POST" })
+      ? http<SupplierProfile360>(`/suppliers/${encodeURIComponent(inn)}/enrich${refresh ? "?refresh=true" : ""}`, { method: "POST" }, PROFILE_BASE)
       : viaMock(() => mock360.enrich(inn, refresh)),
 };
 
