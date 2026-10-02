@@ -1,0 +1,3356 @@
+{
+ "inns": [
+  "7804054351",
+  "7817306535",
+  "7804471404",
+  "4705055285",
+  "7802862201",
+  "7805396573",
+  "7817080623",
+  "7811530202",
+  "7814607703",
+  "7804484876",
+  "9719079775",
+  "7605016030",
+  "7842184231",
+  "7805074390",
+  "7826679163",
+  "7810687137",
+  "7802433724",
+  "7813542362",
+  "4719016624",
+  "7838005183",
+  "7813474659",
+  "7806187484",
+  "7816530372",
+  "7810186807",
+  "7816721987",
+  "782006150006",
+  "740410760899",
+  "7811799877",
+  "783801263021",
+  "471504580206"
+ ],
+ "metrics": {
+  "computed_at": "2026-10-02T06:51:21+00:00",
+  "coverage": {
+   "address": {
+    "count": 0,
+    "pct": 0.0
+   },
+   "email": {
+    "count": 0,
+    "pct": 0.0
+   },
+   "legal_name": {
+    "count": 30,
+    "pct": 100.0
+   },
+   "official_website": {
+    "count": 0,
+    "pct": 0.0
+   },
+   "phone": {
+    "count": 0,
+    "pct": 0.0
+   },
+   "role_evidence": {
+    "count": 0,
+    "pct": 0.0
+   }
+  },
+  "entity_kind_counts": {
+   "INDIVIDUAL_ENTREPRENEUR": 4,
+   "LEGAL_ENTITY": 26
+  },
+  "median_enrichment_ms": 11229,
+  "p90_enrichment_ms": 11255,
+  "source_failure_counts": {
+   "CHECKO_REGISTRY_MIRROR": 30
+  },
+  "source_outcomes_last_run": [
+   {
+    "count": 30,
+    "outcome": "UNAVAILABLE",
+    "source": "CHECKO_REGISTRY_MIRROR"
+   },
+   {
+    "count": 4,
+    "outcome": "SKIPPED",
+    "source": "FIRST_PARTY_WEBSITE"
+   },
+   {
+    "count": 30,
+    "outcome": "OK",
+    "source": "FNS_EGRUL"
+   }
+  ],
+  "status_counts": {
+   "PARTIAL": 30
+  },
+  "status_reason_counts": {
+   "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED": 4,
+   "NO_WEBSITE_CANDIDATE": 26,
+   "REGISTRY_MIRROR_UNAVAILABLE": 30
+  },
+  "suppliers_attempted": 30,
+  "website_confidence_counts": {
+   "NONE": 30
+  }
+ },
+ "profiles": [
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:45:51.855384Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:45:41.650534Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:45:51.855384Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1188,
+    "first_observed_activity": "2024-01-19",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1188,
+    "platforms": {
+     "AIS_GZ": 176,
+     "EM": 1012
+    },
+    "relevant_awards": 1092,
+    "top_okpd2": [
+     {
+      "awarded_lots": 642,
+      "okpd2": "20.14.34.231"
+     },
+     {
+      "awarded_lots": 611,
+      "okpd2": "10.11.31.110"
+     },
+     {
+      "awarded_lots": 605,
+      "okpd2": "10.11.31.140"
+     },
+     {
+      "awarded_lots": 600,
+      "okpd2": "01.13.32.000"
+     },
+     {
+      "awarded_lots": 599,
+      "okpd2": "01.13.34.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1092 awarded supply relations in the organizer procurement data (2024-01-19 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:45:41.650534Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"АРТИС-ДЕТСКОЕ ПИТАНИЕ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7804054351",
+    "kpp": "780401001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"АРТИС-ДЕТСКОЕ ПИТАНИЕ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027802487294",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-09-04",
+    "short_name": "АО \"АРТИС-ДЕТСКОЕ ПИТАНИЕ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:46:03.265780Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:45:53.074699Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:46:03.265780Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1005,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1005,
+    "platforms": {
+     "AIS_GZ": 254,
+     "EM": 751
+    },
+    "relevant_awards": 895,
+    "top_okpd2": [
+     {
+      "awarded_lots": 294,
+      "okpd2": "20.14.34.231"
+     },
+     {
+      "awarded_lots": 263,
+      "okpd2": "10.83.12.120"
+     },
+     {
+      "awarded_lots": 255,
+      "okpd2": "01.11.75.110"
+     },
+     {
+      "awarded_lots": 230,
+      "okpd2": "10.61.31.111"
+     },
+     {
+      "awarded_lots": 229,
+      "okpd2": "01.47.21.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "895 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:45:53.074699Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"КОМБИНАТ СОЦИАЛЬНОГО ПИТАНИЯ КОЛПИНСКОГО РАЙОНА\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7817306535",
+    "kpp": "781701001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"КОМБИНАТ СОЦИАЛЬНОГО ПИТАНИЯ КОЛПИНСКОГО РАЙОНА\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "5067847052334",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2006-06-02",
+    "short_name": "АО \"КСП КОЛПИНСКОГО РАЙОНА\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:46:14.706810Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:46:04.493830Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:46:14.706810Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 374,
+    "first_observed_activity": "2024-01-12",
+    "last_observed_activity": "2025-12-22",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 374,
+    "platforms": {
+     "AIS_GZ": 133,
+     "EM": 241
+    },
+    "relevant_awards": 335,
+    "top_okpd2": [
+     {
+      "awarded_lots": 189,
+      "okpd2": "10.61.32.113"
+     },
+     {
+      "awarded_lots": 186,
+      "okpd2": "01.47.21.000"
+     },
+     {
+      "awarded_lots": 186,
+      "okpd2": "10.61.32.114"
+     },
+     {
+      "awarded_lots": 185,
+      "okpd2": "01.13.41.110"
+     },
+     {
+      "awarded_lots": 185,
+      "okpd2": "10.61.33.111"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "335 awarded supply relations in the organizer procurement data (2024-01-12 – 2025-12-22).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:46:04.493830Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"КОМПАНИЯ БАЛТФУД\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7804471404",
+    "kpp": "783901001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"КОМПАНИЯ БАЛТФУД\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1117847449521",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2011-10-21",
+    "short_name": "ООО \"КОМПАНИЯ БАЛТФУД\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:46:26.082250Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:46:15.882081Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:46:26.082250Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 383,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-18",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 383,
+    "platforms": {
+     "AIS_GZ": 185,
+     "EM": 198
+    },
+    "relevant_awards": 370,
+    "top_okpd2": [
+     {
+      "awarded_lots": 116,
+      "okpd2": "01.11.75.110"
+     },
+     {
+      "awarded_lots": 111,
+      "okpd2": "10.83.12.120"
+     },
+     {
+      "awarded_lots": 109,
+      "okpd2": "10.51.40.120"
+     },
+     {
+      "awarded_lots": 107,
+      "okpd2": "10.83.13.120"
+     },
+     {
+      "awarded_lots": 105,
+      "okpd2": "10.11.31.110"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "370 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-18).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:46:15.882081Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ТОРГОВЫЙ ДОМ \"ЛЕНИНГРАДСКИЙ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "4705055285",
+    "kpp": "781401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ТОРГОВЫЙ ДОМ \"ЛЕНИНГРАДСКИЙ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1114705007867",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2011-10-26",
+    "short_name": "ООО  \"ТД \"ЛЕНИНГРАДСКИЙ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:46:37.432669Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:46:27.248606Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:46:37.432669Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 371,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-04",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 371,
+    "platforms": {
+     "AIS_GZ": 86,
+     "EM": 285
+    },
+    "relevant_awards": 283,
+    "top_okpd2": [
+     {
+      "awarded_lots": 97,
+      "okpd2": "10.39.17.190"
+     },
+     {
+      "awarded_lots": 96,
+      "okpd2": "01.47.21.000"
+     },
+     {
+      "awarded_lots": 95,
+      "okpd2": "10.39.16.000"
+     },
+     {
+      "awarded_lots": 92,
+      "okpd2": "01.11.75.110"
+     },
+     {
+      "awarded_lots": 91,
+      "okpd2": "10.83.12.120"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "283 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-04).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:46:27.248606Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"БЗУ \"СЕВЕРНОЕ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7802862201",
+    "kpp": "781401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"БЗУ \"СЕВЕРНОЕ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1147847196100",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2014-06-03",
+    "short_name": "ООО \"БЗУ \"СЕВЕРНОЕ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:46:48.796388Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:46:38.634770Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:46:48.796388Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 302,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 302,
+    "platforms": {
+     "AIS_GZ": 88,
+     "EM": 214
+    },
+    "relevant_awards": 302,
+    "top_okpd2": [
+     {
+      "awarded_lots": 69,
+      "okpd2": "10.11.31.110"
+     },
+     {
+      "awarded_lots": 67,
+      "okpd2": "01.13.41.110"
+     },
+     {
+      "awarded_lots": 66,
+      "okpd2": "10.11.31.140"
+     },
+     {
+      "awarded_lots": 66,
+      "okpd2": "10.20.14.120"
+     },
+     {
+      "awarded_lots": 65,
+      "okpd2": "01.13.12.120"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "302 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:46:38.634770Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"КОМБИНАТ ПИТАНИЯ \"КИРОВСКИЙ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7805396573",
+    "kpp": "780501001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"КОМБИНАТ ПИТАНИЯ \"КИРОВСКИЙ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1069847167334",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2006-04-24",
+    "short_name": "АО \"КОМБИНАТ ПИТАНИЯ \"КИРОВСКИЙ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:00.138195Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:46:49.912007Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:00.138195Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 252,
+    "first_observed_activity": "2024-01-22",
+    "last_observed_activity": "2025-12-22",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 252,
+    "platforms": {
+     "AIS_GZ": 192,
+     "EM": 60
+    },
+    "relevant_awards": 225,
+    "top_okpd2": [
+     {
+      "awarded_lots": 35,
+      "okpd2": "10.81.12.110"
+     },
+     {
+      "awarded_lots": 33,
+      "okpd2": "10.51.30.110"
+     },
+     {
+      "awarded_lots": 31,
+      "okpd2": "10.11.31.110"
+     },
+     {
+      "awarded_lots": 31,
+      "okpd2": "10.51.40.300"
+     },
+     {
+      "awarded_lots": 30,
+      "okpd2": "10.39.17.190"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "225 awarded supply relations in the organizer procurement data (2024-01-22 – 2025-12-22).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:46:49.912007Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПРОД-КОМПЛЕКТ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7817080623",
+    "kpp": "781701001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПРОД-КОМПЛЕКТ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1187847142075",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2018-05-21",
+    "short_name": "ООО \"ПРОД-КОМПЛЕКТ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:11.441670Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:01.261247Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:11.441670Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 135,
+    "first_observed_activity": "2024-08-14",
+    "last_observed_activity": "2025-12-16",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 135,
+    "platforms": {
+     "AIS_GZ": 128,
+     "EM": 7
+    },
+    "relevant_awards": 133,
+    "top_okpd2": [
+     {
+      "awarded_lots": 24,
+      "okpd2": "01.13.49.110"
+     },
+     {
+      "awarded_lots": 23,
+      "okpd2": "01.13.12.120"
+     },
+     {
+      "awarded_lots": 23,
+      "okpd2": "01.13.41.110"
+     },
+     {
+      "awarded_lots": 23,
+      "okpd2": "01.13.43.110"
+     },
+     {
+      "awarded_lots": 23,
+      "okpd2": "01.13.43.190"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "133 awarded supply relations in the organizer procurement data (2024-08-14 – 2025-12-16).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:01.261247Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"КСП ГАЙ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7811530202",
+    "kpp": "781101001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"КСП ГАЙ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1127847461170",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2012-08-31",
+    "short_name": "ООО \"КСП ГАЙ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:22.803468Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:12.649493Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:22.803468Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 65,
+    "first_observed_activity": "2024-01-30",
+    "last_observed_activity": "2025-11-27",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 65,
+    "platforms": {
+     "AIS_GZ": 62,
+     "EM": 3
+    },
+    "relevant_awards": 64,
+    "top_okpd2": [
+     {
+      "awarded_lots": 10,
+      "okpd2": "01.13.12.120"
+     },
+     {
+      "awarded_lots": 10,
+      "okpd2": "01.13.39.110"
+     },
+     {
+      "awarded_lots": 10,
+      "okpd2": "01.13.41.110"
+     },
+     {
+      "awarded_lots": 10,
+      "okpd2": "01.13.43.110"
+     },
+     {
+      "awarded_lots": 10,
+      "okpd2": "01.13.49.110"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "64 awarded supply relations in the organizer procurement data (2024-01-30 – 2025-11-27).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:12.649493Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ДТКП\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7814607703",
+    "kpp": "783901001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ДТКП\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1147847122554",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2014-04-07",
+    "short_name": "ООО \"ДТКП\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:34.068329Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:23.892577Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:34.068329Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 114,
+    "first_observed_activity": "2024-02-22",
+    "last_observed_activity": "2025-12-18",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 114,
+    "platforms": {
+     "AIS_GZ": 25,
+     "EM": 89
+    },
+    "relevant_awards": 108,
+    "top_okpd2": [
+     {
+      "awarded_lots": 50,
+      "okpd2": "22.29.23.110"
+     },
+     {
+      "awarded_lots": 50,
+      "okpd2": "25.99.12.112"
+     },
+     {
+      "awarded_lots": 8,
+      "okpd2": "56.29.20.190"
+     },
+     {
+      "awarded_lots": 7,
+      "okpd2": "10.12.20"
+     },
+     {
+      "awarded_lots": 7,
+      "okpd2": "10.39.16.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "108 awarded supply relations in the organizer procurement data (2024-02-22 – 2025-12-18).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:23.892577Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"АЛЬТАИР\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7804484876",
+    "kpp": "780401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"АЛЬТАИР\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1127847248561",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2012-05-03",
+    "short_name": "ООО \"АЛЬТАИР\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:45.419513Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:35.198240Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:45.419513Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1408,
+    "first_observed_activity": "2024-02-01",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1408,
+    "platforms": {
+     "AIS_GZ": 366,
+     "EM": 1042
+    },
+    "relevant_awards": 1408,
+    "top_okpd2": [
+     {
+      "awarded_lots": 539,
+      "okpd2": "60.10.11.000"
+     },
+     {
+      "awarded_lots": 274,
+      "okpd2": "61.10.30.190"
+     },
+     {
+      "awarded_lots": 105,
+      "okpd2": "60.10.12.000"
+     },
+     {
+      "awarded_lots": 85,
+      "okpd2": "60.10.20.000"
+     },
+     {
+      "awarded_lots": 69,
+      "okpd2": "61.30.20.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1408 awarded supply relations in the organizer procurement data (2024-02-01 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:35.198240Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"РОССИЙСКИЕ СЕТИ ВЕЩАНИЯ И ОПОВЕЩЕНИЯ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "9719079775",
+    "kpp": "771901001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"РОССИЙСКИЕ СЕТИ ВЕЩАНИЯ И ОПОВЕЩЕНИЯ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1257700236793",
+    "primary_okved": null,
+    "region": "Г.Москва",
+    "registered_address": null,
+    "registration_date": "2025-05-26",
+    "short_name": "АО \"РСВО\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:47:56.779414Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:46.576540Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:47:56.779414Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 2200,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 2200,
+    "platforms": {
+     "AIS_GZ": 311,
+     "EM": 1889
+    },
+    "relevant_awards": 2157,
+    "top_okpd2": [
+     {
+      "awarded_lots": 1340,
+      "okpd2": "58.29.50.000"
+     },
+     {
+      "awarded_lots": 114,
+      "okpd2": "62.09.20.190"
+     },
+     {
+      "awarded_lots": 68,
+      "okpd2": "62.02.30.000"
+     },
+     {
+      "awarded_lots": 67,
+      "okpd2": "63.11.13.000"
+     },
+     {
+      "awarded_lots": 62,
+      "okpd2": "62.01.29.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "2157 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:46.576540Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ  \"КОМПАНИЯ \"ТЕНЗОР\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7605016030",
+    "kpp": "760401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ  \"КОМПАНИЯ \"ТЕНЗОР\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027600787994",
+    "primary_okved": null,
+    "region": "Ярославская область",
+    "registered_address": null,
+    "registration_date": "2002-09-24",
+    "short_name": "ООО \"КОМПАНИЯ \"ТЕНЗОР\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:48:08.292413Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:47:58.109740Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:48:08.292413Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 2698,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-19",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 2698,
+    "platforms": {
+     "AIS_GZ": 2608,
+     "EM": 90
+    },
+    "relevant_awards": 2659,
+    "top_okpd2": [
+     {
+      "awarded_lots": 909,
+      "okpd2": "20.41.32.114"
+     },
+     {
+      "awarded_lots": 818,
+      "okpd2": "20.41.32.119"
+     },
+     {
+      "awarded_lots": 799,
+      "okpd2": "20.41.32.111"
+     },
+     {
+      "awarded_lots": 623,
+      "okpd2": "20.41.31.130"
+     },
+     {
+      "awarded_lots": 586,
+      "okpd2": "20.41.32.121"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "2659 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-19).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:47:58.109740Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭДЕЛЬВЕЙС\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7842184231",
+    "kpp": "784201001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭДЕЛЬВЕЙС\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1207800115577",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2020-09-14",
+    "short_name": "ООО \"ЭДЕЛЬВЕЙС\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:48:19.680310Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:48:09.507880Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:48:19.680310Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1557,
+    "first_observed_activity": "2024-01-11",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1557,
+    "platforms": {
+     "AIS_GZ": 986,
+     "EM": 571
+    },
+    "relevant_awards": 1505,
+    "top_okpd2": [
+     {
+      "awarded_lots": 299,
+      "okpd2": "21.20"
+     },
+     {
+      "awarded_lots": 229,
+      "okpd2": "21.20.10.191"
+     },
+     {
+      "awarded_lots": 213,
+      "okpd2": "21.20.10.235"
+     },
+     {
+      "awarded_lots": 126,
+      "okpd2": "21.20.10.134"
+     },
+     {
+      "awarded_lots": 105,
+      "okpd2": "21.20.10.236"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1505 awarded supply relations in the organizer procurement data (2024-01-11 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:48:09.507880Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"СЕВЕРО-ЗАПАДНОЕ УПРАВЛЕНИЕ ОПТОВОЙ МЕДИЦИНСКОЙ ТОРГОВЛИ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7805074390",
+    "kpp": "781301001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"СЕВЕРО-ЗАПАДНОЕ УПРАВЛЕНИЕ ОПТОВОЙ МЕДИЦИНСКОЙ ТОРГОВЛИ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027802756882",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-12-16",
+    "short_name": "ООО \"СЗУ ОМТ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:48:31.177782Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:48:20.961189Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:48:31.177782Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1779,
+    "first_observed_activity": "2024-01-11",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1779,
+    "platforms": {
+     "AIS_GZ": 1043,
+     "EM": 736
+    },
+    "relevant_awards": 1698,
+    "top_okpd2": [
+     {
+      "awarded_lots": 259,
+      "okpd2": "32.50.50.190"
+     },
+     {
+      "awarded_lots": 183,
+      "okpd2": "21.20"
+     },
+     {
+      "awarded_lots": 159,
+      "okpd2": "21.20.10.134"
+     },
+     {
+      "awarded_lots": 125,
+      "okpd2": "32.50.13.190"
+     },
+     {
+      "awarded_lots": 108,
+      "okpd2": "32.50.13.110"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1698 awarded supply relations in the organizer procurement data (2024-01-11 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:48:20.961189Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЦЕНТРАЛЬНАЯ МЕДИЦИНСКАЯ БАЗА\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7826679163",
+    "kpp": "783901001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЦЕНТРАЛЬНАЯ МЕДИЦИНСКАЯ БАЗА\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027810273260",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-11-20",
+    "short_name": "ООО \"ЦМБ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:48:42.522025Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:48:32.320857Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:48:42.522025Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 2351,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 2351,
+    "platforms": {
+     "AIS_GZ": 1481,
+     "EM": 870
+    },
+    "relevant_awards": 2278,
+    "top_okpd2": [
+     {
+      "awarded_lots": 860,
+      "okpd2": "21.20"
+     },
+     {
+      "awarded_lots": 190,
+      "okpd2": "21.20.10.235"
+     },
+     {
+      "awarded_lots": 161,
+      "okpd2": "21.20.10.191"
+     },
+     {
+      "awarded_lots": 146,
+      "okpd2": "21.20.10.134"
+     },
+     {
+      "awarded_lots": 133,
+      "okpd2": "21.20.10.141"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "2278 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:48:32.320857Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"БСС\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7810687137",
+    "kpp": "781401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"БСС\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027804911012",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-12-23",
+    "short_name": "ООО \"БСС\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:48:53.898167Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:48:43.704029Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:48:53.898167Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1025,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1025,
+    "platforms": {
+     "AIS_GZ": 68,
+     "EM": 957
+    },
+    "relevant_awards": 1025,
+    "top_okpd2": [
+     {
+      "awarded_lots": 352,
+      "okpd2": "62.09.20.120"
+     },
+     {
+      "awarded_lots": 113,
+      "okpd2": "58.29.50.000"
+     },
+     {
+      "awarded_lots": 112,
+      "okpd2": "62.03.12.130"
+     },
+     {
+      "awarded_lots": 65,
+      "okpd2": "62.01.29.000"
+     },
+     {
+      "awarded_lots": 65,
+      "okpd2": "62.02.30.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1025 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:48:43.704029Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ВИЖЕН-СОФТ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7802433724",
+    "kpp": "780201001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ВИЖЕН-СОФТ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1089847187022",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2008-05-06",
+    "short_name": "ООО \"ВИЖЕН-СОФТ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:49:05.267665Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:48:55.036558Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:49:05.267665Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 945,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 945,
+    "platforms": {
+     "AIS_GZ": 334,
+     "EM": 611
+    },
+    "relevant_awards": 945,
+    "top_okpd2": [
+     {
+      "awarded_lots": 236,
+      "okpd2": "84.24.11.000"
+     },
+     {
+      "awarded_lots": 156,
+      "okpd2": "80.10.12.100"
+     },
+     {
+      "awarded_lots": 144,
+      "okpd2": "80.20.10.000"
+     },
+     {
+      "awarded_lots": 132,
+      "okpd2": "84.24.19.000"
+     },
+     {
+      "awarded_lots": 110,
+      "okpd2": "80.10.12.900"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "945 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:48:55.036558Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ КАЗЕННОЕ УЧРЕЖДЕНИЕ \"УПРАВЛЕНИЕ ВНЕВЕДОМСТВЕННОЙ ОХРАНЫ ВОЙСК НАЦИОНАЛЬНОЙ ГВАРДИИ РОССИЙСКОЙ ФЕДЕРАЦИИ ПО Г. САНКТ-ПЕТЕРБУРГУ И ЛЕНИНГРАДСКОЙ ОБЛАСТИ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7813542362",
+    "kpp": "781301001",
+    "legal_name": "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ КАЗЕННОЕ УЧРЕЖДЕНИЕ \"УПРАВЛЕНИЕ ВНЕВЕДОМСТВЕННОЙ ОХРАНЫ ВОЙСК НАЦИОНАЛЬНОЙ ГВАРДИИ РОССИЙСКОЙ ФЕДЕРАЦИИ ПО Г. САНКТ-ПЕТЕРБУРГУ И ЛЕНИНГРАДСКОЙ ОБЛАСТИ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1127847446088",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2012-08-23",
+    "short_name": "ФГКУ \"УВО ВНГ РОССИИ ПО Г. СПБ И ЛО\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:49:16.661707Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:49:06.456678Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:49:16.661707Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1313,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1313,
+    "platforms": {
+     "AIS_GZ": 767,
+     "EM": 546
+    },
+    "relevant_awards": 1271,
+    "top_okpd2": [
+     {
+      "awarded_lots": 470,
+      "okpd2": "21.20"
+     },
+     {
+      "awarded_lots": 327,
+      "okpd2": "21.20.10.134"
+     },
+     {
+      "awarded_lots": 102,
+      "okpd2": "21.20.10.191"
+     },
+     {
+      "awarded_lots": 58,
+      "okpd2": "21.20.10.231"
+     },
+     {
+      "awarded_lots": 46,
+      "okpd2": "21.20.10.211"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1271 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:49:06.456678Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПРОМЕТЕЙ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "4719016624",
+    "kpp": "780601001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПРОМЕТЕЙ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1024702089741",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-11-19",
+    "short_name": "ООО \"ПРОМЕТЕЙ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:49:28.063848Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:49:17.843862Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:49:28.063848Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 752,
+    "first_observed_activity": "2024-01-15",
+    "last_observed_activity": "2025-12-29",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 752,
+    "platforms": {
+     "AIS_GZ": 273,
+     "EM": 479
+    },
+    "relevant_awards": 749,
+    "top_okpd2": [
+     {
+      "awarded_lots": 607,
+      "okpd2": "62.03.12.130"
+     },
+     {
+      "awarded_lots": 34,
+      "okpd2": "62.09.20.190"
+     },
+     {
+      "awarded_lots": 17,
+      "okpd2": "63.99.10.190"
+     },
+     {
+      "awarded_lots": 16,
+      "okpd2": "62.02.30.000"
+     },
+     {
+      "awarded_lots": 8,
+      "okpd2": "58.29.50.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "749 awarded supply relations in the organizer procurement data (2024-01-15 – 2025-12-29).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:49:17.843862Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ЦЕНТР КОМПЬЮТЕРНЫХ РАЗРАБОТОК\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7838005183",
+    "kpp": "780101001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ЦЕНТР КОМПЬЮТЕРНЫХ РАЗРАБОТОК\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1037861010241",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2003-09-15",
+    "short_name": "АО \"ЦКР\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:49:39.430076Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:49:29.226898Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:49:39.430076Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 887,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 887,
+    "platforms": {
+     "AIS_GZ": 187,
+     "EM": 700
+    },
+    "relevant_awards": 886,
+    "top_okpd2": [
+     {
+      "awarded_lots": 222,
+      "okpd2": "61.90.10.160"
+     },
+     {
+      "awarded_lots": 142,
+      "okpd2": "61.10.30.190"
+     },
+     {
+      "awarded_lots": 139,
+      "okpd2": "80.20.10.000"
+     },
+     {
+      "awarded_lots": 68,
+      "okpd2": "84.24.19.000"
+     },
+     {
+      "awarded_lots": 48,
+      "okpd2": "61.20.30.120"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "886 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:49:29.226898Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ОХРАНА ТЕЛЕКОМ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7813474659",
+    "kpp": "470701001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ОХРАНА ТЕЛЕКОМ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1107847192133",
+    "primary_okved": null,
+    "region": "Ленинградская область",
+    "registered_address": null,
+    "registration_date": "2010-06-17",
+    "short_name": "ООО \"ОХРАНА ТЕЛЕКОМ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:49:50.742411Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:49:40.562347Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:49:50.742411Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 345,
+    "first_observed_activity": "2024-03-04",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 345,
+    "platforms": {
+     "AIS_GZ": 60,
+     "EM": 285
+    },
+    "relevant_awards": 337,
+    "top_okpd2": [
+     {
+      "awarded_lots": 51,
+      "okpd2": "77.39.19.129"
+     },
+     {
+      "awarded_lots": 51,
+      "okpd2": "80.20.10.000"
+     },
+     {
+      "awarded_lots": 47,
+      "okpd2": "84.24.19.000"
+     },
+     {
+      "awarded_lots": 26,
+      "okpd2": "77.39.19.119"
+     },
+     {
+      "awarded_lots": 21,
+      "okpd2": "77.39.19.115"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "337 awarded supply relations in the organizer procurement data (2024-03-04 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:49:40.562347Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭНЕРГОСИСТЕМА\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7806187484",
+    "kpp": "781001001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭНЕРГОСИСТЕМА\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1157847277763",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2015-08-13",
+    "short_name": "ООО \"ЭНЕРГОСИСТЕМА\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:02.006958Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:49:51.831613Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:02.006958Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1769,
+    "first_observed_activity": "2024-01-16",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1769,
+    "platforms": {
+     "AIS_GZ": 218,
+     "EM": 1551
+    },
+    "relevant_awards": 1312,
+    "top_okpd2": [
+     {
+      "awarded_lots": 450,
+      "okpd2": "22.22.11.190"
+     },
+     {
+      "awarded_lots": 441,
+      "okpd2": "17.22.11.110"
+     },
+     {
+      "awarded_lots": 440,
+      "okpd2": "13.92.29.110"
+     },
+     {
+      "awarded_lots": 420,
+      "okpd2": "20.41.32.114"
+     },
+     {
+      "awarded_lots": 409,
+      "okpd2": "20.20.14.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1312 awarded supply relations in the organizer procurement data (2024-01-16 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:49:51.831613Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ТВЕС СЕВЕРО-ЗАПАД\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7816530372",
+    "kpp": "781601001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ТВЕС СЕВЕРО-ЗАПАД\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1127847059460",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2012-02-01",
+    "short_name": "ООО \"ТВЕС СЕВЕРО-ЗАПАД\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:13.468262Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:03.206353Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:13.468262Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 756,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 756,
+    "platforms": {
+     "AIS_GZ": 19,
+     "EM": 737
+    },
+    "relevant_awards": 721,
+    "top_okpd2": [
+     {
+      "awarded_lots": 257,
+      "okpd2": "33.12.19.000"
+     },
+     {
+      "awarded_lots": 104,
+      "okpd2": "36.00.20.140"
+     },
+     {
+      "awarded_lots": 53,
+      "okpd2": "95.29.13.000"
+     },
+     {
+      "awarded_lots": 34,
+      "okpd2": "33.12.29.900"
+     },
+     {
+      "awarded_lots": 34,
+      "okpd2": "33.19.10.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "721 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:03.206353Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭНЕРГОПРИБОР\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7810186807",
+    "kpp": "780401001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ЭНЕРГОПРИБОР\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1027804895689",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2002-12-09",
+    "short_name": "ООО \"ЭНЕРГОПРИБОР\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:24.840590Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:14.635831Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:24.840590Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 927,
+    "first_observed_activity": "2024-01-17",
+    "last_observed_activity": "2025-12-29",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 927,
+    "platforms": {
+     "AIS_GZ": 194,
+     "EM": 733
+    },
+    "relevant_awards": 904,
+    "top_okpd2": [
+     {
+      "awarded_lots": 357,
+      "okpd2": "38.11.29.000"
+     },
+     {
+      "awarded_lots": 157,
+      "okpd2": "38.11.21.000"
+     },
+     {
+      "awarded_lots": 90,
+      "okpd2": "38.11.11.000"
+     },
+     {
+      "awarded_lots": 60,
+      "okpd2": "38.21.22.000"
+     },
+     {
+      "awarded_lots": 47,
+      "okpd2": "38.21.10.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "904 awarded supply relations in the organizer procurement data (2024-01-17 – 2025-12-29).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:14.635831Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ПЕРВЫЙ СПЕЦТРАНС\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7816721987",
+    "kpp": "781601001",
+    "legal_name": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ПЕРВЫЙ СПЕЦТРАНС\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1217800142108",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2021-09-15",
+    "short_name": "АО \"ПЕРВЫЙ СПЕЦТРАНС\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:36.151915Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:25.969986Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:36.151915Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1158,
+    "first_observed_activity": "2024-10-08",
+    "last_observed_activity": "2025-12-28",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1158,
+    "platforms": {
+     "AIS_GZ": 142,
+     "EM": 1016
+    },
+    "relevant_awards": 669,
+    "top_okpd2": [
+     {
+      "awarded_lots": 21,
+      "okpd2": "17.22.11.110"
+     },
+     {
+      "awarded_lots": 19,
+      "okpd2": "20.20.14.000"
+     },
+     {
+      "awarded_lots": 19,
+      "okpd2": "22.29.23.120"
+     },
+     {
+      "awarded_lots": 19,
+      "okpd2": "25.99.12.112"
+     },
+     {
+      "awarded_lots": 19,
+      "okpd2": "32.91.11.000"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "669 awarded supply relations in the organizer procurement data (2024-10-08 – 2025-12-28).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:25.969986Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ВОСТРИКОВА АНАСТАСИЯ АНДРЕЕВНА",
+    "entity_kind": "INDIVIDUAL_ENTREPRENEUR",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "782006150006",
+    "kpp": null,
+    "legal_name": "ВОСТРИКОВА АНАСТАСИЯ АНДРЕЕВНА",
+    "legal_status": "ACTIVE",
+    "ogrn": "324784700260249",
+    "primary_okved": null,
+    "region": null,
+    "registered_address": null,
+    "registration_date": "2024-08-14",
+    "short_name": null
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:47.461208Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:37.263164Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:47.461208Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 2437,
+    "first_observed_activity": "2024-01-09",
+    "last_observed_activity": "2025-12-27",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 2437,
+    "platforms": {
+     "AIS_GZ": 98,
+     "EM": 2339
+    },
+    "relevant_awards": 786,
+    "top_okpd2": [
+     {
+      "awarded_lots": 115,
+      "okpd2": "22.11.11.000"
+     },
+     {
+      "awarded_lots": 73,
+      "okpd2": "29.31.23.120"
+     },
+     {
+      "awarded_lots": 44,
+      "okpd2": "29.32.30.390"
+     },
+     {
+      "awarded_lots": 38,
+      "okpd2": "22.11.13.110"
+     },
+     {
+      "awarded_lots": 31,
+      "okpd2": "29.32.30.220"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "786 awarded supply relations in the organizer procurement data (2024-01-09 – 2025-12-27).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:37.263164Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ПУШПЫШЕВ АНТОН ВИКТОРОВИЧ",
+    "entity_kind": "INDIVIDUAL_ENTREPRENEUR",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "740410760899",
+    "kpp": null,
+    "legal_name": "ПУШПЫШЕВ АНТОН ВИКТОРОВИЧ",
+    "legal_status": "ACTIVE",
+    "ogrn": "315784700165602",
+    "primary_okved": null,
+    "region": null,
+    "registered_address": null,
+    "registration_date": "2015-09-01",
+    "short_name": null
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:50:58.748192Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "NO_WEBSITE_CANDIDATE",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:48.581862Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:50:58.748192Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1044,
+    "first_observed_activity": "2025-01-31",
+    "last_observed_activity": "2025-12-25",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1044,
+    "platforms": {
+     "AIS_GZ": 221,
+     "EM": 823
+    },
+    "relevant_awards": 473,
+    "top_okpd2": [
+     {
+      "awarded_lots": 234,
+      "okpd2": "28.14.12.110"
+     },
+     {
+      "awarded_lots": 97,
+      "okpd2": "23.42.10.150"
+     },
+     {
+      "awarded_lots": 81,
+      "okpd2": "28.14.13.131"
+     },
+     {
+      "awarded_lots": 40,
+      "okpd2": "22.21.29.130"
+     },
+     {
+      "awarded_lots": 38,
+      "okpd2": "22.21.29.120"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "473 awarded supply relations in the organizer procurement data (2025-01-31 – 2025-12-25).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:48.581862Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"АКВАФИТ\"",
+    "entity_kind": "LEGAL_ENTITY",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "7811799877",
+    "kpp": "781101001",
+    "legal_name": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"АКВАФИТ\"",
+    "legal_status": "ACTIVE",
+    "ogrn": "1247800069153",
+    "primary_okved": null,
+    "region": "Г.Санкт-Петербург",
+    "registered_address": null,
+    "registration_date": "2024-07-10",
+    "short_name": "ООО \"АКВАФИТ\""
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:51:10.146016Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:50:59.905026Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:51:10.146016Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 1183,
+    "first_observed_activity": "2024-01-10",
+    "last_observed_activity": "2025-12-19",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 1183,
+    "platforms": {
+     "AIS_GZ": 1165,
+     "EM": 18
+    },
+    "relevant_awards": 1173,
+    "top_okpd2": [
+     {
+      "awarded_lots": 508,
+      "okpd2": "22.29.25.000"
+     },
+     {
+      "awarded_lots": 345,
+      "okpd2": "22.29.21.000"
+     },
+     {
+      "awarded_lots": 337,
+      "okpd2": "17.23.13.199"
+     },
+     {
+      "awarded_lots": 322,
+      "okpd2": "17.23.13.193"
+     },
+     {
+      "awarded_lots": 314,
+      "okpd2": "25.71.11.120"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1173 awarded supply relations in the organizer procurement data (2024-01-10 – 2025-12-19).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:50:59.905026Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "ГАЛИАКБЕРОВА МАРИЯ АНДРЕЕВНА",
+    "entity_kind": "INDIVIDUAL_ENTREPRENEUR",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "783801263021",
+    "kpp": null,
+    "legal_name": "ГАЛИАКБЕРОВА МАРИЯ АНДРЕЕВНА",
+    "legal_status": "ACTIVE",
+    "ogrn": "320784700045691",
+    "primary_okved": null,
+    "region": null,
+    "registered_address": null,
+    "registration_date": "2020-02-18",
+    "short_name": null
+   }
+  },
+  {
+   "contacts": [],
+   "enrichment": {
+    "cache": "NONE",
+    "last_enriched_at": "2026-10-02T06:51:21.592781Z",
+    "official_website": null,
+    "pipeline_version": "p5-001a-v1",
+    "reasons": [
+     "INDIVIDUAL_ENTREPRENEUR_CONTACTS_NOT_COLLECTED",
+     "REGISTRY_MIRROR_UNAVAILABLE"
+    ],
+    "retryable": true,
+    "status": "PARTIAL",
+    "website_candidate": null,
+    "website_confidence": "NONE"
+   },
+   "freshness": {
+    "contacts": "UNKNOWN",
+    "contacts_last_checked_at": null,
+    "content_currency": null,
+    "identity": "FRESH",
+    "identity_checked_at": "2026-10-02T06:51:11.386500Z",
+    "note": "Retrieved recently is not the same as fresh: an outdated source page stays STALE; undated pages are UNKNOWN.",
+    "policy_version": "p5-001a-v1",
+    "profile_cache_valid_until": "2026-11-01T06:51:21.592781Z"
+   },
+   "procurement_history_summary": {
+    "distinct_lots": 4542,
+    "first_observed_activity": "2024-01-11",
+    "last_observed_activity": "2025-12-30",
+    "note": "Organizer procurement data (2024–2025). No cross-platform win rate is computed (АИС ГЗ rows are winner-only).",
+    "observed_relations": 4542,
+    "platforms": {
+     "AIS_GZ": 113,
+     "EM": 4429
+    },
+    "relevant_awards": 1022,
+    "top_okpd2": [
+     {
+      "awarded_lots": 64,
+      "okpd2": "20.52.10.190"
+     },
+     {
+      "awarded_lots": 49,
+      "okpd2": "22.29.25.000"
+     },
+     {
+      "awarded_lots": 45,
+      "okpd2": "20.30.23.110"
+     },
+     {
+      "awarded_lots": 39,
+      "okpd2": "17.23.13.192"
+     },
+     {
+      "awarded_lots": 34,
+      "okpd2": "20.59.52.110"
+     }
+    ]
+   },
+   "roles": [
+    {
+     "basis": "PROCUREMENT_HISTORY_AWARDS",
+     "checked_at": null,
+     "claim": "1022 awarded supply relations in the organizer procurement data (2024-01-11 – 2025-12-30).",
+     "origin": "PROCUREMENT_HISTORY",
+     "role": "SUPPLIER",
+     "source_type": "ORGANIZER_PROCUREMENT_DATA",
+     "source_url": null,
+     "status": "VERIFIED",
+     "strength": "STRONG"
+    }
+   ],
+   "sources": [
+    {
+     "last_checked_at": "2026-10-02T06:51:11.386500Z",
+     "source_type": "FNS_EGRUL",
+     "source_url": "https://egrul.nalog.ru/index.html",
+     "used_for": [
+      "LEGAL_IDENTITY",
+      "LEGAL_STATUS"
+     ]
+    }
+   ],
+   "supplier": {
+    "display_name": "СЕРГЕЕВ АЛЕКСЕЙ ВЛАДИМИРОВИЧ",
+    "entity_kind": "INDIVIDUAL_ENTREPRENEUR",
+    "historically_known": true,
+    "identity_source_type": "FNS_EGRUL",
+    "identity_source_url": "https://egrul.nalog.ru/index.html",
+    "inn": "471504580206",
+    "kpp": null,
+    "legal_name": "СЕРГЕЕВ АЛЕКСЕЙ ВЛАДИМИРОВИЧ",
+    "legal_status": "ACTIVE",
+    "ogrn": "322470400120451",
+    "primary_okved": null,
+    "region": null,
+    "registered_address": null,
+    "registration_date": "2022-12-14",
+    "short_name": null
+   }
+  }
+ ],
+ "runs": [
+  {
+   "cache": "REFRESHED",
+   "inn": "7804054351",
+   "status": "PARTIAL",
+   "wall_seconds": 11.63
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7817306535",
+   "status": "PARTIAL",
+   "wall_seconds": 11.41
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7804471404",
+   "status": "PARTIAL",
+   "wall_seconds": 11.39
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "4705055285",
+   "status": "PARTIAL",
+   "wall_seconds": 11.36
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7802862201",
+   "status": "PARTIAL",
+   "wall_seconds": 11.39
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7805396573",
+   "status": "PARTIAL",
+   "wall_seconds": 11.3
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7817080623",
+   "status": "PARTIAL",
+   "wall_seconds": 11.34
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7811530202",
+   "status": "PARTIAL",
+   "wall_seconds": 11.34
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7814607703",
+   "status": "PARTIAL",
+   "wall_seconds": 11.32
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7804484876",
+   "status": "PARTIAL",
+   "wall_seconds": 11.29
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "9719079775",
+   "status": "PARTIAL",
+   "wall_seconds": 11.39
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7605016030",
+   "status": "PARTIAL",
+   "wall_seconds": 11.54
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7842184231",
+   "status": "PARTIAL",
+   "wall_seconds": 11.4
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7805074390",
+   "status": "PARTIAL",
+   "wall_seconds": 11.41
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7826679163",
+   "status": "PARTIAL",
+   "wall_seconds": 11.4
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7810687137",
+   "status": "PARTIAL",
+   "wall_seconds": 11.39
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7802433724",
+   "status": "PARTIAL",
+   "wall_seconds": 11.33
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7813542362",
+   "status": "PARTIAL",
+   "wall_seconds": 11.41
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "4719016624",
+   "status": "PARTIAL",
+   "wall_seconds": 11.38
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7838005183",
+   "status": "PARTIAL",
+   "wall_seconds": 11.39
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7813474659",
+   "status": "PARTIAL",
+   "wall_seconds": 11.34
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7806187484",
+   "status": "PARTIAL",
+   "wall_seconds": 11.29
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7816530372",
+   "status": "PARTIAL",
+   "wall_seconds": 11.37
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7810186807",
+   "status": "PARTIAL",
+   "wall_seconds": 11.41
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7816721987",
+   "status": "PARTIAL",
+   "wall_seconds": 11.36
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "782006150006",
+   "status": "PARTIAL",
+   "wall_seconds": 11.3
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "740410760899",
+   "status": "PARTIAL",
+   "wall_seconds": 11.32
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "7811799877",
+   "status": "PARTIAL",
+   "wall_seconds": 11.31
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "783801263021",
+   "status": "PARTIAL",
+   "wall_seconds": 11.47
+  },
+  {
+   "cache": "REFRESHED",
+   "inn": "471504580206",
+   "status": "PARTIAL",
+   "wall_seconds": 11.37
+  }
+ ],
+ "selection": {
+  "explicit_inns": [],
+  "holdout_suppliers_skipped": 40,
+  "limit": 30,
+  "okpd2_prefixes": [
+   "10.51"
+  ],
+  "per_prefix": 10,
+  "refresh": true
+ },
+ "task": "P5-001A"
+}

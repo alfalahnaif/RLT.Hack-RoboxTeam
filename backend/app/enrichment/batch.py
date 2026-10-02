@@ -94,8 +94,8 @@ def metrics(conn: Connection, inns: list[str]) -> dict:
                                               (inns,)).fetchall()}
     roles = {i for (i,) in conn.execute("SELECT DISTINCT inn FROM supplier_role_evidence WHERE inn = ANY(%s)", (inns,)).fetchall()}
     attempts = conn.execute("""SELECT a.source, a.outcome, count(*) FROM supplier_enrichment_attempt a
-                               JOIN (SELECT inn, max(run_started_at) m FROM supplier_enrichment_attempt WHERE inn = ANY(%s) GROUP BY inn) l
-                                 ON l.inn = a.inn AND l.m = a.run_started_at
+                               JOIN (SELECT DISTINCT ON (inn) run_id FROM supplier_enrichment_attempt WHERE inn = ANY(%s)
+                                     ORDER BY inn, seq DESC) l ON l.run_id = a.run_id
                                GROUP BY 1, 2 ORDER BY 1, 2""", (inns,)).fetchall()
     n = len(inns)
     status = Counter(by[i][1] if i in by else "NOT_ENRICHED" for i in inns)

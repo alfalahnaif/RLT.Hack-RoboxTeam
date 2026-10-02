@@ -98,8 +98,11 @@ def upgrade() -> None:
             CHECK (status <> 'VERIFIED')
         );
 
+        -- append-only run log: one run_id per pipeline run; seq orders runs even when two share a start timestamp
         CREATE TABLE supplier_enrichment_attempt (
             id            uuid PRIMARY KEY,
+            seq           bigint GENERATED ALWAYS AS IDENTITY,
+            run_id        uuid NOT NULL,
             inn           {INN},
             run_started_at timestamptz NOT NULL,
             source        text NOT NULL,
@@ -107,7 +110,7 @@ def upgrade() -> None:
             detail        text,
             duration_ms   integer NOT NULL DEFAULT 0
         );
-        CREATE INDEX ix_enrichment_attempt_inn ON supplier_enrichment_attempt (inn, run_started_at);
+        CREATE INDEX ix_enrichment_attempt_inn ON supplier_enrichment_attempt (inn, seq);
         CREATE INDEX ix_enrichment_profile_status ON supplier_enrichment_profile (enrichment_status);
     """)
 

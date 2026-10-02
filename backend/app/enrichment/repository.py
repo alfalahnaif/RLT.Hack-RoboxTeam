@@ -37,8 +37,8 @@ def children(conn: Connection, inn: str) -> dict[str, list[dict]]:
 def last_attempts(conn: Connection, inn: str) -> list[dict]:
     with conn.cursor(row_factory=dict_row) as cur:
         return cur.execute("""SELECT source, outcome, detail, duration_ms, run_started_at FROM supplier_enrichment_attempt
-                              WHERE inn = %s AND run_started_at = (SELECT max(run_started_at) FROM supplier_enrichment_attempt WHERE inn = %s)
-                              ORDER BY source""", (inn, inn)).fetchall()
+                              WHERE run_id = (SELECT run_id FROM supplier_enrichment_attempt WHERE inn = %s ORDER BY seq DESC LIMIT 1)
+                              ORDER BY source, seq""", (inn,)).fetchall()
 
 
 def mark_in_progress(conn: Connection, inn: str, now: datetime) -> None:
@@ -52,23 +52,35 @@ def mark_in_progress(conn: Connection, inn: str, now: datetime) -> None:
 
 
 def save_attempts(conn: Connection, res: EnrichmentResult) -> None:
+    """Append the run's attempts. Log rows are events, not entities: random ids, one run_id per run (two runs may share a
+    start timestamp, e.g. under a fixed clock or a fast refresh)."""
+    run_id = uuid.uuid4()
     with conn.cursor() as cur:
-        cur.executemany("""INSERT INTO supplier_enrichment_attempt (id, inn, run_started_at, source, outcome, detail, duration_ms)
-                           VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                        [(_id("attempt", res.inn, res.started_at.isoformat(), str(i), a.source), res.inn, res.started_at, a.source,
-                          a.outcome.value, a.detail, a.duration_ms) for i, a in enumerate(res.attempts)])
+        cur.executemany("""INSERT INTO supplier_enrichment_attempt (id, run_id, inn, run_started_at, source, outcome, detail, duration_ms)
+                           VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
+                        [(uuid.uuid4(), run_id, res.inn, res.started_at, a.source, a.outcome.value, a.detail, a.duration_ms)
+                         for a in res.attempts])
 
 
 def save(conn: Connection, res: EnrichmentResult, now: datetime, skip_contact_keys: set[tuple[str, str]] = frozenset(),
          historical: bool = True) -> str:
-    """Persist one run. A FAILED refresh never overwrites a previously usable profile (only the attempt log is added).
+    """Persist one run. A FAILED refresh never overwrites a previously usable profile, and neither does a refresh degraded by a
+    source outage (retryable) that found fewer contacts than are stored: only the attempt log and a reason are added.
     Contacts already present in the accepted P4-005C record (same type + normalized value) are not duplicated.
     Returns the stored enrichment_status."""
     existing = get_profile(conn, res.inn)
     save_attempts(conn, res)
-    if res.status == EnrichmentStatus.FAILED and existing and existing["enrichment_status"] in ("COMPLETE", "PARTIAL"):
+    usable = existing is not None and existing["enrichment_status"] in ("COMPLETE", "PARTIAL")
+    keep = None
+    if usable and res.status == EnrichmentStatus.FAILED:
+        keep = "LAST_REFRESH_FAILED"
+    elif usable and res.retryable:
+        stored = conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (res.inn,)).fetchone()[0]
+        if len({(c.type.value, c.normalized) for c in res.contacts} - set(skip_contact_keys)) < stored:
+            keep = "LAST_REFRESH_DEGRADED"
+    if keep:
         conn.execute("UPDATE supplier_enrichment_profile SET status_reasons = %s, updated_at = %s WHERE inn = %s",
-                     (sorted(set(existing["status_reasons"]) | {"LAST_REFRESH_FAILED"} | set(res.reasons)), now, res.inn))
+                     (sorted(set(existing["status_reasons"]) | {keep} | set(res.reasons)), now, res.inn))
         conn.commit()
         return existing["enrichment_status"]
     i, w = res.identity, res.website

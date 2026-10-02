@@ -55,6 +55,8 @@ def identity_freshness(checked_at: datetime | None, today: date, policy: Freshne
 def cache_reusable(status: str, retryable: bool, last_enriched_at: datetime | None, updated_at: datetime | None,
                    now: datetime, policy: FreshnessPolicy = POLICY) -> bool:
     """True when a stored profile must be returned instead of re-querying sources (no explicit refresh)."""
+    if status == "PARTIAL" and retryable:   # gaps caused by a source outage are re-attempted like a FAILED run
+        return last_enriched_at is not None and now - last_enriched_at < timedelta(hours=policy.failed_retry_after_hours)
     if status in ("COMPLETE", "PARTIAL"):
         return last_enriched_at is not None and now - last_enriched_at <= timedelta(days=policy.profile_ttl_days)
     if status == "FAILED":

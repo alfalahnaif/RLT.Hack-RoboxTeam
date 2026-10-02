@@ -71,26 +71,43 @@ class RoleEvidenceProvider(Protocol):
 
 # ------------------------------------------------------------------------------------------------------------ HTTP
 class HttpFetcher:
-    """Small polite HTTP client: per-host minimum interval, timeouts, size cap, charset detection. No retries storm."""
+    """Small polite HTTP client: per-host minimum interval (stricter for registry mirrors), timeouts, size cap, charset
+    detection. No retries storm: a 429/503 is waited out once (Retry-After, capped) and retried once, then reported."""
+
+    RATE_LIMITED = (429, 503)
 
     def __init__(self, timeout: float = 8.0, min_interval: float = 1.0, clock: Callable[[], float] = time.monotonic,
-                 sleep: Callable[[float], None] = time.sleep) -> None:
+                 sleep: Callable[[float], None] = time.sleep, host_intervals: dict[str, float] | None = None,
+                 max_backoff: float = 30.0, default_backoff: float = 10.0, transport=None) -> None:
         import httpx
         self._httpx = httpx
         self.timeout, self.min_interval, self._clock, self._sleep = timeout, min_interval, clock, sleep
+        self.host_intervals, self.max_backoff, self.default_backoff = host_intervals or {}, max_backoff, default_backoff
         self._last: dict[str, float] = {}
-        self._client = httpx.Client(follow_redirects=True, timeout=httpx.Timeout(timeout),
+        self._client = httpx.Client(follow_redirects=True, timeout=httpx.Timeout(timeout), transport=transport,
                                     headers={"User-Agent": USER_AGENT, "Accept-Language": "ru,en;q=0.5"})
         self._insecure = None
+
+    def _interval(self, host: str) -> float:
+        for h, iv in self.host_intervals.items():
+            if host == h or host.endswith("." + h):
+                return max(iv, self.min_interval)
+        return self.min_interval
 
     def _wait(self, url: str) -> None:
         host = urlsplit(url).hostname or ""
         last = self._last.get(host)
         if last is not None:
-            delta = self.min_interval - (self._clock() - last)
+            delta = self._interval(host) - (self._clock() - last)
             if delta > 0:
                 self._sleep(delta)
         self._last[host] = self._clock()
+
+    def _backoff(self, resp) -> float | None:
+        """Seconds to wait before the single retry of a rate-limited response, or None when the server asks for too long."""
+        ra = (resp.headers.get("retry-after") or "").strip()
+        wait = float(ra) if ra.isdigit() else self.default_backoff
+        return wait if wait <= self.max_backoff else None
 
     def request(self, method: str, url: str, data: dict | None = None) -> tuple[str, str]:
         """(final_url, decoded text). Raises SourceUnavailable on any transport / HTTP error."""
@@ -111,6 +128,18 @@ class HttpFetcher:
                 resp = self._insecure.request(method, url, data=data)
         except self._httpx.HTTPError as e:
             raise SourceUnavailable(f"{type(e).__name__}: {e}"[:200]) from e
+        if resp.status_code in self.RATE_LIMITED:
+            wait = self._backoff(resp)
+            if wait is None:
+                raise SourceUnavailable(f"HTTP {resp.status_code} (Retry-After too long)")
+            self._sleep(wait)
+            self._last[urlsplit(url).hostname or ""] = self._clock()
+            try:
+                resp = self._client.request(method, url, data=data)
+            except self._httpx.HTTPError as e:
+                raise SourceUnavailable(f"{type(e).__name__}: {e}"[:200]) from e
+            if resp.status_code in self.RATE_LIMITED:
+                raise SourceUnavailable(f"HTTP {resp.status_code} after one backoff")
         if resp.status_code >= 400:
             raise SourceUnavailable(f"HTTP {resp.status_code}")
         return str(resp.url), decode(resp.content[:MAX_BYTES], resp.headers.get("content-type", ""))

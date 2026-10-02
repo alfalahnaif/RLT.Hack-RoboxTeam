@@ -45,9 +45,9 @@ def db(test_db_url):
                          (history_uuid(lot, inn), lot, supplier_uuid(inn), inn, d, SHA, 900000 + k))
             parts = okpd2.split(".")
             conn.execute("""INSERT INTO procurement_item (item_id, lot_id, line_no, content_hash, product_name_raw, is_generic_type_name,
-                            okpd2_code_raw, okpd2_code, okpd2_depth, okpd2_section, okpd2_class, source_sha256, source_row_no)
-                            VALUES (%s, %s, 1, %s, 'Молоко', false, %s, %s, 4, 'C', %s, %s, %s) ON CONFLICT DO NOTHING""",
-                         (item_uuid(lot, 1), lot, SHA, okpd2, okpd2, parts[0], SHA, 900000 + k))
+                            okpd2_code_raw, okpd2_code, okpd2_depth, okpd2_section, okpd2_class, source_sha256, source_row_no, publish_date)
+                            VALUES (%s, %s, 1, %s, 'Молоко', false, %s, %s, 4, 'C', %s, %s, %s, %s) ON CONFLICT DO NOTHING""",
+                         (item_uuid(lot, 1), lot, SHA, okpd2, okpd2, parts[0], SHA, 900000 + k, d))
         conn.commit()
     yield test_db_url
 
@@ -86,7 +86,8 @@ def test_inn_only_historical_supplier_is_enriched_and_persisted(db):
         assert prof.supplier.legal_name and prof.supplier.ogrn and prof.supplier.historically_known
         stored = conn.execute("SELECT enrichment_status, supplier_id FROM supplier_enrichment_profile WHERE inn = %s", (HIST,)).fetchone()
         assert stored == ("COMPLETE", supplier_uuid(HIST))
-        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 4
+        # website, address, sales e-mail, landline + the published procurement mobile (personal values dropped)
+        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 5
     for c in prof.contacts:
         assert c.source_url.startswith("http") and c.source_type and c.checked_at and c.freshness_status in ("FRESH", "STALE", "UNKNOWN")
     assert {c.type for c in prof.contacts} == {"PHONE", "EMAIL", "WEBSITE", "ADDRESS"}
@@ -114,7 +115,7 @@ def test_cache_reuse_and_explicit_refresh(db):
         SP.enrich_supplier(conn, HIST, clk, factory=f)
         assert len(calls) == 3
         # refresh contacts are a replacement snapshot, not appended duplicates
-        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 4
+        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 5
 
 
 def test_failed_refresh_keeps_previous_profile(db):
@@ -128,6 +129,21 @@ def test_failed_refresh_keeps_previous_profile(db):
         assert prof.enrichment.status == "COMPLETE" and "LAST_REFRESH_FAILED" in prof.enrichment.reasons
         assert any(a.outcome == "UNAVAILABLE" for a in prof.last_run_attempts)
 
+
+
+def test_degraded_refresh_keeps_richer_snapshot(db):
+    """A refresh hit by a source outage (site unreachable -> retryable PARTIAL, fewer contacts) never replaces a richer snapshot."""
+    with psycopg.connect(db) as conn:
+        SP.enrich_supplier(conn, HIST, Clock(), refresh=True, factory=factory(identity(HIST), site_pages(HIST)))
+
+        def site_down(now):
+            return P.Providers([FakeRegistry("FNS_EGRUL", identity(HIST))], RegistryWebsiteDiscovery(), FakeVerifier({}, error=True),
+                               HtmlContactExtractor(), SiteAndOkvedRoleEvidence()), (lambda: None)
+        prof = SP.enrich_supplier(conn, HIST, Clock(), refresh=True, factory=site_down)
+        assert prof.enrichment.status == "COMPLETE" and "LAST_REFRESH_DEGRADED" in prof.enrichment.reasons
+        assert prof.enrichment.official_website == "https://moloko-test.ru/"
+        assert conn.execute("SELECT count(*) FROM supplier_contact WHERE inn = %s", (HIST,)).fetchone()[0] == 5
+        assert any(a.outcome == "UNAVAILABLE" for a in prof.last_run_attempts)
 
 def test_legal_identity_only_partial_and_missing_contacts_stay_absent(db):
     with psycopg.connect(db) as conn:

@@ -4,7 +4,8 @@ INN -> legal identity -> candidate website -> website identity verification -> c
 Contacts are never collected before the company identity is established and the site is proven to be the company's own.
 
 Status: identity + official website + phone or e-mail -> COMPLETE; identity with gaps -> PARTIAL;
-registry unreachable -> FAILED (retryable); INN unknown to the registry -> FAILED (not retryable).
+registry unreachable -> FAILED (retryable); INN unknown to the registry -> FAILED (not retryable);
+mirror or website unreachable -> PARTIAL with retryable=True (re-attempted after the retry delay, not kept for the TTL).
 """
 from __future__ import annotations
 
@@ -103,6 +104,10 @@ def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> Enric
         return res
     if not primary_answered:
         res.reasons.append("PRIMARY_REGISTRY_UNAVAILABLE_MIRROR_USED")
+        res.retryable = True
+    if any(a.outcome == SourceOutcome.UNAVAILABLE for a in res.attempts[1:len(providers.registries)]):
+        res.reasons.append("REGISTRY_MIRROR_UNAVAILABLE")   # address / OKVED / website hint missing because of an outage
+        res.retryable = True
     res.identity = identity
     res.evidence += _identity_evidence(identity)
     if identity.legal_status and identity.legal_status.value == "CEASED":
@@ -132,6 +137,7 @@ def enrich(inn: str, providers: Providers, now: Callable[[], datetime]) -> Enric
                 break
         if candidates and verification is None:
             res.reasons.append("WEBSITE_UNAVAILABLE")
+            res.retryable = True
         elif verification is not None and verification.confidence != WebsiteConfidence.HIGH:
             res.reasons.append("WEBSITE_IDENTITY_NOT_CONFIRMED")
     res.website = verification

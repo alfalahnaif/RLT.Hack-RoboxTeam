@@ -169,6 +169,10 @@ def test_cache_policy():
     assert not F.cache_reusable("FAILED", True, None, t - timedelta(hours=30), t)
     assert not F.cache_reusable("IN_PROGRESS", False, None, t - timedelta(hours=1), t)  # abandoned run
     assert not F.cache_reusable("NOT_ENRICHED", False, None, None, t)
+    # a PARTIAL caused by a source outage is re-attempted after the retry delay, not kept for the whole profile TTL
+    assert F.cache_reusable("PARTIAL", True, t - timedelta(hours=1), t, t)
+    assert not F.cache_reusable("PARTIAL", True, t - timedelta(hours=30), t, t)
+    assert F.cache_reusable("PARTIAL", False, t - timedelta(days=3), t, t)
 
 
 # ------------------------------------------------------------------------------------------------------------ roles
@@ -249,3 +253,56 @@ def test_pipeline_is_deterministic():
     a = P.enrich(INN, providers(identity(), pages=site_pages()), clock())
     b = P.enrich(INN, providers(identity(), pages=site_pages()), clock())
     assert (a.contacts, a.roles, a.evidence, a.status) == (b.contacts, b.roles, b.evidence, b.status)
+
+
+def test_mirror_outage_is_partial_and_retryable():
+    res = P.enrich(INN, providers(identity(), pages=site_pages(), mirror=FakeRegistry("CHECKO_REGISTRY_MIRROR", error=True)), clock())
+    assert res.identity.legal_name.source_type == SourceType.FNS_EGRUL
+    assert "REGISTRY_MIRROR_UNAVAILABLE" in res.reasons and res.retryable
+
+
+def test_unreachable_website_is_retryable_but_plain_gaps_are_not():
+    assert P.enrich(INN, providers(identity(), site_error=True), clock()).retryable
+    res = P.enrich(INN, providers(identity(site=None)), clock())
+    assert res.status == EnrichmentStatus.PARTIAL and "NO_WEBSITE_CANDIDATE" in res.reasons and not res.retryable
+
+
+# ------------------------------------------------------------------------------------------------------------ HTTP politeness
+def _fetcher(responses, **kw):
+    import httpx
+    from app.enrichment.providers import HttpFetcher
+    seen, slept = [], []
+
+    def handler(request):
+        seen.append(str(request.url))
+        status, headers = responses[min(len(seen), len(responses)) - 1]
+        return httpx.Response(status, headers=headers, text="ok")
+    t = [0.0]
+    f = HttpFetcher(transport=httpx.MockTransport(handler), clock=lambda: t[0], sleep=lambda s: (slept.append(s), t.__setitem__(0, t[0] + s)),
+                    **kw)
+    return f, seen, slept
+
+
+def test_rate_limited_response_is_waited_out_once_then_retried():
+    f, seen, slept = _fetcher([(429, {"Retry-After": "5"}), (200, {})])
+    assert f.get("https://checko.ru/search?query=1")[1] == "ok"
+    assert len(seen) == 2 and slept == [5.0]
+
+
+def test_rate_limit_gives_up_after_one_backoff_or_a_long_retry_after():
+    import pytest
+    from app.enrichment.profile_models import SourceUnavailable
+    f, seen, slept = _fetcher([(429, {}), (429, {})])
+    with pytest.raises(SourceUnavailable, match="after one backoff"):
+        f.get("https://checko.ru/x")
+    assert len(seen) == 2 and slept == [10.0]
+    f, seen, slept = _fetcher([(429, {"Retry-After": "3600"})])
+    with pytest.raises(SourceUnavailable, match="too long"):
+        f.get("https://checko.ru/x")
+    assert len(seen) == 1 and slept == []
+
+
+def test_mirror_host_gets_a_stricter_interval():
+    f, seen, slept = _fetcher([(200, {})], host_intervals={"checko.ru": 3.0})
+    f.get("https://checko.ru/a"); f.get("https://checko.ru/b"); f.get("https://example.ru/a"); f.get("https://example.ru/b")
+    assert slept == [3.0, 1.0]

@@ -44,8 +44,11 @@ def utcnow() -> datetime:
     return datetime.now(timezone.utc)
 
 
+MIRROR_HOST_INTERVALS = {"checko.ru": 3.0}   # the registry mirror rate-limits at ~1 req/s (pilot: HTTP 429)
+
+
 def default_providers(now: Callable[[], datetime]) -> tuple[P.Providers, Callable[[], None]]:
-    fetcher = HttpFetcher()
+    fetcher = HttpFetcher(host_intervals=MIRROR_HOST_INTERVALS)
     return P.Providers(registries=[FnsEgrulRegistry(fetcher, now), CheckoRegistryMirror(fetcher, now)],
                        discovery=RegistryWebsiteDiscovery(), verifier=HttpWebsiteVerifier(fetcher, now),
                        extractor=HtmlContactExtractor(), roles=SiteAndOkvedRoleEvidence()), fetcher.close
