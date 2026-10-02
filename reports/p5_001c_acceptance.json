@@ -1,0 +1,902 @@
+{
+ "run_1_all_cases": [
+  {
+   "id": "FLOW",
+   "title": "Search supplier → open Supplier 360 (ru)",
+   "checks": {
+    "results_rendered": true,
+    "profile_link_on_card": true,
+    "legal_identity": true,
+    "address_okved": true,
+    "role_section": true,
+    "history": true,
+    "sources": true,
+    "contact_absence_intentional": true,
+    "back_returns_to_results": true
+   },
+   "latency_ms": {
+    "results": 829,
+    "open_profile": 337,
+    "back_to_results": 452
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "first_profile_href": "/ru/supplier-360/7804054351?back=%2Fresults%3Fq%3D%25D0%259C%25D0%25BE%25D0%25BB%25D0%25BE%25D0%25BA%25D0%25BE%2B%25D1%2583%25D0%25BB%25D1%258C%25D1%2582%25D1%2580%25D0%25B0%25D0%25BF%25D0%25B0%25D1%2581%25D1%2582%25D0%25B5%25D1%2580%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25BE%25D0%25B5%2B3.2%2525",
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "A",
+   "title": "Enriched legal entity with EGRUL address + OKVED",
+   "checks": {
+    "name": true,
+    "inn_ogrn_kpp": true,
+    "status": true,
+    "registration": true,
+    "address": true,
+    "okved": true,
+    "egrul_class": true,
+    "partial_valid": true,
+    "no_contacts_msg": true,
+    "history_wording": true,
+    "platforms": true,
+    "secondary_optional": true,
+    "fake_placeholder": true
+   },
+   "latency_ms": {
+    "load": 594
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "B",
+   "title": "Individual entrepreneur — address intentionally absent",
+   "checks": {
+    "entity": true,
+    "address_absent_note": true,
+    "ip_contacts_note": true,
+    "okved": true
+   },
+   "latency_ms": {
+    "load": 258
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "C",
+   "title": "Supplier with role evidence (distributor inferred from OKVED)",
+   "checks": {
+    "distributor_inferred": true,
+    "inferred_hint": true,
+    "supplier_history": true,
+    "manufacturer": true
+   },
+   "latency_ms": {
+    "load": 465
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "D",
+   "title": "Supplier without market-role evidence",
+   "checks": {
+    "market_unknown": true,
+    "header_badge": true,
+    "manufacturer": true,
+    "distributor": true
+   },
+   "latency_ms": {
+    "load": 356
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "E",
+   "title": "NOT_ENRICHED → POST enrich → GET refresh",
+   "checks": {
+    "not_enriched_notice": true,
+    "clicked": true,
+    "loading_shown": true,
+    "name_after": true,
+    "identity_after": true,
+    "get_after_post": true
+   },
+   "latency_ms": {
+    "load": 241,
+    "enrich_total": 16079
+   },
+   "overflow": {
+    "before_m": 0,
+    "d": 0,
+    "m": 0
+   },
+   "header_after": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"КАРДАН\"",
+   "notice_after": [
+    "Профиль заполнен частично"
+   ],
+   "api_calls": [
+    "http://localhost:8001/api/v1/suppliers/7814580307/profile",
+    "http://localhost:8001/api/v1/suppliers/7814580307/enrich",
+    "http://localhost:8001/api/v1/suppliers/7814580307/profile"
+   ],
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "F",
+   "title": "Invalid INN → graceful",
+   "checks": {
+    "message": true
+   },
+   "latency_ms": {
+    "load": 254
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [
+     "422 http://localhost:8001/api/v1/suppliers/12345/profile"
+    ],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "G",
+   "title": "Supplier not found → graceful",
+   "checks": {
+    "message": true
+   },
+   "latency_ms": {
+    "load": 244
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [
+     "404 http://localhost:8001/api/v1/suppliers/1234567890/profile"
+    ],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "H",
+   "title": "Curated external candidate (same experience)",
+   "checks": {
+    "name": true,
+    "external_badge": true,
+    "manufacturer_verified": true,
+    "contacts": true,
+    "secondary_label": true,
+    "no_history": true
+   },
+   "latency_ms": {
+    "load": 278
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "EN",
+   "title": "English route, same profile",
+   "checks": {
+    "title": true,
+    "identity": true,
+    "role": true,
+    "contacts": true,
+    "history": true,
+    "official": true
+   },
+   "latency_ms": {
+    "load": 465
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R1",
+   "title": "Free-text search (ru)",
+   "checks": {
+    "interpreted": true,
+    "historical": true
+   },
+   "latency_ms": {
+    "load": 569
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R2",
+   "title": "Explicit OKPD2 10.51.11.141",
+   "checks": {
+    "aligned": true,
+    "external": true
+   },
+   "latency_ms": {
+    "load": 795
+   },
+   "overflow": {
+    "d": 0,
+    "m": 212
+   },
+   "profile_links": 26,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R3",
+   "title": "Mismatch 26.20.11.110",
+   "checks": {
+    "mismatch": true
+   },
+   "latency_ms": {
+    "load": 788
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R4",
+   "title": "Unknown OKPD2 10.51.11.999",
+   "checks": {
+    "none": true
+   },
+   "latency_ms": {
+    "load": 577
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R5",
+   "title": "Acer technical query",
+   "checks": {
+    "code": true,
+    "model": true
+   },
+   "latency_ms": {
+    "load": 674
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R6",
+   "title": "English results route",
+   "checks": {
+    "interpreted": true,
+    "profile": true
+   },
+   "latency_ms": {
+    "load": 551
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R7",
+   "title": "Lot-ID 5956101",
+   "checks": {
+    "suppliers": true,
+    "profile": true
+   },
+   "latency_ms": {
+    "load": 4576
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 16,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R8",
+   "title": "Lot-ID 5718896",
+   "checks": {
+    "suppliers": true
+   },
+   "latency_ms": {
+    "load": 673
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 15,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R9",
+   "title": "CSV/JSON export from the results page",
+   "checks": {
+    "two_links": true,
+    "export_json": true,
+    "export_csv": true
+   },
+   "latency_ms": {},
+   "overflow": {},
+   "links": [
+    "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=json",
+    "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=csv"
+   ],
+   "export_json": {
+    "status": 200,
+    "type": "application/json",
+    "bytes": 19140
+   },
+   "export_csv": {
+    "status": 200,
+    "type": "text/csv; charset=utf-8",
+    "bytes": 10829
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  }
+ ],
+ "run_2_after_overflow_fix": [
+  {
+   "id": "FLOW",
+   "title": "Search supplier → open Supplier 360 (ru)",
+   "checks": {
+    "results_rendered": true,
+    "profile_link_on_card": true,
+    "legal_identity": true,
+    "address_okved": true,
+    "role_section": true,
+    "history": true,
+    "sources": true,
+    "contact_absence_intentional": true,
+    "back_returns_to_results": true
+   },
+   "latency_ms": {
+    "results": 956,
+    "open_profile": 344,
+    "back_to_results": 444
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "first_profile_href": "/ru/supplier-360/7804054351?back=%2Fresults%3Fq%3D%25D0%259C%25D0%25BE%25D0%25BB%25D0%25BE%25D0%25BA%25D0%25BE%2B%25D1%2583%25D0%25BB%25D1%258C%25D1%2582%25D1%2580%25D0%25B0%25D0%25BF%25D0%25B0%25D1%2581%25D1%2582%25D0%25B5%25D1%2580%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B2%25D0%25B0%25D0%25BD%25D0%25BD%25D0%25BE%25D0%25B5%2B3.2%2525",
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "A",
+   "title": "Enriched legal entity with EGRUL address + OKVED",
+   "checks": {
+    "name": true,
+    "inn_ogrn_kpp": true,
+    "status": true,
+    "registration": true,
+    "address": true,
+    "okved": true,
+    "egrul_class": true,
+    "partial_valid": true,
+    "no_contacts_msg": true,
+    "history_wording": true,
+    "platforms": true,
+    "secondary_optional": true,
+    "fake_placeholder": true
+   },
+   "latency_ms": {
+    "load": 367
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "B",
+   "title": "Individual entrepreneur — address intentionally absent",
+   "checks": {
+    "entity": true,
+    "address_absent_note": true,
+    "ip_contacts_note": true,
+    "okved": true
+   },
+   "latency_ms": {
+    "load": 241
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "C",
+   "title": "Supplier with role evidence (distributor inferred from OKVED)",
+   "checks": {
+    "distributor_inferred": true,
+    "inferred_hint": true,
+    "supplier_history": true,
+    "manufacturer": true
+   },
+   "latency_ms": {
+    "load": 456
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "D",
+   "title": "Supplier without market-role evidence",
+   "checks": {
+    "market_unknown": true,
+    "header_badge": true,
+    "manufacturer": true,
+    "distributor": true
+   },
+   "latency_ms": {
+    "load": 355
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "F",
+   "title": "Invalid INN → graceful",
+   "checks": {
+    "message": true
+   },
+   "latency_ms": {
+    "load": 236
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [
+     "422 http://localhost:8001/api/v1/suppliers/12345/profile"
+    ],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "G",
+   "title": "Supplier not found → graceful",
+   "checks": {
+    "message": true
+   },
+   "latency_ms": {
+    "load": 237
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [
+     "404 http://localhost:8001/api/v1/suppliers/1234567890/profile"
+    ],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "H",
+   "title": "Curated external candidate (same experience)",
+   "checks": {
+    "name": true,
+    "external_badge": true,
+    "manufacturer_verified": true,
+    "contacts": true,
+    "secondary_label": true,
+    "no_history": true
+   },
+   "latency_ms": {
+    "load": 234
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "EN",
+   "title": "English route, same profile",
+   "checks": {
+    "title": true,
+    "identity": true,
+    "role": true,
+    "contacts": true,
+    "history": true,
+    "official": true
+   },
+   "latency_ms": {
+    "load": 464
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R1",
+   "title": "Free-text search (ru)",
+   "checks": {
+    "interpreted": true,
+    "historical": true
+   },
+   "latency_ms": {
+    "load": 560
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R2",
+   "title": "Explicit OKPD2 10.51.11.141",
+   "checks": {
+    "aligned": true,
+    "external": true
+   },
+   "latency_ms": {
+    "load": 784
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 26,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R3",
+   "title": "Mismatch 26.20.11.110",
+   "checks": {
+    "mismatch": true
+   },
+   "latency_ms": {
+    "load": 671
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R4",
+   "title": "Unknown OKPD2 10.51.11.999",
+   "checks": {
+    "none": true
+   },
+   "latency_ms": {
+    "load": 704
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R5",
+   "title": "Acer technical query",
+   "checks": {
+    "code": true,
+    "model": true
+   },
+   "latency_ms": {
+    "load": 676
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R6",
+   "title": "English results route",
+   "checks": {
+    "interpreted": true,
+    "profile": true
+   },
+   "latency_ms": {
+    "load": 560
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 20,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R7",
+   "title": "Lot-ID 5956101",
+   "checks": {
+    "suppliers": true,
+    "profile": true
+   },
+   "latency_ms": {
+    "load": 4662
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 16,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R8",
+   "title": "Lot-ID 5718896",
+   "checks": {
+    "suppliers": true
+   },
+   "latency_ms": {
+    "load": 683
+   },
+   "overflow": {
+    "d": 0,
+    "m": 0
+   },
+   "profile_links": 15,
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  },
+  {
+   "id": "R9",
+   "title": "CSV/JSON export from the results page",
+   "checks": {
+    "two_links": true,
+    "export_json": true,
+    "export_csv": true
+   },
+   "latency_ms": {},
+   "overflow": {},
+   "links": [
+    "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=json",
+    "http://localhost:8002/api/v1/supplier-search/eyJsaW1pdCI6MjAsIm9rcGQyIjpudWxsLCJxdWVyeSI6ItCc0L7Qu9C-0LrQviDRg9C70YzRgtGA0LDQv9Cw0YHRgtC10YDQuNC30L7QstCw0L3QvdC-0LUgMy4yJSIsInJlZ2lvbiI6bnVsbH0/export?format=csv"
+   ],
+   "export_json": {
+    "status": 200,
+    "type": "application/json",
+    "bytes": 19140
+   },
+   "export_csv": {
+    "status": 200,
+    "type": "text/csv; charset=utf-8",
+    "bytes": 10829
+   },
+   "network": {
+    "failed": [],
+    "http4xx5xx": [],
+    "external": [],
+    "console": []
+   }
+  }
+ ]
+}
