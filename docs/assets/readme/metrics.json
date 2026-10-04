@@ -1,0 +1,107 @@
+{
+  "generated_date": "2026-10-04",
+  "measurement_status": "Previously recorded repository measurements; no experiments rerun for these figures.",
+  "sources": [
+    {
+      "path": "reports/ingestion_report.md",
+      "url": "https://github.com/alfalahnaif/RLT.Hack-RoboxTeam/blob/main/reports/ingestion_report.md",
+      "blob_sha": "01f6df415250073ccf7d43fe49a0dfde38803898"
+    },
+    {
+      "path": "reports/final_intelligence_integration.md",
+      "url": "https://github.com/alfalahnaif/RLT.Hack-RoboxTeam/blob/main/reports/final_intelligence_integration.md",
+      "blob_sha": "eaf6f1dfce2497cefa10a48910041e3a738f056a"
+    },
+    {
+      "path": "reports/p4_003_final_holdout.md",
+      "url": "https://github.com/alfalahnaif/RLT.Hack-RoboxTeam/blob/main/reports/p4_003_final_holdout.md",
+      "blob_sha": "b29ed4b3128911eb55af8d60be0bdd0f40328c24"
+    }
+  ],
+  "dataset": {
+    "lots": 604452,
+    "canonical_supplier_links": 1010107,
+    "procurement_items": 2971651,
+    "distinct_supplier_ids": 44196,
+    "note": "Distinct IDs include quality-flagged invalid identifiers. These are different entity counts, not parts of one total."
+  },
+  "resolver": {
+    "metrics": [
+      {
+        "label": "Exact official titles",
+        "percent": 100,
+        "n": 68
+      },
+      {
+        "label": "Morphological variants",
+        "percent": 100,
+        "n": 123
+      },
+      {
+        "label": "Distinctive single words",
+        "percent": 98.31,
+        "n": 59
+      },
+      {
+        "label": "Ambiguity detection",
+        "percent": 93.44,
+        "n": 61
+      },
+      {
+        "label": "Resolved-case precision",
+        "percent": 98.46,
+        "n": 259
+      },
+      {
+        "label": "Correct code in top three",
+        "percent": 83.23,
+        "n": 328
+      }
+    ],
+    "wrong_high_confidence_resolution": {
+      "percent": 0.96,
+      "n": 416
+    },
+    "note": "Fixed test subsets have different denominators. Classification metrics are not supplier-ranking accuracy."
+  },
+  "ranking": {
+    "n_queries": 300,
+    "population": "Temporal HOLDOUT, EM procurement lots; earlier frozen S3 configuration.",
+    "k": [
+      1,
+      5,
+      10,
+      20
+    ],
+    "recall_unweighted": [
+      34.33,
+      64.33,
+      73.33,
+      82.33
+    ],
+    "recall_population_weighted": [
+      26.58,
+      54.93,
+      63.46,
+      75.05
+    ],
+    "quality": [
+      {
+        "label": "MRR",
+        "unweighted": 0.4713,
+        "weighted": 0.3924
+      },
+      {
+        "label": "nDCG@10",
+        "unweighted": 0.5608,
+        "weighted": 0.4951
+      },
+      {
+        "label": "nDCG@20",
+        "unweighted": 0.5932,
+        "weighted": 0.5312
+      }
+    ],
+    "note": "Not rerun for the later Resolver V4/Groq integration. Reported overall baseline differences have 90% confidence intervals containing zero."
+  }
+}
