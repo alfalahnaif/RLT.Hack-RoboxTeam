@@ -1,5 +1,6 @@
 # Organizer raw data (large, read-only input — never commit or modify)
 data/raw/
+backend/data/predefense/
 # Non-deterministic profiler run metadata
 reports/*.meta.json
 __pycache__/

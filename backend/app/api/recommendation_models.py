@@ -84,6 +84,9 @@ class ProcurementItemResponse(BaseModel):
     product_name: str
     okpd2_code: str | None = Field(description="Normalized OKPD2; null when the source code is missing or invalid.")
     okpd2_code_raw: str
+    okpd2_status: str | None = Field(None, description="Pre-defense files only: SUPPLIED_ALIGNED | RESOLVED_FROM_TEXT | "
+                                                       "SUPPLIED_UNVERIFIED | UNRESOLVED (supplied code vs product text).")
+    okpd2_evidence: str | None = None
 
 
 class ProcurementResponse(BaseModel):
@@ -95,6 +98,8 @@ class ProcurementResponse(BaseModel):
     customer_inn: str | None
     items_total: int
     items: list[ProcurementItemResponse]
+    source: Literal["HISTORICAL_DB", "PREDEFENSE_FILE"] = Field(
+        "HISTORICAL_DB", description="PREDEFENSE_FILE = item-level data from the organizer procurement file (query input only).")
 
 
 class SectionError(BaseModel):

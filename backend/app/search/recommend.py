@@ -40,6 +40,18 @@ def recommend(conn, lot_id: str, cfg: SearchConfig | None = None, as_of: date | 
     cfg = cfg or DEFAULT_CONFIG
     t0 = time.perf_counter()
     q, ret, pool, t = prepare(conn, lot_id, cfg, as_of)
+    return _ranked(q, ret, pool, t, cfg, t0, lot_id)
+
+
+def recommend_query(conn, q, idf, cfg: SearchConfig | None = None) -> dict:
+    """recommend() for a query built outside the historical DB (pre-defense notice files); same engine and scoring."""
+    cfg = cfg or DEFAULT_CONFIG
+    t0 = time.perf_counter()
+    ret, pool, t = prepare_query(conn, q, idf, cfg)
+    return _ranked(q, ret, pool, t, cfg, t0, q.lot_id)
+
+
+def _ranked(q, ret, pool, t: dict, cfg: SearchConfig, t0: float, lot_id: str) -> dict:
     t4 = time.perf_counter()
     recs, _ = rank_suppliers(q, pool, cfg)
     t["scoring_ms"] = (time.perf_counter() - t4) * 1000

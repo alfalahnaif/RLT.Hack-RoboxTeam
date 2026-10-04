@@ -14,6 +14,8 @@
 | Supplier 360 | EGRUL legal identity, OGRN/KPP, OKVED, procurement history, role evidence, and source/freshness labels in one profile. |
 | Contact discovery | Verified first-party business contacts where available. Identity checks reject wrong-company websites; absent evidence stays absent. |
 | Procurement analysis | Lot recommendations, market intelligence, pool health, concentration signals, and JSON/CSV export for supplier search. |
+| Local pre-defense notices | When organizer notice and item CSVs are present locally, analyze their lots as read-only query input without adding them to historical evidence. |
+| EIS adapter | Offline XML parsing and credential-gated SOAP request handling for future official EIS document retrieval; live ingestion requires an authorized token. |
 
 The interface supports Russian and English. For an ambiguous category, a user can review official candidates and select the intended code before treating category-specific results as confirmed.
 
@@ -74,6 +76,8 @@ Open `http://localhost:3000/ru/search`; the API is at `http://localhost:8000/api
 A new empty database needs the organizer CSVs in `data/raw/`, ingestion, IDF statistics, and the pinned embedding model/index before full search is available. Follow the [bootstrap and data instructions](docs/README.md) and [execution baseline](docs/HACKATHON_EXECUTION_BASELINE.md). The raw organizer files and model weights are not stored in Git.
 
 The Groq verifier is optional. Configure `OKPD2_LLM_VERIFIER_ENABLED`, `OKPD2_LLM_MODEL`, and `OKPD2_LLM_API_KEY` in the **API container environment** to enable it; keep the key outside Git. The API remains deterministic when it is disabled or unavailable.
+
+For local pre-defense analysis, place the organizer's `Предзащита_Извещения_*.csv` and `Предзащита_Потоварка_*.csv` files in `backend/data/predefense/`. These files are read-only local inputs and are excluded from Git and Docker images. The EIS adapter's [integration report](reports/p5_003a_eis_integration.md) records its offline test scope and credential requirement.
 
 ## API and documentation
 

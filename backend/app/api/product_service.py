@@ -12,8 +12,9 @@ from app.api.market_service import InvalidCategory, UnknownCategory, build_marke
 from app.api.recommendation_models import (AnalysisResponse, MarketIntelligenceEntry, ProcurementItemResponse,
                                            ProcurementResponse, RecommendationResponse, RecommendationSection, SectionError)
 from app.enrichment.catalog import CuratedEvidenceCatalog, EvidenceCatalogError
+from app.search import predefense_adapter as PD
 from app.search.models import DEFAULT_CONFIG
-from app.search.recommend import recommend
+from app.search.recommend import recommend, recommend_query
 
 CONFIG_NAME = "P2_001_SEMANTIC"
 
@@ -23,11 +24,18 @@ class LotNotFound(LookupError):
 
 
 def recommendation(conn: Connection, lot_id: str) -> RecommendationResponse:
-    """recommend(conn, lot_id) with the default (accepted S3) configuration, typed for the API. Expects an idle connection."""
+    """recommend(conn, lot_id) with the default (accepted S3) configuration, typed for the API. Expects an idle connection.
+    Pre-defense lots (organizer files) are checked first and queried from their item rows; nothing is written anywhere."""
     conn.execute("SET TRANSACTION READ ONLY")
-    if conn.execute("SELECT 1 FROM procurement_lot WHERE lot_id = %s", (lot_id,)).fetchone() is None:
-        raise LotNotFound(f"lot {lot_id} not found")
-    out = recommend(conn, lot_id)
+    pd_lot = PD.get(lot_id)
+    if pd_lot is not None:
+        codes = {it.line_no: PD.validate_category(conn, it.product_name, it.okpd2_code_raw).okpd2_code for it in pd_lot.items}
+        q, idf = PD.build_query(conn, pd_lot, codes, DEFAULT_CONFIG)
+        out = recommend_query(conn, q, idf)
+    else:
+        if conn.execute("SELECT 1 FROM procurement_lot WHERE lot_id = %s", (lot_id,)).fetchone() is None:
+            raise LotNotFound(f"lot {lot_id} not found")
+        out = recommend(conn, lot_id)
     conn.rollback()                                   # ends the read transaction (SET LOCAL hnsw settings)
     branch_ms = out["retrieval"]["branch_ms"]
     return RecommendationResponse(
@@ -37,7 +45,23 @@ def recommendation(conn: Connection, lot_id: str) -> RecommendationResponse:
         query=out["query"], retrieval=out["retrieval"], results=out["results"], timings_ms=out["timings_ms"])
 
 
+def _predefense_procurement(conn: Connection, lot: PD.PredefenseLot) -> ProcurementResponse:
+    items = []
+    for it in lot.items:
+        cat = PD.validate_category(conn, it.product_name, it.okpd2_code_raw)
+        items.append(ProcurementItemResponse(line_no=it.line_no, product_name=it.product_name, okpd2_code=cat.okpd2_code,
+                                             okpd2_code_raw=it.okpd2_code_raw, okpd2_status=cat.status, okpd2_evidence=cat.evidence))
+    n = lot.notice
+    return ProcurementResponse(lot_id=lot.lot_id, subject=n.get("subject") or n.get("procedure_name") or None,
+                               publish_date=lot.publish_date, platform=lot.platform, start_price=lot.start_price,
+                               customer_inn=n.get("customer_inn") or None, items_total=len(items), items=items,
+                               source=PD.SOURCE)
+
+
 def procurement(conn: Connection, lot_id: str) -> ProcurementResponse:
+    pd_lot = PD.get(lot_id)
+    if pd_lot is not None:                            # pre-defense file first; query input only, never stored
+        return _predefense_procurement(conn, pd_lot)
     lot = conn.execute("""SELECT lot_id, subject, publish_date, platform, start_price, customer_inn FROM procurement_lot
                           WHERE lot_id = %s""", (lot_id,)).fetchone()
     if lot is None:
