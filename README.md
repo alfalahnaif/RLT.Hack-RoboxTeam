@@ -31,6 +31,10 @@ The [integration report](reports/final_intelligence_integration.md) includes den
 
 ## How it works
 
+![Supplier Radar architecture: ingestion and verification, target analysis and retrieval, enrichment and pool health, and explainable ranking](docs/assets/supplier-radar-architecture.png)
+
+[Open the full-resolution architecture diagram](docs/assets/supplier-radar-architecture.png).
+
 ```text
 Free-text query
   → full official OKPD2 taxonomy

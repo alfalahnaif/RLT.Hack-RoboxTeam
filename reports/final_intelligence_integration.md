@@ -6,16 +6,16 @@ Validated on **2026-10-02**; report published on **2026-10-04**. Scope: Supplier
 
 | Line | Branch | Commit |
 | --- | --- | --- |
-| Product base (Supplier 360 + P5-002A) | `feature/p5-002a-contact-discovery` | `300ac082210bb005a07339571a90dae0b4f3215f` |
-| Resolver V4 | `feature/okpd2-resolver-v4` | `7a55e6d47fbcd6df8336e12884198caf3182c9e6` |
-| Optional Groq verifier | `feature/llm-okpd2-verifier` | `8063d1c81d8aab5fdeacd205d53cc79f9a792163` |
-| Merge of V4 into product base | `integration/okpd2-v4-llm-final` | `b3adad443cd907006ea364996288d05f7017bf39` |
-| Verifier cherry-pick (same content as source line) | integration branch | `2a470dd0e0705ee14af273946574c46d9b2ad19b` |
-| Exact-title, gate, and UI safety integration | integration branch | `14ea38e58594204e0b1ca138eb5f9ea749134818` |
-| **Final tested implementation commit** | integration branch | **`719c05774b64721cdc3b8118bd064c96bdaa0641`** |
-| Main merge recording the Groq source branch | `main` | `2b6623260413a38e1bb2079398fbf509621cb78b` |
+| Product base (Supplier 360 + P5-002A) | `feature/p5-002a-contact-discovery` | `e407b380136e92efb76fe3ed9cb5d9a8d8de8be5` |
+| Resolver V4 | `feature/okpd2-resolver-v4` | `fa6b2888fc16d2e739ae1a5858ba0370d6033ce1` |
+| Optional Groq verifier | `feature/llm-okpd2-verifier` | `cc733bad0149013017849b18200d8e68acfaf104` |
+| Merge of V4 into product base | integration history | `20e7a6f3cdd9934d1d8ffabe63cb1ecbd0eadec3` |
+| Verifier cherry-pick (same content as source line) | integration history | `680b254dbfba5301376af40e26780e06198f94e2` |
+| Exact-title, gate, and UI safety integration | integration history | `a44446cbad12c471ae6187e9888beb236598c66c` |
+| **Final tested implementation commit** | integration history | **`45dd92ca7cf18a3052e95b8312871ca69f611d5a`** |
+| Main merge recording the Groq source branch | `main` | `30fe6bc0d0af11bc1b1ae94efc638dcd13ec7e85` |
 
-The V4 and verifier work was committed on its source branch before integration. The contact-discovery decision-log entries were retained when the branches were merged. Work outside this integration scope was excluded from the final implementation commit.
+The V4 and verifier work was committed on its source branch before integration. The contact-discovery decision-log entries were retained when the branches were merged. Work outside this integration scope was excluded from the final implementation commit. Commit IDs above reflect the 2026-10-04 attribution cleanup, which removed an unwanted co-author trailer without changing file contents.
 
 ## Runtime path and safety
 
