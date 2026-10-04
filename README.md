@@ -2,7 +2,7 @@
 
 **Evidence-based supplier discovery for public procurement.** Describe a product or service, inspect the proposed official OKPD2 category, compare historical suppliers, and open a Supplier 360 profile with source-backed company and contact information.
 
-> **Branch status:** This README describes `integration/okpd2-v4-llm-final`, validated on 2 October 2026. The integration is available for review and has not been merged into `main` or the final/demo branch. See the [final integration report](reports/final_intelligence_integration.md) for evidence and limitations.
+> **Status:** The completed intelligence integration was validated on 2 October 2026 and merged into `main` on 4 October 2026. See the [final integration report](reports/final_intelligence_integration.md) for evidence and limitations.
 
 ## What the product does
 

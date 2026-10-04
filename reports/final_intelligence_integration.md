@@ -1,6 +1,6 @@
 # Supplier Radar intelligence stack: final integration
 
-Validated on **2026-10-02**; report published on **2026-10-04**. Scope: Supplier 360 and P5-002A contact discovery, the full-taxonomy OKPD2 Resolver V4, and an optional closed-world Groq verifier. The integration is on `integration/okpd2-v4-llm-final`; it has **not** been merged into `main` or the final/demo branch.
+Validated on **2026-10-02**; report published on **2026-10-04**. Scope: Supplier 360 and P5-002A contact discovery, the full-taxonomy OKPD2 Resolver V4, and an optional closed-world Groq verifier. The tested integration branch is `integration/okpd2-v4-llm-final`; its contents were merged into `main` on 2026-10-04.
 
 ## Source and integration commits
 
@@ -13,6 +13,7 @@ Validated on **2026-10-02**; report published on **2026-10-04**. Scope: Supplier
 | Verifier cherry-pick (same content as source line) | integration branch | `2a470dd0e0705ee14af273946574c46d9b2ad19b` |
 | Exact-title, gate, and UI safety integration | integration branch | `14ea38e58594204e0b1ca138eb5f9ea749134818` |
 | **Final tested implementation commit** | integration branch | **`719c05774b64721cdc3b8118bd064c96bdaa0641`** |
+| Main merge recording the Groq source branch | `main` | `2b6623260413a38e1bb2079398fbf509621cb78b` |
 
 The V4 and verifier work was committed on its source branch before integration. The contact-discovery decision-log entries were retained when the branches were merged. Work outside this integration scope was excluded from the final implementation commit.
 
@@ -88,4 +89,4 @@ The existing 18-supplier contact golden run recorded **zero wrong-company matche
 - Contact discovery prioritizes precision over coverage. The prior golden set found three of 11 eligible official websites; several legitimate sites were missed without an external search lead.
 - Live timings and Groq error rates are based on only 11 queries (four provider calls) on a local integration stack.
 
-Integration validation is complete. No RFQ, Risk Score, additional feature, or merge into the final/demo branch is part of this integration.
+Integration validation is complete and its tested tree is on `main`. No RFQ, Risk Score, or additional feature is part of this integration.
