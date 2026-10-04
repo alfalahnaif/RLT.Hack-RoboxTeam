@@ -231,6 +231,31 @@ def _official(index: CategoryIndex, q: _Query, q_terms: set[str], sem: dict[str,
     return out
 
 
+def _contextual_weak(index: CategoryIndex, q: _Query,
+                     suggestions: list[CategorySuggestion]) -> list[CategorySuggestion]:
+    """Use an official parent title to surface relevant options without resolving them."""
+    if len(q.words) < 4:
+        return suggestions
+    total = sum(q.weights)
+    enriched = []
+    for suggestion in suggestions:
+        code = index.codes[suggestion.okpd2]
+        if suggestion.basis != "OFFICIAL_TERMS" or not q.lemma_sets[0] & code.lemma_union:
+            enriched.append(suggestion)
+            continue
+        ancestors = frozenset().union(*(index.codes[parent].lemma_union for parent in code.ancestors))
+        context = sum(weight for lemmas, weight in zip(q.lemma_sets[1:], q.weights[1:])
+                      if lemmas & ancestors and not lemmas & code.lemma_union)
+        if not context:
+            enriched.append(suggestion)
+            continue
+        enriched.append(replace(suggestion,
+                                confidence=round(min(.49, suggestion.confidence + W_LEX * context / total), 3),
+                                basis="OFFICIAL_CONTEXT",
+                                evidence=suggestion.evidence + ["Additional terms match an official parent category"]))
+    return sorted(enriched, key=lambda s: (-s.confidence, -index.codes[s.okpd2].depth, s.okpd2))
+
+
 @dataclass(frozen=True)
 class Evidence:
     official: list[CategorySuggestion]          # official-taxonomy candidates, best first
@@ -292,7 +317,8 @@ def collect(index: CategoryIndex, text: str, lexemes: list[str], semantic: list[
             weak.append(CategorySuggestion(code, round(min(0.2, 0.2 * similarity), 3), "SEMANTIC",
                                            ["Related retrieved product text"], index.codes[code].name))
             seen.add(code)
-    return Evidence(official, margin, title, historical, sorted(weak, key=order), polysemous_exact_title)
+    return Evidence(official, margin, title, historical,
+                    _contextual_weak(index, q, sorted(weak, key=order)), polysemous_exact_title)
 
 
 def decision(index: CategoryIndex, ev: Evidence, accept: float = ACCEPT,

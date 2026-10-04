@@ -39,6 +39,8 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
   const evidenceStrength = leadingSuggestion && classification.category_state === "RESOLVED"
     ? t(`categoryEvidenceStrength.${leadingSuggestion.confidence >= 0.7 ? "high" : "medium"}`)
     : null;
+  const resolutionBasis = classification.category_state === "RESOLVED"
+    ? leadingSuggestion?.basis : classification.top_candidates[0]?.basis;
   const selectedPool = data.pool_health.find((entry) => entry.okpd2 === classification.ranking_okpd2) ?? data.pool_health[0];
   const externalGroups = data.external_expansion.filter((entry) => entry.available && entry.candidates.length);
   return (
@@ -52,19 +54,22 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
           {data.query.normalized_text && data.query.normalized_text !== data.query.text ? <p className="text-xs text-muted">{t("interpretedAs")}: {data.query.normalized_text}</p> : null}
           <div className="flex flex-wrap gap-2">
             {classification.provided_okpd2 ? <Badge color="primary">{t("providedCode")}: <span dir="ltr">{classification.provided_okpd2}</span></Badge> : null}
-            {classification.suggested_okpd2.length ? classification.suggested_okpd2.map((s, i) => (
-              <Badge key={s.okpd2} color="info">{i === 0 ? `${t("suggestedCode")}: ` : ""}<span dir="ltr">{s.okpd2}</span>{s.supporting_items ? ` · ${Math.round(s.share * 100)}%` : ""}</Badge>
-            )) : <Badge color="gray">{t("noCode")}</Badge>}
+            {classification.category_state === "RESOLVED" && classification.suggested_okpd2.length
+              ? classification.suggested_okpd2.map((s, i) => (
+                <Badge key={s.okpd2} color="info">{i === 0 ? `${t("suggestedCode")}: ` : ""}<span dir="ltr">{s.okpd2}</span></Badge>
+              ))
+              : !classification.top_candidates.length ? <Badge color="gray">{t("noCode")}</Badge> : null}
             <Badge color={classification.history_status === "SUFFICIENT" ? "success" : "warning"}>{t(`historyStatus.${classification.history_status}`)}</Badge>
           </div>
           {classification.text_okpd2_alignment ? <p className="text-xs text-muted">{t("alignmentLabel")}: <span className="font-medium text-heading">{t(`alignment.${classification.text_okpd2_alignment}`)}</span></p> : null}
-          <p className="text-xs text-muted">{t(`categoryState.${classification.category_state}`)}{evidenceStrength ? ` · ${evidenceStrength}` : ""}{leadingSuggestion?.basis ? ` · ${t(`categoryBasis.${leadingSuggestion.basis}`)}` : ""}</p>
+          <p className="text-xs text-muted">{t(`categoryState.${classification.category_state}`)}{evidenceStrength ? ` · ${evidenceStrength}` : ""}{resolutionBasis ? ` · ${t(`categoryBasis.${resolutionBasis}`)}` : ""}</p>
           {classification.ranking_okpd2 ? <p className="text-xs text-muted">{t("rankingCode")}: <span dir="ltr">{classification.ranking_okpd2}</span></p>
             : <p className="text-xs text-muted">{t("rankingTextOnly")}</p>}
         </CardBody></Card>
 
         {categoryAmbiguous ? <CategoryChoice candidates={classification.top_candidates} query={query} region={region} /> : null}
-        {categoryUncertain ? <Alert tone="warning" appearance="inline" description={t("categoryUncertain")} /> : null}
+        {categoryUncertain && classification.top_candidates.length ? <CategoryChoice candidates={classification.top_candidates} query={query} region={region} uncertain /> : null}
+        {categoryUncertain && !classification.top_candidates.length ? <Alert tone="warning" appearance="inline" description={t("categoryUncertain")} /> : null}
         {resolvedNotObserved ? <Alert tone="warning" appearance="inline" description={t("resolvedNotObserved")} /> : null}
         {!exploratory && classification.history_status !== "SUFFICIENT" ? <Alert tone="warning" appearance="inline" description={t("sparseWarning")} /> : null}
         {classification.text_okpd2_alignment === "MISMATCH" ? <Alert tone="warning" appearance="inline" description={t("mismatchWarning")} /> : null}
@@ -99,19 +104,22 @@ export function MarketProductResultsScreen({ query, okpd2, region }: { query: st
   );
 }
 
-function CategoryChoice({ candidates, query, region }: {
-  candidates: SupplierSearchResponse["classification"]["top_candidates"]; query: string; region: string | null;
+function CategoryChoice({ candidates, query, region, uncertain = false }: {
+  candidates: SupplierSearchResponse["classification"]["top_candidates"]; query: string; region: string | null; uncertain?: boolean;
 }) {
   const t = useTranslations("marketProduct");
+  const contextual = candidates.filter((candidate) => candidate.basis === "OFFICIAL_CONTEXT");
+  const visibleCandidates = uncertain && contextual.length ? contextual : candidates;
   const href = (code: string) => {
     const params = new URLSearchParams({ q: query, okpd2: code });
     if (region) params.set("region", region);
     return `/results?${params.toString()}`;
   };
   return (
-    <Alert tone="warning" title={t("categoryAmbiguousTitle")} description={t("categoryAmbiguousHint")}>
+    <Alert tone="warning" title={t(uncertain ? "categoryUncertainTitle" : "categoryAmbiguousTitle")}
+      description={t(uncertain ? "categoryUncertainHint" : "categoryAmbiguousHint")}>
       <ul className="mt-3 flex flex-col gap-2">
-        {candidates.map((c) => (
+        {visibleCandidates.map((c) => (
           <li key={c.code}>
             <Link href={href(c.code)} className="flex flex-col gap-0.5 rounded-md border border-line bg-surface px-3 py-2 text-start hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus sm:flex-row sm:items-center sm:gap-3">
               <span dir="ltr" className="text-sm font-semibold text-heading">{c.code}</span>

@@ -485,7 +485,7 @@ export type SupplierSearchResult = {
 };
 
 export type CategoryBasis =
-  | "OFFICIAL_EXACT_TITLE" | "OFFICIAL_MORPH_TITLE" | "OFFICIAL_TERMS" | "HISTORICAL_DOMINANT" | "FUZZY" | "SEMANTIC";
+  | "OFFICIAL_EXACT_TITLE" | "OFFICIAL_MORPH_TITLE" | "OFFICIAL_TERMS" | "OFFICIAL_CONTEXT" | "HISTORICAL_DOMINANT" | "FUZZY" | "SEMANTIC";
 
 export type SupplierSearchResponse = {
   search_id: string;

@@ -205,16 +205,22 @@ def _candidates(resolution: object, index: object | None) -> list[VerificationCa
 
 
 def _eligible(resolution: object, candidates: list[VerificationCandidate]) -> bool:
-    if len(candidates) < 2 or any(c.basis == "OFFICIAL_EXACT_TITLE" for c in candidates):
+    if len(candidates) < 2:
         return False
-    if resolution.state == "CATEGORY_AMBIGUOUS":
-        return True
-    if resolution.state not in {"CATEGORY_UNCERTAIN", "RESOLVED"}:
+    exact = [c for c in candidates if c.basis == "OFFICIAL_EXACT_TITLE"]
+    if exact and not (resolution.state == "CATEGORY_AMBIGUOUS"
+                      and len(exact) == 1 and len(exact[0].official_name.split()) == 1):
         return False
     top = candidates[0].score
     margin = getattr(resolution, "margin", None)
     if margin is None:
         margin = top - candidates[1].score
+    if resolution.state == "CATEGORY_AMBIGUOUS":
+        return True
+    if resolution.state == "CATEGORY_UNCERTAIN" and candidates[0].basis == "OFFICIAL_CONTEXT":
+        return margin < .18
+    if resolution.state not in {"CATEGORY_UNCERTAIN", "RESOLVED"}:
+        return False
     return .4 <= top < .85 and margin < .18
 
 

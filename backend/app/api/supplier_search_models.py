@@ -36,7 +36,7 @@ class SuggestedOkpd2(BaseModel):
     supporting_lots: int
     example_products: list[str]
     confidence: float = Field(description="Evidence strength in [0,1], not a calibrated probability.")
-    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "HISTORICAL_DOMINANT",
+    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "OFFICIAL_CONTEXT", "HISTORICAL_DOMINANT",
                    "FUZZY", "SEMANTIC", "UNCERTAIN"]
     evidence: list[str]
 
@@ -45,7 +45,7 @@ class CategoryCandidate(BaseModel):
     code: str
     official_name: str | None
     score: float = Field(description="Category evidence score in [0,1], not a calibrated probability.")
-    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "HISTORICAL_DOMINANT",
+    basis: Literal["OFFICIAL_EXACT_TITLE", "OFFICIAL_MORPH_TITLE", "OFFICIAL_TERMS", "OFFICIAL_CONTEXT", "HISTORICAL_DOMINANT",
                    "FUZZY", "SEMANTIC"]
 
 

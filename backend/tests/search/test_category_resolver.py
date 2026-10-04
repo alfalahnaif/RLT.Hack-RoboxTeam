@@ -43,6 +43,13 @@ def test_polysemous_one_word_exact_title_requires_confirmation(index):
                for s in result.suggestions)
 
 
+def test_long_product_query_uses_official_parent_context_for_candidates(index):
+    result = resolve(index, "Стол для медицинских процедур с регулируемой высотой")
+    assert result.state == "CATEGORY_UNCERTAIN" and result.ranking_code is None
+    assert "32.50.30.111" in [s.okpd2 for s in result.suggestions]
+    assert result.suggestions[0].basis == "OFFICIAL_CONTEXT"
+
+
 @pytest.mark.parametrize("query, code", [("Принтеры", "26.20.16.120"), ("Песчаник", "08.11.12.180")])
 def test_distinctive_one_word_exact_titles_still_resolve(index, query, code):
     result = resolve(index, query)

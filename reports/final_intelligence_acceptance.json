@@ -1,0 +1,370 @@
+{
+  "api": "http://localhost:8012/api/v1",
+  "warmup_elapsed_ms": 743.9,
+  "query_count": 11,
+  "llm_invocation_count": 4,
+  "llm_invocation_rate": 0.36363636363636365,
+  "deterministic_total_p50_ms": 1105.5,
+  "deterministic_total_p95_ms": 2748.7,
+  "llm_p50_ms": 1333.2,
+  "llm_p95_ms": 1427.1,
+  "http_429_count": 0,
+  "timeout_count": 0,
+  "fallback_count": 0,
+  "cases": [
+    {
+      "id": "A_asphaltites",
+      "query": "Асфальтиты",
+      "http_status": 200,
+      "elapsed_ms": 547.5,
+      "category_state": "RESOLVED",
+      "leading_code": "08.99.10.120",
+      "leading_basis": "OFFICIAL_TERMS",
+      "ranking_code": "08.99.10.120",
+      "official_candidates": [
+        {
+          "code": "08.99.10.120",
+          "title": "Асфальтиты и породы асфальтные"
+        }
+      ],
+      "supplier_count": 4,
+      "llm_verification_ms": 0,
+      "verifier_result": null,
+      "warnings": []
+    },
+    {
+      "id": "B_asphaltite",
+      "query": "Асфальтит",
+      "http_status": 200,
+      "elapsed_ms": 997.3,
+      "category_state": "RESOLVED",
+      "leading_code": "08.99.10.120",
+      "leading_basis": "OFFICIAL_TERMS",
+      "ranking_code": "08.99.10.120",
+      "official_candidates": [
+        {
+          "code": "08.99.10.120",
+          "title": "Асфальтиты и породы асфальтные"
+        }
+      ],
+      "supplier_count": 4,
+      "llm_verification_ms": 0,
+      "verifier_result": null,
+      "warnings": []
+    },
+    {
+      "id": "C_exact_wine",
+      "query": "Вина столовые прочие",
+      "http_status": 200,
+      "elapsed_ms": 2327.6,
+      "category_state": "RESOLVED",
+      "leading_code": "11.02.12.159",
+      "leading_basis": "OFFICIAL_EXACT_TITLE",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "11.02.12.159",
+          "title": "Вина столовые прочие"
+        },
+        {
+          "code": "11.02.12.151",
+          "title": "Вино столовое"
+        },
+        {
+          "code": "11.03.10.113",
+          "title": "Вино фруктовое столовое"
+        },
+        {
+          "code": "11.02.12.152",
+          "title": "Вино столовое с защищенным географическим указанием"
+        },
+        {
+          "code": "11.02.12.153",
+          "title": "Вино столовое с защищенным наименованием места происхождения товара"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 0.0,
+      "verifier_result": null,
+      "warnings": [
+        "RESOLVED_CATEGORY_NOT_OBSERVED: the identified category has no procurement history; supplier results come from text evidence and are exploratory"
+      ]
+    },
+    {
+      "id": "D_natural_bitumen",
+      "query": "Битум природный",
+      "http_status": 200,
+      "elapsed_ms": 2100.3,
+      "category_state": "CATEGORY_AMBIGUOUS",
+      "leading_code": "08.99.10.110",
+      "leading_basis": "OFFICIAL_TERMS",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "08.99.10.110",
+          "title": "Битумы и асфальты природные"
+        },
+        {
+          "code": "23.99.13",
+          "title": "Смеси битуминозные на основе материалов природного и искусственного камня и битума, природного асфальта или связанных с ним веществ в качестве связующего"
+        },
+        {
+          "code": "19.20.42.121",
+          "title": "Битумы нефтяные дорожные"
+        },
+        {
+          "code": "19.20.42.129",
+          "title": "Битумы нефтяные прочие"
+        },
+        {
+          "code": "19.20.42.124",
+          "title": "Битумы нефтяные строительные"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 1360.4,
+      "verifier_result": "LLM_VERIFIER_AMBIGUOUS: The query specifies 'natural bitumen' (Битум природный). Candidate 08.99.10.110 ('Natural bitumens and asphalts') is a direct match for the product type and origin. However, the provided score (0.498) is relatively low, and without additional context confirming that the bitumen is not part of a bitu",
+      "warnings": [
+        "LLM_VERIFIER_AMBIGUOUS: The query specifies 'natural bitumen' (Битум природный). Candidate 08.99.10.110 ('Natural bitumens and asphalts') is a direct match for the product type and origin. However, the provided score (0.498) is relatively low, and without additional context confirming that the bitumen is not part of a bitu",
+        "CATEGORY_AMBIGUOUS: several procurement categories match the request; select the intended category — supplier results are exploratory until it is confirmed"
+      ]
+    },
+    {
+      "id": "E_table",
+      "query": "Стол",
+      "http_status": 200,
+      "elapsed_ms": 2311.5,
+      "category_state": "CATEGORY_AMBIGUOUS",
+      "leading_code": "31.02.10.110",
+      "leading_basis": "OFFICIAL_TERMS",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "31.02.10.110",
+          "title": "Столы кухонные"
+        },
+        {
+          "code": "28.93.15.132",
+          "title": "Столы тепловые"
+        },
+        {
+          "code": "26.51.32.110",
+          "title": "Столы чертежные"
+        },
+        {
+          "code": "28.49.23.191",
+          "title": "Столы поворотные"
+        },
+        {
+          "code": "26.20.16.162",
+          "title": "Интерактивные столы"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 1438.9,
+      "verifier_result": "LLM_VERIFIER_AMBIGUOUS: Запрос «Стол» слишком общий. В списке представлены специализированные варианты (кухонные, тепловые, чертежные, поворотные, интерактивные), но без указания назначения или контекста невозможно выбрать корректную категорию.",
+      "warnings": [
+        "LLM_VERIFIER_AMBIGUOUS: Запрос «Стол» слишком общий. В списке представлены специализированные варианты (кухонные, тепловые, чертежные, поворотные, интерактивные), но без указания назначения или контекста невозможно выбрать корректную категорию.",
+        "CATEGORY_AMBIGUOUS: several procurement categories match the request; select the intended category — supplier results are exploratory until it is confirmed"
+      ]
+    },
+    {
+      "id": "F_medical_table",
+      "query": "Стол для медицинских процедур с регулируемой высотой",
+      "http_status": 200,
+      "elapsed_ms": 2499.7,
+      "category_state": "CATEGORY_UNCERTAIN",
+      "leading_code": "32.50.30.112",
+      "leading_basis": "OFFICIAL_CONTEXT",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "32.50.30.112",
+          "title": "Операционные столы универсальные"
+        },
+        {
+          "code": "32.50.30.111",
+          "title": "Столы смотровые, терапевтические"
+        },
+        {
+          "code": "32.30.14.143",
+          "title": "Планка для прыжков с шестом/в высоту, рогулька для подъема планки, стойки для прыжков с шестом, ящик для упора шеста"
+        },
+        {
+          "code": "32.30.14.148",
+          "title": "Место приземления для прыжков в высоту/с шестом, покрышка непромокаемая для мест приземления при прыжках с шестом"
+        },
+        {
+          "code": "95.23.10.116",
+          "title": "Услуги по обновлению обуви с изменением модели кожаных сапог за счет уменьшения высоты голенищ и использования их на замену изношенных деталей"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 1305.9,
+      "verifier_result": "LLM_VERIFIER_AMBIGUOUS: The query specifies a table for medical procedures with adjustable height, but the provided candidates include only 'universal operating tables' and 'examination/therapeutic tables'. Without additional details on the specific type of procedure (e.g., surgery vs. general examination), it is unclear '",
+      "warnings": [
+        "LLM_VERIFIER_AMBIGUOUS: The query specifies a table for medical procedures with adjustable height, but the provided candidates include only 'universal operating tables' and 'examination/therapeutic tables'. Without additional details on the specific type of procedure (e.g., surgery vs. general examination), it is unclear '",
+        "CATEGORY_UNCERTAIN: category identification is low confidence; supplier results are exploratory"
+      ]
+    },
+    {
+      "id": "G_pipes",
+      "query": "Трубы",
+      "http_status": 200,
+      "elapsed_ms": 2190.3,
+      "category_state": "CATEGORY_AMBIGUOUS",
+      "leading_code": "32.20.13.161",
+      "leading_basis": "OFFICIAL_EXACT_TITLE",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "32.20.13.161",
+          "title": "Трубы"
+        },
+        {
+          "code": "23.32.13.110",
+          "title": "Трубы керамические"
+        },
+        {
+          "code": "23.61.12.161",
+          "title": "Трубы железобетонные"
+        },
+        {
+          "code": "22.21.29.110",
+          "title": "Трубы прочие пластмассовые"
+        },
+        {
+          "code": "24.44.26.110",
+          "title": "Трубы медные"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 1124.9,
+      "verifier_result": "LLM_VERIFIER_AMBIGUOUS: The query 'Трубы' is too generic to distinguish between the general category and specific material types (ceramic, concrete, plastic, copper) provided in the candidates.",
+      "warnings": [
+        "LLM_VERIFIER_AMBIGUOUS: The query 'Трубы' is too generic to distinguish between the general category and specific material types (ceramic, concrete, plastic, copper) provided in the candidates.",
+        "CATEGORY_AMBIGUOUS: several procurement categories match the request; select the intended category — supplier results are exploratory until it is confirmed"
+      ]
+    },
+    {
+      "id": "H_unknown",
+      "query": "Флюрбикс заквант",
+      "http_status": 200,
+      "elapsed_ms": 1122.5,
+      "category_state": "CATEGORY_UNCERTAIN",
+      "leading_code": null,
+      "leading_basis": null,
+      "ranking_code": null,
+      "official_candidates": [],
+      "supplier_count": 5,
+      "llm_verification_ms": 0.0,
+      "verifier_result": null,
+      "warnings": [
+        "WEAK_TEXT_EVIDENCE: few historical items match the text; OKPD2 suggestions are unreliable",
+        "CATEGORY_UNCERTAIN: category identification is low confidence; supplier results are exploratory"
+      ]
+    },
+    {
+      "id": "I_acer",
+      "query": "Ноутбук Acer Aspire 5 A515-57-50R7",
+      "http_status": 200,
+      "elapsed_ms": 1105.5,
+      "category_state": "CATEGORY_UNCERTAIN",
+      "leading_code": "26.20.11.110",
+      "leading_basis": "OFFICIAL_TERMS",
+      "ranking_code": null,
+      "official_candidates": [
+        {
+          "code": "26.20.11.110",
+          "title": "Ноутбуки, в том числе портативные в защищенном исполнении, предназначенные для работы в сложной среде эксплуатации"
+        },
+        {
+          "code": "26.20.11.120",
+          "title": "Портативные персональные компьютеры (совмещающие функции смартфона или планшета или ноутбука)"
+        },
+        {
+          "code": "95.11.10.110",
+          "title": "Услуги по ремонту электрокалькуляторов, персональных машин ЭВМ, компьютерной техники, включая ноутбуки, принтеры, сканеры, процессоры, мониторы, компьютерную клавиатуру"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 0.0,
+      "verifier_result": null,
+      "warnings": [
+        "CATEGORY_UNCERTAIN: category identification is low confidence; supplier results are exploratory"
+      ]
+    },
+    {
+      "id": "J_nitrile_gloves",
+      "query": "Перчатки нитриловые",
+      "http_status": 200,
+      "elapsed_ms": 2929.2,
+      "category_state": "RESOLVED",
+      "leading_code": "22.19.60.119",
+      "leading_basis": "HISTORICAL_DOMINANT",
+      "ranking_code": "22.19.60.119",
+      "official_candidates": [
+        {
+          "code": "22.19.60.119",
+          "title": "Перчатки резиновые прочие"
+        },
+        {
+          "code": "22.29.10.120",
+          "title": "Перчатки пластмассовые"
+        },
+        {
+          "code": "22.19.60.114",
+          "title": "Перчатки резиновые хозяйственные"
+        },
+        {
+          "code": "22.19.60.112",
+          "title": "Перчатки резиновые технические"
+        },
+        {
+          "code": "22.19.60.111",
+          "title": "Перчатки хирургические резиновые"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 0,
+      "verifier_result": null,
+      "warnings": []
+    },
+    {
+      "id": "K_milk",
+      "query": "Молоко ультрапастеризованное 3.2%",
+      "http_status": 200,
+      "elapsed_ms": 883.8,
+      "category_state": "RESOLVED",
+      "leading_code": "10.51.11.121",
+      "leading_basis": "HISTORICAL_DOMINANT",
+      "ranking_code": "10.51.11.121",
+      "official_candidates": [
+        {
+          "code": "10.51.11.121",
+          "title": "Молоко питьевое коровье ультрапастеризованное (ультравысокотемпературно-обработанное)"
+        },
+        {
+          "code": "10.51.11.129",
+          "title": "Молоко питьевое ультрапастеризованное (ультравысокотемпературно-обработанное) прочее"
+        },
+        {
+          "code": "10.51.11.122",
+          "title": "Молоко питьевое козье ультрапастеризованное (ультравысокотемпературно-обработанное)"
+        },
+        {
+          "code": "10.86.10.110",
+          "title": "Молоко питьевое для детского питания пастеризованное, стерилизованное и ультрапастеризованное (ультравысокотемпературно-обработанное), в том числе обогащенное"
+        },
+        {
+          "code": "10.51.12.112",
+          "title": "Сливки питьевые ультрапастеризованные (ультравысокотемпературно-обработанные)"
+        }
+      ],
+      "supplier_count": 5,
+      "llm_verification_ms": 0,
+      "verifier_result": null,
+      "warnings": []
+    }
+  ]
+}

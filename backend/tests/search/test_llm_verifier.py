@@ -67,11 +67,28 @@ def result(decision="RESOLVED", code=MEDICAL.okpd2, confidence="HIGH"):
 
 def test_exact_title_and_high_confidence_bypass_provider(settings):
     provider = FakeProvider(result())
-    exact = Resolution("CATEGORY_AMBIGUOUS", [Suggestion(MEDICAL.okpd2, .98, "OFFICIAL_EXACT_TITLE", [], MEDICAL.official_name), OFFICE])
+    exact = Resolution("CATEGORY_AMBIGUOUS", [Suggestion(MEDICAL.okpd2, .98, "OFFICIAL_EXACT_TITLE", [], "Столы медицинские"), OFFICE])
     high = Resolution("RESOLVED", [Suggestion(MEDICAL.okpd2, .92, "OFFICIAL_TERMS", [], MEDICAL.official_name), OFFICE], .33)
     assert verify_resolution("exact", exact, provider, settings).resolution is exact
     assert verify_resolution("high", high, provider, settings).resolution is high
     assert provider.calls == []
+
+
+def test_polysemous_single_word_exact_title_may_be_verified(settings):
+    exact = Suggestion("32.20.13.161", .87, "OFFICIAL_EXACT_TITLE", [], "Трубы")
+    physical = Suggestion("23.32.13.110", .44, "OFFICIAL_TERMS", [], "Трубы керамические")
+    original = Resolution("CATEGORY_AMBIGUOUS", [exact, physical], .43)
+    provider = FakeProvider(result("AMBIGUOUS", None, "LOW"))
+    outcome = verify_resolution("Трубы", original, provider, settings)
+    assert outcome.status == "AMBIGUOUS" and len(provider.calls) == 1
+
+
+def test_uncertain_contextual_candidates_may_be_verified(settings):
+    contextual = Suggestion(MEDICAL.okpd2, .19, "OFFICIAL_CONTEXT", [], MEDICAL.official_name)
+    office = Suggestion(OFFICE.okpd2, .18, "OFFICIAL_CONTEXT", [], OFFICE.official_name)
+    original = Resolution("CATEGORY_UNCERTAIN", [contextual, office], .02)
+    outcome = verify_resolution("Стол для медицинских процедур", original, FakeProvider(result()), settings)
+    assert outcome.status == "RESOLVED" and outcome.resolution.ranking_code == MEDICAL.okpd2
 
 
 def test_ambiguous_query_can_select_only_supplied_official_candidate(settings):
